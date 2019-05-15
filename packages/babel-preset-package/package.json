@@ -1,0 +1,32 @@
+{
+  "name": "@forrestjs/babel-preset-package",
+  "version": "0.0.29-alpha.0",
+  "author": "Marco Pegoraro <marco.pegoraro@gmail.com>",
+  "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "core-js": "3"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "homepage": "https://github.com/forrestjs/core/tree/master/packages/babel-preset-package#readme",
+  "repository": "https://github.com/forrestjs/core/tree/master/packages/babel-preset-package",
+  "bugs": {
+    "url": "https://github.com/forrestjs/core/issues"
+  },
+  "keywords": [
+    "forrestjs",
+    "babel",
+    "preset",
+    "feature"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "c3367a7d63d54344175a2af3e3e6975c0f8f24fa"
+}
