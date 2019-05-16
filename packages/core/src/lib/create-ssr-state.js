@@ -1,6 +1,7 @@
 import {
     createStore as createReduxStore,
     applyMiddleware,
+    compose,
     combineReducers,
 } from 'redux'
 import thunk from 'redux-thunk'
