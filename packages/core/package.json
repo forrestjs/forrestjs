@@ -1,5 +1,5 @@
 {
-  "name": "@forrestjs/forrestjss",
+  "name": "@forrestjs/core",
   "description": "ForrestJS utilities for a nice SSR experience with React and ExpressJS.",
   "version": "0.0.29-alpha.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
