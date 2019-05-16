@@ -1,3 +1,0 @@
-# @forrestjs/core
-
-ForrestJS core

@@ -1,0 +1,31 @@
+{
+  "name": "@forrestjs/eslint-config-universal",
+  "version": "0.0.63-alpha.0",
+  "description": "ForrestJS ESLint config that we like, you are free to ditch this and use your own :-)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/forrestjs/forrestjs/tree/master/packages/eslint-config-universal"
+  },
+  "bugs": {
+    "url": "https://github.com/forrestjs/forrestjs/issues"
+  },
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/eslint-config-universal#readme",
+  "keywords": [
+    "forrestjs",
+    "eslint",
+    "config"
+  ],
+  "author": "Marco Pegoraro <marco.pegoraro@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "eslint-config-react": "^1.1.7"
+  },
+  "gitHead": "842378d848c42fb0c272e888ea538ec04335cfc4"
+}

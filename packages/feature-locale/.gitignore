@@ -1,3 +1,4 @@
 /*.js
-/lib
+/client/
+/lib/
 yarn.lock
