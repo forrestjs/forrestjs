@@ -46,33 +46,33 @@ function preset(context, options = {}) {
             // r(`@babel/plugin-transform-runtime`),
             // r(`@babel/plugin-syntax-dynamic-import`),
             r(`babel-plugin-dynamic-import-node-babel-7`),
-            // [
-            //     r(`babel-plugin-module-resolver`),
-            //     {
-            //         root: [ 'src', 'ssr', '.' ],
-            //     },
-            // ],
-            // r(`react-loadable/babel`),
+            [
+                r(`babel-plugin-module-resolver`),
+                {
+                    root: [ 'src', 'ssr', '.' ],
+                },
+            ],
+            r(`react-loadable/babel`),
             r(`babel-plugin-styled-components`),
-            // [
-            //     r(`babel-plugin-react-intl`),
-            //     {
-            //         messagesDir: './build-locale/messages/',
-            //     },
-            // ],
+            [
+                r(`babel-plugin-react-intl`),
+                {
+                    messagesDir: './build-locale/messages/',
+                },
+            ],
         ],
-        // env: {
-        //     node: {
-        //         plugins: [
-        //             [
-        //                 r(`babel-plugin-transform-require-ignore`),
-        //                 {
-        //                     'extensions': [ '.css', '.less', '.sass', '.styl' ],
-        //                 },
-        //             ],
-        //         ],
-        //     },
-        // },
+        env: {
+            node: {
+                plugins: [
+                    [
+                        r(`babel-plugin-transform-require-ignore`),
+                        {
+                            'extensions': [ '.css', '.less', '.sass', '.styl' ],
+                        },
+                    ],
+                ],
+            },
+        },
     }
 }
 
