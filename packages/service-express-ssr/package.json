@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/service-express-ssr",
   "description": "ForrestJS service which helps setting up a route for handling server side rendering.",
-  "version": "0.0.51-alpha.0",
+  "version": "0.0.52-alpha.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
