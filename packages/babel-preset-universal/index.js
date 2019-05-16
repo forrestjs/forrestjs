@@ -44,7 +44,8 @@ function preset(context, options = {}) {
             r(`@babel/plugin-proposal-class-properties`),
             // r(`@babel/plugin-proposal-optional-chaining`),
             // r(`@babel/plugin-transform-runtime`),
-            r(`@babel/plugin-syntax-dynamic-import`),
+            // r(`@babel/plugin-syntax-dynamic-import`),
+            r(`babel-plugin-dynamic-import-node-babel-7`),
             // [
             //     r(`babel-plugin-module-resolver`),
             //     {
