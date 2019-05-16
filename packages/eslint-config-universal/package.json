@@ -26,5 +26,6 @@
   },
   "dependencies": {
     "eslint-config-react": "^1.1.7"
-  }
+  },
+  "gitHead": "7bab0646d1f10d91ff56e31a15f00f3595113f07"
 }
