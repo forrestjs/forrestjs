@@ -16,6 +16,9 @@
     "dev"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/register": "^7.4.4",
@@ -26,5 +29,6 @@
     "nodemon": "^1.19.0",
     "react-scripts-rewired": "3.0.1--latest1",
     "react-styleguidist": "^9.0.9"
-  }
+  },
+  "gitHead": "842378d848c42fb0c272e888ea538ec04335cfc4"
 }

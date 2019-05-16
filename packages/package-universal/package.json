@@ -15,6 +15,9 @@
     "universal"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@forrestjs/core": "^0.0.59-alpha.0",
@@ -31,5 +34,6 @@
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "styled-components": "^4.2.0"
-  }
+  },
+  "gitHead": "842378d848c42fb0c272e888ea538ec04335cfc4"
 }
