@@ -1,26 +1,10 @@
 const r = require(`./resolver`)
 
-function preset(context, options = {}) {
-    const { browser = false, debug = false } = options
+function preset(_, options = {}) {
+    const { debug = false } = options
     const { NODE_ENV, BABEL_ENV } = process.env
 
     const PRODUCTION = (BABEL_ENV || NODE_ENV) === `production`
-
-    const browserConfig = {
-        useBuiltIns: false,
-        targets: {
-            browsers: PRODUCTION
-                ? [`last 4 versions`, `safari >= 7`, `ie >= 9`]
-                : [`last 2 versions`, `not ie <= 11`, `not android 4.4.3`],
-        },
-    }
-
-    const nodeConfig = {
-        corejs: '3.0.0',
-        targets: {
-            node: PRODUCTION ? 6.0 : `current`,
-        },
-    }
 
     return {
         presets: [
@@ -30,11 +14,15 @@ function preset(context, options = {}) {
                     {
                         loose: true,
                         debug: !!debug,
-                        useBuiltIns: `entry`,
+                        useBuiltIns: false,
                         shippedProposals: true,
                         modules: `commonjs`,
-                    },
-                    browser ? browserConfig : nodeConfig
+                        targets: {
+                            browsers: PRODUCTION
+                                ? [`last 4 versions`, `safari >= 7`, `ie >= 9`]
+                                : [`last 2 versions`, `not ie <= 11`, `not android 4.4.3`],
+                        },
+                    }
                 ),
             ],
             [r(`@babel/preset-react`), { development: !PRODUCTION }],
