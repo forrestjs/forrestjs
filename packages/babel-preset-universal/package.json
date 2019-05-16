@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/babel-preset-universal",
-  "version": "0.0.56-alpha.0",
+  "version": "0.0.57-alpha.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com>",
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.0.0",
@@ -33,5 +33,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "4de56f5eb913f9c8ab9e1687a6d94b2315b98cf1"
+  "gitHead": "3cae36e95685d0320d34181b5efcf45b5e7fd970"
 }
