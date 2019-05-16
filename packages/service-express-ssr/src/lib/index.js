@@ -1,4 +1,4 @@
-import { createSSRRouter } from '@forrestjs/core/create-ssr-router'
+import { createSSRRouter } from '@forrestjs/core/lib/create-ssr-router'
 import { EXPRESS_ROUTE } from '@forrestjs/service-express'
 import { EXPRESS_SSR } from './hooks'
 
