@@ -1,5 +1,5 @@
 import { createSSRRouter } from '@forrestjs/core/create-ssr-router'
-import { EXPRESS_ROUTE } from '@forrestjs/service-express/hooks'
+import { EXPRESS_ROUTE } from '@forrestjs/service-express'
 import { EXPRESS_SSR } from './hooks'
 
 export const register = ({ registerAction, createHook }) =>
