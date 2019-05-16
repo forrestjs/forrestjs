@@ -1,7 +1,7 @@
 import millisecond from 'millisecond'
 import cookieParser from 'cookie-parser'
 import { SERVICE } from '@marcopeg/hooks'
-import { EXPRESS_MIDDLEWARE } from '@forrestjs/service-express/hooks'
+import { EXPRESS_MIDDLEWARE } from '@forrestjs/service-express'
 
 export const cookieHelper = (settings = {}) =>
     (req, res, next) => {
