@@ -9,6 +9,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "@forrestjs/service-express-graphql": "^0.0.58-alpha.0",
+    "express-locale": "^1.2.0",
     "graphql": "^14.3.0",
     "graphql-type-json": "^0.3.0",
     "react-intl": "^2.8.0"
