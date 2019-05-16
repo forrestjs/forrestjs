@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/core",
   "description": "ForrestJS utilities for a nice SSR experience with React and ExpressJS.",
-  "version": "0.0.54-alpha.0",
+  "version": "0.0.55-alpha.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
@@ -47,5 +47,5 @@
     "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir . --ignore **/__tests__"
   },
-  "gitHead": "7bab0646d1f10d91ff56e31a15f00f3595113f07"
+  "gitHead": "4de56f5eb913f9c8ab9e1687a6d94b2315b98cf1"
 }

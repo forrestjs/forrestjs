@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/eslint-config-universal",
-  "version": "0.0.54-alpha.0",
+  "version": "0.0.55-alpha.0",
   "description": "ForrestJS ESLint config that we like, you are free to ditch this and use your own :-)",
   "main": "index.js",
   "scripts": {
@@ -27,5 +27,5 @@
   "dependencies": {
     "eslint-config-react": "^1.1.7"
   },
-  "gitHead": "7bab0646d1f10d91ff56e31a15f00f3595113f07"
+  "gitHead": "4de56f5eb913f9c8ab9e1687a6d94b2315b98cf1"
 }
