@@ -1,0 +1,33 @@
+{
+	"name": "@forrestjs/feature-locale",
+	"description": "ForrestJS feature which offers a GraphQL endpoint to fetch locale translations.",
+	"version": "0.0.29-alpha.0",
+	"author": "Marco Pegoraro <marco.pegoraro@gmail.com",
+	"bugs": {
+		"url": "https://github.com/forrestjs/forrestjs/issues"
+	},
+	"dependencies": {
+		"@babel/runtime": "^7.0.0",
+		"graphql": "^14.3.0",
+		"graphql-type-json": "^0.3.0",
+		"react-intl": "^2.8.0"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.0.0",
+		"@babel/core": "^7.0.0",
+		"cross-env": "^5.1.4"
+	},
+	"homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/feature-locale#readme",
+	"keywords": [
+		"forrestjs",
+		"feature",
+		"locale",
+		"intl",
+		"react-intl"
+	],
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/feature-locale"
+}

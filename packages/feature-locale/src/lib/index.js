@@ -2,15 +2,13 @@
 
 import path from 'path'
 import fs from 'fs'
-
-import {
-    GraphQLNonNull,
-    GraphQLObjectType,
-    GraphQLString,
-} from 'graphql'
-
+import createLocaleMiddleware from 'express-locale'
+import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 import GraphQLJSON from 'graphql-type-json'
-import { EXPRESS_GRAPHQL } from '@forrestjs/service-express-graphql/hooks'
+
+import { EXPRESS_MIDDLEWARE } from '@forrestjs/service-express'
+import { EXPRESS_GRAPHQL } from '@forrestjs/service-express-graphql'
+import { FEATURE_NAME } from './hooks'
 
 const loadLocaleFile = (locale) => new Promise((resolve, reject) => {
     const origin = (process.env.NODE_ENV === 'production')
@@ -67,12 +65,54 @@ const localeQuery = {
     }),
 }
 
-export const register = ({ registerAction }) =>
+export const register = ({ registerAction }) => {
     registerAction({
         hook: EXPRESS_GRAPHQL,
-        name: '▶ locale',
+        name: FEATURE_NAME,
         handler: ({ queries }) => {
             queries.locale = localeQuery
         },
     })
 
+    registerAction({
+        hook: EXPRESS_MIDDLEWARE,
+        name: FEATURE_NAME,
+        handler: ({ app, settings }) => {
+            const locale = settings.locale || {}
+            const config = {
+                default: locale.default || 'en_US',
+                priority: locale.priority || [
+                    'query',
+                    'cookie',
+                    'accept-language',
+                    'default',
+                ],
+            }
+
+            // Default value is "react-ssr--locale"
+            config.cookie = {
+                name: (locale && locale.cookieName)
+                    ? locale.cookieName
+                    : `${process.env.REACT_APP_ID || 'react-ssr'}--locale`
+            }
+
+            if (locale.queryName) {
+                config.query = { name: locale.queryName }
+            }
+
+            if (locale.hostname) {
+                config.hostname = locale.hostname
+            }
+
+            if (locale.map) {
+                config.map = locale.map
+            }
+
+            if (locale.allowed) {
+                config.allowed = locale.allowed
+            }
+
+            app.use(createLocaleMiddleware(config))
+        },
+    })
+}
