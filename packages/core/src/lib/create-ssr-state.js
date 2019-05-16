@@ -1,10 +1,10 @@
 import {
     createStore as createReduxStore,
     applyMiddleware,
-    compose,
     combineReducers,
 } from 'redux'
 import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 
 import { ReduxEvents } from 'redux-events-middleware'
 import { createSSRContext } from './create-ssr-context'
@@ -58,13 +58,12 @@ export const createSSRState = (appReducers = {}, appFeatures = [], receivedSetti
         ]
 
         // @DEV: redux dev tools (development & client only)
+        let composeEnhancer
         const basicEnhancers = []
-        if (IS_BROWSER && process.env.NODE_ENV === 'development') {
-            const { __REDUX_DEVTOOLS_EXTENSION__ } = window
-
-            if (typeof __REDUX_DEVTOOLS_EXTENSION__ === 'function') {
-                basicEnhancers.push(__REDUX_DEVTOOLS_EXTENSION__())
-            }
+        if (IS_BROWSER) {
+            composeEnhancer = composeWithDevTools({ trace: true, traceLimit: 25 })
+        } else {
+            composeEnhancer = compose
         }
 
         const middlewares = settings.buildMiddlewares([
@@ -79,7 +78,7 @@ export const createSSRState = (appReducers = {}, appFeatures = [], receivedSetti
             ...settings.appendEnhancers,
         ])
 
-        const composedEnhancers = compose(
+        const composedEnhancers = composeEnhancer(
             applyMiddleware(...middlewares),
             ...enhancers,
         )
