@@ -1,0 +1,30 @@
+{
+  "name": "@forrestjs/eslint-preset-universal",
+  "version": "0.0.38-alpha.0",
+  "description": "ForrestJS ESLint preset that we like, you are free to ditch this and use your own :-)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/forrestjs/forrestjs/tree/master/packages/eslint-preset-universal"
+  },
+  "bugs": {
+    "url": "https://github.com/forrestjs/forrestjs/issues"
+  },
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/eslint-preset-universal#readme",
+  "keywords": [
+    "forrestjs",
+    "eslint",
+    "preset"
+  ],
+  "author": "Marco Pegoraro <marco.pegoraro@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "eslint-config-react": "^1.1.7"
+  }
+}
