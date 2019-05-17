@@ -1,0 +1,8 @@
+__gatsby
+__test
+
+_book
+docs
+src
+node_modules
+.babelrc
