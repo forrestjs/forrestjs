@@ -34,7 +34,7 @@ export const createSSRRouter = (receivedSettings = {}) => {
         // and your ready-to-ship assets.
         root: String(process.env.REACT_SSR_ROOT || process.cwd()),
         src: String(process.env.REACT_SSR_SRC || 'src'),
-        build: String(process.env.REACT_SSR_BUILD || 'node_build/build'),
+        build: String(process.env.REACT_SSR_BUILD || 'node_build/app'),
         buildSrc: String(process.env.REACT_SSR_BUILD_SRC || 'node_build/src'),
         buildSsr: String(process.env.REACT_SSR_BUILD_SSR || 'node_build/ssr'),
 
