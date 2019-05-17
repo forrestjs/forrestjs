@@ -7,9 +7,9 @@
         "collapsible-menu"
     ],
     "pluginsConfig": {
-        "favicon": "./images/forrestjs.ico",
+        "favicon": "/images/forrestjs.ico",
         "insert-logo": {
-            "url": "./images/forrestjs.png"
+            "url": "/images/forrestjs.png"
         },
         "add-js-css": {
             "css": [
