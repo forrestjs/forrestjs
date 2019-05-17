@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/feature-storage",
   "description": "ForrestJS feature which helps handling SSR compatible storage in the client.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
@@ -13,7 +13,7 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
-    "@forrestjs/babel-preset-package": "^0.1.2",
+    "@forrestjs/babel-preset-package": "^0.1.3",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/feature-storage#readme",
