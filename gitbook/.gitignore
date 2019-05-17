@@ -1,3 +1,4 @@
 # Ignore generated files
 /package.lock.json
-/_book
+/__book__
+/__repo__
