@@ -11,7 +11,7 @@ export const webpackReactLoadable = (config, settings = {}) => {
         config.plugins = [
             ...config.plugins,
             new ReactLoadablePlugin({
-                filename: settings.target || './build/react-loadable.json',
+                filename: settings.target || './dist/build/react-loadable.json',
             }),
         ]
     }

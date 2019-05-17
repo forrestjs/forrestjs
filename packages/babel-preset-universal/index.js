@@ -45,7 +45,7 @@ function preset(_, options = {}) {
             [
                 r(`babel-plugin-react-intl`),
                 {
-                    messagesDir: './build-locale/messages/',
+                    messagesDir: './dist/locale/',
                 },
             ],
         ],
