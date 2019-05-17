@@ -1,0 +1,58 @@
+{
+  "name": "cra-ssr",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@marcopeg/react-ssr": "0.0.20",
+    "@babel/polyfill": "^7.0.0",
+    "es6-promise": "^4.2.5",
+    "express": "^4.16.4",
+    "history": "^4.7.2",
+    "isomorphic-fetch": "^2.2.1",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-helmet": "^5.2.0",
+    "react-loadable": "^5.5.0",
+    "react-redux": "^6.0.0",
+    "react-scripts-rewired": "2.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "----- // SSR CLEAN // -----": "",
+    "clean:build:app": "rm -rf build",
+    "clean:build:src": "rm -rf ./build-src",
+    "clean:build:ssr": "rm -rf ./build-ssr",
+    "clean:all": "npm run clean:build:app && npm run clean:build:src && npm run clean:build:ssr",
+    "----- // SSR BUILD // -----": "",
+    "build:src": "NODE_ENV=production BABEL_ENV=node ./node_modules/.bin/babel src --out-dir ./build-src --copy-files",
+    "build:ssr": "NODE_ENV=production BABEL_ENV=node ./node_modules/.bin/babel ssr --out-dir ./build-ssr",
+    "build:node": "npm run build:src && npm run build:ssr",
+    "build:all": "npm run build && npm run build:node",
+    "----- // SSR START // -----": "",
+    "start:dev": "NODE_ENV=development BABEL_ENV=node REACT_SSR=true nodemon index.dev.js",
+    "start:prod": "npm run clean:all && npm run build:all && npm run start:prod:api",
+    "start:dev:api": "NODE_ENV=development BABEL_ENV=node REACT_SSR=true nodemon --watch ssr -e js index.dev.js",
+    "start:prod:api": "NODE_ENV=production REACT_SSR=true node index"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-plugin-dynamic-import-node-babel-7": "^2.0.7",
+    "babel-plugin-transform-require-ignore": "^0.1.1",
+    "nodemon": "^1.18.9"
+  }
+}

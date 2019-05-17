@@ -1,0 +1,3 @@
+# Ignore generated files
+/package.lock.json
+/_book
