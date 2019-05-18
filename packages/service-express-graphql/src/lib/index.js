@@ -55,7 +55,6 @@ export const createGraphQLHandler = async () => {
 }
 
 export const register = ({ registerAction }) => {
-    console.log('try to hook graphql', EXPRESS_ROUTE)
     registerAction({
         hook: EXPRESS_ROUTE,
         name: EXPRESS_GRAPHQL,

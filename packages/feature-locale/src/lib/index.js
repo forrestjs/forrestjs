@@ -66,7 +66,6 @@ const localeQuery = {
 }
 
 export const register = ({ registerAction }) => {
-    console.log('try to hook into graphql', EXPRESS_GRAPHQL)
     registerAction({
         hook: EXPRESS_GRAPHQL,
         name: FEATURE_NAME,
