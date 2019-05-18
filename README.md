@@ -2,12 +2,19 @@
 
 Hey mate, thank you for landing here!
 
+![ForrestJS Logo](./gibook/images/forrestjs.png)
+
 > ForrestJS helps you to setup a 
 > **universal progressive web application**
 > based on the NodeJS/React stack.
 
 - [.: Read the full documentation here :.](https://forrestjs.github.io)
 - [.: Contributors Guidelines :.](./CONTRIBUTE.md)
+
+Or quick start a project:
+
+    npx forrest run my-new-pwa -p 8080
+
 
 ## LICENCE
 

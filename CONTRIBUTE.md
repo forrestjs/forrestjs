@@ -1,45 +1,35 @@
-# Development
+# Contribute to ForrestJS
 
-Forks and Pull Requests are welcome!
+**Forks and Pull Requests are welcome!**
+
+ForrestJS is moving its first steps so we don't have so much of a structure.
+We welcome PRs to this file with propositions how to grow together to a more mature project.
+
+Our inspiration comes from GatsbyJS and NextJS. They are great projects with a
+great team and we aim to learn a lot how to handle things from them.
 
 [[ TO BE COMPLETED ]]
 
-## Build to a target project
+## Development
 
-This is useful if you want to transpile the source code (and watch it) to a
-specific project that you are working on:
+Read the [DEVELOPMENT](./DEVELOPMENT.md) paper to find out some tips and tricks.
 
-    TARGET=~/dev/marcopeg/react-ssr/examples_dev/008-hooks/ npm run start:to
+## Testing
 
-Why?? 
+Before you submit any PR please install [Lerna](https://lerna.js.org/) and run the tests:
 
-Well, initially I used to `npm link` but there are quite a few issues with
-the dependencies and multiple copies of React being involved in the SSR process.
+    lerna run test
 
-By transpiling the code directly into the project's `node_modules` everything
-works just fine.
+At the moment we don't have much, but a good golden rule is that your change should not
+break any existing test.
 
-## Monorepo
+**NOTE:** we welcome PRs that improve our testing!
 
-- high level scripts
-- babel stuff
-- dev dependencies
-- feature-xxx
-  - README.md
-  - package.json
-  - src
-  - __build
+## Documentation
 
-A "feature" (or NPM deployable) has a package json that tracks the version number
-and the direct dependencies to be installed upon adoption.
+The documentation of ForrestJS is a living beast on itself. We need help with it.
 
-The build script for each feature must:
-1. transpile /src into __build
-2. copy (or replace) README.md
-3. copy (or replace) package.json
+You can find the [Gitbook](https://www.npmjs.com/package/gitbook) project in this repo
+under the `/gitbook` folder. [More info are available there](./gitbook/CONTRIBUTE.md).
 
-The release script for each feature must:
-1. bump the version number of the target package.json
-2. build
-3. npm publish from the feature's cwd
 
