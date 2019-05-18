@@ -8,10 +8,11 @@ Hey mate, thank you for landing here!
 > **universal progressive web application**
 > based on the NodeJS/React stack.
 
-- [.: Read the full documentation here :.](https://forrestjs.github.io)
-- [.: Contributors Guidelines :.](./CONTRIBUTE.md)
+- [.: Read the Documentation project here :.](https://forrestjs.github.io)
+- [.: Read the Contributors Guidelines :.](./CONTRIBUTE.md)
+- [.: Read the Development Guidelines :.](./DEVELOPMENT.md)
 
-Or quick start a project:
+## Or quick start a project:
 
     npx forrest run my-new-pwa -p 8080
 
