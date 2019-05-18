@@ -26,7 +26,7 @@ const loadEnv = async (fileName, root, options) => {
 
 const initEnv = async (args) => {
     const cwd = args.cwd || process.cwd()
-    await loadEnv('.env', cwd, { overwrite: true })
+    await loadEnv('.env', cwd, { overwrite: false })
     await loadEnv('.env.local', cwd, { overwrite: true })
     await loadEnv(`.env.${process.env.NODE_ENV}`, cwd, { overwrite: true })
     await loadEnv(`.env.${process.env.NODE_ENV}.local`, cwd, { overwrite: true })
