@@ -6,30 +6,22 @@ import {
 } from 'graphql'
 
 import { createHook } from '@marcopeg/hooks'
-import { INIT_SERVICE } from '@marcopeg/hooks'
 import { EXPRESS_GRAPHQL, EXPRESS_GRAPHQL_TEST } from './hooks'
 
-const settings = {}
-
-export const init = ({ isEnabled, token }) => {
-    settings.isEnabled = isEnabled
-    settings.token = token
-}
-
-export const validateToken = (token) => {
-    if (!settings.isEnabled) {
+export const validateToken = (token, testToken) => {
+    if (!testToken) {
         throw new Error('n/a')
     }
 
-    if (settings.token !== token) {
+    if (token !== testToken) {
         throw new Error('invalid token')
     }
 
     return true
 }
 
-export const initGraphql = async ({ queries, mutations }) => {
-    if (!settings.isEnabled) {
+export const initGraphql = async ({ queries, mutations, settings }) => {
+    if (!settings.testIsEnabled) {
         return
     }
 
@@ -43,7 +35,7 @@ export const initGraphql = async ({ queries, mutations }) => {
                 type: new GraphQLNonNull(GraphQLString),
             },
         },
-        resolve: (params, args) => validateToken(args.token),
+        resolve: (params, args) => validateToken(args.token, settings.testToken),
     }
 
     const defaultQueries = {
@@ -84,18 +76,10 @@ export const initGraphql = async ({ queries, mutations }) => {
     }
 }
 
-export const register = ({ registerAction }) => {
-    registerAction({
-        hook: INIT_SERVICE,
-        name: EXPRESS_GRAPHQL_TEST,
-        trace: __filename,
-        handler: ({ graphqlTest }) => init(graphqlTest),
-    })
-
+export const register = ({ registerAction }) =>
     registerAction({
         hook: EXPRESS_GRAPHQL,
         name: EXPRESS_GRAPHQL_TEST,
         trace: __filename,
         handler: initGraphql,
     })
-}

@@ -12,7 +12,7 @@ const info = {
     resolve: () => `GraphQL is working`,
 }
 
-export const createGraphQLHandler = async () => {
+export const createGraphQLHandler = async (settings) => {
     const isDev = [ 'development', 'test' ].indexOf(process.env.NODE_ENV) !== -1
 
     const queries = { info }
@@ -29,6 +29,7 @@ export const createGraphQLHandler = async () => {
             mutations,
             context,
             config,
+            settings,
         },
     })
 
@@ -54,7 +55,8 @@ export const createGraphQLHandler = async () => {
     })(req, res)
 }
 
-export const register = ({ registerAction }) => {
+export const register = ({ registerAction, ...props }) => {
+    // register the basic GraphQL api
     registerAction({
         hook: EXPRESS_ROUTE,
         name: EXPRESS_GRAPHQL,
@@ -64,4 +66,12 @@ export const register = ({ registerAction }) => {
             app.use(mountPoint || '/api', await createGraphQLHandler(settings.graphql || {}))
         },
     })
+
+    // register the testing extension
+    if (process.env.NODE_ENV !== 'production') {
+        require('./test').register({
+            registerAction,
+            ...props,
+        })
+    }
 }
