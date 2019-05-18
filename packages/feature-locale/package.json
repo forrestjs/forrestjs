@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/feature-locale",
   "description": "ForrestJS feature which offers a GraphQL endpoint to fetch locale translations.",
-  "version": "2.4.1",
+  "version": "2.4.3",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
