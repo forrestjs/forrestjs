@@ -1,6 +1,7 @@
 
 export const initialState = {
     locale: 'en',
+    html: 'en',
     locales: {},
     cacheLocal: false,
     cacheDuration: 86400000, // 24h
@@ -32,6 +33,7 @@ export const actionHandlers = {
     [SET_LOCALE]: (state, { payload }) => ({
         ...state,
         locale: payload.locale,
+        html: payload.locale.split('_')[0],
     }),
     [ADD_LOCALE]: (state, { payload }) => ({
         ...state,
