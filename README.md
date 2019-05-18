@@ -2,7 +2,7 @@
 
 Hey mate, thank you for landing here!
 
-![ForrestJS Logo](./gibook/images/forrestjs.png)
+![ForrestJS Logo](./gitbook/images/forrestjs.png)
 
 > ForrestJS helps you to setup a 
 > **universal progressive web application**
