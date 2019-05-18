@@ -62,7 +62,7 @@ export const register = ({ registerAction }) => {
         trace: __filename,
         handler: async ({ app, settings }) => {
             const { mountPoint } = settings.graphql || {}
-            app.use(mountPoint || '/api', await createGraphQLHandler())
+            app.use(mountPoint || '/api', await createGraphQLHandler(settings.graphql || {}))
         },
     })
 }

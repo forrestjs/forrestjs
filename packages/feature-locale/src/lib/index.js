@@ -12,7 +12,7 @@ import { FEATURE_NAME } from './hooks'
 
 const loadLocaleFile = (locale) => new Promise((resolve, reject) => {
     const origin = (process.env.NODE_ENV === 'production')
-        ? 'build-src'
+        ? 'node_build/src'
         : 'src'
 
     const filePath = path.join(process.cwd(), origin, 'locale', `${locale.toLowerCase()}.json`)
@@ -66,6 +66,7 @@ const localeQuery = {
 }
 
 export const register = ({ registerAction }) => {
+    console.log('try to hook into graphql', EXPRESS_GRAPHQL)
     registerAction({
         hook: EXPRESS_GRAPHQL,
         name: FEATURE_NAME,
