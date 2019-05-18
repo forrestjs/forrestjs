@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/service-express-graphql",
   "description": "ForrestJS service which sets up a GraphQL endpoint in your ExpressJS App.",
-  "version": "2.4.1",
+  "version": "2.5.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
