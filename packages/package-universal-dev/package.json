@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/package-universal-dev",
-  "version": "2.4.1",
+  "version": "2.6.0",
   "description": "ForrestJS Development Dependencies package for the \"starter-universal\" and similar apps.",
   "main": "index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
@@ -22,8 +22,8 @@
   "dependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/register": "^7.4.4",
-    "@forrestjs/babel-preset-universal": "^2.4.1",
-    "@forrestjs/eslint-config-universal": "^2.4.1",
+    "@forrestjs/babel-preset-universal": "^2.6.0",
+    "@forrestjs/eslint-config-universal": "^2.6.0",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "gitbook-cli": "^2.3.2",
