@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/package-universal",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "ForrestJS Dependencies package for the \"starter-universal\" and similar apps.",
   "main": "index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
@@ -24,7 +24,7 @@
     "@forrestjs/feature-locale": "^2.4.1",
     "@forrestjs/feature-network": "^2.4.1",
     "@forrestjs/feature-storage": "^2.4.1",
-    "@forrestjs/service-env": "^2.4.1",
+    "@forrestjs/service-env": "^2.4.2",
     "@forrestjs/service-express": "^2.4.1",
     "@forrestjs/service-express-cookies": "^2.4.1",
     "@forrestjs/service-express-graphql": "^2.4.1",
