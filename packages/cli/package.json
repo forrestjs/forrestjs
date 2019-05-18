@@ -1,6 +1,6 @@
 {
   "name": "forrest",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "CLI Utility for ForrestJS",
   "main": "lib/index.js",
   "bin": {
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
-    "@forrestjs/babel-preset-package": "^2.4.0",
+    "@forrestjs/babel-preset-package": "^2.4.1",
     "cross-env": "^5.2.0"
   },
   "dependencies": {
