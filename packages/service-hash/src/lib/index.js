@@ -6,7 +6,7 @@
  * open to further development using a better method
  */
 
-import { INIT_SERVICES, SERVICE } from '@marcopeg/hooks'
+import { INIT_SERVICES, SERVICE } from '@forrestjs/hooks'
 import bcrypt from 'bcrypt-nodejs'
 
 let salt = null

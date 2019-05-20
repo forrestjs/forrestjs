@@ -10,7 +10,7 @@
     "@babel/runtime": "^7.0.0",
     "@forrestjs/core": "^2.6.1",
     "@forrestjs/service-express": "^2.6.1",
-    "@marcopeg/hooks": "^0.2.2"
+    "@forrestjs/hooks": "^0.2.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

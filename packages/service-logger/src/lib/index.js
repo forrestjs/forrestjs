@@ -1,4 +1,4 @@
-import { START, SERVICE } from '@marcopeg/hooks'
+import { START, SERVICE } from '@forrestjs/hooks'
 import { init, logError, logInfo, logVerbose, logDebug } from '@marcopeg/utils/lib/logger'
 export { logError, logInfo, logVerbose, logDebug } from '@marcopeg/utils/lib/logger'
 

@@ -1,4 +1,4 @@
-import { SERVICE } from '@marcopeg/hooks'
+import { SERVICE } from '@forrestjs/hooks'
 
 export const EXPRESS_INIT = `${SERVICE} express/init`
 export const EXPRESS_MIDDLEWARE = `${SERVICE} express/middleware`

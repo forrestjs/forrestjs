@@ -9,7 +9,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "@forrestjs/service-logger": "^2.6.1",
-    "@marcopeg/hooks": "^0.2.2",
+    "@forrestjs/hooks": "^0.2.2",
     "@marcopeg/utils": "^2.0.1",
     "pg": "^7.11.0",
     "sequelize": "^5.8.6"

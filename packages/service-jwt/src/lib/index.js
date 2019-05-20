@@ -1,4 +1,4 @@
-import { INIT_SERVICES, SERVICE } from '@marcopeg/hooks'
+import { INIT_SERVICES, SERVICE } from '@forrestjs/hooks'
 import jwt from 'jsonwebtoken'
 
 let secret = null

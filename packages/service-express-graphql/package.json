@@ -9,7 +9,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "@forrestjs/service-express": "^2.6.1",
-    "@marcopeg/hooks": "^0.2.2",
+    "@forrestjs/hooks": "^0.2.2",
     "express-graphql": "^0.8.0",
     "graphql": "^14.3.0"
   },

@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@marcopeg/hooks": "^0.2.2",
+    "@forrestjs/hooks": "^0.2.2",
     "@marcopeg/utils": "^2.0.1"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql'
 import expressGraphql from 'express-graphql'
-import { createHook } from '@marcopeg/hooks'
+import { createHook } from '@forrestjs/hooks'
 import { EXPRESS_ROUTE } from '@forrestjs/service-express'
 import { EXPRESS_GRAPHQL } from './hooks'
 // import pkg from '../../package.json'

@@ -9,7 +9,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "@forrestjs/service-logger": "^2.6.1",
-    "@marcopeg/hooks": "^0.2.2",
+    "@forrestjs/hooks": "^0.2.2",
     "compression": "^1.7.4",
     "express": "^4.16.4",
     "helmet": "^3.18.0"

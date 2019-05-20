@@ -8,7 +8,7 @@
  *
  */
 
-import { START, SERVICE } from '@marcopeg/hooks'
+import { START, SERVICE } from '@forrestjs/hooks'
 import path from 'path'
 import fs from 'fs'
 import nodeEnvFile from 'node-env-file'

@@ -1,4 +1,4 @@
-import { INIT_SERVICE, START_SERVICE } from '@marcopeg/hooks'
+import { INIT_SERVICE, START_SERVICE } from '@forrestjs/hooks'
 import { logError } from '@forrestjs/service-logger'
 import { POSTGRES_BEFORE_INIT, POSTGRES_BEFORE_START } from './hooks'
 

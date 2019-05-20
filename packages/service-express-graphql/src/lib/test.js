@@ -5,7 +5,7 @@ import {
     GraphQLBoolean,
 } from 'graphql'
 
-import { createHook } from '@marcopeg/hooks'
+import { createHook } from '@forrestjs/hooks'
 import { EXPRESS_GRAPHQL, EXPRESS_GRAPHQL_TEST } from './hooks'
 
 export const validateToken = (token, testToken) => {
