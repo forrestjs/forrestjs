@@ -4,7 +4,7 @@
   "description": "CLI Utility for ForrestJS",
   "main": "lib/index.js",
   "bin": {
-    "forrest": "lib/index.js"
+    "forrest": "index.js"
   },
   "scripts": {
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json",
