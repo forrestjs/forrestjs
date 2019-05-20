@@ -10,10 +10,10 @@ import { sync as mkdirpSync } from 'mkdirp'
 import nodeEnvFile from 'node-env-file'
 
 // Load project's `.env*` files
-nodeEnvFile(path.join(process.cwd(), '.env'), { overwrite: false, throw: false })
-nodeEnvFile(path.join(process.cwd(), '.env.local'), { overwrite: true, throw: false })
-nodeEnvFile(path.join(process.cwd(), `.env.${process.env.NODE_ENV}`), { overwrite: true, throw: false })
-nodeEnvFile(path.join(process.cwd(), `.env.${process.env.NODE_ENV}.local`), { overwrite: true, throw: false })
+nodeEnvFile(path.join(process.cwd(), '.env'), { overwrite: false, raise: false })
+nodeEnvFile(path.join(process.cwd(), '.env.local'), { overwrite: true, raise: false })
+nodeEnvFile(path.join(process.cwd(), `.env.${process.env.NODE_ENV}`), { overwrite: true, raise: false })
+nodeEnvFile(path.join(process.cwd(), `.env.${process.env.NODE_ENV}.local`), { overwrite: true, raise: false })
 
 const BUILD_LOCALE = process.env.REACT_SSR_BUILD_LOCALE || 'build-locale'
 const MESSAGES_PATTERN = path.join(process.cwd(), BUILD_LOCALE, '**/*.json')
