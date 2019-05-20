@@ -17,6 +17,7 @@
     "babel-plugin-styled-components": "^1.10.0",
     "babel-plugin-transform-require-ignore": "^0.1.1",
     "core-js": "3",
+    "node-env-file": "^0.1.8",
     "react-loadable": "^5.5.0"
   },
   "scripts": {

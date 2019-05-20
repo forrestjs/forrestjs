@@ -15,6 +15,7 @@
     "ignore-styles": "^5.0.1",
     "md5-file": "^4.0.0",
     "mime-types": "^2.1.24",
+    "node-env-file": "^0.1.8",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
