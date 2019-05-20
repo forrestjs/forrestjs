@@ -1,6 +1,6 @@
 {
   "name": "forrest",
-  "version": "2.7.7",
+  "version": "2.7.8",
   "description": "CLI Utility for ForrestJS",
   "main": "lib/index.js",
   "bin": {
