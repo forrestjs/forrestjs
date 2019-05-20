@@ -59,7 +59,7 @@ then run a _Pull Request_.
 
 #### forrest-starter-universal (default)
 
-https://github.com/marcopeg/forrest-starter-universal
+https://github.com/forrestjs/starter-universal
 
 - CRA
 - SSR

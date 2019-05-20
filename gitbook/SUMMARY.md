@@ -4,6 +4,11 @@
 * [give us a star on GitHub!](https://github.com/forrestjs/forrestjs)
 * [install from NPM](https://www.npmjs.com/package/forrest)
 
+
+### Step By Step Tutorial
+
+* [Prerequisites & Setup](./howto/setup.md)
+
 ### Articles
 
 * [Reducers](./articles/reducers.md)

@@ -1,5 +1,13 @@
 # Prerequisites & Setup
 
+In this step-by-step tutorial you are going to take a **Create React App**
+boilerplate, and turn it into a fully featured Universal PWA with 
+**Server Side Rendering**, a GraphQL API, code splitting and routing.
+
+**NOTE:** If you just want to enjoy a ready-to-use setup type:
+
+      npx forrest run cra-ssr -p 8080
+
 ### Step n.1
 
 The entire set of examples assume that you are going to use
@@ -7,34 +15,15 @@ The entire set of examples assume that you are going to use
 as boilerplate for you application, so the first step would be to initialize a new
 CRA project (*):
 
-    npx create-react-app cra-ssr --scripts-version react-scripts-rewired
-
-> **NOTE:** We are going to do some **cool stuff with code splitting** and
-> [react-loadable](https://www.npmjs.com/package/react-loadable).  
-> Unfortunately `create-react-app` doesn't support code splitting very well and we really
-> need to hack into the `Webpack.config` in order to enable stuff. If you omit
-> `--scripts-version react-scripts-rewired` everything will work just fine, but you will
-> notice some flickering when running the final server side rendered app.
+    npx create-react-app cra-ssr
 
 ### Step n.2
 
-Now you can `cd` into your project and install the `@marcopeg/react-ssr` library:
+Now you can `cd` into your project and install some `ForrestJS` modules:
 
     cd cra-ssr
-    npm install @marcopeg/react-ssr --save
-
-### Step n.3
-
-The last step is to install the peer dependencies:
-
-    npm install --save \
-      redux \
-      react-redux \
-      react-loadable
-
-Those packages are extremely likely to to be used in your own code base so we decided
-not to include them as direct dependencies. You will have full control over their
-version and upgrading via your project's `package.json`.
+    yarn add @forrestjs/package-universal
+    yarn add @forrestjs/package-universal-dev -D
 
 ## NPM Scripts
 
@@ -51,7 +40,78 @@ With all that said, you can spin up your app:
 
       npm start
 
-![npm start](../images/react-ssr__start.png)      
+![npm start](../images/react-ssr__start.png)
+
+## Let's Server Side Render!
+
+In order to implement SSR with ForrestJS you are going to need 3 things:
+
+1. A Sever Side entry point for your app
+2. A NodeJS server - we'll use ExpressJS
+3. Some @babel support for our server side code (I love ES6, you?)
+
+### Server Side Entry Point
+
+Create `src/index.ssr.js`:
+
+```js
+import { createSSRRender } from '@forrestjs/core/lib/create-ssr-render'
+
+// project specific modules
+import App from './App'
+import './index.css'
+
+export const staticRender = createSSRRender(App)
+```
+
+### Modular NodeJS Server
+
+Create `server.js`:
+
+```js
+// Makes NodeJS understand ES6
+process.env.NODE_ENV = 'development'
+require('@babel/polyfill')
+require('@babel/register')
+
+// List our server capabilities
+const services = [
+    require('@forrestjs/service-express'),
+    require('@forrestjs/service-express-ssr'),
+]
+
+// Start the app
+require('@forrestjs/hooks')
+    .createHookApp({ services })()
+    .catch(err => console.log(err.message))
+```
+
+### Babel up and go!
+
+Edit `package.json`:
+
+```json
+"babel": {
+  "presets": [
+    "@forrestjs/babel-preset-universal"
+  ]
+},
+"scripts": {
+    "serve": "yarn build && node server.js",
+    ...
+}
+```
+
+And run:
+
+    yarn serve
+
+You should now be enjoying a Server Side Rendered Create React App (or `SSRCRA` fo the whom who
+like acronyms :-).
+
+It looks exactly like the client side rendered that you get with `yarn start`, but it's
+server-side rendered. You can look at the page's source and spot some content within the HTML.
+
 
 ## (*) react-scripts-rewired
 
@@ -65,3 +125,13 @@ which implements a light extension of the default `react-scripts` package and al
 our project to extend the default configuration:
 
     npx create-react-app cra-ssr --scripts-version react-scripts-rewired
+
+If you have already created your app, you should simply switch from
+
+    "react-scripts": "3.0.1"
+
+to:
+
+    "react-scripts-rewired": "3.0.1--latest1",
+
+(`react-scripts-rewired` follows (give or take) the same version of `react-scripts`)
