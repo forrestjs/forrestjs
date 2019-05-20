@@ -1,13 +1,13 @@
 {
   "name": "@forrestjs/core",
   "description": "ForrestJS utilities for a nice SSR experience with React and ExpressJS.",
-  "version": "2.7.2",
+  "version": "2.7.3-y.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
+    "@babel/runtime": "^7.4.4",
     "deep-extend": "^0.6.0",
     "express": "^4.16.4",
     "fs-extra": "^7.0.1",
@@ -29,9 +29,9 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@forrestjs/babel-preset-package": "^0.0.29-alpha.0",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@forrestjs/babel-preset-package": "^2.7.3-y.0",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/core#readme",
