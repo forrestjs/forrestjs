@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Check if update is available
-const pkg = require('../package.json')
+const pkg = require('./package.json')
 const updateNotifier = require('update-notifier')
 updateNotifier({ pkg }).notify()
 
