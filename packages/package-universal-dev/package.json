@@ -19,6 +19,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
+  },
   "dependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/register": "^7.4.4",

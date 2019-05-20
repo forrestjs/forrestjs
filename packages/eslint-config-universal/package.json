@@ -4,7 +4,7 @@
   "description": "ForrestJS ESLint config that we like, you are free to ditch this and use your own :-)",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
   },
   "repository": {
     "type": "git",

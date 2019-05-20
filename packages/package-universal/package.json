@@ -18,6 +18,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
+  },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@forrestjs/core": "^2.7.0-alpha.0",

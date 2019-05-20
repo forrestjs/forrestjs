@@ -19,6 +19,9 @@
     "core-js": "3",
     "react-loadable": "^5.5.0"
   },
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
+  },
   "license": "MIT",
   "main": "index.js",
   "homepage": "https://github.com/forrestjs/core/tree/master/packages/babel-preset-universal#readme",
