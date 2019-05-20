@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/feature-network",
   "description": "ForrestJS feature which helps handling SSR compatible networking functionalities.",
-  "version": "2.7.0-alpha.1",
+  "version": "2.7.0-alpha.2",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
@@ -13,7 +13,7 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
-    "@forrestjs/babel-preset-package": "^2.7.0-alpha.1",
+    "@forrestjs/babel-preset-package": "^2.7.0-alpha.2",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/feature-network#readme",

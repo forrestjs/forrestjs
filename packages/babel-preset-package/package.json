@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/babel-preset-package",
-  "version": "2.7.0-alpha.1",
+  "version": "2.7.0-alpha.2",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com>",
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.0.0",
