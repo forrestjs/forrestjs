@@ -8,7 +8,8 @@ import * as fs from 'fs'
 import { sync as globSync } from 'glob'
 import { sync as mkdirpSync } from 'mkdirp'
 
-const MESSAGES_PATTERN = path.join(process.cwd(), 'node_build/locale/**/*.json')
+const BUILD_LOCALE = process.env.REACT_SSR_BUILD_LOCALE || 'build-locale'
+const MESSAGES_PATTERN = path.join(process.cwd(), BUILD_LOCALE, '**/*.json')
 const LANG_DIR = path.join(process.cwd(), 'src', 'locale')
 const DEFAULT_LANG = 'en'
 

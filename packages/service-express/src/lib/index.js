@@ -14,10 +14,6 @@ const fallbackPort = '8080'
 export const init = async (settings) => {
     logInfo('[express] init...')
 
-    if (!settings) {
-        throw new Error('[express] missing settings')
-    }
-
     await createHook(EXPRESS_INIT, {
         async: 'serie',
         args: { app, server, settings: { ...settings } },
@@ -41,7 +37,7 @@ export const init = async (settings) => {
         async: 'serie',
         args: { app, server, settings: { ...settings } },
     })
-    console.log('express - run hook', EXPRESS_ROUTE)
+
     await createHook(EXPRESS_ROUTE, {
         async: 'serie',
         args: { app, server, settings: { ...settings } },
@@ -67,14 +63,14 @@ export const register = ({ registerAction }) => {
         hook: INIT_SERVICE,
         name: `${SERVICE} express`,
         trace: __filename,
-        handler: ({ express }) => init(express),
+        handler: ({ express = {} }) => init(express),
     })
 
     registerAction({
         hook: START_SERVICE,
         name: `${SERVICE} express`,
         trace: __filename,
-        handler: ({ express }) => start(express),
+        handler: ({ express = {} }) => start(express),
     })
 }
 
