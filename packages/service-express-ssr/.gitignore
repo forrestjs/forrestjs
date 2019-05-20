@@ -2,3 +2,4 @@
 /*.js
 /lib
 yarn.lock
+package-lock.json

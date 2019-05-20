@@ -4,3 +4,6 @@ __test
 _book
 lib
 node_modules
+
+yarn.lock
+package-lock.json
