@@ -26,7 +26,7 @@
     "@babel/cli": "^7.4.4",
     "@babel/register": "^7.4.4",
     "@forrestjs/babel-preset-universal": "^2.7.3-alpha.4",
-    "@forrestjs/eslint-config-universal": "^2.7.3-alpha.2",
+    "@forrestjs/eslint-config-universal": "^2.7.3-alpha.4",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "gitbook-cli": "^2.3.2",

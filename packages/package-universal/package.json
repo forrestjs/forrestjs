@@ -22,12 +22,8 @@
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
   },
   "dependencies": {
-    "@babel/cli": "^7.4.4",
     "@babel/polyfill": "^7.4.4",
-    "@babel/register": "^7.4.4",
-    "@forrestjs/babel-preset-universal": "^2.7.3-alpha.4",
     "@forrestjs/core": "^2.7.3-alpha.4",
-    "@forrestjs/eslint-config-universal": "^2.7.3-alpha.2",
     "@forrestjs/feature-locale": "^2.7.3-alpha.4",
     "@forrestjs/feature-network": "^2.7.3-alpha.4",
     "@forrestjs/feature-storage": "^2.7.3-alpha.4",
@@ -37,15 +33,9 @@
     "@forrestjs/service-express-graphql": "^2.7.3-alpha.4",
     "@forrestjs/service-express-ssr": "^2.7.3-alpha.4",
     "@forrestjs/service-logger": "^2.7.3-alpha.4",
-    "concurrently": "^4.1.0",
-    "cross-env": "^5.2.0",
-    "gitbook-cli": "^2.3.2",
     "isomorphic-fetch": "^2.2.1",
-    "nodemon": "^1.19.0",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
-    "react-scripts-rewired": "3.0.1--latest1",
-    "react-styleguidist": "^9.0.9",
     "styled-components": "^4.2.0"
   },
   "gitHead": "842378d848c42fb0c272e888ea538ec04335cfc4"
