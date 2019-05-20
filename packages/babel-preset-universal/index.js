@@ -1,5 +1,6 @@
-const r = require(`./resolver`)
+const path = require('path')
 const nodeEnvFile = require('node-env-file')
+const r = require(`./resolver`)
 
 // Load project's `.env*` files
 nodeEnvFile(path.join(process.cwd(), '.env'), { overwrite: false, throw: false })
