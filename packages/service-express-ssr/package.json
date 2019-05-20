@@ -7,14 +7,14 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
+    "@babel/runtime": "^7.4.4",
     "@forrestjs/core": "^2.7.2",
     "@forrestjs/hooks": "^2.7.2",
     "@forrestjs/service-express": "^2.7.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
     "@forrestjs/babel-preset-package": "^2.7.2",
     "cross-env": "^5.1.4"
   },

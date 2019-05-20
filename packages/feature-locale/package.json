@@ -7,7 +7,7 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
+    "@babel/runtime": "^7.4.4",
     "@forrestjs/service-express-graphql": "^2.7.2",
     "express-locale": "^1.2.0",
     "graphql": "^14.3.0",
@@ -15,8 +15,8 @@
     "react-intl": "^2.8.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
     "@forrestjs/babel-preset-package": "^2.7.2",
     "cross-env": "^5.1.4"
   },
