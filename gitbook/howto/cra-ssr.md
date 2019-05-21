@@ -1,34 +1,39 @@
-# Create React App Universal
+# Create React App > Universal
 
-In this step-by-step tutorial you are going to take a **Create React App**
-boilerplate, and turn it into a fully featured Universal PWA with 
-**Server Side Rendering**, a GraphQL API, code splitting and routing.
+In this step-by-step tutorial you are going to take a 
+[Create React App (CRA)](https://facebook.github.io/create-react-app/)
+app, and turn it into a fully featured 
+**Universal PWA with server-side rendering**,
+served by an [ExpressJS](https://expressjs.com) server.
 
-**NOTE:** If you just want to enjoy a ready-to-use setup type:
+> **NOTE:**<br>
+> If you just want to enjoy a ready-to-use and feature-rich app, type this in a terminal:<br>
+> `npx forrest run my-new-universal-cra -p 8080`
+>
 
-      npx forrest run cra-ssr -p 8080
+## Step n.1 - Kickoff your CRA
 
-### Step n.1
+Initialize a new CRA project (*):
 
-The entire set of examples assume that you are going to use
-[create-react-app](https://facebook.github.io/create-react-app/)
-as boilerplate for you application, so the first step would be to initialize a new
-CRA project (*):
+    npx create-react-app my-new-universal-cra && \
+    cd my-new-universal-cra
 
-    npx create-react-app cra-ssr
+## Step n.2 - Add a few Dependencies
 
-### Step n.2
+Now install some `ForrestJS` modules:<br>
+(I personally use [`yarn`](https://yarnpkg.com) because is much faster than `npm`)
 
-Now you can `cd` into your project and install some `ForrestJS` modules:
-
-    cd cra-ssr
-    yarn add @forrestjs/package-universal
+    yarn add @forrestjs/package-universal && \
     yarn add @forrestjs/package-universal-dev -D
 
-## NPM Scripts
+> The `package-universal` contains a set of common dependencies like _React_, _Express_,
+> _react-router_, ect... We work hard to keep all the internal versions up-to-date
+> so you can enjoy and **update just this package** :-)
 
-So far we just installed dependencies so the basic scripts that were created by
-`create-react-app` are in place with their default behaviour.
+## About NPM Scripts
+
+So far we just installed dependencies so the basic _package.json scripts_ that were created 
+by `create-react-app` are in place with their default behaviour.
 
 **This will not change during the course of this tutorial :-)**
 
@@ -40,19 +45,25 @@ With all that said, you can spin up your app:
 
       npm start
 
-![npm start](../images/react-ssr__start.png)
+![npm start - output](../images/react-ssr__start.png)
 
-## Let's Server Side Render!
+## Step n.3 - Let's Server-Side Render!
 
 In order to implement SSR with ForrestJS you are going to need 3 things:
 
-1. A Sever Side entry point for your app
+1. A Sever-Side entry point for your App
 2. A NodeJS server - we'll use ExpressJS
 3. Some @babel support for our server side code (I love ES6, you?)
 
-### Server Side Entry Point
+### Server-Side Entry Point
 
-Create `src/index.ssr.js`:
+Create the App's server side entry point:
+
+```bash
+vi src/index.ssr.js
+```
+
+and paste this code into it:
 
 ```js
 import { createSSRRender } from '@forrestjs/core/lib/create-ssr-render'
@@ -66,7 +77,13 @@ export const staticRender = createSSRRender(App)
 
 ### Modular NodeJS Server
 
-Create `server.js`:
+Create the Express server entry point:
+
+```bash
+vi server.js
+```
+
+and paste this code into it:
 
 ```js
 // Makes NodeJS understand ES6
@@ -86,9 +103,15 @@ require('@forrestjs/hooks')
     .catch(err => console.log(err.message))
 ```
 
-### Babel up and go!
+### Babel up and Go!
 
-Edit `package.json`:
+Edit your `package.json`:
+
+```bash
+vi package.json
+```
+
+and add the `babel` section and the `serve` script:
 
 ```json
 "babel": {
@@ -102,16 +125,22 @@ Edit `package.json`:
 }
 ```
 
-And run:
+It's finally time to run the App:
 
     yarn serve
 
-You should now be enjoying a Server Side Rendered Create React App (or `SSRCRA` fo the whom who
+You should now be enjoying a server-side rendered Create React App (or `CRA-SSR` for the whom who
 like acronyms :-).
 
 It looks exactly like the client side rendered that you get with `yarn start`, but it's
 server-side rendered. You can look at the page's source and spot some content within the HTML.
 
+![npm serve - output](../images/react-ssr__html.png)
+
+This is going to be a hell of an improvement if you are targeting Google's bot as a steady
+visitor of your website/PWA.
+
+In the next lesson you are going to **fix some headers** and **add some routes**.
 
 ## (*) react-scripts-rewired
 
