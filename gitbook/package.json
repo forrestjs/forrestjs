@@ -7,6 +7,7 @@
     "book:serve": "node_modules/.bin/gitbook serve . __book__",
     "book:build": "node_modules/.bin/gitbook build . __book__",
     "book": "npm run book:install && npm run book:serve",
+    "--- // PUBLISH TO: forrestjs.github.io // ---": "",
     "release:prep": "rm -rf __repo__ && mkdir -p __repo__",
     "release:init": "cd __repo__ && git init && git remote add origin git@github.com:forrestjs/forrestjs.github.io.git && git fetch && git checkout master",
     "release:copy": "cp -rf __repo__/.git __book__",

@@ -1,4 +1,4 @@
-# Prerequisites & Setup
+# Create React App Universal
 
 In this step-by-step tutorial you are going to take a **Create React App**
 boilerplate, and turn it into a fully featured Universal PWA with 

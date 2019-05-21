@@ -7,7 +7,7 @@
 
 ### Step By Step Tutorial
 
-* [Prerequisites & Setup](./howto/setup.md)
+* [Create React App Universal](./howto/cra-ssr.md)
 
 ### Articles
 
