@@ -1,20 +1,20 @@
 {
   "name": "@forrestjs/service-hash",
   "description": "ForrestJS service which helps hashing stuff with bcrypt.",
-  "version": "2.8.0",
+  "version": "2.8.2",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@forrestjs/hooks": "^2.8.0",
+    "@forrestjs/hooks": "^2.8.2",
     "bcrypt-nodejs": "^0.0.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
-    "@forrestjs/babel-preset-package": "^2.8.0",
+    "@forrestjs/babel-preset-package": "^2.8.2",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-hash#readme",
