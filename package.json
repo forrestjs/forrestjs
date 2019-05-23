@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "ForrestJS Monorepo",
   "scripts": {
-    "boot": "npm install && lerna bootstrap",
+    "boot": "npm install && lerna bootstrap --hoist",
     "clean": "lerna run clean && lerna clean --yes && rm -rf node_modules",
     "test": "lerna run test"
   },
