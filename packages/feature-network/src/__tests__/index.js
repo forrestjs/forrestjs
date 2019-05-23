@@ -2,6 +2,6 @@
 
 describe(`@forrestjs/feature-network`, () => {
     it(`should work`, async () => {
-        console.log('it does')
+        // console.log('it does')
     })
 })

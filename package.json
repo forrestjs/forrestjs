@@ -2,9 +2,10 @@
   "name": "@forrestjs/core",
   "version": "0.0.2",
   "description": "ForrestJS Monorepo",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/forrestjs/core.git"
+  "scripts": {
+    "boot": "yarn && lerna bootstrap",
+    "clean": "lerna run clean && lerna clean --yes && rm -rf node_modules",
+    "test": "lerna run test"
   },
   "author": "Marco Pegoraro",
   "license": "MIT",
@@ -12,6 +13,10 @@
     "url": "https://github.com/forrestjs/core/issues"
   },
   "homepage": "https://forrestjs.github.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/forrestjs/core.git"
+  },
   "keywords": [
     "react",
     "ssr",
@@ -20,6 +25,7 @@
     "server side rendering"
   ],
   "devDependencies": {
-    "@babel/core": "^7.4.4"
+    "@babel/core": "^7.4.4",
+    "lerna": "^3.14.1"
   }
 }

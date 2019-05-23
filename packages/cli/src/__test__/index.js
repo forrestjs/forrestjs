@@ -1,6 +1,6 @@
 // const module = require(`../`)
 
-describe(`@forrestjs/service-env`, () => {
+describe(`@forrestjs/cli`, () => {
     it(`should work`, async () => {
         // console.log('it does')
     })
