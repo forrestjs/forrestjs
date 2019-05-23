@@ -72,6 +72,13 @@ https://github.com/forrestjs/starter-universal
 - Styleguide
 - Gitbook
 
+## Running ForrestJS on Windows
+
+We strongly suggest you take a look and download the 
+[Git Cmd](https://git-scm.com/download/win) for Windows.
+
+ForrestJS works with that tool :-)
+
 ## Licence
 
 Copyright 2019 Marco Pegoraro

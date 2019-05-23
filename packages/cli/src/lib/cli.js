@@ -10,6 +10,8 @@ export const create = () =>
             desc: 'Create a new project based on a starter',
             builder: (yargs) => (
                 yargs
+                    .alias('t', 'template')
+                    .alias('p', 'port')
                     .default('template', 'forrestjs/starter-universal')
                     .demandCommand(1, 'please pass down the project name')
             ),
