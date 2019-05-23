@@ -71,6 +71,7 @@ https://github.com/forrestjs/starter-universal
 - Unit Testing (Jest)
 - Styleguide
 - Gitbook
+- circle-ci
 
 ## Running ForrestJS on Windows
 
