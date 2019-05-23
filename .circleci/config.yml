@@ -6,6 +6,6 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run: lerna bootstrap --hoist
-      - run: lerna run test
-      - run: lerna build
+      - run: npm run ci-bootstrap
+      - run: npm run ci-test
+      - run: npm run ci-build

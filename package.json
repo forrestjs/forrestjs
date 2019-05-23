@@ -3,9 +3,12 @@
   "version": "0.0.2",
   "description": "ForrestJS Monorepo",
   "scripts": {
-    "boot": "npm install && lerna bootstrap --hoist",
+    "boot": "npm install && lerna bootstrap",
     "clean": "lerna run clean && lerna clean --yes && rm -rf node_modules",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "ci-bootstrap": "lerna bootstrap --hoist",
+    "ci-test": "lerna run test",
+    "ci-build": "lerna build"
   },
   "author": "Marco Pegoraro",
   "license": "MIT",
