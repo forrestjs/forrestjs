@@ -20,7 +20,6 @@ export default async (argv) => {
         throw new Error(`Project "${projectName}" already exists`)
     }
 
-    console.log(`[forrest] cloning "${repoUrl}" to "${projectCwd}"...`)
     await new Promise((resolve, reject) => {
         gitClone(repoUrl, projectCwd, (err) => {
             if (err) {

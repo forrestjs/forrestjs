@@ -71,6 +71,14 @@ https://github.com/forrestjs/starter-universal
 - Unit Testing (Jest)
 - Styleguide
 - Gitbook
+- circle-ci
+
+## Running ForrestJS on Windows
+
+We strongly suggest you take a look and download the 
+[Git Cmd](https://git-scm.com/download/win) for Windows.
+
+ForrestJS works with that tool :-)
 
 ## Licence
 
