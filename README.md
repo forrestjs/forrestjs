@@ -1,7 +1,11 @@
 # @ForrestJS/core
 
 [![CircleCI](https://circleci.com/gh/forrestjs/forrestjs/tree/master.svg?style=svg)](https://circleci.com/gh/forrestjs/forrestjs/tree/master)
+![NPM](https://img.shields.io/npm/l/forrest.svg)
+![npm (scoped)](https://img.shields.io/npm/v/@forrestjs/core.svg)
+![npm](https://img.shields.io/npm/dw/@forrestjs/core.svg)
 ![GitHub issues](https://img.shields.io/github/issues-raw/forrestjs/forrestjs.svg)
+![GitHub stars](https://img.shields.io/github/stars/forrestjs/forrestjs.svg?style=social)
 
 Hey mate, thank you for landing here!
 
