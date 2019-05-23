@@ -1,5 +1,7 @@
 # @ForrestJS/core
 
+[![CircleCI](https://circleci.com/gh/forrestjs/forrestjs/tree/master.svg?style=svg)](https://circleci.com/gh/forrestjs/forrestjs/tree/master)
+
 Hey mate, thank you for landing here!
 
 ![ForrestJS Logo](./gitbook/images/forrestjs.png)

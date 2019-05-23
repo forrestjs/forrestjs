@@ -1,10 +1,11 @@
 version: 2
 jobs:
   build:
-    docker: # use the docker executor type; machine and macos executors are also supported
-      - image: circleci/node:10.15 # the primary container, where your job's commands are run
+    docker:
+      - image: circleci/node:10.15
     steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
-      - run: yarn boot # run the `echo` command
-      - run: yarn test # run the `echo` command
+      - checkout
+      - run: npm install
+      - run: lerna bootstrap --hoist
+      - run: lerna run test
+      - run: lerna build
