@@ -8,4 +8,3 @@ jobs:
       - run: npm install
       - run: npm run ci-bootstrap
       - run: npm run ci-test
-      - run: npm run ci-build
