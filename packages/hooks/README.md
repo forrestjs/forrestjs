@@ -1,6 +1,7 @@
 # @forrestjs/hooks
 
-> ForrestJS library which helps decoupling your application into small and reusable modules.
+> ForrestJS library which helps decoupling your application into small 
+> and reusable modules.
 
 `hooks` is a small plugin / hooks library for NodeJS _and the browser_.
 The idea is to enrich your sourcecode with **extension points** that can be used
@@ -134,11 +135,12 @@ for a complete tracing of your application shape!
 
 ## Scaffold a Full App
 
-This little piece of code
+This little piece of code:
 
     import { createHookApp } from '@forrestjs/hooks'
 
-    export default createHookApp({
+    // Describe an App:
+    const app = createHookApp({
         settings: { cwd: process.cwd() },
         services: [
             require('./my-service-1),
@@ -149,6 +151,11 @@ This little piece of code
             require('./my-feature-2),
         ],
     })
+
+    // Boot the App:
+    app()
+        .then(() => console.log('App started'))
+        .catch(err => console.error(err))
 
 Each module, being it a `service` or a `feature` **should export** a `register()` method
 that will be used by `createHookApp`.
