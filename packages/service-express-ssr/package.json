@@ -1,21 +1,21 @@
 {
   "name": "@forrestjs/service-express-ssr",
   "description": "ForrestJS service which helps setting up a route for handling server side rendering.",
-  "version": "2.8.4",
+  "version": "2.8.5",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@forrestjs/core": "^2.8.4",
-    "@forrestjs/hooks": "^2.8.4",
-    "@forrestjs/service-express": "^2.8.4"
+    "@forrestjs/core": "^2.8.5",
+    "@forrestjs/hooks": "^2.8.5",
+    "@forrestjs/service-express": "^2.8.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
-    "@forrestjs/babel-preset-package": "^2.8.4",
+    "@forrestjs/babel-preset-package": "^2.8.5",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-express-ssr#readme",
