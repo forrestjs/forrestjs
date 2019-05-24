@@ -3,17 +3,40 @@ import { registerAction } from './register-action'
 
 import * as constants from './constants'
 
-export const createHookApp = ({ services = [], features = [], settings = {} }) =>
-    async () => {
-        for (const service of services) {
-            if (service.register) {
-                await service.register({
-                    registerAction,
-                    createHook,
-                    settings: { ...settings },
-                })
-            }
+const runIntegrations = async (integrations, settings) => {
+    for (const service of integrations) {
+        // full module that exposes "register" as API
+        if (service.register) {
+            await service.register({
+                registerAction,
+                createHook,
+                settings: { ...settings },
+            })
+
+        // simple function that implements "register"
+        } else if (typeof service === 'function') {
+            await service({
+                registerAction,
+                createHook,
+                settings: { ...settings },
+            })
+
+        // register a single action as a feature
+        // [ hookName, handler, { otherOptions }]
+        } else if (Array.isArray(service)) {
+            const [ hook, handler, options = {} ] = service
+            registerAction({
+                ...options,
+                hook,
+                handler,
+            })
         }
+    }
+}
+
+export const createHookApp = ({ services = [], features = [], settings = {} } = {}) =>
+    async () => {
+        await runIntegrations(services, settings)
 
         await createHook(constants.START, {
             async: 'serie',
@@ -25,15 +48,7 @@ export const createHookApp = ({ services = [], features = [], settings = {} }) =
             args: { settings },
         })
 
-        for (const feature of features) {
-            if (feature.register) {
-                await feature.register({
-                    registerAction,
-                    createHook,
-                    settings: { ...settings },
-                })
-            }
-        }
+        await runIntegrations(features, settings)
 
         await createHook(constants.INIT_SERVICE, {
             async: 'serie',
@@ -80,3 +95,6 @@ export const createHookApp = ({ services = [], features = [], settings = {} }) =
             args: { ...settings },
         })
     }
+
+// Convenient method to skip the double function
+export const runHookApp = ( ...args ) => createHookApp(...args)()
