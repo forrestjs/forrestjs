@@ -142,6 +142,11 @@ visitor of your website/PWA.
 
 In the next lesson you are going to **fix some headers** and **add some routes**.
 
+## Download
+
+If you experienced any trouble following the steps above, 
+[download this tutorial codebase here](../downloads/cra-ssr.zip).
+
 ## (*) react-scripts-rewired
 
 Most of the examples work with the default setup, but when it comes to

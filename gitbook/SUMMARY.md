@@ -8,6 +8,7 @@
 ### Step By Step Tutorial
 
 * [Create React App > Universal](./howto/cra-ssr.md)
+* [Create React App > Redux](./howto/cra-redux.md)
 
 ### Articles
 
