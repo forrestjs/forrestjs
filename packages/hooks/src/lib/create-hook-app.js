@@ -34,8 +34,14 @@ const runIntegrations = async (integrations, settings) => {
     }
 }
 
-export const createHookApp = ({ services = [], features = [], settings = {} } = {}) =>
+export const createHookApp = (appDefinition = {}) =>
     async () => {
+        // accepts a single param as [] of features
+        const { services = [], features = [], settings = {} } =
+            Array.isArray(appDefinition)
+                ? { features: appDefinition }
+                : appDefinition
+
         await runIntegrations(services, settings)
 
         await createHook(constants.START, {

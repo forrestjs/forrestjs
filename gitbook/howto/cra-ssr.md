@@ -99,7 +99,7 @@ const services = [
 
 // Start the app
 require('@forrestjs/hooks')
-    .createHookApp({ services })()
+    .runHookApp(services)
     .catch(err => console.log(err.message))
 ```
 

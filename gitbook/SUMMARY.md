@@ -9,6 +9,7 @@
 
 * [Create React App > Universal](./howto/cra-ssr.md)
 * [Create React App > Redux](./howto/cra-redux.md)
+* [Hooks, for composable NodeJS Apps](./howto/hooks.md)
 
 ### Articles
 
