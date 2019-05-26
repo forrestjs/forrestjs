@@ -2,15 +2,15 @@
 
 Writing apps in NodeJS is fun and quite easy.
 
-`require()` and `import` are the building blocks for **structuring your codebase 
-in modules** and let them talk with each other. [NPM](https://npmjs.com) let you 
+`require()` and `import` are the building blocks for **structuring your codebase
+in modules** and let them talk with each other. [NPM](https://npmjs.com) let you
 share and reuse bigger blocks of logic. Great stuff.
 
-Nevertheless, it's always beed a struggle to organize our codebase into blocks that
-represent relevant business logic. So to speak, **features that a customer is
+Nevertheless, it's always been a struggle to organize our codebase into blocks that
+represent relevant business logic. So to speak **features that a customer is
 willing to pay for**.
 
-Here is a simplicistic implementation of an app that should be able to
+Here is a simplistic implementation of an app that should be able to
 **sum two integers**:
 
 ```js
@@ -31,7 +31,7 @@ This works and it is not much code, but if you focus on the business requirement
 
 > sum two integers
 
-you quikly find out that the only relevant piece of code would be:
+you quickly find out that the only relevant piece of code would be:
 
 ```js
 const sum = Number(p1) + Number(p2)
@@ -50,16 +50,25 @@ If you are a little bit like me, you find yourself writing - or copying -
 _Express_ (or _Koa_ or whatever...) setup scripts over and over, project by
 project.
 
-This structural code has the following charateristics:
+This structural code has the following characteristics:
 
 1. it is almost always the same
 2. it doesn't contribute to the business requirement
-3. nothign work without it
+3. nothing works
 
-## WordPress almost nailed it...
+> But on top of it, the sad truth is that <br>**your customer is not willing to pay for it**.
 
-Engineers at WordPress found out long time ago that **the value of a platform roots
-in its capablity to run external plugins**. WordPress wouldn't be WordPress without
+✅ Infrastructural code is a necessity that doesn't bring much value, and if you could
+**find a way to separate business from infrastructure, and reuse infrastructure**,
+you would surely see your profits growing. Either in more money or just free time.
+
+
+## WordPress almost nailed it... 🤔
+
+Engineers at WordPress found out, a long time ago, that **the value of a platform root in its
+capability to run external plugins**.
+
+> WordPress wouldn't be WordPress without
 a rich plugins echosystem.
 
 WordPress provides you with some _core functionalities_ and a huge amount of
@@ -70,7 +79,7 @@ WordPress provides you with some _core functionalities_ and a huge amount of
 And this is the good side of it.
 
 You can pack your business logic in a plugin (or theme) that runs on top of all the
-"stuff" of which WordPress is made. Stuff that you and me don't even need to care 
+"stuff" of which WordPress is made. Stuff that you and I don't even need to know
 so much.
 
 The flipside is that you have plugins that hook into WordPress, plugins that hook into
@@ -78,16 +87,17 @@ plugins that hook into WordPress... and so on.
 
 **It is a hard job to trace and debug plugin composability.**
 
-## Welcome `@forrestjs/hooks` :-)
+## ... but ForrestJS's Hooks surely did! 😏
 
-`@forrestjs/hooks` is a small library that enable **traceable composability** in your
+`@forrestjs/hooks` is a small library that enables **traceable composability** in your
 Javascript application.
 
-With the hooks you can refactor the code we saw earlies into this:
+With the hooks you can refactor the code we wrote earlier into this:
 
 ```js
 const { runHookApp, createHook, START_SERVICES } = require('@forrestjs/hooks')
 
+// Infrastructure
 const expressService = () => {
     const express = require('express')
     const app = express()
@@ -100,6 +110,7 @@ const expressService = () => {
     app.listen(port, () => console.log('Running...'))
 }
 
+// Real Business Value
 const featureSum = ({ app }) =>
     app.get('/:p1/:p2', (req, res) => {
         const { p1, p2 } = req.params
@@ -113,11 +124,14 @@ runHookApp([
 ])
 ```
 
-Although is a little bit longer, it enables a clear **separation or responsabilities**
-between "running express" and "implementing the SUM requirement".
+Although is a little bit longer, it enables a clear **separation of responsibilities**
+between "running Express" and "implementing the SUM OF TWO INTEGERS".
 
-> The most important thing is that you can easily extract `expressService` into
-> a standalone NPM module, and reuse it as plain dependency in multiple projects.
+This is called "[Single Responsibility Principle](https://en.wikipedia.org/wiki/Single_responsibility_principle)"
+and is one of the most important things you can learn for engineering and Life 😀
+
+> ✅ The most important thing is that **you can easily extract `expressService` into
+> a standalone NPM module**, and reuse it as plain dependency in multiple projects.
 
 As a matter of fact, _ForrestJS_ did exactly that:
 
@@ -142,23 +156,23 @@ runHookApp([
 This is a perfectly viable NodeJS app that **focuses on implementing the business
 requirement** that we discussed previously. (Sum 2 integers, right?)
 
-The mere running of a NodeJS server is nothing we should be concerned about.  
-**It should just work (tm) - and it does**.
+The mere running of a NodeJS server is nothing we should be concerned about.
+**It should just work <sup>~TM</sup>, and it does**.
 
 ## What about Traceability?
 
-Well, the thing is that `@forrestjs/hooks` comes with a nice built in feature that
+Well, the thing is that `@forrestjs/hooks` comes with a nice built-in feature that
 will produce an app boot report similar to this one:
 
 ![hooks boot trace](../images/hooks-server-boot-trace.png)
 
-There is just a small change that we have to make to our codebase in order to
-achieve this tree rapresentation, and it comes as a built-in service:
+There is just a small change that you have to make to your codebase in order to
+achieve this tree representation, and it comes as a built-in service:
 
 ```js
 const { runHookApp, traceBoot } = require('@forrestjs/hooks')
 
-...
+... your business logic ...
 
 runHookApp([
     traceBoot,
@@ -167,12 +181,12 @@ runHookApp([
 ])
 ```
 
-## Enjoy a truly Sharable Infrastructure
+## Enjoy a truly Sharable Infrastructure 🥁
 
-Here at _ForrestJS_ we believe you should never be writing the same infrastructural
+Here at _ForrestJS_, we believe you should never write the same infrastructural
 code twice.
 
-> Worst of all, you should never copy/paste the same code 
+> Worst of all, you should never copy/paste the same code
 > into multiple projects!
 
 That's why we are maintaining a list of common stuff that you can plug into your
@@ -189,5 +203,6 @@ application end extend to suit your specific business need:
 
 There are [many other packages already released in NPM](https://www.npmjs.com/search?q=%40forrestjs) under the `@forrestjs` organization.
 
-We are working hard to document them, we are moving our first steps and things can
+👉 We are working hard to document them, we are moving our first steps and things can
 only improve :-)
+

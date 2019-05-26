@@ -1,5 +1,6 @@
 ports:
   - port: 4000
+  - port: 35729
 tasks:
   - before: cd ./gitbook
     init: yarn install

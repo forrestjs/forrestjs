@@ -3,6 +3,7 @@
 * [ForrestJS](README.md)
 * [give us a star on GitHub!](https://github.com/forrestjs/forrestjs)
 * [install from NPM](https://www.npmjs.com/package/forrest)
+* [Packages](./api/packages.md)
 
 
 ### Step By Step Tutorial
