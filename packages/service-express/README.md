@@ -2,7 +2,7 @@
 
 ForrestJS service which helps setting up an ExpressJS server.
 
-> Here is a good tutorial:
+> Here is a good tutorial:<br>
 > https://forrestjs.github.io/howto/hooks.html
 
 ## Install & Setup
@@ -73,7 +73,7 @@ The arguments you receive are:
 require('@forrestjs/service-express').EXPRESS_MIDDLEWARE
 ```
 
-This hook fires before any other step.
+This hook fires before any other step.<br>
 You have just a plain ExpressJS App object here.
 
 ### EXPRESS_MIDDLEWARE
@@ -82,7 +82,7 @@ You have just a plain ExpressJS App object here.
 require('@forrestjs/service-express').EXPRESS_MIDDLEWARE
 ```
 
-This hook is good to inject custom App level middleware.
+This hook is good to inject custom App level middleware.<br>
 Mind that "compression" and "helmet" are already provided
 
 ### EXPRESS_ROUTE
@@ -92,6 +92,9 @@ require('@forrestjs/service-express').EXPRESS_ROUTE
 ```
 
 ### EXPRESS_HANDLER
+
+This hook is good to inject custom handlers or fallback routes that you
+want to be sure fire after any other.
 
 ```js
 require('@forrestjs/service-express').EXPRESS_HANDLER
