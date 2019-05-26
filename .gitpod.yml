@@ -1,0 +1,7 @@
+ports:
+  - port: 4000
+tasks:
+  - before: cd ./gitbook
+    init: yarn install
+    command: yarn book
+    openIn: bottom
