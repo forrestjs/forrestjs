@@ -37,9 +37,16 @@ const defaultSettings = {
     out: $ => $,
 }
 
-export const createSSRState = (appReducers = {}, appFeatures = [], receivedSettings = {}) =>
+export const createSSRState = (appReducers = {}, receivedFeatures = [], receivedSettings = {}) =>
     async (initialState = {}, history = null) => {
         const IS_BROWSER = typeof window !== 'undefined'
+
+        // accepts empty features
+        const appFeatures = receivedFeatures.map(feature => ({
+            reducers: feature.reducers || {},
+            services: feature.services || [],
+            listeners: feature.listeners || [],
+        }))
 
         const settings = {
             ...defaultSettings,
