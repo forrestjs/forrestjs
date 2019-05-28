@@ -1,22 +1,22 @@
 {
   "name": "@forrestjs/service-express-graphql",
   "description": "ForrestJS service which sets up a GraphQL endpoint in your ExpressJS App.",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@forrestjs/hooks": "^2.9.0",
-    "@forrestjs/service-express": "^2.9.0",
+    "@forrestjs/hooks": "^2.9.1",
+    "@forrestjs/service-express": "^2.9.1",
     "express-graphql": "^0.8.0",
     "graphql": "^14.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
-    "@forrestjs/babel-preset-package": "^2.9.0",
+    "@forrestjs/babel-preset-package": "^2.9.1",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-express-graphql#readme",
