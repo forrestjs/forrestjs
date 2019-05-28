@@ -223,5 +223,5 @@ It basically provides a simple indication how to organize your application into
 smaller pieces - the _features_ - and how to let them talk together in a nice
 and predictable way.
 
-Waait for it...
+👉 [CLICK HERE if you can't resist and are so curious about it :-)](./cra-features.md)
 

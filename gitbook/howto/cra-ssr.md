@@ -103,6 +103,8 @@ require('@forrestjs/hooks')
     .catch(err => console.log(err.message))
 ```
 
+[👉 Click here to learn more about how we use Hooks &raquo;](./hooks.md)
+
 ### Babel up and Go!
 
 Edit your `package.json`:
