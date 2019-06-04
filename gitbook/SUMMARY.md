@@ -11,7 +11,8 @@
 * [Create React App > Universal](./howto/cra-ssr.md)
 * [Create React App > Redux](./howto/cra-redux.md)
 * [Create React App > Features](./howto/cra-features.md)
-* [Hooks, for composable NodeJS Apps](./howto/hooks.md)
+* [Hooks, truly modular NodeJS Apps](./howto/hooks.md)
+* [GraphQL made easy with Hooks](./howto/hooks-graphql.md)
 
 ### Articles
 
