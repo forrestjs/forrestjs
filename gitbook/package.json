@@ -11,9 +11,10 @@
     "release:prep": "rm -rf __repo__ && mkdir -p __repo__",
     "release:init": "cd __repo__ && git init && git remote add origin git@github.com:forrestjs/forrestjs.github.io.git && git fetch && git checkout master",
     "release:copy": "cp -rf __repo__/.git __book__",
+    "release:copy:clean": "rm -f __book__/yarn.lock",
     "release:push": "cd __book__ && git add . && git commit -m \"docs\" && git push -u origin master",
     "release:clean": "rm -rf __repo__ && rm -rf __book__",
-    "release": "npm run release:prep && npm run release:init && npm run book:install && npm run book:build && npm run release:copy && npm run release:push && npm run release:clean"
+    "release": "npm run release:prep && npm run release:init && npm run book:install && npm run book:build && npm run release:copy && npm run release:copy:clean && npm run release:push && npm run release:clean"
   },
   "repository": {
     "type": "git",
