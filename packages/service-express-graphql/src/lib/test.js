@@ -1,5 +1,4 @@
 import {
-    GraphQLNonNull,
     GraphQLObjectType,
     GraphQLString,
     GraphQLBoolean,
@@ -8,20 +7,12 @@ import {
 import { createHook } from '@forrestjs/hooks'
 import { EXPRESS_GRAPHQL, EXPRESS_GRAPHQL_TEST } from './hooks'
 
-export const validateToken = (token, testToken) => {
-    if (!testToken) {
-        throw new Error('n/a')
-    }
-
-    if (token !== testToken) {
-        throw new Error('invalid token')
-    }
-
-    return true
-}
-
 export const initGraphql = async ({ queries, mutations, settings }) => {
     if (!settings.testIsEnabled) {
+        return
+    }
+    
+    if (!settings.testIsValid) {
         return
     }
 
@@ -32,16 +23,25 @@ export const initGraphql = async ({ queries, mutations, settings }) => {
         description: 'Enable test apis protected by a token',
         args: {
             token: {
-                type: new GraphQLNonNull(GraphQLString),
+                type: GraphQLString,
             },
         },
-        resolve: (params, args) => validateToken(args.token, settings.testToken),
+        resolve: async (_, args, req) => {
+            const isValid = await settings.testIsValid(args.token, req)
+            if (!isValid) {
+                throw new Error('You can not access the test API')
+            }
+            return {}
+        },
     }
 
     const defaultQueries = {
         enabled: {
             type: GraphQLBoolean,
-            resolve: () => true,
+            resolve: () => {
+                console.log('RUN DEFAULT QU')
+                return true
+            },
         },
     }
 
@@ -58,8 +58,8 @@ export const initGraphql = async ({ queries, mutations, settings }) => {
         type: new GraphQLObjectType({
             name: 'TestQuery',
             fields: {
-                ...testQueries,
                 ...defaultQueries,
+                ...testQueries,
             },
         }),
     }
@@ -69,8 +69,8 @@ export const initGraphql = async ({ queries, mutations, settings }) => {
         type: new GraphQLObjectType({
             name: 'TestMutation',
             fields: {
-                ...testMutations,
                 ...defaultQueries,
+                ...testMutations,
             },
         }),
     }

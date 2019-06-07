@@ -2,24 +2,28 @@ import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql'
 import expressGraphql from 'express-graphql'
 import { createHook } from '@forrestjs/hooks'
 import { EXPRESS_ROUTE } from '@forrestjs/service-express'
-import { EXPRESS_GRAPHQL } from './hooks'
-// import pkg from '../../package.json'
+import { EXPRESS_GRAPHQL, EXPRESS_GRAPHQL_SCHEMA } from './hooks'
 
 const info = {
     description: 'Provides info regarding the project',
     type: GraphQLString,
-    // resolve: () => `${pkg.name} v${pkg.version}`,
     resolve: () => `GraphQL is working`,
 }
 
 export const createGraphQLHandler = async (settings) => {
     const isDev = [ 'development', 'test' ].indexOf(process.env.NODE_ENV) !== -1
 
-    const queries = { info }
-    const mutations = { info }
-    const context = { data: {} }
+    const queries = {
+        info,
+        ...(settings.queries ? settings.queries : {}),
+    }
+    const mutations = {
+        info,
+        ...(settings.mutations ? settings.mutations : {}),
+    }
     const config = {
         graphiql: isDev,
+        ...(settings.config ? settings.config : {}),
     }
 
     await createHook(EXPRESS_GRAPHQL, {
@@ -27,7 +31,6 @@ export const createGraphQLHandler = async (settings) => {
         args: {
             queries,
             mutations,
-            context,
             config,
             settings,
         },
@@ -44,15 +47,15 @@ export const createGraphQLHandler = async (settings) => {
         }),
     }
 
-    return (req, res) => expressGraphql({
-        schema: new GraphQLSchema(schema),
-        graphiql: config.graphiql,
-        context: {
-            ...context,
-            req,
-            res,
-        },
-    })(req, res)
+    await createHook(EXPRESS_GRAPHQL_SCHEMA, {
+        async: 'serie',
+        args: { schema },
+    })
+
+    return expressGraphql({
+        ...config,
+        schema: new GraphQLSchema(schema)
+    })
 }
 
 export const register = ({ registerAction, ...props }) => {
