@@ -4,15 +4,16 @@
 * [give us a star on GitHub!](https://github.com/forrestjs/forrestjs)
 * [install from NPM](https://www.npmjs.com/package/forrest)
 * [Packages](./api/packages.md)
+* [Tutorials](./tutorials.md)
 
 
 ### Step By Step Tutorial
 
-* [Create React App > Universal](./howto/cra-ssr.md)
+* [Create React App > Universal](https://marcopeg.com/2019/create-react-app-universal-pwa)
 * [Create React App > Redux](./howto/cra-redux.md)
 * [Create React App > Features](./howto/cra-features.md)
-* [Hooks, truly modular NodeJS Apps](./howto/hooks.md)
-* [GraphQL made easy with Hooks](./howto/hooks-graphql.md)
+* [Hooks, truly modular NodeJS Apps](https://marcopeg.com/2019/modular-node-apps-with-hooks)
+* [GraphQL made easy with Hooks](https://marcopeg.com/2019/graphql-made-easy)
 
 ### Articles
 
