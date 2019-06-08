@@ -1,10 +1,13 @@
 # Summary
 
 * [ForrestJS](README.md)
-* [give us a star on GitHub!](https://github.com/forrestjs/forrestjs)
-* [install from NPM](https://www.npmjs.com/package/forrest)
-* [Packages](./api/packages.md)
-* [Tutorials](./tutorials.md)
+* [Give us a star on GitHub!](https://github.com/forrestjs/forrestjs)
+* [Install from NPM](https://www.npmjs.com/package/forrest)
+
+---
+
+* [Read the Tutorials](./tutorials.md)
+* [Navigate the Packages](./packages.md)
 
 
 ### Step By Step Tutorial

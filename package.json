@@ -7,7 +7,8 @@
     "clean": "lerna run clean && lerna clean --yes && rm -rf node_modules",
     "test": "lerna run test",
     "ci-bootstrap": "lerna bootstrap --hoist",
-    "ci-test": "lerna run test"
+    "ci-test": "lerna run test",
+    "deploy": "lerna publish --force-publish"
   },
   "author": "Marco Pegoraro",
   "license": "MIT",
