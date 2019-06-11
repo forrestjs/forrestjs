@@ -13,7 +13,7 @@ registerAction([ SETTINGS, ({ settings }) => {
 
             // override any configuration you can pass to `express-graphql`
             config: {
-                graphiql: true,    // default "true" if not production 
+                graphiql: true,    // default "true" if not production
                 context: { ... },  // default "req" object, probably better to keep it that way
             },
 
@@ -37,26 +37,26 @@ runHookApp([
 ## Add a query/mutation to the graph:
 
 ```js
-const { EXPRESS_GRAPHQL } = require('@forrestjs/service-express-graphql')
-const { GraphQLList, GraphQLString } = require('graphql')
+const { EXPRESS_GRAPHQL } = require("@forrestjs/service-express-graphql");
+const { GraphQLList, GraphQLString } = require("graphql");
 
-const welcomeQuery = ({ queries }) => 
-    queries.welcome = {
-        description: 'Welcome the user with a custom name',
-        args: {
-            name: {
-                type: GraphQLString,
-                defaultValue: 'user',
-            },
-        },
-        type: new GraphQLList(GraphQLString),
-        resolve: (_, args, req) => [
-            `Welcome, ${args.name}!`,
-            req.protocol + '://' + req.get('host') + req.originalUrl,
-        ],
-    }
+const welcomeQuery = ({ queries }) =>
+  (queries.welcome = {
+    description: "Welcome the user with a custom name",
+    args: {
+      name: {
+        type: GraphQLString,
+        defaultValue: "user"
+      }
+    },
+    type: new GraphQLList(GraphQLString),
+    resolve: (_, args, req) => [
+      `Welcome, ${args.name}!`,
+      req.protocol + "://" + req.get("host") + req.originalUrl
+    ]
+  });
 
-export default [ EXPRESS_GRAPHQL, welcomeQuery ]
+export default [EXPRESS_GRAPHQL, welcomeQuery];
 ```
 
 ## Test Queries
@@ -114,21 +114,20 @@ you can force a full rebuild of it by bumping its cache key using a middleware:
 
 ```js
 (req, res, next) => {
-    if (isNeeded) {
-        req.bumpGraphQL()
-    }
-    next()
-}
+  if (isNeeded) {
+    req.bumpGraphqlETAG();
+  }
+  next();
+};
 ```
 
 You can also control the specific ETAG value by setting it:
 
 ```js
 (req, res, next) => {
-    if (isNeeded) {
-        req.bumpGraphQL(33)
-    }
-    next()
-}
+  if (isNeeded) {
+    req.bumpGraphqlETAG(33);
+  }
+  next();
+};
 ```
-
