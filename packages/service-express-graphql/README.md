@@ -17,6 +17,10 @@ registerAction([ SETTINGS, ({ settings }) => {
                 context: { ... },  // default "req" object, probably better to keep it that way
             },
 
+            // you can provide a list of middlewares that will be executed
+            // before the `express-graphql` extension
+            middlewares: [],
+
             // setup the test query wrapper
             testIsEnabled: true,
             testIsValid: (token, req) => (token === 'xxx'),
@@ -103,8 +107,28 @@ validation logic.
 If `testIsValid(token, req)` need to prevent any testing query from running should either
 return `false` or raise an exception. It can also return a promise that you resolve or reject.
 
+## Regenerate the GraphQL Schema
 
+The entire `express-graphql` middleware is cached in memory to boost performances, but
+you can force a full rebuild of it by bumping its cache key using a middleware:
 
+```js
+(req, res, next) => {
+    if (isNeeded) {
+        req.bumpGraphQL()
+    }
+    next()
+}
+```
 
+You can also control the specific ETAG value by setting it:
 
+```js
+(req, res, next) => {
+    if (isNeeded) {
+        req.bumpGraphQL(33)
+    }
+    next()
+}
+```
 

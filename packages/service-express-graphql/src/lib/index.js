@@ -1,8 +1,8 @@
-import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLString } from 'graphql'
 import expressGraphql from 'express-graphql'
-import { createHook } from '@forrestjs/hooks'
 import { EXPRESS_ROUTE } from '@forrestjs/service-express'
-import { EXPRESS_GRAPHQL, EXPRESS_GRAPHQL_SCHEMA } from './hooks'
+import { EXPRESS_GRAPHQL, EXPRESS_GRAPHQL_MIDDLEWARE } from './hooks'
+import { makeSchema } from './schema'
 
 const info = {
     description: 'Provides info regarding the project',
@@ -10,7 +10,24 @@ const info = {
     resolve: () => `GraphQL is working`,
 }
 
-export const createGraphQLHandler = async (settings) => {
+const cache = {
+    activeEtag: 0,
+    cachedEtag: null,
+    middleware: null,
+}
+
+const invalidateCacheMiddleware = (req, res, next) => {
+    req.bumpGraphQL = (value = null) => {
+        if (value === null) {
+            cache.activeEtag +=1
+        } else {
+            cache.activeEtag = value
+        }
+    }
+    next()
+}
+
+export const createGraphQLMiddleware = async (settings) => {
     const isDev = [ 'development', 'test' ].indexOf(process.env.NODE_ENV) !== -1
 
     const queries = {
@@ -26,47 +43,38 @@ export const createGraphQLHandler = async (settings) => {
         ...(settings.config ? settings.config : {}),
     }
 
-    await createHook(EXPRESS_GRAPHQL, {
-        async: 'serie',
-        args: {
-            queries,
-            mutations,
-            config,
-            settings,
-        },
-    })
+    return async (req, res, next) => {
+        if (cache.middleware === null || cache.cachedEtag !== cache.activeEtag) {
+            cache.cachedEtag = cache.activeEtag
+            cache.middleware = expressGraphql({
+                ...config,
+                schema: await makeSchema({ queries, mutations, config, settings })
+            })
+        }
 
-    const schema = {
-        query: new GraphQLObjectType({
-            name: 'RootQuery',
-            fields: queries,
-        }),
-        mutation: new GraphQLObjectType({
-            name: 'RootMutation',
-            fields: mutations,
-        }),
+        return cache.middleware(req, res, next)
     }
-
-    await createHook(EXPRESS_GRAPHQL_SCHEMA, {
-        async: 'serie',
-        args: { schema },
-    })
-
-    return expressGraphql({
-        ...config,
-        schema: new GraphQLSchema(schema)
-    })
 }
 
-export const register = ({ registerAction, ...props }) => {
+export const register = ({ registerAction, createHook, ...props }) => {
     // register the basic GraphQL api
     registerAction({
         hook: EXPRESS_ROUTE,
         name: EXPRESS_GRAPHQL,
         trace: __filename,
         handler: async ({ app, settings }) => {
-            const { mountPoint } = settings.graphql || {}
-            app.use(mountPoint || '/api', await createGraphQLHandler(settings.graphql || {}))
+            const { mountPoint, middlewares = [] } = settings.graphql || {}
+
+            await createHook(EXPRESS_GRAPHQL_MIDDLEWARE, {
+                async: 'serie',
+                args: { middlewares },
+            })
+
+            app.use(mountPoint || '/api', [
+                invalidateCacheMiddleware,
+                ...middlewares,
+                await createGraphQLMiddleware(settings.graphql || {})
+            ])
         },
     })
 
