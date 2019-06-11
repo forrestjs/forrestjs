@@ -1,15 +1,15 @@
 {
   "name": "@forrestjs/service-postgres",
   "description": "ForrestJS service which helps connecting to a Postgres server.",
-  "version": "2.9.3",
+  "version": "2.9.4",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@forrestjs/hooks": "^2.9.3",
-    "@forrestjs/service-logger": "^2.9.3",
+    "@forrestjs/hooks": "^2.9.4",
+    "@forrestjs/service-logger": "^2.9.4",
     "@marcopeg/utils": "^2.0.1",
     "pg": "^7.11.0",
     "sequelize": "^5.8.6"
@@ -17,7 +17,7 @@
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
-    "@forrestjs/babel-preset-package": "^2.9.3",
+    "@forrestjs/babel-preset-package": "^2.9.4",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-postgres#readme",
