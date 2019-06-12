@@ -13,7 +13,7 @@ const info = {
 const cache = {
     activeEtag: 0,
     cachedEtag: null,
-    middleware: null,
+    schema: null,
 }
 
 export const bumpGraphqlETAG = (value = null) => {
@@ -41,15 +41,20 @@ export const createGraphQLMiddleware = async (settings) => {
     }
 
     return async (req, res, next) => {
-        if (cache.middleware === null || cache.cachedEtag !== cache.activeEtag) {
+        if (cache.schema === null || cache.cachedEtag !== cache.activeEtag) {
             cache.cachedEtag = cache.activeEtag
-            cache.middleware = expressGraphql({
-                ...config,
-                schema: await makeSchema({ queries, mutations, config, settings })
-            })
+            cache.schema = await makeSchema({ queries, mutations, config, settings })
         }
 
-        return cache.middleware(req, res, next)
+        return expressGraphql({
+            ...config,
+            schema: cache.schema,
+            context: {
+                ...(config.context ? config.context : {}),
+                req,
+                res,
+            }
+        })(req, res, next)
     }
 }
 
