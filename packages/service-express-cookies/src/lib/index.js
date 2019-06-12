@@ -24,13 +24,13 @@ export const cookieHelper = (settings = {}) =>
         const getClientName = name => `${scope || 'app'}--${name}`
 
         // App Cookie
-        res.setAppCookie = (name, content) => res.cookie(getAppName(name), content, options.app)
         req.getAppCookie = name => req.cookies[getAppName(name)]
+        res.setAppCookie = (name, content) => res.cookie(getAppName(name), content, options.app)
         res.deleteAppCookie = name => res.clearCookie(getAppName(name))
 
         // Client Cookie
-        res.setClientCookie = (name, content) => res.cookie(getClientName(name), content, options.client)
         req.getClientCookie = name => req.cookies[getClientName(name)]
+        res.setClientCookie = (name, content) => res.cookie(getClientName(name), content, options.client)
         res.deleteClientCookie = name => res.clearCookie(getClientName(name))
 
         next()
