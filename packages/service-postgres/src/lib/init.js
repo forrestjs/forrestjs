@@ -10,7 +10,6 @@ export default (config) => {
         host: config.host,
         port: config.port,
         logging: config.logging || logDebug,
-        operatorsAliases: {},
     })
 
     addHandler(name, {
