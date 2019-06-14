@@ -40,6 +40,11 @@ export const createGraphQLMiddleware = async (settings) => {
         ...(settings.config ? settings.config : {}),
     }
 
+    // Build up the first cached schema so that any weird errors might
+    // be checked out at boot time.
+    cache.cachedEtag = cache.activeEtag
+    cache.schema = await makeSchema({ queries, mutations, config, settings })
+
     return async (req, res, next) => {
         if (cache.schema === null || cache.cachedEtag !== cache.activeEtag) {
             cache.cachedEtag = cache.activeEtag
