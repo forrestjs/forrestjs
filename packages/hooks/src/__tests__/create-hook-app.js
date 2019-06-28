@@ -98,14 +98,14 @@ describe('hooks/create-hook-app', () => {
                 foo: (args, ctx) => args.value + ctx.getConfig('increment'),
             },
             services: [
-                [constants.START_SERVICE, async (args, ctx) => {
-                    const r1 = ctx.createHook.sync('aaa', { value: 1 })
+                [constants.START_SERVICE, async ({ createHook }) => {
+                    const r1 = createHook.sync('aaa', { value: 1 })
                     expect(r1[0][0]).toBe(2)
 
-                    const r2 = await ctx.createHook.serie('bbb', { value: 1 })
+                    const r2 = await createHook.serie('bbb', { value: 1 })
                     expect(r2[0][0]).toBe(2)
                     
-                    const r3 = await ctx.createHook.parallel('ccc', { value: 1 })
+                    const r3 = await createHook.parallel('ccc', { value: 1 })
                     expect(r3[0][0]).toBe(2)
                 }],
             ],
