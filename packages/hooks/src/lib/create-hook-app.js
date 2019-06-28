@@ -1,25 +1,18 @@
+import dotted from '@marcopeg/dotted'
 import { createHook } from './create-hook'
 import { registerAction } from './register-action'
 
 import * as constants from './constants'
 
-const runIntegrations = async (integrations, settings) => {
+const runIntegrations = async (integrations, context) => {
     for (const service of integrations) {
         // full module that exposes "register" as API
         if (service.register) {
-            await service.register({
-                registerAction,
-                createHook,
-                settings: { ...settings },
-            })
+            await service.register(context)
 
         // simple function that implements "register"
         } else if (typeof service === 'function') {
-            await service({
-                registerAction,
-                createHook,
-                settings: { ...settings },
-            })
+            await service(context)
 
         // register a single action as a feature
         // [ hookName, handler, { otherOptions }]
@@ -37,69 +30,61 @@ const runIntegrations = async (integrations, settings) => {
 export const createHookApp = (appDefinition = {}) =>
     async () => {
         // accepts a single param as [] of features
-        const { services = [], features = [], settings = {} } =
+        const { services = [], features = [], settings = {}, context = {} } =
             Array.isArray(appDefinition)
                 ? { features: appDefinition }
                 : appDefinition
 
-        await runIntegrations(services, settings)
+        // creates initial internal settings from an object
+        // or automatically register the provided settings callback
+        const internalSettings = typeof settings === 'function'
+            ? (() => {
+                registerAction(constants.SETTINGS, settings)
+                return {}
+            })()
+            : settings
 
-        await createHook(constants.START, {
-            async: 'serie',
-            args: { ...settings },
-        })
+        // create getter and setter for the configuration
+        const getConfig = (path) => dotted(internalSettings, path)
+        const setConfig = (path, value) => {
+            dotted.set(internalSettings, path, value)
+            return true
+        }
 
-        await createHook(constants.SETTINGS, {
-            async: 'serie',
-            args: { settings },
-        })
+        // create the context with getters / setters /
+        const internalContext = {
+            ...context,
+            getConfig,
+            setConfig,
+            registerAction,
+        }
 
-        await runIntegrations(features, settings)
+        // createHook scoped to the Hook App context
+        const scopedCreateHook = (name, options) => createHook(name, { ...options, context: internalContext })
+        scopedCreateHook.sync = (name, args) => scopedCreateHook(name, { args })
+        scopedCreateHook.serie = (name, args) => scopedCreateHook(name, { args, async: 'serie' })
+        scopedCreateHook.parallel = (name, args) => scopedCreateHook(name, { args, async: 'parallel' })
+        internalContext.createHook = scopedCreateHook
 
-        await createHook(constants.INIT_SERVICE, {
-            async: 'serie',
-            args: { ...settings },
-        })
+        // run lifecycle
+        await runIntegrations(services, internalContext)
+        await createHook.serie(constants.START, { getConfig }, internalContext)
+        await createHook.serie(constants.SETTINGS, { getConfig, setConfig }, internalContext)
+        await runIntegrations(features, internalContext)
+        await createHook.serie(constants.INIT_SERVICE, { getConfig }, internalContext)
+        await createHook.parallel(constants.INIT_SERVICES, { getConfig }, internalContext)
+        await createHook.serie(constants.INIT_FEATURE, { getConfig }, internalContext)
+        await createHook.parallel(constants.INIT_FEATURES, { getConfig }, internalContext)
+        await createHook.serie(constants.START_SERVICE, { getConfig }, internalContext)
+        await createHook.parallel(constants.START_SERVICES, { getConfig }, internalContext)
+        await createHook.serie(constants.START_FEATURE, { getConfig }, internalContext)
+        await createHook.parallel(constants.START_FEATURES, { getConfig }, internalContext)
+        await createHook.serie(constants.FINISH, { getConfig }, internalContext)
 
-        await createHook(constants.INIT_SERVICES, {
-            async: 'parallel',
-            args: { ...settings },
-        })
-
-        await createHook(constants.INIT_FEATURE, {
-            async: 'serie',
-            args: { ...settings },
-        })
-
-        await createHook(constants.INIT_FEATURES, {
-            async: 'parallel',
-            args: { ...settings },
-        })
-
-        await createHook(constants.START_SERVICE, {
-            async: 'serie',
-            args: { ...settings },
-        })
-
-        await createHook(constants.START_SERVICES, {
-            async: 'parallel',
-            args: { ...settings },
-        })
-
-        await createHook(constants.START_FEATURE, {
-            async: 'serie',
-            args: { ...settings },
-        })
-
-        await createHook(constants.START_FEATURES, {
-            async: 'parallel',
-            args: { ...settings },
-        })
-
-        await createHook(constants.FINISH, {
-            async: 'serie',
-            args: { ...settings },
-        })
+        return {
+            settings: internalSettings,
+            context: internalContext,
+        }
     }
 
 // Convenient method to skip the double function

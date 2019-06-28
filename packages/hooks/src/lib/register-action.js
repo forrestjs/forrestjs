@@ -13,15 +13,26 @@
 import { appendAction } from './state'
 import { logAction } from './logger'
 
-export const registerAction = (receivedPayload = {}) => {
-    const payload = Array.isArray(receivedPayload)
-        ? {
-            ...(receivedPayload[2] || {}),
-            hook: receivedPayload[0],
-            handler: receivedPayload[1] 
-        }
-        : receivedPayload
+export const registerAction = (payload = {}, receivedHandler = null, receivedOptions = {}) => {
+    // (name, handler, options)
+    if (typeof payload === 'string') {
+        return registerAction({
+            ...receivedOptions,
+            hook: payload,
+            handler: receivedHandler,
+        })
+    }
 
+    // ([ name, handler, options ])
+    if (Array.isArray(payload)) {
+        return registerAction({
+            ...(payload[2] || {}),
+            hook: payload[0],
+            handler: payload[1],
+        })
+    }
+
+    // ({ hook: 'xxx', handler: () => {}, ...options })
     const { hook, name, trace, handler, priority, ...meta } = payload
     if (!hook) {
         throw new Error('[hooks] actions must have a "hook" property!')

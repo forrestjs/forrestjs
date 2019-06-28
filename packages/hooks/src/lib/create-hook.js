@@ -7,7 +7,8 @@ import { onItemError } from './errors'
 const defaultOptions = {
     async: false,
     args: null,
-    ctx: 'boot',
+    ctx: 'boot', // maybe rename to "scope" or "phase"?
+    context: {}, // pass down utilities into any registerd action
     onError: (err) => { throw err },
     onItemError,
 }
@@ -94,3 +95,17 @@ export const createHook = (name, receivedOptions = {}) => {
         return pullStack(options.onError(err, name, options))
     }
 }
+
+
+/**
+ * Helpers Shortcuts
+ */
+
+createHook.sync = (name, args, context) =>
+    createHook(name, { args, context })
+
+createHook.serie = (name, args, context) =>
+    createHook(name, { args, context, async: 'serie' })
+
+createHook.parallel = (name, args, context) =>
+    createHook(name, { args, context, async: 'parallel' })
