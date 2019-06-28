@@ -246,7 +246,7 @@ expressService.EXPRESS_ROUTES = `express/routes`
 
 // This is just an extension handler, it needs to be packaged into an
 // "immediate feature" (see later in the code when we "runHookApp()")
-const homeRoute = ({ registerRoute }) =>
+const homePageRoute = ({ registerRoute }) =>
     registerRoute('/', (req, res) => {
         res.send('Home!')
     })
@@ -254,7 +254,7 @@ const homeRoute = ({ registerRoute }) =>
 // This feature rely on some configuration to be provided, and can
 // conditionally register actions based on the app settings.
 const mightyOfferFeature = ({ registerAction, getConfig }) => {
-    getConfig('mightyOffer') && registerAction({
+    getConfig('mightyOffer.enabled') && registerAction({
         name: 'mightyOffer',
         hook: expressService.EXPRESS_ROUTES,
         handler: ({ registerRoute }) => {
@@ -271,15 +271,11 @@ runHookApp({
     trace: 'compact',
 
     // settings can be just an object, or an sync/async function
-    settings: async () => ({
-        express: {
-            port: 5050,
-        },
-        mightyOffer: {
-            enabled: false,
-            price: 5000,
-        },
-    }),
+    settings: async ({ setConfig }) => {
+        setConfig('express.port', 5050)
+        setConfig('mightyOffer.enabled', true)
+        setConfig('mightyOffer.price', 5000)
+    },
 
     // services can do some cool stuff that features can't ;-)
     // they boot before features, so features can count on stuff
@@ -291,7 +287,7 @@ runHookApp({
     // package your business values into small feature that is easy
     // to work with. 
     features: [
-        [ expressService.EXPRESS_ROUTES, homeRoute ],
+        [ expressService.EXPRESS_ROUTES, homePageRoute ],
         mightyOfferFeature,
     ],
 }).catch(err => console.error(err))
