@@ -1,13 +1,36 @@
 # @forrestjs/hooks
 
-> ForrestJS library which helps decoupling your application into small 
-> and reusable modules.
+ForrestJS Hooks helps you splitting your Apps into small and reusable
+**components that can extend each other** in a gentle and controlled fashion.
 
-`hooks` is a small plugin / hooks library for NodeJS _and the browser_.
-The idea is to enrich your sourcecode with **extension points** that can be used
-to **inject code from a different part of the app**.
+Yes, it is a **simple plugin system** inspired by the way Wordpress works.<br>
+But traceable and fully debuggable.
 
-> yes, it's a simple plugin system inspired by how Wordpress works. But traceable.
+```js
+import { registerAction, createHook } from '@forrestjs/hooks'
+
+// This is a basic "extension"
+registerAction('extendDoSmthCool', () => {
+    console.log('Inject even more cool stuff')
+})
+
+// This function implements an "extension point"
+const doSmthCool = () => {
+    console.log('First cool thing')
+    createHook('extendDoSmthCool')
+    console.log('Another cool thing')
+}
+
+doSmthCool()
+```
+
+If you run the code above you get:
+
+```bash
+First cool thing
+Inject even more cool stuff
+Another cool thing
+```
 
 The cool part is that it **supports both synchronous and asynchronous extension points**,
 and that an asynchronous extension point can **run in both series or parallel**.
@@ -16,35 +39,46 @@ and that an asynchronous extension point can **run in both series or parallel**.
 
     npm install @forrestjs/hooks
 
-There is no setup at the moment. Just enjoy it!
+There is no setup. Just enjoy it!
 
-## Create a Hook
+## Names of Things
+
+An **extension point** or **hook** is a controlled way to let external code
+**inject some business logic** in your function.
+
+An **extension** or **action** declare the intention to run a specific function
+when a hook gets executed. It uses the name of the hook as reference.
+
+## Create a Hook (or Extension point)
 
 Say you want to build an ExpressJS website. Exciting, right?
 
-In the past you would have to list all your routes, or links all your routers, in
-the server configuration file `server.js`. I did that so many times!
+In the past you would have to list all your middlewares and routes in
+the server configuration file: `server.js`. I did that so many times!
 
 But with `hooks` things gets a little bit easier because you can simply let your
-app **open for extensions** that comes from modules you haven't yet thought of:
+App **open for extensions** that come from modules you haven't yet thought of:
 
-    import express from 'express'
-    import { createHook } from '@forrestjs/hooks'
+```js
+// server.js
+import express from 'express'
+import { createHook } from '@forrestjs/hooks'
 
-    // setup Express and add some basic routes
-    const app = express()
-    app.use('/', (req, res) => res.send('hello world'))
+// Setup a basic Express app:
+const app = express()
+app.get('/', (req, res) => res.send('hello world'))
 
-    // allow others to add their routes :-)
-    createHook('express/routes', {
-        args: { app },
-    })
+// Allow extensions to inject new routes:
+const registerRoute = (route, fn) => app.get(route, fn)
+createHook.sync('express/routes', { registerRoute })
 
-    app.listen(8080)
+// Allow extensions to alter a simple value in waterfall:
+const port = createHook.waterfall('express/port', 8080).value
 
-**☛ read also:**
+app.listen(port)
+```
 
-* [create hook api](./docs/create-hook.md)
+👉 read also: [`createHook()` api](./docs/create-hook.md)
 
 ## Register an Action
 
@@ -55,131 +89,220 @@ In the old days you would have needed to hack into `server.js` and change it to 
 route. Oh well... With `hooks` you can work this issue out without touching the rest of
 your app:
 
-    /* mighty-offer.js */
+```js
+// mighty-offer.js
+import { registerAction } from '@forrestjs/hooks'
 
-    import { registerAction } from '@forrestjs/hooks'
+registerAction({
+    name: 'mightyOffer',
+    hook: 'express/routes',
+    handler: ({ registerRoute }) => {
+        registerRoute('/mighty-offer', (req, res) => {
+            res.send('oh boy, you should buy this and that and more...')
+        })
+    },
+})
+```
 
-    registerAction({
-        hook: 'express/routes',
-        name: action: 'mighty-offer',  // optional, but good for tracing
-        trace: __file,                 // optional, but good for tracing
-        handler: (args) => {
-            args.app.use('/mighty-offer, (req, res) => {
-                res.send('oh boy, you should buy this why, why and because...)
-            })
-        },
-    })
+Then you simply need to `import` your new extension before `server.js`:
 
-Then you simply need to `import` your new extension before `server.js`.  
+```js
+// index.js
+require('./mighty-offer')
+require('./server')
+```
+
 That's it!
 
-**☛ read also:**
+If you want to add an extension that changes the default port `8080` you should write
+something like that in `index.js`:
 
-* [register action api](./docs/register-action.md)
+```js
+const customPort = () => 5050
+require('@forrestjs/hooks').registerAction('express/port', customPort)
 
-## What is going on?
+// rest of the code...
+```
 
-The obvious drawback of this indirect extension approach is that you could easily loose
-control over the **what the hell is going on in my app**.
+👉 read also: [`registerAction()` api](./docs/register-action.md)
 
-You have now created **tens of modules that register into tens of hooks** and you have a bug. Don't crush your head on the wall! (not just yet)
+## How to know what is going on in an App like that?
 
-    import { traceHook } from '@forrestjs/hooks'
+The obvious drawback of this _indirect code injection_ approach is that you could easily loose
+control over the **"what the hell is going on in my app"**.
 
-    console.log('Boot Trace:')
-    console.log('=================')
-    console.log(traceHook()('compact')('cli').join('\n'))
+What hooks into what?
 
-I have a basic app with an ExpressJS server, a GraphQL endpoint, a Postgres connection
+Don't you worry, we have this covered. Add this to your `index.js`:
+
+```js
+// rest of the code...
+
+const { traceHook } = require('@forrestjs/hooks')
+console.log('Boot Trace:')
+console.log('=================')
+console.log(traceHook()('compact')('cli').join('\n'))
+```
+
+You should see something like that:
+
+```bash
+Boot Trace:
+=================
+mightyOffer » express/routes
+customPort » express/port
+```
+
+I'm building a basic web app with an ExpressJS server, a GraphQL endpoint, a Postgres connection
 manager plus few other services.
 
-Here is what I see when I run that command:
+Here is what I see when I run the `traceHook()`:
 
-    Boot Trace:
-    =================
-    → env ◇ start
-    → logger ◇ start
-    ◇ settings ◇ settings
-    → hash ◇ init::services
-    → jwt ◇ init::services
-    → postgres ◇ init::services
-    → express/graphql-test ◇ init::services
-    → express ◇ init::services
-      → express/cookie-helper → express/middlewares
-      → express/device-id → express/middlewares
-      → express/graphql → express/routes
-        → express/graphql-test → express/graphql
-          ▶ fii → express/graphql-test
-        ▶ fii → express/graphql
-      ▶ fii → express/routes
-    → express/ssr → express/routes
-    → postgres ◇ start::services
-    → express ◇ start::services
-    ◇ boot ◇ finish
+```bash
+Boot Trace:
+=================
+→ env ◇ start
+→ logger ◇ start
+◇ settings ◇ settings
+→ hash ◇ init::services
+→ jwt ◇ init::services
+→ postgres ◇ init::services
+→ express/graphql-test ◇ init::services
+→ express ◇ init::services
+    → express/cookie-helper → express/middlewares
+    → express/device-id → express/middlewares
+    → express/graphql → express/routes
+    → express/graphql-test → express/graphql
+        ▶ fii → express/graphql-test
+    ▶ fii → express/graphql
+    ▶ fii → express/routes
+→ express/ssr → express/routes
+→ postgres ◇ start::services
+→ express ◇ start::services
+◇ boot ◇ finish
+```
 
-You can read each line as `X mounts on Y`, where `Y` is the hook and `X` is the extension.
+- You can read each line as `X hooks into Y`, where `Y` is the hook name and `X` is the extension name.
+- The vertical order is the sequence in which each hook is triggered. 
+- The indentation represents nested hooks.
 
-The vertical order is the sequence in which each hook is triggered.  
-The indentation represents nested hooks.
+(The little icons are part of the `runHookApp()` utility that we cover in the next paragraph.=
 
-I find this visualization quite simple to follow. Try also:
+I find this visualization quite simple to follow. But if you want an extensive reporting you should try:
 
-    traceHook()('full')('json')
+```js
+const fullTrace = traceHook()('full')('json')
+console.log(fullTrace)
+```
 
-for a complete tracing of your application shape!
-
-**☛ read also:**
-
-* [trace hook api](./docs/trace-hook.md)
+👉 read also: [`traceHook()` api](./docs/trace-hook.md)
 
 
-## Scaffold a Full App
+## Scaffold a Full Hooks App
 
-This little piece of code:
+This paragraph is going to cover a utility that **provides a Hook based lifecycle** for
+developing a generic backend application. Long story short it helps you 
+**packaging extension into reusable features**.
 
-    import { createHookApp } from '@forrestjs/hooks'
+Here is the examples we saw so far, packaged as a `runHookApp()`:
 
-    // Describe an App:
-    const app = createHookApp({
-        settings: { cwd: process.cwd() },
-        services: [
-            require('./my-service-1),
-            require('./my-service-2),
-        ],
-        features: [
-            require('./my-feature-1),
-            require('./my-feature-2),
-        ],
+```js
+const { runHookApp } = require('@forrestjs/hooks')
+const { INIT_SERVICES, START_SERVICES } = require('@forrestjs/hooks')
+
+// This service runs a simple Express server that can be extended
+// by other services or features.
+const express = require('express')
+const expressService = ({ registerAction }) => {
+    const name = 'express'
+    const app = express()
+
+    const registerRoute = (route, fn) => app.get(route, fn)
+    const registerMiddleware = (mountPoint, fn) => app.use(mountPoint, fn)
+
+    registerAction({
+        name,
+        hook: INIT_SERVICES,
+        handler: async ({ createHook, getConfig }) => {
+            await createHook.serie(expressService.EXPRESS_MIDDLEWARES, { registerMiddleware })
+            await createHook.serie(expressService.EXPRESS_ROUTES, { registerRoute })
+        },
+    })
+    
+    registerAction({
+        name,
+        hook: START_SERVICES,
+        handler: ({ getConfig }) => {
+            const port = getConfig('express.port', 8080)
+            app.listen(port, () => console.log(`Express listening on: ${port}`))
+        },
+    })
+}
+
+// It is always a good idea for a service to export its hooks, so that other
+// features can use those symbols instead of strings. Strings can lead to mispells.
+expressService.EXPRESS_MIDDLEWARES = `express/middlewares`
+expressService.EXPRESS_ROUTES = `express/routes`
+
+// This is just an extension handler, it needs to be packaged into an
+// "immediate feature" (see later in the code when we "runHookApp()")
+const homeRoute = ({ registerRoute }) =>
+    registerRoute('/', (req, res) => {
+        res.send('Home!')
     })
 
-    // Boot the App:
-    app()
-        .then(() => console.log('App started'))
-        .catch(err => console.error(err))
+// This feature rely on some configuration to be provided, and can
+// conditionally register actions based on the app settings.
+const mightyOfferFeature = ({ registerAction, getConfig }) => {
+    getConfig('mightyOffer') && registerAction({
+        name: 'mightyOffer',
+        hook: expressService.EXPRESS_ROUTES,
+        handler: ({ registerRoute }) => {
+            registerRoute('/offer', (req, res) => {
+                res.send(`mighty offer... only for today ${getConfig('mightyOffer.price')}$!!!`)
+            })
+        }
+    })
+}
 
-Each module, being it a `service` or a `feature` **should export** a `register()` method
-that will be used by `createHookApp`.
+runHookApp({
+    // optional debug helper
+    // try also "full"
+    trace: 'compact',
 
-An example of `my-feature1.js` might be:
+    // settings can be just an object, or an sync/async function
+    settings: async () => ({
+        express: {
+            port: 5050,
+        },
+        mightyOffer: {
+            enabled: false,
+            price: 5000,
+        },
+    }),
 
-    const init = async () => { ... }
-    const injectExpressHeaders = ({ app }) => { ... }
+    // services can do some cool stuff that features can't ;-)
+    // they boot before features, so features can count on stuff
+    // that is provided by the services.
+    services: [
+        expressService,
+    ],
 
-    export const register = ({ registerAction }) => {
-        registerAction({ hook: '◇ init::services', handler: init })
-        registerAction({ hook: '→ express/middlewares', handler: injectExpressHeaders })
-        ...
-    }
+    // package your business values into small feature that is easy
+    // to work with. 
+    features: [
+        [ expressService.EXPRESS_ROUTES, homeRoute ],
+        mightyOfferFeature,
+    ],
+}).catch(err => console.error(err))
+```
 
-A `service` or a `feature` becomes a simple collection of hooks. They work exactly the same
-but they have a very different meaning:
+I would normally split this code into multiple files:
 
-- a **service provides infrastructural stuff**  like a server, a db connection, a cache system, ...
-- a **feature provides business value** like a login, a signup, a validate promo code, ...
+- `express-service.js` 
+- `home-route.js` (woule export the array we have in `features`)
+- `mighty-offer.js`
+- `index.js` would run stuff and provide the configuration
 
-There are a bounch of hooks that are provided by `createHookApp` and you can find a
-comprehensive list in the [create hook app api page](./docs/create-hook-app.md).
-
-**☛ read also:**
-
-* [create hook app api](./docs/create-hook-app.md)
+With this setup a complex application can be takled by a large team with
+people working in paralle on clearly separated features.

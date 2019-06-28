@@ -1,7 +1,10 @@
 import { registerAction } from '../lib/register-action'
 import { createHook } from '../lib/create-hook'
+import { resetState } from '../lib/state'
 
 describe('createHook()', () => {
+    beforeEach(resetState)
+
     test('hooks should carry on a context', () => {
         registerAction('foo', (args, ctx) => {
             expect(args.foo).toBe(1)

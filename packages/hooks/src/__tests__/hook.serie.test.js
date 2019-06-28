@@ -15,7 +15,7 @@ describe('hooks/serie', () => {
                 handler()
             }
         })
-        await createHook('foo', { async: 'serie'})
+        await createHook('foo', { mode: 'serie'})
         expect(handler.mock.calls.length).toBe(1)
     })
     

@@ -1,6 +1,7 @@
 import dotted from '@marcopeg/dotted'
 import { createHook } from './create-hook'
 import { registerAction } from './register-action'
+import { traceHook } from './tracer'
 
 import * as constants from './constants'
 
@@ -30,7 +31,7 @@ const runIntegrations = async (integrations, context) => {
 export const createHookApp = (appDefinition = {}) =>
     async () => {
         // accepts a single param as [] of features
-        const { services = [], features = [], settings = {}, context = {} } =
+        const { services = [], features = [], settings = {}, context = {}, trace = null } =
             Array.isArray(appDefinition)
                 ? { features: appDefinition }
                 : appDefinition
@@ -39,13 +40,35 @@ export const createHookApp = (appDefinition = {}) =>
         // or automatically register the provided settings callback
         const internalSettings = typeof settings === 'function'
             ? (() => {
-                registerAction(constants.SETTINGS, settings)
+                registerAction({
+                    name: `${constants.BOOT} app/settings`,
+                    hook: constants.SETTINGS,
+                    handler: async () => {
+                        const values = await settings()
+                        Object.keys(values).forEach(key => {
+                            internalSettings[key] = values[key]
+                        })
+                    },
+                })
                 return {}
             })()
             : settings
 
         // create getter and setter for the configuration
-        const getConfig = (path) => dotted(internalSettings, path)
+        const getConfig = (path, defaultValue) => {
+            let value = undefined
+            try { value = dotted(internalSettings, path) } catch (err) {}
+
+            if (value !== undefined) {
+                return value
+            }
+
+            if (defaultValue !== undefined) {
+                return defaultValue
+            }
+
+            throw new Error(`[hooks] getConfig("${path}") does not exists!`)
+        }
         const setConfig = (path, value) => {
             dotted.set(internalSettings, path, value)
             return true
@@ -62,9 +85,34 @@ export const createHookApp = (appDefinition = {}) =>
         // createHook scoped to the Hook App context
         const scopedCreateHook = (name, options) => createHook(name, { ...options, context: internalContext })
         scopedCreateHook.sync = (name, args) => scopedCreateHook(name, { args })
-        scopedCreateHook.serie = (name, args) => scopedCreateHook(name, { args, async: 'serie' })
-        scopedCreateHook.parallel = (name, args) => scopedCreateHook(name, { args, async: 'parallel' })
+        scopedCreateHook.serie = (name, args) => scopedCreateHook(name, { args, mode: 'serie' })
+        scopedCreateHook.parallel = (name, args) => scopedCreateHook(name, { args, mode: 'parallel' })
+        scopedCreateHook.waterfall = (name, args) => scopedCreateHook(name, { args, mode: 'waterfall' })
         internalContext.createHook = scopedCreateHook
+
+        if (trace) {
+            registerAction({
+                name: `${constants.BOOT} app/trace`,
+                hook: constants.FINISH,
+                handler: () => {
+                    console.log('')
+                    console.log('=================')
+                    console.log('Boot Trace:')
+                    console.log('=================')
+                    console.log('')
+                    switch (trace) {
+                        case 'full':
+                            console.log(traceHook()('full')('json'))
+                            break
+                        default:
+                            console.log(traceHook()('compact')('cli').join('\n'))
+                            break
+                    }
+                    console.log('')
+                    console.log('')
+                },
+            })
+        }
 
         // run lifecycle
         await runIntegrations(services, internalContext)

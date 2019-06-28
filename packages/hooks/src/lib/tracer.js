@@ -4,7 +4,7 @@ import {
     getTraceContext,
     getState,
 } from './state'
-// import { runInNewContext } from 'vm';
+import { SYMBOLS, SEPARATOR } from './constants'
 
 export const traceAction = (action, options) => {
     const { ctx } = options
@@ -67,8 +67,9 @@ export const traceHook = (ctx = 'boot') =>
                     }
                 case 'compact':
                     const depth = '  '.repeat(record.stack.length - 1)
+                    const sep = SYMBOLS.includes(record.hook[0]) ? ' ' : SEPARATOR
                     return {
-                        hook: `${depth}${record.name} ${record.hook}`,
+                        hook: `${depth}${record.name}${sep}${record.hook}`,
                         stack: record.stack,
                     }
                 default:

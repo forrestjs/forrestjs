@@ -5,7 +5,7 @@ import { logTrace } from './tracer'
 import { onItemError } from './errors'
 
 const defaultOptions = {
-    async: false,
+    mode: 'sync',
     args: null,
     ctx: 'boot', // maybe rename to "scope" or "phase"?
     context: {}, // pass down utilities into any registerd action
@@ -15,11 +15,6 @@ const defaultOptions = {
 
 export const createHook = (name, receivedOptions = {}) => {
     const { hooks, stack } = getState()
-
-    if (!hooks[name]) {
-        log(`[hook] "${name}" is empty`)
-        return []
-    }
 
     stack.push(name)
     const pullStack = (args) => {
@@ -32,7 +27,7 @@ export const createHook = (name, receivedOptions = {}) => {
         ...receivedOptions,
     }
 
-    const actions = hooks[name]
+    const actions = (hooks[name] || [])
         .filter(h => h.enabled === true)
 
     const writeLog = () => {
@@ -43,7 +38,7 @@ export const createHook = (name, receivedOptions = {}) => {
         }
     }
 
-    if (options.async === 'parallel') {
+    if (options.mode === 'parallel') {
         return new Promise(async (resolve, reject) => {
             try {
                 const promises = actions.map(action => runAction(action, options))
@@ -63,7 +58,7 @@ export const createHook = (name, receivedOptions = {}) => {
         })
     }
 
-    if (options.async === 'serie') {
+    if (options.mode === 'serie') {
         return new Promise(async (resolve, reject) => {
             try {
                 const results = []
@@ -83,6 +78,23 @@ export const createHook = (name, receivedOptions = {}) => {
                 }
             }
         })
+    }
+
+    // Edit the value of the args and return it for further iteration
+    if (options.mode === 'waterfall') {
+        const results = []
+        let args = options.args
+
+        actions.forEach(action => {
+            const res = runActionSync(action, { ...options, args })
+            results.push(res)
+            args = res[0]
+        })
+
+        return {
+            value: args,
+            results,
+        }
     }
 
     // synchronous execution with arguments
@@ -105,7 +117,10 @@ createHook.sync = (name, args, context) =>
     createHook(name, { args, context })
 
 createHook.serie = (name, args, context) =>
-    createHook(name, { args, context, async: 'serie' })
+    createHook(name, { args, context, mode: 'serie' })
 
 createHook.parallel = (name, args, context) =>
-    createHook(name, { args, context, async: 'parallel' })
+    createHook(name, { args, context, mode: 'parallel' })
+
+createHook.waterfall = (name, args, context) =>
+    createHook(name, { args, context, mode: 'waterfall' })

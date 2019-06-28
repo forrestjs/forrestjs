@@ -4,6 +4,8 @@ export const CORE = '◇'
 export const BOOT = '♦'
 export const SERVICE = '→'
 export const FEATURE = '▶'
+export const SYMBOLS = [ CORE, BOOT, SERVICE, FEATURE ]
+export const SEPARATOR = ' » '
 
 // createHookApp lifecycle
 export const START = `${CORE} start`
