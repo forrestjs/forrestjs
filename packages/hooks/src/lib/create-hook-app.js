@@ -68,18 +68,18 @@ export const createHookApp = (appDefinition = {}) =>
 
         // run lifecycle
         await runIntegrations(services, internalContext)
-        await createHook.serie(constants.START, { getConfig }, internalContext)
-        await createHook.serie(constants.SETTINGS, { getConfig, setConfig }, internalContext)
+        await scopedCreateHook.serie(constants.START, internalContext)
+        await scopedCreateHook.serie(constants.SETTINGS, internalContext)
         await runIntegrations(features, internalContext)
-        await createHook.serie(constants.INIT_SERVICE, { getConfig }, internalContext)
-        await createHook.parallel(constants.INIT_SERVICES, { getConfig }, internalContext)
-        await createHook.serie(constants.INIT_FEATURE, { getConfig }, internalContext)
-        await createHook.parallel(constants.INIT_FEATURES, { getConfig }, internalContext)
-        await createHook.serie(constants.START_SERVICE, { getConfig }, internalContext)
-        await createHook.parallel(constants.START_SERVICES, { getConfig }, internalContext)
-        await createHook.serie(constants.START_FEATURE, { getConfig }, internalContext)
-        await createHook.parallel(constants.START_FEATURES, { getConfig }, internalContext)
-        await createHook.serie(constants.FINISH, { getConfig }, internalContext)
+        await scopedCreateHook.serie(constants.INIT_SERVICE, internalContext)
+        await scopedCreateHook.parallel(constants.INIT_SERVICES, internalContext)
+        await scopedCreateHook.serie(constants.INIT_FEATURE, internalContext)
+        await scopedCreateHook.parallel(constants.INIT_FEATURES, internalContext)
+        await scopedCreateHook.serie(constants.START_SERVICE, internalContext)
+        await scopedCreateHook.parallel(constants.START_SERVICES, internalContext)
+        await scopedCreateHook.serie(constants.START_FEATURE, internalContext)
+        await scopedCreateHook.parallel(constants.START_FEATURES, internalContext)
+        await scopedCreateHook.serie(constants.FINISH, internalContext)
 
         return {
             settings: internalSettings,

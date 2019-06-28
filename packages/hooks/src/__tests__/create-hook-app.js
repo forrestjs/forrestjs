@@ -76,7 +76,7 @@ describe('hooks/create-hook-app', () => {
                 // register a feature
                 ({ registerAction }) => registerAction({
                     hook: constants.INIT_SERVICE,
-                    handler: (_, { getConfig, setConfig }) => setConfig('foo', getConfig('foo.faa') * 2),
+                    handler: ({ getConfig, setConfig }) => setConfig('foo', getConfig('foo.faa') * 2),
                 }),
             ],
             features: [
