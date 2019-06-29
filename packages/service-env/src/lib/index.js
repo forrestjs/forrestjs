@@ -13,7 +13,7 @@ import path from 'path'
 import fs from 'fs'
 import nodeEnvFile from 'node-env-file'
 
-const fileExists = filePath => new Promise((resolve, reject) => {
+const fileExists = filePath => new Promise(resolve => {
     fs.exists(filePath, exists => exists ? resolve(true) : resolve(false))
 })
 
@@ -32,7 +32,7 @@ const initEnv = async (args) => {
     await loadEnv(`.env.${process.env.NODE_ENV}.local`, cwd, { overwrite: true })
 }
 
-export const register = ({ registerAction }) =>
+export default ({ registerAction }) =>
     registerAction({
         hook: START,
         name: `${SERVICE} env`,

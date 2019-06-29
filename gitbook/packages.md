@@ -24,8 +24,6 @@ traceable and debuggable support.
 
 Reads environment configuration from different _dot-files_ into your `process.env`.
 
-[[ to be completed ]]
-
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-env)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-env/README.md#readme)
 

@@ -10,6 +10,10 @@ const runIntegrations = async (integrations, context) => {
         // full module that exposes "register" as API
         if (service.register) {
             await service.register(context)
+        
+        // ES6 export default support
+        } else if (service.default) {
+            await service.default(context)
 
         // simple function that implements "register"
         } else if (typeof service === 'function') {
