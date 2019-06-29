@@ -48,7 +48,7 @@ export const createHookApp = (appDefinition = {}) =>
                     name: `${constants.BOOT} app/settings`,
                     hook: constants.SETTINGS,
                     handler: async () => {
-                        const values = await settings({ getConfig, setConfig })
+                        const values = await settings(internalContext, internalContext)
                         values && Object.keys(values).forEach(key => {
                             internalSettings[key] = values[key]
                         })

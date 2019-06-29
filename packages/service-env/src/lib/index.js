@@ -8,10 +8,11 @@
  *
  */
 
-import { START, SERVICE } from '@forrestjs/hooks'
 import path from 'path'
 import fs from 'fs'
 import nodeEnvFile from 'node-env-file'
+import { START, SERVICE } from '@forrestjs/hooks'
+import { getEnv } from './get-env'
 
 const fileExists = filePath => new Promise(resolve => {
     fs.exists(filePath, exists => exists ? resolve(true) : resolve(false))
@@ -24,12 +25,15 @@ const loadEnv = async (fileName, root, options) => {
     }
 }
 
-const initEnv = async (args) => {
+const initEnv = async (args, ctx) => {
     const cwd = args.cwd || process.cwd()
     await loadEnv('.env', cwd, { overwrite: false })
     await loadEnv('.env.local', cwd, { overwrite: true })
     await loadEnv(`.env.${process.env.NODE_ENV}`, cwd, { overwrite: true })
     await loadEnv(`.env.${process.env.NODE_ENV}.local`, cwd, { overwrite: true })
+
+    // Decorate the context with an evironment variable getter
+    ctx.getEnv = getEnv
 }
 
 export default ({ registerAction }) =>

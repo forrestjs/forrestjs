@@ -29,9 +29,7 @@ Reads environment configuration from different _dot-files_ into your `process.en
 
 #### service-logger
 
-Offers a simple interface to logging.
-
-[[ to be completed ]]
+Offers a simple interface to logging using [Winston](https://www.npmjs.com/package/winston) under the hood.
 
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-logger)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-logger/README.md#readme)
