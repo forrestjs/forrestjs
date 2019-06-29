@@ -1,3 +1,4 @@
+import { resetState as resetHooksRegistriesState } from './create-hooks-registry'
 
 const state = {
     hooks: {},
@@ -40,6 +41,7 @@ export const getState = () => state
 
 // this is for unit test
 export const resetState = () => {
+    resetHooksRegistriesState()
     state.hooks = {}
     state.trace = {}
     state.stack = []

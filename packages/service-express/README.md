@@ -2,9 +2,6 @@
 
 ForrestJS service which helps setting up an ExpressJS server.
 
-> Here is a good tutorial:<br>
-> https://forrestjs.github.io/howto/hooks.html
-
 ## Install & Setup
 
 ```bash
@@ -18,41 +15,34 @@ set it up in your ExpressJS App:
 const { runHookApp } = require('@forrestjs/hooks')
 const { EXPRESS_ROUTE, ...expressService } = require('@forrestjs/service-express')
 
-// Create custom routes:
-const featureSum = ({ app }) =>
-    app.get('/', (req, res) => res.send('Hello World'))
+// Create an Home Page for the Web App
+const homePageRoute = (req, res) => res.send('Hello World')
+const homePageAction = ({ registerRoute }) => registerRoute.get('/', homePageRoute)
 
-// Hack the App together:
+// Run the app:
 runHookApp({
-    config: {},
+    config: {
+        express: {
+            port: 8080,
+        },
+    },
     services: [
         expressService,
     ],
     features: [
-        [ EXPRESS_ROUTE, featureSum ],
+        [ EXPRESS_ROUTE, homePageAction ],
     ],
 })
 ```
 
 ## Configuration & ENVs
 
-```js
-runHookApp({
-    settings: {
-        express: {
-            // ... write config here
-        },
-    },
-}
-```
-
 ### port
 
-`settings.express.port: 5000` sets up the port on which the server runs.
+`express.port: 5000` sets up the port on which the server runs.
 
 It falls back to environment variables:
 
-- settings.express.port
 - process.env.REACT_APP_PORT
 - process.env.PORT
 - 8080 (default value)
@@ -61,34 +51,40 @@ It falls back to environment variables:
 
 All the hooks exposed by `service-express` are _asynchronous_ and executes in _serie_.
 
-The arguments you receive are:
-
-- `app`: the ExpressJS app object
-- `server`: the http server instance (useful for SocketIO or similar stuff)
-- `settings`: a shallow copy of the settings, ment to be read-only
-
-### EXPRESS_INIT
-
-```js
-require('@forrestjs/service-express').EXPRESS_MIDDLEWARE
-```
+### EXPRESS_HACKS_BEFORE
 
 This hook fires before any other step.<br>
-You have just a plain ExpressJS App object here.
+It receives a direct referenct to the `app` and the `server`.
 
 ### EXPRESS_MIDDLEWARE
 
-```js
-require('@forrestjs/service-express').EXPRESS_MIDDLEWARE
-```
+This hook is good to inject custom App level middleware.
 
-This hook is good to inject custom App level middleware.<br>
-Mind that "compression" and "helmet" are already provided
+```js
+const { EXPRESS_MIDDLEWARE } = require('@forrestjs/service-express')
+
+registerAction({
+    hook: EXPRESS_MIDDLEWARE,
+    handler: ({ registerMiddleware }) =>
+        registerMiddleware((req, res, next) => {
+            req.data = 'foo'
+            next()
+        })
+})
+```
 
 ### EXPRESS_ROUTE
 
 ```js
-require('@forrestjs/service-express').EXPRESS_ROUTE
+const { EXPRESS_ROUTE } = require('@forrestjs/service-express')
+
+registerAction({
+    hook: EXPRESS_ROUTE,
+    handler: ({ registerRoute }) =>
+        registerRoute('get', '/', (req, res) => {
+            res.send('Hello World')
+        })
+})
 ```
 
 ### EXPRESS_HANDLER
@@ -97,5 +93,18 @@ This hook is good to inject custom handlers or fallback routes that you
 want to be sure fire after any other.
 
 ```js
-require('@forrestjs/service-express').EXPRESS_HANDLER
+const { EXPRESS_HANDLER } = require('@forrestjs/service-express')
+
+registerAction({
+    hook: EXPRESS_HANDLER,
+    handler: ({ registerHandler }) =>
+        registerHandler((err, req, res, next) => {
+            req.send(err)
+        })
+})
 ```
+
+### EXPRESS_HACKS_AFTER
+
+This hook fires after any other step.<br>
+It receives a direct referenct to the `app` and the `server`.

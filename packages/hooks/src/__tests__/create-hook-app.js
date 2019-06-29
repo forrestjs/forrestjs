@@ -44,7 +44,7 @@ describe('hooks/create-hook-app', () => {
         const handler = jest.fn()
         const s1 = [ 'foo', handler ]
         const f1 = ({ createHook }) => createHook('foo')
-
+    
         await runHookApp({
             services: [s1],
             features: [f1],

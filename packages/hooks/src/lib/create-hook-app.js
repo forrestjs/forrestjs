@@ -2,27 +2,38 @@ import dotted from '@marcopeg/dotted'
 import { createHook } from './create-hook'
 import { registerAction } from './register-action'
 import { traceHook } from './tracer'
-
+import { createHooksRegistry } from './create-hooks-registry'
 import * as constants from './constants'
 
 const runIntegrations = async (integrations, context) => {
     for (const service of integrations) {
+        let computed = null
+
         // full module that exposes "register" as API
         if (service.register) {
-            await service.register(context)
-        
+            computed = await service.register(context)
+    
         // ES6 export default support
         } else if (service.default) {
-            await service.default(context)
+            computed = await service.default(context)
 
         // simple function that implements "register"
         } else if (typeof service === 'function') {
-            await service(context)
+            computed = await service(context)
+        }
+
+        // try to use the result of a registering function as the
+        // instructions how to register an extension
+        computed = computed || service
 
         // register a single action as a feature
         // [ hookName, handler, { otherOptions }]
-        } else if (Array.isArray(service)) {
-            const [ hook, handler, options = {} ] = service
+        if (Array.isArray(computed)
+            && computed.length >= 2
+            && typeof computed[0] === 'string'
+            && typeof computed[1] === 'function'
+        ) {
+            const [ hook, handler, options = {} ] = computed
             registerAction({
                 ...options,
                 hook,
@@ -58,6 +69,9 @@ export const createHookApp = (appDefinition = {}) =>
             })()
             : settings
 
+        // Context bound list of known hooks
+        const hooksRegistry = createHooksRegistry(constants)
+
         // create getter and setter for the configuration
         const getConfig = (path, defaultValue) => {
             let value = undefined
@@ -81,6 +95,7 @@ export const createHookApp = (appDefinition = {}) =>
         // create the context with getters / setters /
         const internalContext = {
             ...context,
+            ...hooksRegistry,
             getConfig,
             setConfig,
             registerAction,

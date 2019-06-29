@@ -12,7 +12,8 @@ export const logVerbose = (...args) => logger.verbose.call(logger, args)
 export const logDebug = (...args) => logger.debug.call(logger, args)
 export const logSilly = (...args) => logger.silly.call(logger, args)
 
-export default ({ registerAction }) =>
+export default ({ registerAction, registerHook }) => {
+    registerHook(hooks)
     registerAction({
         hook: START,
         name: hooks.SERVICE_NAME,
@@ -45,3 +46,4 @@ export default ({ registerAction }) =>
             ctx.logSilly = logSilly
         },
     })
+}

@@ -8,6 +8,7 @@ export { createHook } from './lib/create-hook'
 export { registerAction } from './lib/register-action'
 export { createHookApp, runHookApp } from './lib/create-hook-app'
 export { createHookContext } from './lib/create-hook-context'
+export { getHook } from './lib/create-hooks-registry'
 export * from './lib/constants'
 
 // Simple implementation of a trace boot service
@@ -20,3 +21,4 @@ export const traceBoot = [
         name: `${SERVICE} traceBoot`,
     },
 ]
+
