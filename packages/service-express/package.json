@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-express",
   "description": "ForrestJS service which helps setting up an ExpressJS server.",
-  "version": "3.0.0-alpha.3",
+  "version": "3.0.0-alpha.4",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@forrestjs/hooks": "^3.0.0-alpha.3",
+    "@forrestjs/hooks": "^3.0.0-alpha.4",
     "express": "^4.17.1"
   },
   "devDependencies": {
