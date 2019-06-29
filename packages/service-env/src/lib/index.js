@@ -11,7 +11,8 @@
 import path from 'path'
 import fs from 'fs'
 import nodeEnvFile from 'node-env-file'
-import { START, SERVICE } from '@forrestjs/hooks'
+import { START } from '@forrestjs/hooks'
+import * as hooks from './hooks'
 import { getEnv } from './get-env'
 
 const fileExists = filePath => new Promise(resolve => {
@@ -39,7 +40,7 @@ const initEnv = async (args, ctx) => {
 export default ({ registerAction }) =>
     registerAction({
         hook: START,
-        name: `${SERVICE} env`,
+        name: hooks.SERVICE_NAME,
         trace: __filename,
         handler: initEnv,
     })

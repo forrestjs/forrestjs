@@ -12,14 +12,24 @@ const isValid = await verify(token)
 
 ## Configuration
 
+## Environment
+
+**NOTE:** it is important to list `service-jwt` _AFTER_ `service-env` so that any kind of environment
+configuration is available to be used.
+
+```bash
+JWT_SECRET=xxx
+JWT_DURATION=1y
+```
+
+## Config
+
 ```js
 registerAction({
     hook: SETTINGS,
-    handler: ({ settings }) => {
-        setting.jwt = {
-            secret: 'your-safe-secret',
-            duration: '1y',
-        }
+    handler: ({ setConfig }) => {
+        setConfig('jwt.secret', 'your-safe-secret')
+        setConfig('jwt.duration', '1y')
     }
 })
 ```

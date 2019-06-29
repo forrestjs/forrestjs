@@ -39,8 +39,6 @@ Offers a simple interface to logging using [Winston](https://www.npmjs.com/packa
 Helps to issue and validate _JWT_ tokens. It is mainly a _Promise_ wrapper around the
 package `jsonwebtoken`.
 
-[[ to be completed ]]
-
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-jwt)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-jwt/README.md#readme)
 

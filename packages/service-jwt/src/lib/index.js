@@ -1,16 +1,9 @@
-import { INIT_SERVICES, SERVICE } from '@forrestjs/hooks'
+import { INIT_SERVICES } from '@forrestjs/hooks'
 import jwt from 'jsonwebtoken'
+import * as hooks from './hooks'
 
 let secret = null
 let duration = null
-
-export const init = (settings) => {
-    if (!settings) {
-        throw new Error(`[@forrestjs/service-jwt] please provide some settings!`)
-    }
-    secret = settings.secret
-    duration = settings.duration || '0s'
-}
 
 export const sign = (payload, settings = {}, customSecret = secret) =>
     new Promise((resolve, reject) => {
@@ -39,12 +32,18 @@ export const verify = (token, customSecret = secret) =>
         })
     })
 
-export const register = ({ registerAction }) =>
+export default ({ registerAction }) =>
     registerAction({
         hook: INIT_SERVICES,
-        name: `${SERVICE} jwt`,
+        name: hooks.SERVICE_NAME,
         trace: __filename,
-        handler: ({ jwt }) => init(jwt),
+        handler: ({ getConfig }) => {
+            secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---')
+            duration = getConfig('jwt.duration', process.env.JWT_DURATION || '---')
+
+            // Validate configuration
+            if (secret === '---') throw new Error('[service-jwt] Please configure "jwt.secret" or "process.env.JWT_SECRET"')
+            if (duration === '---') throw new Error('[service-jwt] Please configure "jwt.duration" or "process.env.JWT_DURATION"')
+        },
     })
 
-export default { sign, verify }
