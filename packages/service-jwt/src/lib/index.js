@@ -37,13 +37,16 @@ export default ({ registerAction }) =>
         hook: INIT_SERVICES,
         name: hooks.SERVICE_NAME,
         trace: __filename,
-        handler: ({ getConfig }) => {
+        handler: ({ getConfig }, ctx) => {
             secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---')
             duration = getConfig('jwt.duration', process.env.JWT_DURATION || '---')
 
             // Validate configuration
             if (secret === '---') throw new Error('[service-jwt] Please configure "jwt.secret" or "process.env.JWT_SECRET"')
             if (duration === '---') throw new Error('[service-jwt] Please configure "jwt.duration" or "process.env.JWT_DURATION"')
+
+            // Decorate the context
+            ctx.jwt = { sign, verify }
         },
     })
 
