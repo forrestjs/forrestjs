@@ -1,32 +1,38 @@
 import millisecond from 'millisecond'
 import cookieParser from 'cookie-parser'
-import { SERVICE } from '@forrestjs/hooks'
-import { EXPRESS_MIDDLEWARE } from '@forrestjs/service-express'
+import * as hooks from './hooks'
 
-export const cookieHelper = (settings = {}) =>
-    (req, res, next) => {
-        const isDev = [ 'development', 'test' ].indexOf(process.env.NODE_ENV) !== -1
-        const scope = settings.scope || process.env.REACT_APP_ID || 'react-ssr'
-        const duration = settings.duration || '30d'
+const DEFAULT_DURATION = '300y'
 
-        const options = {
-            app: {
-                httpOnly: true,
-                secure: !isDev,
-                maxAge: millisecond(duration),
-            },
-            client: {
-                maxAge: millisecond(duration),
-            },
-        }
+export const cookieHelper = (settings) => {
+    const isDevOrTest = [ 'development', 'test' ].includes(process.env.NODE_ENV)
+    const scope = settings.scope || process.env.REACT_APP_ID || 'forrestjs'
+    const secure = settings.secure === undefined ? (!isDevOrTest) : settings.secure
+    const httpOnly = settings.httpOnly === undefined ? true : settings.httpOnly
+    const duration = settings.duration || DEFAULT_DURATION
+    const separator = settings.separator === undefined ? '::' : settings.separator
+    const clientDuration = settings.clientDuration || duration
+    const clientSeparator = settings.clientSeparator === undefined ? '--' : settings.clientSeparator
 
-        const getAppName = name => `${scope || 'app'}::${name}`
-        const getClientName = name => `${scope || 'app'}--${name}`
+    const getName = name => `${scope}${separator}${name}`
+    const getClientName = name => `${scope}${clientSeparator}${name}`
 
-        // App Cookie
-        req.getAppCookie = name => req.cookies[getAppName(name)]
-        res.setAppCookie = (name, content) => res.cookie(getAppName(name), content, options.app)
-        res.deleteAppCookie = name => res.clearCookie(getAppName(name))
+    const options = {
+        app: {
+            secure,
+            httpOnly,
+            maxAge: millisecond(duration),
+        },
+        client: {
+            maxAge: millisecond(clientDuration),
+        },
+    }
+
+    return (req, res, next) => {
+        // Server Cookie
+        req.getCookie = name => req.cookies[getName(name)]
+        res.setCookie = (name, content) => res.cookie(getName(name), content, options.app)
+        res.deleteCookie = name => res.clearCookie(getName(name))
 
         // Client Cookie
         req.getClientCookie = name => req.cookies[getClientName(name)]
@@ -35,14 +41,16 @@ export const cookieHelper = (settings = {}) =>
 
         next()
     }
+}
 
-export const register = ({ registerAction }) =>
+export default ({ registerAction, getHook }) =>
     registerAction({
-        hook: EXPRESS_MIDDLEWARE,
-        name: `${SERVICE} express-cookie-helper`,
+        hook: getHook('EXPRESS_MIDDLEWARE'),
+        name: hooks.SERVICE_NAME,
         trace: __filename,
-        handler: async ({ app, settings }) => {
-            app.use(cookieParser())
-            app.use(cookieHelper(settings.cookieHelper))
+        handler: async ({ registerMiddleware }, { getConfig, registerHook }) => {
+            registerHook(hooks)
+            registerMiddleware(cookieParser())
+            registerMiddleware(cookieHelper(getConfig('expressCookies', {})))
         },
     })

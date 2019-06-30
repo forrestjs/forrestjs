@@ -59,6 +59,14 @@ routes and middlewares by hooking into it.
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-express)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-express/README.md#readme)
 
+#### service-express-cookies
+
+It helps handling cookies in both server and client, decorating your Express app with some
+helper methods like `req.getCookie('foo')` and `res.setCookie('foo', 'content')`.
+
+👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-express-cookies)<br>
+👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-express-cookies/README.md#readme)
+
 #### service-express-graphql
 
 It provides a _GraphQL_ endpoint in your _ExpressJS_ app, and simple ways to inject
@@ -66,15 +74,6 @@ custom queries and mutations.
 
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-express-graphql)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-express-graphql/README.md#readme)
-
-#### service-express-cookies
-
-It helps handling cookies in the server.
-
-[[ to be completed ]]
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-express-cookies)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-express-cookies/README.md#readme)
 
 #### service-postgres
 

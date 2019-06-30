@@ -9,11 +9,11 @@ Use the methods as in the following example to read/write to cookies.
 
 ```js
 // Server Side Cookies
-res.setAppCookie('cookieName', 'value')
-res.deleteAppCookie('cookieName')
-req.getAppCookie('cookieName') // -> value
+res.setCookie('cookieName', 'value')
+res.deleteCookie('cookieName')
+req.getCookie('cookieName') // -> value
 
-// Client Accessible Cookies
+// Client Side Cookies
 res.setClientCookie('cookieName', 'value')
 res.deleteClientCookie('cookieName')
 req.getClientCookie('cookieName') // -> value
@@ -28,21 +28,72 @@ _Use those with caution_.
 ## Configuration
 
 ```js
-registerAction({
-    hook: SETTINGS,
-    name: '♦ boot',
-    handler: async ({ settings }) => {
-        settings.express = {
-            cookieHelper: {
-                scope: 'XXX',
-                duration: '30d',
-            }
+const { runHookApp } = require('@forrestjs/hooks')
+
+runHookApp({
+    settings: {
+        express: {
+            port: 8080,
+        },
+        expressCookies: {
+            scope: 'XXX',
+            secure: false,
+            httpOnly: true,
+            duration: '30d',
+            separator: '::',
+            clientDuration: '30d',
+            clientSeparator: '--',
         }
     },
+    services: [
+        require('@forrestjs/service-express'),
+        require('@forrestjs/service-express-cookies'),
+    ],
+    features: [
+        ({ getHook }) => [getHook('EXPRESS_ROUTE'), ({ registerRoute }) => {
+            registerRoute.get('/', (req, res) => {
+                res.setCookie('foo', 123)
+                res.setClientCookie('foo', 123)
+                res.send('ok')
+            })
+        }]
+    ]
 })
 ```
+
+## scope
 
 `scope` is a string that prefix any cookie name you will ever use. It's cool to work
 on multiple apps in development and still avoid conflicts ;-)
 
+## secure
 
+Forces cookies to apply only to `https` connections.
+
+default: `isDevOrTest ? false : true`
+
+> it applies to Server Side cookies only
+
+## httpOnly
+
+Hides cookies from client side access.
+
+default: `true`
+
+> it applies to Server Side cookies only
+
+## duration
+
+default: `300y`
+
+## separator
+
+default: `::`
+
+## clientDuration
+
+default: ${duration}
+
+## clientSeparator
+
+default: `--`
