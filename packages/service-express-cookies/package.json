@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/service-express-cookies",
   "description": "ForrestJS service which helps handling cookies in an ExpressJS server.",
-  "version": "3.0.0-alpha.4",
+  "version": "3.0.0-alpha.5",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"

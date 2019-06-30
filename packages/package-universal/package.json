@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/package-universal",
-  "version": "3.0.0-alpha.4",
+  "version": "3.0.0-alpha.5",
   "description": "ForrestJS Dependencies package for the \"starter-universal\" and similar apps.",
   "main": "index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
@@ -29,7 +29,7 @@
     "@forrestjs/feature-storage": "^3.0.0-alpha.3",
     "@forrestjs/service-env": "^3.0.0-alpha.4",
     "@forrestjs/service-express": "^3.0.0-alpha.4",
-    "@forrestjs/service-express-cookies": "^3.0.0-alpha.4",
+    "@forrestjs/service-express-cookies": "^3.0.0-alpha.5",
     "@forrestjs/service-express-graphql": "^3.0.0-alpha.4",
     "@forrestjs/service-express-ssr": "^3.0.0-alpha.4",
     "@forrestjs/service-logger": "^3.0.0-alpha.4",
