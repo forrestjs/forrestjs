@@ -1,14 +1,6 @@
-import { GraphQLString } from 'graphql'
 import expressGraphql from 'express-graphql'
-import { EXPRESS_ROUTE } from '@forrestjs/service-express'
-import { EXPRESS_GRAPHQL, EXPRESS_GRAPHQL_MIDDLEWARE } from './hooks'
 import { makeSchema } from './schema'
-
-const info = {
-    description: 'Provides info regarding the project',
-    type: GraphQLString,
-    resolve: () => `GraphQL is working`,
-}
+import * as hooks from './hooks'
 
 const cache = {
     activeEtag: 0,
@@ -25,18 +17,15 @@ export const bumpGraphqlETAG = (value = null) => {
 }
 
 export const createGraphQLMiddleware = async (settings) => {
-    const isDev = ['development', 'test'].indexOf(process.env.NODE_ENV) !== -1
+    const isDevOrTest = [ 'development', 'test' ].includes(process.env.NODE_ENV)
 
-    const queries = {
-        info,
-        ...(settings.queries ? settings.queries : {}),
-    }
-    const mutations = {
-        info,
-        ...(settings.mutations ? settings.mutations : {}),
-    }
+    const {
+        queries = {},
+        mutations = {},
+    } = settings
+
     const config = {
-        graphiql: isDev,
+        graphiql: isDevOrTest,
         ...(settings.config ? settings.config : {}),
     }
 
@@ -46,6 +35,7 @@ export const createGraphQLMiddleware = async (settings) => {
     cache.schema = await makeSchema({ queries, mutations, config, settings })
 
     return async (req, res, next) => {
+        // Refresh the schema cache
         if (cache.schema === null || cache.cachedEtag !== cache.activeEtag) {
             cache.cachedEtag = cache.activeEtag
             cache.schema = await makeSchema({ queries, mutations, config, settings })
@@ -63,7 +53,10 @@ export const createGraphQLMiddleware = async (settings) => {
     }
 }
 
-export const register = ({ registerAction, createHook, ...props }) => {
+export default ({ registerAction, registerHook, getHook, createHook }) => {
+    // register services's hooks
+    registerHook(hooks)
+
     const invalidateCacheMiddleware = (req, res, next) => {
         req.bumpGraphqlETAG = bumpGraphqlETAG
         next()
@@ -71,30 +64,46 @@ export const register = ({ registerAction, createHook, ...props }) => {
 
     // register the basic GraphQL api
     registerAction({
-        hook: EXPRESS_ROUTE,
-        name: EXPRESS_GRAPHQL,
+        hook: getHook('EXPRESS_MIDDLEWARE'),
+        name: hooks.SERVICE_NAME,
         trace: __filename,
-        handler: async ({ app, settings }) => {
-            const { mountPoint, middlewares = [] } = settings.graphql || {}
+        handler: async ({ registerMiddleware }, { getConfig }) => {
+            // get default configs
+            const {
+                mountPoint = '/api',
+                middlewares = [],
+                bodyParser = {},
+                ...settings
+            } = getConfig('expressGraphql', {})
 
-            await createHook(EXPRESS_GRAPHQL_MIDDLEWARE, {
-                async: 'serie',
-                args: { middlewares },
+            // let extensions inject custom middlewares
+            await createHook.serie(hooks.EXPRESS_GRAPHQL_MIDDLEWARE, {
+                registerMiddleware: $ => middlewares.push($),
             })
 
-            app.use(mountPoint || '/api', [
+            // register the optional bodyParser with custom configuration
+            if (bodyParser) {
+                if (typeof bodyParser === 'object') {
+                    registerMiddleware(require('body-parser').json(bodyParser))
+                } else {
+                    registerMiddleware(require('body-parser').json())
+                }
+            }
+
+            // register the endpoint route
+            registerMiddleware(mountPoint, [
                 invalidateCacheMiddleware,
                 ...middlewares,
-                await createGraphQLMiddleware(settings.graphql || {})
+                await createGraphQLMiddleware(settings)
             ])
         },
     })
 
-    // register the testing extension
-    if (process.env.NODE_ENV !== 'production') {
-        require('./test').register({
-            registerAction,
-            ...props,
-        })
-    }
+    // // register the testing extension
+    // if (process.env.NODE_ENV !== 'production') {
+    //     require('./test').register({
+    //         registerAction,
+    //         ...props,
+    //     })
+    // }
 }
