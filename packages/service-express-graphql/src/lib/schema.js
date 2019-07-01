@@ -1,10 +1,9 @@
-import { createHook } from '@forrestjs/hooks'
 import { GraphQLSchema, GraphQLObjectType } from 'graphql'
-import { EXPRESS_GRAPHQL_SCHEMA, EXPRESS_GRAPHQL_HACK_SCHEMA } from './hooks'
+import { EXPRESS_GRAPHQL, EXPRESS_GRAPHQL_HACK_SCHEMA } from './hooks'
 
-export const makeSchema = async ({ queries, mutations }) => {
+export const makeSchema = async ({ queries, mutations }, { createHook }) => {
     // Extend the existing schema with custom queries and mutations
-    await createHook.serie(EXPRESS_GRAPHQL_SCHEMA, {
+    await createHook.serie(EXPRESS_GRAPHQL, {
         registerQuery: (key, val) => {
             if (queries[key]) {
                 throw new Error(`[express-graphql] Query "${key}" was already defined`)
@@ -12,7 +11,7 @@ export const makeSchema = async ({ queries, mutations }) => {
             queries[key] = val
         },
         registerMutation: (key, val) => {
-            if (queries[key]) {
+            if (mutations[key]) {
                 throw new Error(`[express-graphql] Mutation "${key}" was already defined`)
             }
             mutations[key] = val

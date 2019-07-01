@@ -38,11 +38,13 @@ export const registerAction = (payload = {}, receivedHandler = null, receivedOpt
     if (!receivedHook) {
         throw new Error('[hooks] actions must have a "hook" property!')
     }
-    
+
     if (!handler || typeof handler !== 'function') {
         throw new Error('[hooks] actions must have a "handler" property as fuction!')
     }
     
+    // Hooks name can be expressed as variables:
+    // '$FOO'
     const hook = receivedHook.substr(0, 1) === '$'
         ? getHook(receivedHook.substr(1))
         : receivedHook

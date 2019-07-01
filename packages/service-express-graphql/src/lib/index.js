@@ -16,9 +16,7 @@ export const bumpGraphqlETAG = (value = null) => {
     }
 }
 
-export const createGraphQLMiddleware = async (settings) => {
-    const isDevOrTest = [ 'development', 'test' ].includes(process.env.NODE_ENV)
-
+export const createGraphQLMiddleware = async ({ settings, isDevOrTest }, ctx) => {
     const {
         queries = {},
         mutations = {},
@@ -32,7 +30,7 @@ export const createGraphQLMiddleware = async (settings) => {
     // Build up the first cached schema so that any weird errors might
     // be checked out at boot time.
     cache.cachedEtag = cache.activeEtag
-    cache.schema = await makeSchema({ queries, mutations, config, settings })
+    cache.schema = await makeSchema({ queries, mutations, config, settings }, ctx)
 
     return async (req, res, next) => {
         // Refresh the schema cache
@@ -53,7 +51,9 @@ export const createGraphQLMiddleware = async (settings) => {
     }
 }
 
-export default ({ registerAction, registerHook, getHook, createHook }) => {
+export default ({ registerAction, registerHook, createHook, ...otherProps }) => {
+    const isDevOrTest = [ 'development', 'test' ].includes(process.env.NODE_ENV)
+
     // register services's hooks
     registerHook(hooks)
 
@@ -64,7 +64,7 @@ export default ({ registerAction, registerHook, getHook, createHook }) => {
 
     // register the basic GraphQL api
     registerAction({
-        hook: getHook('EXPRESS_MIDDLEWARE'),
+        hook: '$EXPRESS_MIDDLEWARE',
         name: hooks.SERVICE_NAME,
         trace: __filename,
         handler: async ({ registerMiddleware }, { getConfig }) => {
@@ -91,19 +91,15 @@ export default ({ registerAction, registerHook, getHook, createHook }) => {
             }
 
             // register the endpoint route
+            // need to pass down the feature context to leverage on extensibility
             registerMiddleware(mountPoint, [
                 invalidateCacheMiddleware,
                 ...middlewares,
-                await createGraphQLMiddleware(settings)
+                await createGraphQLMiddleware({
+                    settings, 
+                    isDevOrTest,
+                }, { registerAction, registerHook, createHook, ...otherProps })
             ])
         },
     })
-
-    // // register the testing extension
-    // if (process.env.NODE_ENV !== 'production') {
-    //     require('./test').register({
-    //         registerAction,
-    //         ...props,
-    //     })
-    // }
 }
