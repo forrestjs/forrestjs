@@ -12,6 +12,7 @@
 
 import { appendAction } from './state'
 import { logAction } from './logger'
+import { getHook } from './create-hooks-registry'
 
 export const registerAction = (payload = {}, receivedHandler = null, receivedOptions = {}) => {
     // (name, handler, options)
@@ -33,13 +34,18 @@ export const registerAction = (payload = {}, receivedHandler = null, receivedOpt
     }
 
     // ({ hook: 'xxx', handler: () => {}, ...options })
-    const { hook, name, trace, handler, priority, ...meta } = payload
-    if (!hook) {
+    const { hook: receivedHook, name, trace, handler, priority, ...meta } = payload
+    if (!receivedHook) {
         throw new Error('[hooks] actions must have a "hook" property!')
     }
+    
     if (!handler || typeof handler !== 'function') {
         throw new Error('[hooks] actions must have a "handler" property as fuction!')
     }
+    
+    const hook = receivedHook.substr(0, 1) === '$'
+        ? getHook(receivedHook.substr(1))
+        : receivedHook
 
     const actionName = false
         || name
