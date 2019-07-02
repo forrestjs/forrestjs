@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/hooks",
   "description": "ForrestJS library which helps decoupling your application into small and reusable modules.",
-  "version": "3.0.0-alpha.6",
+  "version": "3.0.0-alpha.7",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
@@ -13,7 +13,7 @@
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
-    "@forrestjs/babel-preset-package": "^3.0.0-alpha.3",
+    "@forrestjs/babel-preset-package": "^3.0.0-alpha.7",
     "@marcopeg/utils": "^2.0.1",
     "cross-env": "^5.1.4"
   },

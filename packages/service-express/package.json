@@ -1,20 +1,20 @@
 {
   "name": "@forrestjs/service-express",
   "description": "ForrestJS service which helps setting up an ExpressJS server.",
-  "version": "3.0.0-alpha.6",
+  "version": "3.0.0-alpha.7",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@forrestjs/hooks": "^3.0.0-alpha.6",
+    "@forrestjs/hooks": "^3.0.0-alpha.7",
     "express": "^4.17.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
-    "@forrestjs/babel-preset-package": "^3.0.0-alpha.3",
+    "@forrestjs/babel-preset-package": "^3.0.0-alpha.7",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-express#readme",
