@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-hash",
   "description": "ForrestJS service which helps hashing stuff with bcrypt.",
-  "version": "3.0.0-alpha.4",
+  "version": "3.0.0-alpha.6",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@forrestjs/hooks": "^3.0.0-alpha.4",
+    "@forrestjs/hooks": "^3.0.0-alpha.6",
     "bcrypt-nodejs": "^0.0.3"
   },
   "devDependencies": {
