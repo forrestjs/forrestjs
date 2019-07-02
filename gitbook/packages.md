@@ -75,6 +75,13 @@ custom queries and mutations.
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-express-graphql)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-express-graphql/README.md#readme)
 
+#### service-express-graphql-test
+
+It provides a _GraphQL_ testing endpoint that allows a simple protection strategy.
+
+👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-express-graphql-test)<br>
+👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-express-graphql-test/README.md#readme)
+
 #### service-postgres
 
 It helps establishing a reliable connection with one or more _Postgres_ databases using the

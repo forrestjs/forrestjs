@@ -44,7 +44,7 @@ export const createSSRRouter = (receivedSettings = {}) => {
 
         // @TODO: find out a better way to handle callback urls client-to-server
         // durig ssr.
-        port: String(process.env.REACT_SSR_PORT || '8080'),
+        port: String(process.env.PORT || process.env.REACT_SSR_PORT || '8080'),
 
         // strips away all the javascript tags.
         // basically renders a pure HTML static web page.

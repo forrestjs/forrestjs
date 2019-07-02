@@ -1,27 +1,20 @@
 import { createSSRRouter } from '@forrestjs/core/lib/create-ssr-router'
-import { EXPRESS_ROUTE } from '@forrestjs/service-express'
-import { EXPRESS_SSR } from './hooks'
+import * as hooks from './hooks'
 
-export const register = ({ registerAction, createHook }) =>
+export default ({ registerHook, registerAction, createHook }) => {
+    registerHook(hooks)
+
     registerAction({
-        hook: EXPRESS_ROUTE,
-        name: EXPRESS_SSR,
+        hook: '$EXPRESS_MIDDLEWARE',
+        name: hooks.SERVICE_NAME,
         trace: __filename,
-        handler: async ({ app, settings }) => {
-            const port = settings.port || process.env.REACT_APP_PORT || process.env.PORT || '8080'
+        handler: async ({ registerMiddleware }, { getConfig }) => {
+            const options = getConfig('expressSSR', {})
+            await createHook.serie(hooks.EXPRESS_SSR, { options })
 
-            const options = {
-                ...(settings.ssr || {}),
-                port,
-            }
-
-            await createHook(EXPRESS_SSR, {
-                async: 'serie',
-                args: { options },
-            })
-
-            app.use(createSSRRouter(options))
+            registerMiddleware(createSSRRouter(options))
         },
         priority: -999,
         route: '/',
     })
+}
