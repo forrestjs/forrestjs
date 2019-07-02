@@ -54,11 +54,12 @@ export default ({ registerAction, registerHook }) => {
                         type: GraphQLString,
                     },
                 },
-                resolve: async (_, args, { req }) => {
+                resolve: async (_, args, resolverCtx) => {
                     const isValid = settings.isValid || (() => true)
-                    if (await isValid(args, req) !== true) {
+                    if (await isValid(args, resolverCtx, ctx) !== true) {
                         throw new Error(isValidError)
-                    } 
+                    }
+                    return true
                 },
             }
 

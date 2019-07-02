@@ -8,7 +8,7 @@ const cache = {
     schema: null,
 }
 
-export const bumpGraphqlETAG = (value = null) => {
+const bumpGraphqlETAG = (value = null) => {
     if (value === null) {
         cache.activeEtag += 1
     } else {
@@ -16,7 +16,12 @@ export const bumpGraphqlETAG = (value = null) => {
     }
 }
 
-export const createGraphQLMiddleware = async ({ settings, isDevOrTest }, ctx) => {
+const invalidateCacheMiddleware = (req, res, next) => {
+    req.bumpGraphqlETAG = bumpGraphqlETAG
+    next()
+}
+
+const createGraphQLMiddleware = async ({ settings, isDevOrTest }, ctx) => {
     const {
         queries = {},
         mutations = {},
@@ -57,11 +62,6 @@ export default ({ registerAction, registerHook, createHook, ...otherProps }) => 
     // register services's hooks
     registerHook(hooks)
 
-    const invalidateCacheMiddleware = (req, res, next) => {
-        req.bumpGraphqlETAG = bumpGraphqlETAG
-        next()
-    }
-
     // register the basic GraphQL api
     registerAction({
         hook: '$EXPRESS_MIDDLEWARE',
@@ -72,23 +72,13 @@ export default ({ registerAction, registerHook, createHook, ...otherProps }) => 
             const {
                 mountPoint = '/api',
                 middlewares = [],
-                bodyParser = {},
                 ...settings
             } = getConfig('expressGraphql', {})
 
-            // let extensions inject custom middlewares
+            // let extensions to inject custom middlewares
             await createHook.serie(hooks.EXPRESS_GRAPHQL_MIDDLEWARE, {
                 registerMiddleware: $ => middlewares.push($),
             })
-
-            // register the optional bodyParser with custom configuration
-            if (bodyParser) {
-                if (typeof bodyParser === 'object') {
-                    registerMiddleware(require('body-parser').json(bodyParser))
-                } else {
-                    registerMiddleware(require('body-parser').json())
-                }
-            }
 
             // register the endpoint route
             // need to pass down the feature context to leverage on extensibility
