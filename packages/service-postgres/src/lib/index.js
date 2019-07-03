@@ -1,5 +1,4 @@
 import { INIT_SERVICE, START_SERVICE } from '@forrestjs/hooks'
-import { logError } from '@forrestjs/service-logger'
 import * as hooks from './hooks'
 
 import { default as init } from './init'
