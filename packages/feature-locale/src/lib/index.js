@@ -6,9 +6,7 @@ import createLocaleMiddleware from 'express-locale'
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 import GraphQLJSON from 'graphql-type-json'
 
-import { EXPRESS_MIDDLEWARE } from '@forrestjs/service-express'
-import { EXPRESS_GRAPHQL } from '@forrestjs/service-express-graphql'
-import { FEATURE_NAME } from './hooks'
+import * as hooks from './hooks'
 
 const loadLocaleFile = (locale) => new Promise((resolve, reject) => {
     const origin = (process.env.NODE_ENV === 'production')
@@ -65,20 +63,22 @@ const localeQuery = {
     }),
 }
 
-export const register = ({ registerAction }) => {
+export default ({ registerHook, registerAction }) => {
+    registerHook(hooks)
+
     registerAction({
-        hook: EXPRESS_GRAPHQL,
-        name: FEATURE_NAME,
-        handler: ({ queries }) => {
-            queries.locale = localeQuery
+        hook: '$EXPRESS_GRAPHQL',
+        name: hooks.FEATURE_NAME,
+        handler: ({ registerQuery }) => {
+            registerQuery('locale', localeQuery)
         },
     })
 
     registerAction({
-        hook: EXPRESS_MIDDLEWARE,
-        name: FEATURE_NAME,
-        handler: ({ app, settings }) => {
-            const locale = settings.locale || {}
+        hook: '$EXPRESS_MIDDLEWARE',
+        name: hooks.FEATURE_NAME,
+        handler: ({ registerMiddleware, getConfig }) => {
+            const locale = getConfig('locale', {})
             const config = {
                 default: locale.default || 'en_US',
                 priority: locale.priority || [
@@ -93,7 +93,7 @@ export const register = ({ registerAction }) => {
             config.cookie = {
                 name: (locale && locale.cookieName)
                     ? locale.cookieName
-                    : `${process.env.REACT_APP_ID || 'react-ssr'}--locale`
+                    : `${process.env.REACT_APP_ID || 'forrestjs'}--locale`
             }
 
             if (locale.queryName) {
@@ -112,7 +112,7 @@ export const register = ({ registerAction }) => {
                 config.allowed = locale.allowed
             }
 
-            app.use(createLocaleMiddleware(config))
+            registerMiddleware(createLocaleMiddleware(config))
         },
     })
 }

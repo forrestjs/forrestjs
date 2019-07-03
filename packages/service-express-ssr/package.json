@@ -8,9 +8,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@forrestjs/core": "^3.0.0-alpha.7",
-    "@forrestjs/hooks": "^3.0.0-alpha.7",
-    "@forrestjs/service-express": "^3.0.0-alpha.7"
+    "@forrestjs/core": "^3.0.0-alpha.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
