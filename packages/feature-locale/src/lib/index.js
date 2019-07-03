@@ -77,7 +77,7 @@ export default ({ registerHook, registerAction }) => {
     registerAction({
         hook: '$EXPRESS_MIDDLEWARE',
         name: hooks.FEATURE_NAME,
-        handler: ({ registerMiddleware, getConfig }) => {
+        handler: ({ registerMiddleware }, { getConfig }) => {
             const locale = getConfig('locale', {})
             const config = {
                 default: locale.default || 'en_US',
