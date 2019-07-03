@@ -1,6 +1,6 @@
 import { INIT_SERVICE, START_SERVICE } from '@forrestjs/hooks'
 import { logError } from '@forrestjs/service-logger'
-import { POSTGRES_BEFORE_INIT, POSTGRES_BEFORE_START } from './hooks'
+import * as hooks from './hooks'
 
 import { default as init } from './init'
 import { default as start } from './start'
@@ -10,19 +10,18 @@ export { default as start } from './start'
 export { default as query } from './query'
 export { getModel, registerModel, resetModels } from './conn'
 
-export const register = ({ registerAction, createHook }) => {
+export default ({ registerHook, registerAction, createHook }) => {
+    registerHook(hooks)
+    
     registerAction({
         hook: INIT_SERVICE,
-        name: '→ postgres',
+        name: hooks.SERVICE_NAME,
         trace: __filename,
-        handler: async ({ postgres }) => {
-            if (!postgres) {
-                logError(`[postgres] missing boot configuration`)
-                throw new Error(`[postgres] missing boot configuration`)
-            }
+        handler: async ({ getConfig }) => {
+            const postgres = getConfig('postgres')
 
             for (const options of postgres) {
-                const name = `${POSTGRES_BEFORE_INIT}/${options.connectionName || 'default'}`
+                const name = `${hooks.POSTGRES_BEFORE_INIT}/${options.connectionName || 'default'}`
                 createHook(name, { args: { options } })
                 await init(options)
             }
@@ -31,11 +30,13 @@ export const register = ({ registerAction, createHook }) => {
 
     registerAction({
         hook: START_SERVICE,
-        name: '→ postgres',
+        name: hooks.SERVICE_NAME,
         trace: __filename,
-        handler: async ({ postgres }) => {
+        handler: async ({ getConfig }) => {
+            const postgres = getConfig('postgres')
+
             for (const options of postgres) {
-                const name = `${POSTGRES_BEFORE_START}/${options.connectionName || 'default'}`
+                const name = `${hooks.POSTGRES_BEFORE_START}/${options.connectionName || 'default'}`
                 createHook(name, { args: { options } })
                 await start(options)
             }

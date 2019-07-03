@@ -21,12 +21,16 @@ export const publish = (channelName, data, connectionName = 'default') => {
     connections[connectionName].publish(channelName, data)
 }
 
-export const register = ({ registerAction, createHook }) => {
+export default ({ registerHook, registerAction, createHook }) => {
+    registerHook(hooks)
+
     registerAction({
         hook: INIT_FEATURES,
         name: hooks.SERVICE_NAME,
         trace: __filename,
-        handler: async ({ postgresPubsub = [] }) => {
+        handler: async ({ getConfig }) => {
+            const postgresPubsub = getConfig('postgresPubSub')
+
             postgresPubsub.forEach(config => {
                 const connectionName = config.connectionName || 'default'
                 const uri = [
@@ -42,9 +46,7 @@ export const register = ({ registerAction, createHook }) => {
                 connections[connectionName].publish('ping', Date.now())
             })
 
-            createHook(hooks.POSTGRES_PUBSUB_START, {
-                args: { addChannel, once, publish },
-            })
+            createHook.sync(hooks.POSTGRES_PUBSUB_START, { addChannel, once, publish })
         },
     })
 }
