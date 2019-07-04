@@ -80,7 +80,7 @@ export default ({ registerAction, registerHook }) => {
                     ...queryPrototype,
                     type: new GraphQLObjectType({
                         name: mutationName,
-                        fields: queries,
+                        fields: mutations,
                     }),
                 })
             }

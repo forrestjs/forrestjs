@@ -67,6 +67,7 @@ export default ({ registerAction, registerHook, createHook, ...otherProps }) => 
         hook: '$EXPRESS_MIDDLEWARE',
         name: hooks.SERVICE_NAME,
         trace: __filename,
+        priority: -999,
         handler: async ({ registerMiddleware }, { getConfig }) => {
             // get default configs
             const {
