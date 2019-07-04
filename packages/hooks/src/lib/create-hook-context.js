@@ -10,25 +10,26 @@
 import { deleteTrace } from './state'
 import { traceHook, logTrace } from './tracer'
 
-let ctxCount = 0
+let traceIndex = 0
 
 export const createHookContext = (settings = {}) => (req, res, next) => {
     const namespace = settings.namespace || 'hooks'
     const expiry = settings.expiry || 5000
     const log = settings.logging || console.log
-    const ctx = ctxCount++
+    const traceId = traceIndex++
 
     const hooks = {
-        ctx,
-        getTrace: traceHook(ctx),
-        logTrace: showBoot => logTrace(log)(ctx)({
+        ...(settings.inject || {}),
+        traceId,
+        getTrace: traceHook(traceId),
+        logTrace: showBoot => logTrace(log)(traceId)({
             title: req.originalUrl,
             showBoot,
         }),
     }
     
     // clean out request trace
-    setTimeout(() => deleteTrace(ctx), expiry)
+    setTimeout(() => deleteTrace(traceId), expiry)
 
     req[namespace] = hooks
     next()

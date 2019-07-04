@@ -15,15 +15,15 @@ export const appendAction = (hook, action) => {
     state.hooks[hook].sort((a, b) => b.priority - a.priority)
 }
 
-export const appendTrace = (ctx, payload) => {
-    if (!state.trace[ctx]) {
-        state.trace[ctx] = []
+export const appendTrace = (id, payload) => {
+    if (!state.trace[id]) {
+        state.trace[id] = []
     }
-    state.trace[ctx].push(payload)
+    state.trace[id].push(payload)
 }
 
-export const deleteTrace = (ctx) => {
-    delete state.trace[ctx]
+export const deleteTrace = (id) => {
+    delete state.trace[id]
 }
 
 export const getHook = (hook) => {
@@ -35,7 +35,7 @@ export const getHook = (hook) => {
 
 export const getCurrentStack = () => [...state.stack]
 
-export const getTraceContext = (ctx) => state.trace[ctx] || []
+export const getTraceContext = (id) => state.trace[id] || []
 
 export const getState = () => state
 

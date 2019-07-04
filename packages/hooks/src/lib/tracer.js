@@ -6,10 +6,10 @@ import {
 } from './state'
 import { SYMBOLS, SEPARATOR } from './constants'
 
-export const traceAction = (action, options) => {
-    const { ctx } = options
+export const traceAction = (action, options = {}) => {
+    const { trace } = options
 
-    appendTrace(ctx, {
+    appendTrace(trace, {
         hook: action.hook,
         name: action.name,
         trace: action.trace,

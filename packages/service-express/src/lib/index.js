@@ -85,7 +85,22 @@ export default ({ registerAction, getHook, registerHook }) => {
             const logVerbose = ctx.logVerbose || console.log
 
             // hook - enable a tracing context that is scoped into the current request
-            app.use(createHookContext(getConfig('express.hooks', {})))
+            // it will create `req.hooks` object in which we inject the whole
+            // `createHookApp` execution context
+            app.use(createHookContext({ namespace: 'hooks', inject: ctx }))
+
+            // hook - apply the route trace context to the helper functions
+            app.use((req, res, next) => {
+                const createHook = req.hooks.createHook
+                const tracedCreateHook = (name, options = {}) => createHook(name, { ...options, trace: req.hooks.traceId })
+                tracedCreateHook.sync = (name, args) => tracedCreateHook(name, { args })
+                tracedCreateHook.serie = (name, args) => tracedCreateHook(name, { args, mode: 'serie' })
+                tracedCreateHook.parallel = (name, args) => tracedCreateHook(name, { args, mode: 'parallel' })
+                tracedCreateHook.waterfall = (name, args) => tracedCreateHook(name, { args, mode: 'waterfall' })
+                
+                req.hooks.createHook = tracedCreateHook
+                next()
+            })
             
             logVerbose('[express] init')
             await createHook.serie(hooks.EXPRESS_HACKS_BEFORE, { app, server })

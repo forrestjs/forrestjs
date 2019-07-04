@@ -7,7 +7,7 @@ import { onItemError } from './errors'
 const defaultOptions = {
     mode: 'sync',
     args: null,
-    ctx: 'boot', // maybe rename to "scope" or "phase"?
+    trace: 'boot',
     context: {}, // pass down utilities into any registerd action
     onError: (err) => { throw err },
     onItemError,
@@ -32,7 +32,7 @@ export const createHook = (name, receivedOptions = {}) => {
 
     const writeLog = () => {
         if (options.logTrace) {
-            logTrace(options.logTrace)(options.ctx)({
+            logTrace(options.logTrace)(options.trace)({
                 title: name,
             })
         }
