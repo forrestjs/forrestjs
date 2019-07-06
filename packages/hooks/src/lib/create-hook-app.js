@@ -138,14 +138,14 @@ export const createHookApp = (appDefinition = {}) =>
         await scopedCreateHook.serie(constants.START, internalContext)
         await scopedCreateHook.serie(constants.SETTINGS, internalContext)
         await runIntegrations(features, internalContext)
-        await scopedCreateHook.serie(constants.INIT_SERVICE, internalContext)
         await scopedCreateHook.parallel(constants.INIT_SERVICES, internalContext)
-        await scopedCreateHook.serie(constants.INIT_FEATURE, internalContext)
+        await scopedCreateHook.serie(constants.INIT_SERVICE, internalContext)
         await scopedCreateHook.parallel(constants.INIT_FEATURES, internalContext)
-        await scopedCreateHook.serie(constants.START_SERVICE, internalContext)
+        await scopedCreateHook.serie(constants.INIT_FEATURE, internalContext)
         await scopedCreateHook.parallel(constants.START_SERVICES, internalContext)
-        await scopedCreateHook.serie(constants.START_FEATURE, internalContext)
+        await scopedCreateHook.serie(constants.START_SERVICE, internalContext)
         await scopedCreateHook.parallel(constants.START_FEATURES, internalContext)
+        await scopedCreateHook.serie(constants.START_FEATURE, internalContext)
         await scopedCreateHook.serie(constants.FINISH, internalContext)
 
         return {

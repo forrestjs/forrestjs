@@ -6,7 +6,6 @@
  * open to further development using a better method
  */
 
-import { INIT_SERVICES } from '@forrestjs/hooks'
 import bcrypt from 'bcrypt-nodejs'
 import * as hooks from './hooks'
 
@@ -46,7 +45,7 @@ export const genSalt = rounds => new Promise((resolve, reject) => {
 
 export default ({ registerAction }) =>
     registerAction({
-        hook: INIT_SERVICES,
+        hook: '$INIT_SERVICES',
         name: hooks.SERVICE_NAME,
         trace: __filename,
         // handler: ({ hash }) => init(hash),

@@ -1,4 +1,3 @@
-import { INIT_SERVICES } from '@forrestjs/hooks'
 import jwt from 'jsonwebtoken'
 import * as hooks from './hooks'
 
@@ -34,7 +33,7 @@ export const verify = (token, customSecret = secret) =>
 
 export default ({ registerAction }) =>
     registerAction({
-        hook: INIT_SERVICES,
+        hook: '$INIT_SERVICES',
         name: hooks.SERVICE_NAME,
         trace: __filename,
         handler: ({ getConfig }, ctx) => {
