@@ -45,24 +45,32 @@ export const registerAction = (payload = {}, receivedHandler = null, receivedOpt
     
     // Hooks name can be expressed as variables:
     // '$FOO'
-    const hook = receivedHook.substr(0, 1) === '$'
-        ? getHook(receivedHook.substr(1))
-        : receivedHook
+    try {
+        const hook = receivedHook.substr(0, 1) === '$'
+            ? getHook(receivedHook.substr(1))
+            : receivedHook
 
-    const actionName = false
-        || name
-        || (handler.name !== 'handler' ? handler.name : 'unknown')
+        const actionName = false
+            || name
+            || (handler.name !== 'handler' ? handler.name : 'unknown')
 
-    const actionPayload = {
-        enabled: true,
-        hook,
-        name: actionName,
-        trace: trace || 'unknown',
-        meta,
-        handler,
-        priority: priority || 0,
+        const actionPayload = {
+            enabled: true,
+            hook,
+            name: actionName,
+            trace: trace || 'unknown',
+            meta,
+            handler,
+            priority: priority || 0,
+        }
+
+        logAction('register', actionPayload)
+        appendAction(hook, actionPayload)
+
+    // An optional hook fails silently
+    } catch (err) {
+        if (!payload.optional) {
+            throw err
+        }
     }
-
-    logAction('register', actionPayload)
-    appendAction(hook, actionPayload)
 }

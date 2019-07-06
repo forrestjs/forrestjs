@@ -28,15 +28,30 @@ export const cookieHelper = (settings) => {
         },
     }
 
+    // Applies validation and transformations to the received options for setting a cookie
+    const parseLocalOptions = (receivedOptions = {}) => {
+        const options = { ...receivedOptions }
+        if (options.maxAge && typeof options.maxAge === 'string') {
+            options.maxAge = millisecond(options.maxAge)
+        }
+        return options
+    }
+
     return (req, res, next) => {
         // Server Cookie
         req.getCookie = name => req.cookies[getName(name)]
-        res.setCookie = (name, content) => res.cookie(getName(name), content, options.app)
+        res.setCookie = (name, content, localOptions) => res.cookie(getName(name), content, {
+            ...options.app,
+            ...parseLocalOptions(localOptions),
+        })
         res.deleteCookie = name => res.clearCookie(getName(name))
 
         // Client Cookie
         req.getClientCookie = name => req.cookies[getClientName(name)]
-        res.setClientCookie = (name, content) => res.cookie(getClientName(name), content, options.client)
+        res.setClientCookie = (name, content, localOptions) => res.cookie(getClientName(name), content, {
+            ...options.client,
+            ...parseLocalOptions(localOptions),
+        })
         res.deleteClientCookie = name => res.clearCookie(getClientName(name))
 
         next()
