@@ -3,6 +3,8 @@ import * as hooks from './hooks'
 
 import { default as init } from './init'
 import { default as start } from './start'
+import { getModel, resetModels } from './conn'
+import { default as query } from './query'
 
 export { default as init } from './init'
 export { default as start } from './start'
@@ -16,13 +18,20 @@ export default ({ registerHook, registerAction, createHook }) => {
         hook: INIT_SERVICE,
         name: hooks.SERVICE_NAME,
         trace: __filename,
-        handler: async ({ getConfig }) => {
-            const postgres = getConfig('postgres')
+        handler: async ({ getConfig }, ctx) => {
+            const postgres = getConfig('postgres.connections')
 
             for (const options of postgres) {
                 const name = `${hooks.POSTGRES_BEFORE_INIT}/${options.connectionName || 'default'}`
-                createHook(name, { args: { options } })
-                await init(options)
+                createHook.sync(name, { options })
+                await init(options, ctx)
+            }
+
+            // Decorate the context with the PG context
+            ctx.pg = {
+                query,
+                getModel,
+                resetModels,
             }
         },
     })
@@ -31,13 +40,15 @@ export default ({ registerHook, registerAction, createHook }) => {
         hook: START_SERVICE,
         name: hooks.SERVICE_NAME,
         trace: __filename,
-        handler: async ({ getConfig }) => {
-            const postgres = getConfig('postgres')
+        handler: async ({ getConfig }, ctx) => {
+            const postgres = getConfig('postgres.connections')
 
             for (const options of postgres) {
                 const name = `${hooks.POSTGRES_BEFORE_START}/${options.connectionName || 'default'}`
-                createHook(name, { args: { options } })
-                await start(options)
+                createHook.sync(name, {
+                    registerModel: model => options.models.push(model)
+                })
+                await start(options, ctx)
             }
         },
     })

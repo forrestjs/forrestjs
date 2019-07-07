@@ -26,7 +26,7 @@ const initModels = async (conn, models) => {
     const promises = models.map(model => new Promise(async (resolve, reject) => {
         try {
             logVerbose(`[posgres] init model "${model.name}" in "${conn.name}"`)
-            const instance = await model.init(conn.handler)
+            const instance = await model.init(conn.handler, conn.hooksContext)
             pushModel(conn, instance)
             resolve()
         } catch (err) {
@@ -46,7 +46,7 @@ const startModels = async (conn, models) => {
         }
         try {
             logVerbose(`[postgres] start model "${model.name}" in "${conn.name}"`)
-            await model.start(conn, getModel(model.name, conn.name))
+            await model.start(conn.handler, getModel(model.name, conn.name), conn.hooksContext)
             resolve()
         } catch (err) {
             logError(`[postgres] failed to start model "${model.name}" in "${conn.name}" - ${err.message}`)
@@ -69,6 +69,7 @@ export default async ({ schemas, models, maxAttempts, attemptDelay, ...config })
         throw new Error(`[postgres] connection failed "${name}" - ${err.message}`)
     }
 
+    // Allow to run free queries right after connection was established
     try {
         if (config.onConnection) {
             await config.onConnection(conn)
@@ -83,6 +84,7 @@ export default async ({ schemas, models, maxAttempts, attemptDelay, ...config })
         await Promise.all(schemasP)
     }
 
+    // Initialize models
     try {
         await initModels(conn, models)
     } catch (err) {

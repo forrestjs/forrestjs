@@ -2,7 +2,7 @@ import Sequelize from 'sequelize'
 import { logInfo, logDebug } from '@forrestjs/service-logger'
 import { addHandler } from './conn'
 
-export default (config) => {
+export default (config, hooksContext) => {
     logInfo('[postgres] init')
     const name = config.connectionName || 'default'
     const handler = new Sequelize(config.database, config.username, config.password, {
@@ -16,5 +16,6 @@ export default (config) => {
         name,
         config,
         handler,
+        hooksContext,
     })
 }
