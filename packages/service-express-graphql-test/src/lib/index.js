@@ -31,7 +31,7 @@ export default ({ registerAction, registerHook }) => {
                     queries[key] = val
                 },
                 registerMutation: (key, val) => {
-                    if (queries[key]) {
+                    if (mutations[key]) {
                         throw new Error(`[express-graphql-test] Mutation "${key}" was already defined`)
                     }
                     mutations[key] = val
