@@ -9,7 +9,7 @@ const getLogLevel = () => {
 }
 
 export const log = (text) => {
-    if ([ 'verbose', 'debug' ].indexOf(getLogLevel()) !== -1) {
+    if ([ 'debug', 'silly' ].indexOf(getLogLevel()) !== -1) {
         console.log(text)
     }
 }
