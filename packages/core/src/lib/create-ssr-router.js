@@ -102,6 +102,12 @@ export const createSSRRouter = (receivedSettings = {}) => {
         console.log('')
         console.log('')
 
+        console.log([
+            path.join(settings.root, settings.build),
+            path.join(settings.root, settings.buildSrc),
+            path.join(settings.root, settings.buildSsr),
+        ])
+
         if (process.env.NODE_ENV === 'production') {
             throw new Error('[react-ssr] you need to build your project artifacts (npm run build:all)')
         }
