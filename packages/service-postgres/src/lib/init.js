@@ -10,6 +10,7 @@ export default (config, hooksContext) => {
         host: config.host,
         port: config.port,
         logging: config.logging || logDebug,
+        ...(config.pool ? { pool: config.pool } : {}),
     })
 
     addHandler(name, {
