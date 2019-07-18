@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/core",
   "description": "ForrestJS utilities for a nice SSR experience with React and ExpressJS.",
-  "version": "3.0.0",
+  "version": "3.0.6",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
