@@ -35,13 +35,23 @@ const createGraphQLMiddleware = async ({ settings, isDevOrTest }, ctx) => {
     // Build up the first cached schema so that any weird errors might
     // be checked out at boot time.
     cache.cachedEtag = cache.activeEtag
-    cache.schema = await makeSchema({ queries, mutations, config, settings }, ctx)
+    cache.schema = await makeSchema({
+        queries: { ...queries },
+        mutations: { ...mutations },
+        config,
+        settings,
+    }, ctx)
 
     return async (req, res, next) => {
         // Refresh the schema cache
         if (cache.schema === null || cache.cachedEtag !== cache.activeEtag) {
             cache.cachedEtag = cache.activeEtag
-            cache.schema = await makeSchema({ queries, mutations, config, settings }, ctx)
+            cache.schema = await makeSchema({
+                queries: { ...queries },
+                mutations: { ...mutations },
+                config,
+                settings
+            }, ctx)
         }
 
         return expressGraphql({
