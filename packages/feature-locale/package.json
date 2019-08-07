@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/feature-locale",
   "description": "ForrestJS feature which offers a GraphQL endpoint to fetch locale translations.",
-  "version": "3.0.8",
+  "version": "3.0.9",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@forrestjs/service-express-graphql": "^3.0.8",
+    "@forrestjs/service-express-graphql": "^3.0.9",
     "express-locale": "^1.2.0",
     "graphql": "^14.3.0",
     "graphql-type-json": "^0.3.0",
