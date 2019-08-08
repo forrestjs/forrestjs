@@ -8,7 +8,7 @@ const cache = {
     schema: null,
 }
 
-const bumpGraphqlETAG = (value = null) => {
+export const bumpGraphqlETAG = (value = null) => {
     if (value === null) {
         cache.activeEtag += 1
     } else {
