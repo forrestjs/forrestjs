@@ -4,13 +4,13 @@ import * as hooks from './hooks'
 export default ({ registerHook, registerAction, createHook }) => {
     registerHook(hooks)
     registerAction({
-        hook: '$EXPRESS_MIDDLEWARE',
+        hook: '$EXPRESS_HANDLER',
         name: hooks.SERVICE_NAME,
         trace: __filename,
-        handler: async ({ registerMiddleware }, { getConfig }) => {
+        handler: async ({ registerHandler }, { getConfig }) => {
             const options = getConfig('expressSSR', {})
             await createHook.serie(hooks.EXPRESS_SSR, { options })
-            registerMiddleware(createSSRRouter(options))
+            registerHandler(createSSRRouter(options))
         },
         priority: -999,
         route: '/',
