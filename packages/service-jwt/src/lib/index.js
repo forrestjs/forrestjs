@@ -31,6 +31,8 @@ export const verify = (token, customSecret = secret) =>
         })
     })
 
+export const decode = (token, options) => jwt.decode(token, options)
+
 export default ({ registerAction }) =>
     registerAction({
         hook: '$INIT_SERVICES',
@@ -45,7 +47,7 @@ export default ({ registerAction }) =>
             if (duration === '---') throw new Error('[service-jwt] Please configure "jwt.duration" or "process.env.JWT_DURATION"')
 
             // Decorate the context
-            ctx.jwt = { sign, verify }
+            ctx.jwt = { sign, verify, decode }
         },
     })
 
