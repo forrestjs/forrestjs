@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/service-jwt",
   "description": "ForrestJS service which helps handling jwt activities.",
-  "version": "3.1.0",
+  "version": "3.1.2",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
