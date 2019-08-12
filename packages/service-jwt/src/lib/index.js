@@ -26,7 +26,7 @@ export const verify = (token, customSecret = secret) =>
             if (err) {
                 reject(err)
             } else {
-                resolve(jwt.decode(token))
+                resolve(data)
             }
         })
     })
