@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-postgres-pubsub",
   "description": "ForrestJS service which helps turning a Postgres db into a pub/sub facility.",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@forrestjs/hooks": "^3.1.3",
+    "@forrestjs/hooks": "^3.1.4",
     "pg-pubsub": "^0.4.1"
   },
   "devDependencies": {
