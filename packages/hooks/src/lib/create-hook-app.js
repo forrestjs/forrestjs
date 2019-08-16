@@ -43,6 +43,26 @@ const runIntegrations = async (integrations, context) => {
     }
 }
 
+const objectSetter = targetObject => (path, value) => {
+    dotted.set(targetObject, path, value)
+    return true
+}
+
+const objectGetter = targetObject => (path, defaultValue) => {
+    let value = undefined
+    try { value = dotted(targetObject, path) } catch (err) {}
+
+    if (value !== undefined) {
+        return value
+    }
+
+    if (defaultValue !== undefined) {
+        return defaultValue
+    }
+
+    throw new Error(`path "${path}" does not exists!`)
+}
+
 export const createHookApp = (appDefinition = {}) =>
     async () => {
         // accepts a single param as [] of features
@@ -73,33 +93,23 @@ export const createHookApp = (appDefinition = {}) =>
         const hooksRegistry = createHooksRegistry(constants)
 
         // create getter and setter for the configuration
-        const getConfig = (path, defaultValue) => {
-            let value = undefined
-            try { value = dotted(internalSettings, path) } catch (err) {}
-
-            if (value !== undefined) {
-                return value
-            }
-
-            if (defaultValue !== undefined) {
-                return defaultValue
-            }
-
-            throw new Error(`[hooks] getConfig("${path}") does not exists!`)
-        }
-        const setConfig = (path, value) => {
-            dotted.set(internalSettings, path, value)
-            return true
-        }
+        const getConfig = objectGetter(internalSettings)
+        const setConfig = objectSetter(internalSettings)
 
         // create the context with getters / setters /
         const internalContext = {
             ...context,
             ...hooksRegistry,
-            getConfig,
-            setConfig,
             registerAction,
+            setConfig,
+            getConfig,
+            setContext: null,
+            getContext: null,
         }
+
+        // provide an api to deal with the internal context
+        internalContext.getContext = objectGetter(internalContext)
+        internalContext.setContext = objectSetter(internalContext)
 
         // createHook scoped to the Hook App context
         const scopedCreateHook = (name, options) => createHook(name, { ...options, context: internalContext })
