@@ -8,7 +8,7 @@ export const onItemError = (err, action, options) => {
         ? err.message
         : (typeof err === 'string' ? err : 'unknown error')
 
-    const error = new Error(`[hook] ${message}`)
+    const error = new Error(message)
     error.hook = action.hook
     error.action = action.name
     error.trace = action.trace
