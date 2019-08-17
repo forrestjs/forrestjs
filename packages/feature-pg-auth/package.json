@@ -1,16 +1,16 @@
 {
   "name": "@forrestjs/feature-pg-auth",
   "description": "ForrestJS feature which helps with authentication and persist it in Postgres.",
-  "version": "3.4.2",
+  "version": "3.4.3",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "@forrestjs/hooks": "^3.4.0",
-    "@forrestjs/service-hash": "^3.4.0",
-    "@forrestjs/service-postgres": "^3.4.0",
+    "@forrestjs/hooks": "^3.4.3",
+    "@forrestjs/service-hash": "^3.4.3",
+    "@forrestjs/service-postgres": "^3.4.3",
     "graphql-iso-date": "^3.6.1",
     "graphql-type-json": "^0.3.0",
     "uuid-validate": "^0.0.3"
@@ -18,7 +18,7 @@
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
-    "@forrestjs/babel-preset-package": "^3.4.0",
+    "@forrestjs/babel-preset-package": "^3.4.3",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/feature-pg-auth#readme",
