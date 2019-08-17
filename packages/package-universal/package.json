@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/package-universal",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "description": "ForrestJS Dependencies package for the \"starter-universal\" and similar apps.",
   "main": "index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
@@ -26,7 +26,7 @@
     "@forrestjs/core": "^3.4.0",
     "@forrestjs/feature-locale": "^3.4.0",
     "@forrestjs/feature-network": "^3.4.0",
-    "@forrestjs/feature-pg-auth": "^3.4.0",
+    "@forrestjs/feature-pg-auth": "^3.4.2",
     "@forrestjs/feature-pg-session": "^3.4.0",
     "@forrestjs/feature-pg-session-info": "^3.4.0",
     "@forrestjs/feature-storage": "^3.4.0",

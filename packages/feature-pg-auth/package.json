@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/feature-pg-auth",
   "description": "ForrestJS feature which helps with authentication and persist it in Postgres.",
-  "version": "3.4.0",
+  "version": "3.4.2",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
