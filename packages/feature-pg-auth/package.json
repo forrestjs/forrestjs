@@ -12,7 +12,8 @@
     "@forrestjs/service-hash": "^3.4.0",
     "@forrestjs/service-postgres": "^3.4.0",
     "graphql-iso-date": "^3.6.1",
-    "graphql-type-json": "^0.3.0"
+    "graphql-type-json": "^0.3.0",
+    "uuid-validate": "^0.0.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
