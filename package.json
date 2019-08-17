@@ -29,6 +29,7 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.4.4",
+    "concurrently": "^4.1.2",
     "lerna": "^3.14.1"
   }
 }
