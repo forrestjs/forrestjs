@@ -107,11 +107,12 @@ export default ({ registerHook, registerAction }) => {
                 },
             })
 
-            // register query and optinal mutation
-            // registerQuery(wrapperName, await sessionQuery({ ...config, queries }, ctx))
-            if (Object.keys(queries).length) {
-                registerQuery('auth', await authQuery(queries, config, ctx))
-            }
+            // session.auth queries
+            // there is a default query named "id" that provides the basic user id
+            registerQuery('auth', await authQuery(queries, config, ctx))
+
+            // session.auth mutations are totally optional and will be skipped if
+            // no sub-mutation was registered
             if (Object.keys(mutations).length) {
                 registerMutation('auth', await authMutation(mutations, config, ctx))
             }
