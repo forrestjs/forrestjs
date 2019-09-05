@@ -7,7 +7,7 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.4",
+    "@babel/runtime": "^7.5.5",
     "deep-extend": "^0.6.0",
     "express": "^4.16.4",
     "fs-extra": "^7.0.1",
@@ -29,8 +29,8 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
     "@forrestjs/babel-preset-package": "^3.5.0",
     "cross-env": "^5.1.4"
   },
