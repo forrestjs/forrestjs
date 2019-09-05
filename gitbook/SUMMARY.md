@@ -8,6 +8,7 @@
 
 * [Read the Tutorials](./tutorials.md)
 * [Navigate the Packages](./packages.md)
+* [Navigate the Styleguide](https://forrestjs.github.io/styleguide)
 
 
 ### Step By Step Tutorial
