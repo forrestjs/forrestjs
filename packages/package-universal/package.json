@@ -22,7 +22,7 @@
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.5.5",
+    "@babel/polyfill": "^7.4.4",
     "@forrestjs/core": "^3.5.0",
     "@forrestjs/feature-locale": "^3.5.0",
     "@forrestjs/feature-network": "^3.5.0",

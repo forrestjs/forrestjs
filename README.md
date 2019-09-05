@@ -21,7 +21,7 @@ Hey mate, thank you for landing here!
 
 ## Or quick start a project:
 
-    npx forrest run my-new-pwa -p 8080
+    npx forrest run my-new-pwa -p 8080    
 
 
 ## LICENCE
