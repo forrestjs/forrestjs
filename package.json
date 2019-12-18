@@ -3,12 +3,12 @@
   "version": "0.0.2",
   "description": "ForrestJS Monorepo",
   "scripts": {
-    "boot": "npm install && lerna bootstrap",
+    "boot": "npm install && lerna bootstrap -- --no-package-lock",
     "clean": "lerna run clean && lerna clean --yes && rm -rf node_modules",
     "test": "lerna run test",
     "ci-bootstrap": "lerna bootstrap --hoist",
     "ci-test": "lerna run test",
-    "deploy": "lerna publish --force-publish --skip-git"
+    "deploy": "lerna publish --force-publish"
   },
   "author": "Marco Pegoraro",
   "license": "MIT",
