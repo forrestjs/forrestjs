@@ -8,7 +8,7 @@
     "test": "lerna run test",
     "ci-bootstrap": "lerna bootstrap --hoist",
     "ci-test": "lerna run test",
-    "deploy": "lerna publish --force-publish"
+    "deploy": "lerna publish --force-publish --skip-git"
   },
   "author": "Marco Pegoraro",
   "license": "MIT",
