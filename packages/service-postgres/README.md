@@ -1,4 +1,4 @@
-# @forrestjs/service-posrgres
+# @forrestjs/service-postgres
 
 ForrestJS service which helps connecting to a Postgres server.
 
@@ -10,7 +10,7 @@ ForrestJS service which helps connecting to a Postgres server.
         hook: SETTINGS,
         name: '♦ boot',
         handler: ({ settings }) => {
-            settings.postgres = [
+            settings.postgres.connections = [
                 {
                     connectionName: 'default',
                     host: config.get('PG_HOST'),
@@ -24,3 +24,7 @@ ForrestJS service which helps connecting to a Postgres server.
                 },
             ]
             ...
+
+## Troubleshooting
+
+`service-postgres` depends on `service-logger`, install it.
