@@ -142,4 +142,55 @@ describe('hooks/create-hook-app', () => {
         })
     })
 
+    describe('createHookApp / registerHook', () => {
+        const s1 = ({ registerHook, registerAction, createHook }) => {
+            registerHook({ S1: 's1' })
+            registerAction({
+                hook: '$START_SERVICE',
+                handler: () => createHook.sync('s1')
+            })
+        }
+
+        it('should run a required service by reference', async () => {
+            const handler = jest.fn()
+            const f1 = ['$S1', handler]
+    
+            await runHookApp({
+                services: [s1],
+                features: [f1],
+            })
+    
+            expect(handler.mock.calls.length).toBe(1)
+        })
+
+        it('should fail to run a required service by reference', async () => {
+            const handler = jest.fn()
+            const f1 = ['$S1', handler]
+
+            let error = null
+            try {
+                await runHookApp({
+                    // services: [s1],
+                    features: [f1],
+                })
+            } catch (e) {
+                error = e
+            }
+
+            expect(error.message).toBe('Unknown hook "S1"')
+        })
+
+        it('should ignore an optional service by reference', async () => {
+            const handler = jest.fn()
+            const f1 = ['$S1?', handler]
+
+            await runHookApp({
+                // services: [s1],
+                features: [f1],
+            })
+    
+            expect(handler.mock.calls.length).toBe(0)
+        })
+    })
+
 })
