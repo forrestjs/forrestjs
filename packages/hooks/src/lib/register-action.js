@@ -44,11 +44,18 @@ export const registerAction = (payload = {}, receivedHandler = null, receivedOpt
     }
     
     // Hooks name can be expressed as variables:
-    // '$FOO'
+    // '$FOO'  - required reference
+    // '$FOO?' - optional reference
     try {
         const hook = receivedHook.substr(0, 1) === '$'
             ? getHook(receivedHook.substr(1))
             : receivedHook
+
+        // the hook could be null in case of an optional reference was required
+        // '$FOO?'
+        if (hook === null) {
+            return
+        }
 
         const actionName = false
             || name

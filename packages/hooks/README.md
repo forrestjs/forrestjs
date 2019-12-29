@@ -302,3 +302,41 @@ I would normally split this code into multiple files:
 
 With this setup a complex application can be takled by a large team with
 people working in paralle on clearly separated features.
+
+## Reference Hooks by Name
+
+A feature/service may register its hooks inside the hook app so that other
+services/features may refer to them by name instead of importing constants:
+
+```js
+const service1 = ({ registerHook, registerAction, createHook }) => {
+    
+    // Register the feature's hooks within the App's context
+    registerHook({ S1_START: 's1' })
+
+    registerAction({
+        hook: '$START_SERVICE',
+        handler: () => createHook.sync('s1')
+    })
+}
+
+// feature1 try to hook into "service1 > S1_START" using a
+// **strict reference**, the app would crash if that hook was not registersd
+const feature1 = ['$S1_START', () => { ... }]
+
+// feature2 try to hook into "service1 > S1_FOO" using a
+// **loose reference**, that hook does not exists, so the action is ignored
+const feature2 = ['$S1_FOO?', () => { ... }]
+
+runHookApp({
+    trace: 'compact',
+    services: [
+        service2,
+    ],
+    features: [
+        feature1,
+        feature2,
+    ],
+}).catch(err => console.error(err))
+```
+

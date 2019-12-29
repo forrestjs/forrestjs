@@ -16,9 +16,20 @@ const registries = {}
 export const createHooksRegistry = (initialHooks = {}, { registryName } = {}) => {
     const knownHooks = {}
 
+    // '$FOO'  - required reference (trigger error if not exists)
+    // '$FOO?' - optional reference (returns `null` if not exists)
     const getHook = (name) => {
-        if (knownHooks[name]) {
-            return knownHooks[name]
+        const isOptional = name.slice(-1) === '?'
+        const hookName = isOptional
+            ? name.substr(0, name.length - 1)
+            : name
+
+        if (knownHooks[hookName]) {
+            return knownHooks[hookName]
+        }
+
+        if (isOptional) {
+            return null
         }
 
         throw new Error(`Unknown hook "${name}"`)
