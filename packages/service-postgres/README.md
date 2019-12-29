@@ -30,6 +30,22 @@ runHookApp({
 }).catch(err => console.error(err))
 ```
 
+## Hooks
+
+Initialization hooks are synchronous:
+
+- (sync) POSTGRES_BEFORE_INIT
+- (sync) POSTGRES_BEFORE_INIT/{connectionName}
+- (sync) POSTGRES_AFTER_INIT/{connectionName}
+- (sync) POSTGRES_AFTER_INIT
+
+Start hooks are asynchronous and run in serie
+
+- (serie) POSTGRES_BEFORE_START
+- (serie) POSTGRES_BEFORE_START/{connectionName}
+- (serie) POSTGRES_AFTER_START/{connectionName}
+- (serie) POSTGRES_AFTER_START
+
 ## Troubleshooting
 
 `service-postgres` depends on `service-logger`, install it.
