@@ -7,15 +7,17 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
+    "@babel/runtime": "^7.11.0",
     "@forrestjs/hooks": "^3.9.0",
     "bcrypt-nodejs": "^0.0.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
     "@forrestjs/babel-preset-package": "^3.9.0",
-    "cross-env": "^5.1.4"
+    "@marcopeg/utils": "^2.0.1",
+    "cross-env": "^7.0.2",
+    "jest": "^26.2.2"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-hash#readme",
   "keywords": [
