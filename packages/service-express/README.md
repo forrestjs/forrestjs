@@ -21,7 +21,7 @@ const homePageAction = ({ registerRoute }) => registerRoute.get('/', homePageRou
 
 // Run the app:
 runHookApp({
-    config: {
+    settings: {
         express: {
             port: 8080,
         },

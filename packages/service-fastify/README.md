@@ -1,6 +1,7 @@
 # @forrestjs/service-fastify
 
-ForrestJS service which helps setting up an FastifyJS server.
+ForrestJS service which helps setting up an FastifyJS server.  
+https://codesandbox.io/s/service-fastify-th8dq
 
 ## Install & Setup
 
@@ -21,8 +22,8 @@ const homePageAction = ({ registerRoute }) => registerRoute.get('/', homePageRou
 
 // Run the app:
 runHookApp({
-    config: {
-        express: {
+    settings: {
+        fastify: {
             port: 8080,
         },
     },
