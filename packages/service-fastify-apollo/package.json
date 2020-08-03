@@ -1,19 +1,19 @@
 {
   "name": "@forrestjs/service-fastify-apollo",
   "description": "ForrestJS service which adds Apollo GraphQL Client to a Fastify server.",
-  "version": "3.12.0",
+  "version": "3.13.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.11.0",
-    "@forrestjs/hooks": "^3.12.0"
+    "@forrestjs/hooks": "^3.13.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.0",
-    "@forrestjs/babel-preset-package": "^3.12.0",
+    "@forrestjs/babel-preset-package": "^3.13.0",
     "@marcopeg/utils": "^2.0.1",
     "cross-env": "^7.0.2",
     "jest": "^26.2.2"
