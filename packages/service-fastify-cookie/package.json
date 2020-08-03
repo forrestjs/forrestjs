@@ -1,20 +1,20 @@
 {
   "name": "@forrestjs/service-fastify-cookie",
   "description": "ForrestJS service which adds cookie management capabilities to a Fastify server.",
-  "version": "3.11.0",
+  "version": "3.12.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.11.0",
-    "@forrestjs/hooks": "^3.11.0",
+    "@forrestjs/hooks": "^3.12.0",
     "fastify-cookie": "^4.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.0",
-    "@forrestjs/babel-preset-package": "^3.11.0",
+    "@forrestjs/babel-preset-package": "^3.12.0",
     "@marcopeg/utils": "^2.0.1",
     "cross-env": "^7.0.2",
     "jest": "^26.2.2"
