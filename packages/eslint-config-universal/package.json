@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/eslint-config-universal",
-  "version": "3.13.1",
+  "version": "3.13.2",
   "description": "ForrestJS ESLint config that we like, you are free to ditch this and use your own :-)",
   "main": "index.js",
   "scripts": {
