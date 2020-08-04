@@ -31,13 +31,14 @@ const runIntegrations = async (integrations, context) => {
         if (Array.isArray(computed)
             && computed.length >= 2
             && typeof computed[0] === 'string'
-            && typeof computed[1] === 'function'
+            && (typeof computed[1] === 'function' || typeof computed[1] === 'object')
         ) {
             const [ hook, handler, options = {} ] = computed
             registerAction({
-                ...options,
+                ...(typeof options === 'string' ? { name: options } : options),
                 hook,
-                handler,
+                // An handler could be a simple object to skip any running function
+                handler: typeof handler === 'function' ? handler : () => handler,
             })
         }
     }

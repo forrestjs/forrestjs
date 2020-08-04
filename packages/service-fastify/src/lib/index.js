@@ -2,6 +2,28 @@ const fastify = require('fastify');
 const { INIT_SERVICE, START_SERVICE } = require('@forrestjs/hooks');
 const hooks = require('./hooks');
 
+class MissingPropertyError extends Error {}
+
+// Receives in "route" the return data structure from a "registerHook.sync" call.
+const makeRoute = method => route => {
+  if (Array.isArray(route[0])) {
+    return [{
+      method,
+      url: route[0][0],
+      handler: route[0][1],
+    }]
+  }
+
+  if (typeof route[0] === 'object') {
+    return [{
+      ...route[0],
+      method,
+    }]
+  }
+
+  return [null, null]
+}
+
 const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
   const options = getConfig('fastify.instance.options', {});
   const server = fastify(options);
@@ -35,7 +57,27 @@ const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
     decorateRequest,
     decorateReply,
   });
-  createHook.sync(hooks.FASTIFY_ROUTE, { registerRoute });
+
+  // Register routes with generic and specialized handlers
+  const routes = [
+    ...createHook.sync(hooks.FASTIFY_ROUTE, { registerRoute }),
+    ...createHook.sync(hooks.FASTIFY_GET, { registerRoute: registerRoute.get }).map(makeRoute('GET')),
+    ...createHook.sync(hooks.FASTIFY_POST, { registerRoute: registerRoute.post }).map(makeRoute('POST')),
+    ...createHook.sync(hooks.FASTIFY_PUT, { registerRoute: registerRoute.put }).map(makeRoute('PUT')),
+    ...createHook.sync(hooks.FASTIFY_DELETE, { registerRoute: registerRoute.delete }).map(makeRoute('DELETE')),
+  ]
+
+  // Let register a feature with the return value:
+  routes.forEach(route => {
+    try {
+      if (!route[0].hasOwnProperty('method')) throw new MissingPropertyError()
+      if (!route[0].hasOwnProperty('url')) throw new MissingPropertyError()
+      if (!route[0].hasOwnProperty('handler')) throw new MissingPropertyError()
+      registerRoute(route[0])
+    } catch (e) {
+      // console.error(route[0], e)
+    }
+  })
 
   setContext('fastify', server);
 };
