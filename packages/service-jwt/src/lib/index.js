@@ -3,12 +3,13 @@ import * as hooks from './hooks'
 
 let secret = null
 let duration = null
+let settings = {}
 
-export const sign = (payload, settings = {}, customSecret = secret) =>
+export const sign = (payload, customSettings = settings, customSecret = secret) =>
     new Promise((resolve, reject) => {
         const localSettings = {
-            ...settings,
-            expiresIn: settings.expiresIn || duration,
+            ...customSettings,
+            expiresIn: customSettings.expiresIn || duration,
         }
 
         jwt.sign({ payload }, customSecret, localSettings, (err, token) => {
@@ -41,6 +42,7 @@ export default ({ registerAction }) =>
         handler: ({ getConfig }, ctx) => {
             secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---')
             duration = getConfig('jwt.duration', process.env.JWT_DURATION || '---')
+            settings = getConfig('jwt.settings', {})
 
             // Automagically setup the secret in "development" or "test"
             if (secret === '---' && ['development', 'test'].includes(process.env.NODE_ENV)) {
