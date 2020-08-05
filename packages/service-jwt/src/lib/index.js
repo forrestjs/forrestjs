@@ -42,6 +42,20 @@ export default ({ registerAction }) =>
             secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---')
             duration = getConfig('jwt.duration', process.env.JWT_DURATION || '---')
 
+            // Automagically setup the secret in "development" or "test"
+            if (secret === '---' && ['development', 'test'].includes(process.env.NODE_ENV)) {
+                secret = 'forrestjs';
+                console.warn(`[service-jwt] secret automagically configured because you are in "${process.env.NODE_ENV}" environment.`);
+                console.warn(`[service-jwt] value: "${secret}"`);
+            }
+            
+            // Automagically setup the duration in "development" or "test"
+            if (duration === '---' && ['development', 'test'].includes(process.env.NODE_ENV)) {
+                duration = '30d';
+                console.warn(`[service-jwt] duration automagically configured because you are in "${process.env.NODE_ENV}" environment.`);
+                console.warn(`[service-jwt] value: "${duration}"`);
+            }
+
             // Validate configuration
             if (secret === '---') throw new Error('[service-jwt] Please configure "jwt.secret" or "process.env.JWT_SECRET"')
             if (duration === '---') throw new Error('[service-jwt] Please configure "jwt.duration" or "process.env.JWT_DURATION"')
