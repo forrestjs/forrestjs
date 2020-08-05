@@ -1,6 +1,8 @@
 # @forrestjs/service-fastify-healthz
 
 ForrestJS service which helps setting up an Fastify healthcheck route.  
+
+DEMO:  
 https://codesandbox.io/s/service-fastify-healthz-4g3my
 
 ## Install & Setup

@@ -1,6 +1,8 @@
 # @forrestjs/service-fastify
 
 ForrestJS service which helps setting up an FastifyJS server.  
+
+DEMO:  
 https://codesandbox.io/s/service-fastify-th8dq
 
 ## Install & Setup
