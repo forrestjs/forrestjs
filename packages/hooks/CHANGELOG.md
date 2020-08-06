@@ -1,7 +1,21 @@
 # Change Log
 
-## v1.13.1 2019-08-04
+## v1.13.4
 
+## registerAction accepts scalars as "handler"
+
+```js
+const featureX = ({ registerAction }) => registerAction({
+  hook: '$FASTIFY_ROUTE',
+  handler: {
+    method: 'GET',
+    url: '/x',
+    handler: async () => 'xxx'
+  }
+})
+```
+
+## v1.13.1 2019-08-04
 
 ### Accepts plain objects as handlers
 
