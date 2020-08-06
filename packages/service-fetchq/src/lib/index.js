@@ -26,7 +26,10 @@ const onInitService = ({ getConfig, setContext, createHook }) => {
   const workers = createHook.sync(hooks.FETCHQ_REGISTER_WORKER, {
     fetchq: client,
   });
-  workers.forEach(def => client.workers.register(def[0]));
+  workers.forEach(def => {
+    const defs = Array.isArray(def[0]) ? def[0] : [def[0]];
+    defs.forEach($ => client.workers.register($));
+  });
   setContext('fetchq', client);
 };
 
