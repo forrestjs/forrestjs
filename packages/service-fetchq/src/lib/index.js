@@ -39,11 +39,11 @@ const onStartService = async ({ getConfig, getContext, createHook }) => {
 
   await client.init();
 
-  // await createHook.serie(hooks.FETCHQ_BEFORE_START, { fetchq: client });
+  await createHook.serie(hooks.FETCHQ_BEFORE_START, { fetchq: client });
 
-  // await client.start();
+  await client.start();
 
-  // await createHook.serie(hooks.FETCHQ_READY, { fetchq: client });
+  await createHook.serie(hooks.FETCHQ_READY, { fetchq: client });
 };
 
 module.exports = ({ registerAction, registerHook }) => {
