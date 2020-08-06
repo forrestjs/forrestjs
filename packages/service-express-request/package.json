@@ -1,20 +1,20 @@
 {
   "name": "@forrestjs/service-express-request",
   "description": "ForrestJS service which a unique id to each different HTTP requests.",
-  "version": "3.13.5",
+  "version": "3.13.6",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "@forrestjs/hooks": "^3.13.5",
+    "@forrestjs/hooks": "^3.13.6",
     "express-request-id": "^1.4.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
-    "@forrestjs/babel-preset-package": "^3.13.5",
+    "@forrestjs/babel-preset-package": "^3.13.6",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-express-request#readme",
