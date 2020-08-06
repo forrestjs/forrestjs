@@ -1,22 +1,22 @@
 {
   "name": "@forrestjs/service-express-cookies",
   "description": "ForrestJS service which helps handling cookies in an ExpressJS server.",
-  "version": "3.13.6",
+  "version": "3.13.7",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "@forrestjs/hooks": "^3.13.6",
-    "@forrestjs/service-express": "^3.13.6",
+    "@forrestjs/hooks": "^3.13.7",
+    "@forrestjs/service-express": "^3.13.7",
     "cookie-parser": "^1.4.4",
     "millisecond": "^0.1.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
-    "@forrestjs/babel-preset-package": "^3.13.6",
+    "@forrestjs/babel-preset-package": "^3.13.7",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-express-cookies#readme",
