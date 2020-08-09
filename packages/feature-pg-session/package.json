@@ -1,19 +1,19 @@
 {
   "name": "@forrestjs/feature-pg-session",
   "description": "ForrestJS feature which persist an express session in Postgres.",
-  "version": "3.13.8",
+  "version": "3.14.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "@forrestjs/service-postgres": "^3.13.8"
+    "@forrestjs/service-postgres": "^3.14.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
-    "@forrestjs/babel-preset-package": "^3.13.8",
+    "@forrestjs/babel-preset-package": "^3.14.0",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/feature-pg-session#readme",
