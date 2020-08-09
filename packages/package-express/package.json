@@ -1,0 +1,44 @@
+{
+  "name": "@forrestjs/package-express",
+  "version": "3.13.8",
+  "description": "ForrestJS Dependencies package for a Express app.",
+  "main": "index.js",
+  "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/package-express#readme",
+  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/package-express",
+  "bugs": {
+    "url": "https://github.com/forrestjs/forrestjs/issues"
+  },
+  "keywords": [
+    "forrestjs",
+    "package",
+    "fastify"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.11.0",
+    "@forrestjs/hooks": "^3.13.8",
+    "@forrestjs/service-env": "^3.13.8",
+    "@forrestjs/service-express": "^3.13.8",
+    "@forrestjs/service-express-cookies": "^3.13.8",
+    "@forrestjs/service-express-device": "^3.13.8",
+    "@forrestjs/service-express-graphql": "^3.13.8",
+    "@forrestjs/service-express-graphql-test": "^3.13.8",
+    "@forrestjs/service-express-request": "^3.13.8",
+    "@forrestjs/service-express-session": "^3.13.8",
+    "@forrestjs/service-express-ssr": "^3.13.8",
+    "@forrestjs/service-fetchq": "^3.13.8",
+    "@forrestjs/service-hash": "^3.13.8",
+    "@forrestjs/service-jwt": "^3.13.8",
+    "@forrestjs/service-logger": "^3.13.8",
+    "@forrestjs/service-postgres": "^3.13.8",
+    "@forrestjs/service-postgres-pubsub": "^3.13.8"
+  },
+  "gitHead": "842378d848c42fb0c272e888ea538ec04335cfc4"
+}
