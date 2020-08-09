@@ -45,6 +45,7 @@ const fastifyGql = hooks => (fastify, opts, next) => {
   const server = new ApolloServer({
     schema,
     context,
+    ...opts,
   });
 
   fastify.register(server.createHandler());
