@@ -10,7 +10,7 @@
     "@babel/runtime": "^7.11.2",
     "@forrestjs/hooks": "^3.13.8",
     "@forrestjs/service-express": "^3.13.8",
-    "cookie-parser": "^1.4.4",
+    "cookie-parser": "^1.4.5",
     "millisecond": "^0.1.2"
   },
   "devDependencies": {
