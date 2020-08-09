@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/react-stack-layout",
   "description": "ForrestJS React component that implements a stack of modals.",
-  "version": "3.13.7",
+  "version": "3.13.8",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
@@ -12,7 +12,7 @@
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
-    "@forrestjs/babel-preset-package": "^3.13.7",
+    "@forrestjs/babel-preset-package": "^3.13.8",
     "cross-env": "^5.1.4"
   },
   "peerDependencies": {

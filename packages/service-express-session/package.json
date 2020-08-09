@@ -1,20 +1,20 @@
 {
   "name": "@forrestjs/service-express-session",
   "description": "ForrestJS service which provides the basics to handle a session in Express.",
-  "version": "3.13.7",
+  "version": "3.13.8",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "@forrestjs/hooks": "^3.13.7",
+    "@forrestjs/hooks": "^3.13.8",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
-    "@forrestjs/babel-preset-package": "^3.13.7",
+    "@forrestjs/babel-preset-package": "^3.13.8",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-express-session#readme",
