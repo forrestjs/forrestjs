@@ -12,52 +12,28 @@ import * as hooks from './hooks'
 // const server = createServer(app)
 const FALLBACK_PORT = '8080'
 
-// export const init = async (settings) => {
-//     logInfo('[express] init...')
+class MissingPropertyError extends Error {}
 
-//     await createHook(EXPRESS_INIT, {
-//         async: 'serie',
-//         args: { app, server, settings: { ...settings } },
-//     })
+// Receives in "route" the return data structure from a "registerHook.sync" call.
+const makeRoute = method => route => {
+    if (Array.isArray(route[0])) {
+      return [{
+        method,
+        url: route[0][0],
+        handler: route[0][1],
+      }]
+    }
+  
+    if (typeof route[0] === 'object') {
+      return [{
+        ...route[0],
+        method,
+      }]
+    }
+  
+    return [null, null]
+  }
 
-//     // Basic middlewares
-//     app.use(compression())
-//     app.use(helmet())
-
-//     // hook - enable a tracing context that is scoped
-//     // into the current request
-//     app.use(createHookContext(settings.hooks || {}))
-
-//     // classic "data" middleware
-//     app.use((req, res, next) => {
-//         req.data = {}
-//         next()
-//     })
-
-//     await createHook(EXPRESS_MIDDLEWARE, {
-//         async: 'serie',
-//         args: { app, server, settings: { ...settings } },
-//     })
-
-//     await createHook(EXPRESS_ROUTE, {
-//         async: 'serie',
-//         args: { app, server, settings: { ...settings } },
-//     })
-
-//     await createHook(EXPRESS_HANDLER, {
-//         async: 'serie',
-//         args: { app, server, settings: { ...settings } },
-//     })
-// }
-
-// export const start = (settings) => new Promise((resolve) => {
-//     logInfo('[express] start server...')
-//     const port = settings.port || process.env.REACT_APP_PORT || process.env.PORT || fallbackPort
-//     server.listen(port, () => {
-//         logInfo(`[express] server is running on ${port}`)
-//         resolve()
-//     })
-// })
 
 export default ({ registerAction, getHook, registerHook }) => {
     // Register extension points
@@ -70,7 +46,7 @@ export default ({ registerAction, getHook, registerHook }) => {
     // Hooks helper functions
     const registerMiddleware = (a, b) => typeof a === 'string' ? app.use(a, b) : app.use(a)
     const registerHandler = fn => app.use(fn)
-    const registerRoute = (method, mountPoint, chain) => app[method](mountPoint, chain)
+    const registerRoute = (method, mountPoint, chain) => app[method.toLowerCase()](mountPoint, chain)
     registerRoute.get = (a, b) => registerRoute('get', a, b)
     registerRoute.post = (a, b) => registerRoute('post', a, b)
     registerRoute.put = (a, b) => registerRoute('put', a, b)
@@ -109,7 +85,29 @@ export default ({ registerAction, getHook, registerHook }) => {
             await createHook.serie(hooks.EXPRESS_MIDDLEWARE, { registerMiddleware })
 
             logVerbose('[express] load routes')
-            await createHook.serie(hooks.EXPRESS_ROUTE, { registerRoute })
+            // await createHook.serie(hooks.EXPRESS_ROUTE, { registerRoute })
+
+            // Register routes with generic and specialized handlers
+            const routes = [
+                ...createHook.sync(hooks.EXPRESS_ROUTE, { registerRoute }),
+                ...createHook.sync(hooks.EXPRESS_GET, { registerRoute: registerRoute.get }).map(makeRoute('get')),
+                ...createHook.sync(hooks.EXPRESS_POST, { registerRoute: registerRoute.post }).map(makeRoute('post')),
+                ...createHook.sync(hooks.EXPRESS_PUT, { registerRoute: registerRoute.put }).map(makeRoute('put')),
+                ...createHook.sync(hooks.EXPRESS_DELETE, { registerRoute: registerRoute.delete }).map(makeRoute('delete')),
+            ]
+
+            // Let register a feature with the return value:
+            routes.forEach(route => {
+                try {
+                    if (!route[0].hasOwnProperty('method')) throw new MissingPropertyError()
+                    if (!route[0].hasOwnProperty('url')) throw new MissingPropertyError()
+                    if (!route[0].hasOwnProperty('handler')) throw new MissingPropertyError()
+                    console.log('register', route[0])
+                    registerRoute(route[0].method, route[0].url, route[0].handler)
+                } catch (e) {
+                    // console.error(route[0], e)
+                }
+            })
             
             logVerbose('[express] load handlers')
             await createHook.serie(hooks.EXPRESS_HANDLER, { registerHandler })
