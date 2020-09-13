@@ -1,20 +1,20 @@
 {
   "name": "@forrestjs/service-env",
   "description": "ForrestJS feature which helps importing environment variables from .env.* files.",
-  "version": "3.16.0",
+  "version": "3.16.1",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "@forrestjs/hooks": "^3.16.0",
+    "@forrestjs/hooks": "^3.16.1",
     "node-env-file": "^0.1.8"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.1",
-    "@forrestjs/babel-preset-package": "^3.16.0",
+    "@forrestjs/babel-preset-package": "^3.16.1",
     "@marcopeg/utils": "^2.0.1",
     "cross-env": "^7.0.2",
     "jest": "^26.2.2"
