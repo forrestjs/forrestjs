@@ -1,11 +1,20 @@
 const fetchq = require('fetchq');
 const { SERVICE_NAME, ...hooks } = require('./hooks');
 
-const onInitService = ({ getConfig, setContext, createHook }) => {
-  // Fetchq config must be "undefined" in order to use
-  // all the client's default values
-  const config = getConfig('fetchq', null);
-  const client = fetchq(config || undefined);
+const onInitService = ({ getConfig, getContext, setContext, createHook }) => {
+  
+  // Decorate the Fetchq context with a reference to the getters in the hooks app:
+  const receivedConfig = getConfig('fetchq', {});
+  const applyConfig = {
+    ...receivedConfig,
+    decorateContext: {
+      ...(receivedConfig.decorateContext ? receivedConfig.decorateContext : {}),
+      getConfig,
+      getContext,
+    }
+  }
+
+  const client = fetchq(applyConfig);
 
   // register feature's queues
   const queues = createHook.sync(hooks.FETCHQ_REGISTER_QUEUE, {
