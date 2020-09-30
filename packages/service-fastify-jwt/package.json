@@ -1,20 +1,20 @@
 {
   "name": "@forrestjs/service-fastify-jwt",
   "description": "ForrestJS service which adds JWT utilities to a Fastify server.",
-  "version": "3.18.1",
+  "version": "3.18.2",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.11.0",
-    "@forrestjs/hooks": "^3.18.1",
+    "@forrestjs/hooks": "^3.18.2",
     "fastify-jwt": "^2.1.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.0",
-    "@forrestjs/babel-preset-package": "^3.18.1",
+    "@forrestjs/babel-preset-package": "^3.18.2",
     "@marcopeg/utils": "^2.0.1",
     "cross-env": "^7.0.2",
     "jest": "^26.2.2"
