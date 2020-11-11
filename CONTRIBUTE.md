@@ -23,7 +23,7 @@ Before you submit any PR please install [Lerna](https://lerna.js.org/) and run t
 At the moment we don't have much, but a good golden rule is that your change should not
 break any existing test.
 
-**NOTE:** we welcome PRs that improve our testing!
+**NOTE:** We welcome PRs that improve our testing!
 
 ## Documentation
 

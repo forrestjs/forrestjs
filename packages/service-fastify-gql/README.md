@@ -2,6 +2,13 @@
 
 ## Fastify GraphQL
 
+**NOTE:** Right now, the playground does not work, but it's going to be fine soon.
+If you don't want to wait, just install:
+
+    "apollo-server-fastify": "^3.0.0-alpha.3"
+
+
+
 ## Extend the schema:
 
 Add a new custom scalar type:

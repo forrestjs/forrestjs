@@ -9,7 +9,7 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "@forrestjs/hooks": "^3.19.0",
-    "winston": "^3.2.1"
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",

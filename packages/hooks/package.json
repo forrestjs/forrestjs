@@ -7,16 +7,16 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.11.0",
+    "@babel/runtime": "^7.12.5",
     "@marcopeg/dotted": "^1.12.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.11.0",
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
     "@forrestjs/babel-preset-package": "^3.19.0",
     "@marcopeg/utils": "^2.0.1",
     "cross-env": "^7.0.2",
-    "jest": "^26.2.2"
+    "jest": "^26.2.3"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/hooks#readme",
   "keywords": [
