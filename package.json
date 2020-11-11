@@ -21,11 +21,10 @@
     "url": "git+https://github.com/forrestjs/core.git"
   },
   "keywords": [
-    "react",
-    "ssr",
-    "redux",
-    "universal",
-    "server side rendering"
+    "node",
+    "module",
+    "injection",
+    "hooks"
   ],
   "devDependencies": {
     "@babel/core": "^7.11.0",

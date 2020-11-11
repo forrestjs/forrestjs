@@ -33,9 +33,17 @@ package that will Bable out to a `${TARGET}` folder.
 
 Thanks to Lerna it's a breeze to build all the sources into a target project:
 
-    TARGET=/dev/p1 lerna run watch:to
     TARGET=/dev/p1 lerna run build:to
 
 Now you can change ForrestJS code as you want and it will build directly into your
 project folder :-)
 
+## Actively working on a project
+
+If you are making heavy changes to a package and want to test it in a running project:
+
+    cd ./packages/service-foo
+    TARGET=/dev/p1 npm run watch:to
+
+This command will rebuild such package into the `node_modules` of the `TARGET` project
+every time you modify the sources.
