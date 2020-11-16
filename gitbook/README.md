@@ -1,103 +1,83 @@
-# @ForrestJS - React Universal Apps
+# @ForrestJS - Modular NodeJS Apps
 
 Hey mate, thank you for landing here!
 
 > ForrestJS helps you to setup a 
-> **universal progressive web application**
+> **Modular NodeJS App**
 > based on the NodeJS/React stack.
 
 [.: Read the full documentation here :.](https://forrestjs.github.io)
 
-## Try out a Universal app very quikly
+## Try It Out:
 
-Create a new universal app from the standard boilerplate:
-(it's going to take a minute to install the dependencies)
+- [Basic webapp with Fastify](https://codesandbox.io/s/service-fastify-th8dq)
+- [service: Static Website](https://codesandbox.io/s/service-fastify-static-6u8mm)
+- [service: Healthcheck](https://codesandbox.io/s/service-fastify-healthz-4g3my)
+- [service: JWT](https://codesandbox.io/s/service-fastify-jwt-fnfqc)
+- [service: Cookie](https://codesandbox.io/s/service-fastify-cookie-pq2m0)
+- [service: GraphQL API](https://codesandbox.io/s/service-fastify-gql-3ijs6)
+- [service: GraphQL Client (with Apollo)](https://codesandbox.io/s/service-fastify-apollo-80oug)
+- [Handling Queues using Fetchq](https://codesandbox.io/s/service-fastify-fetchq-0by8x)
 
-    npx forrest run my-new-ssr-app
+## What You Get
 
-This is going to take a minute to install all the dependencies and build
-the project, plus you need NodeJS 10.x or greater. But don't worry
-
-Go to [http://localhost:8080](http://localhost:8080) and see it in action!
-
-## What you get
-
-- React/Redux store ready for ssr, yes, with built-in server memory scope
-- SSR rendering loop that handles any kind of asynchronous rendering need
-- SEO Optimization, thanks to `react-helmet`)
-- Code splitting that works in the server, thanks to `react-loadable`)
-- Fully customizable cache layer that supports sessions out of the box
-- A lot of free space for customization
+- Modular and interoperable architecture perfectly suited for SRP
+- App lifecycle hooks to coordinate booting procedures
+- Modules composition traceability and report
+- Configuration API
+- Context API
+- Ready-to-use services available on NPM
 
 ## Spoiler Alert
 
-This is one of the many **opinionated setup** available on the web. It's mine,
-my own, my precious... No kidding, this is how I believe a modern web app
-can be organized to **maximize productivity** and improve **developer's experience**.
+🤓 This is one of the many **opinionated setup** available on the web. 
+It's mine, my own, my precious... No kidding, this is simply how 
+I believe any modern web app should be organized to 
+**maximize productivity** and improve **developer's experience**.
 
-Although this is by all means my own understanding of the `ssr` challenge, I did
-my best to use only existing and well known open source projects, and **limited my
-own code to the bare minimum**.
+👉 Although this is by all means my own understanding of the 
+_modularity challenge_, I did my best to use only existing and 
+well known open source projects, and 
+**limited my own code to the bare minimum**.
 
-I also cared of placing extension points all around. It's your choice to 
-**just use it**, or you can finely configure how stuff work and make it perfect
-to your own needs.
+## Still Building...
 
-## Still building...
+This package is quite stable. Yet, I'm till actively working on it 
+and you can expect new features and **slight changes in the APIs**.
 
-This package is quite stable. Yet, I'm till actively working on it and you can
-expect new features and **slight changes in the apis**.
+Nevertheless I'm already using it in production, and I know quite
+a few companies who trust _ForrestJS_ (and me, thanks mates 🙏) 
+for their business-related projects.
 
-Nevertheless I'm already using it in production, and I know few friends who are
-trusting _ForrestJS_ (and me, thanks mates 🙏) for their projects in production.
-
-I commit to do my best in preserving backward compatibility and keep it up-to-date
-with new versions of the few dependencies that we use.
+🤝 I commit to do my best in preserving backward compatibility and keep 
+it up-to-date with new versions of the few dependencies that we use.
 
 WANNA HELP ME?  
 
 ## You should know...
 
-I wrote this documentation for a mid-experienced engineer.
+I wrote this documentation for the mid-experienced engineer. 
+It's an evolving project and **you may need to resolve to the source
+code to fill the gaps** of what I have documented so far.
 
-The code is all here in this pages and you can basically move step by step, 
-and copy-paste to get the examples running. Plus at the end of each chapter you
-will find a link to a working boilerplate that you can download and run.
+> I tested this documentation quite well, but bugs will always 
+> to be found!  
+> **Please report them as new issues.**
 
-> We tested this documentation quite well, but bugs will always to be found!
-> Please report it in the issues.
-
-Let' cut it short; here is the list of the things that you should be already
-aquainted with:
+Let' cut it short; here is the list of the things that you should be already acquainted with:
 
 - Javascript in general, ES6 in particular
 - NodeJS, NPM, Yarn
-- ExpressJS (or similar middleware based tool)
-- ReactJS (recent version)
-- Webpack/Babel
+- Fastify (or similar middleware based tool)
 
-I don't expect you to be an expert on all those tools, but it would be so good if
-you have a basic understanding of how to use them.
+I don't expect you to be an expert on all those tools, but it would 
+be so good if you have a basic understanding of how to use them.
 
-## Table of Contents
-
-* [Introduction](README.md)
-* [give us a star on GitHub!](https://github.com/forrestjs/forrestjs)
-* [install from NPM](https://www.npmjs.com/package/forrest)
-
-### Articles
-
-* [Reducers](./articles/reducers.md)
-* [Services](./articles/services.md)
-* [SSR with Styled Components](./articles/styled-components.md)
-
-### Other Stuff
-
-* [Development](./DEVELOPMENT.md)
+👉 [Here is a good article you should check out to pump-up your Javascript skills](https://marcopeg.com/2020/javascript-the-good-parts) 👈
 
 ## LICENCE
 
-Copyright 2019 Marco Pegoraro
+Copyright 2020 Marco Pegoraro
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

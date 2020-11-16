@@ -8,29 +8,34 @@
 
 * [Read the Tutorials](./tutorials.md)
 * [Navigate the Packages](./packages.md)
-* [Navigate the Styleguide](https://forrestjs.github.io/styleguide)
 
 
 ### Step By Step Tutorial
 
-* [Create React App > Universal](https://marcopeg.com/2019/create-react-app-universal-pwa)
-* [Create React App > Redux](./howto/cra-redux.md)
-* [Create React App > Features](./howto/cra-features.md)
-* [Hooks, truly modular NodeJS Apps](https://marcopeg.com/2019/modular-node-apps-with-hooks)
-* [GraphQL made easy with Hooks](https://marcopeg.com/2019/graphql-made-easy)
+- [Introduction to ForrestJS](https://marcopeg.com/2019/modular-node-apps-with-hooks)
 
 ### Articles
 
-* [Reducers](./articles/reducers.md)
-* [Services](./articles/services.md)
-* [SSR with Styled Components](./articles/styled-components.md)
+- [JS in 2020](https://marcopeg.com/2020/javascript-the-good-parts)
+- [Online commented demoes](https://marcopeg.com/2020/forrestjs-fastify)
+
 
 ### Other Stuff
 
 * [Development](./DEVELOPMENT.md)
 
-### DO NOT READ THIS STUFF
+### DO NOT READ THIS STUFF, IT'S OLD!
 
+* Outdated Tutorials
+    * [Create React App > Universal](https://marcopeg.com/2019/create-react-app-universal-pwa)
+    * [Create React App > Redux](./howto/cra-redux.md)
+    * [Create React App > Features](./howto/cra-features.md)
+    * [Hooks, truly modular NodeJS Apps](https://marcopeg.com/2019/modular-node-apps-with-hooks)
+    * [GraphQL made easy with Hooks](https://marcopeg.com/2019/graphql-made-easy)
+* Outdated Articles
+    * [Reducers](./articles/reducers.md)
+    * [Services](./articles/services.md)
+    * [SSR with Styled Components](./articles/styled-components.md)
 * Outdated Docs (need review)
     * [API](./api/README.md)
         * [createSSRState](./api/create-ssr-state.md)

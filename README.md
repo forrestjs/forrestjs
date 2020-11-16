@@ -12,12 +12,13 @@ Hey mate, thank you for landing here!
 ![ForrestJS Logo](./gitbook/images/forrestjs.png)
 
 > ForrestJS helps you to setup a 
-> **modular web application**
+> **Modular NodeJS App**
 > based on the NodeJS stack.
 
-- [.: Read the Documentation project here :.](https://forrestjs.github.io)
+- [.: Read the Documentation Project here :.](https://forrestjs.github.io)
 - [.: Read the Contributors Guidelines :.](./CONTRIBUTE.md)
 - [.: Read the Development Guidelines :.](./DEVELOPMENT.md)
+- [.: Find the Available Packages here :.](./packages)
 
 ## LICENCE
 
