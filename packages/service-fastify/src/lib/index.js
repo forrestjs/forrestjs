@@ -60,15 +60,15 @@ const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
 
   // Register routes with generic and specialized handlers
   const routes = [
-    ...createHook.sync(hooks.FASTIFY_ROUTE, { registerRoute }),
     ...createHook.sync(hooks.FASTIFY_GET, { registerRoute: registerRoute.get }).map(makeRoute('GET')),
     ...createHook.sync(hooks.FASTIFY_POST, { registerRoute: registerRoute.post }).map(makeRoute('POST')),
     ...createHook.sync(hooks.FASTIFY_PUT, { registerRoute: registerRoute.put }).map(makeRoute('PUT')),
     ...createHook.sync(hooks.FASTIFY_DELETE, { registerRoute: registerRoute.delete }).map(makeRoute('DELETE')),
+    ...createHook.sync(hooks.FASTIFY_ROUTE, { registerRoute }),
   ]
 
   // Let register a feature with the return value:
-  routes.forEach(route => {
+  server.after(() => routes.forEach(route => {
     try {
       if (!route[0].hasOwnProperty('method')) throw new MissingPropertyError()
       if (!route[0].hasOwnProperty('url')) throw new MissingPropertyError()
@@ -77,8 +77,9 @@ const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
     } catch (e) {
       // console.error(route[0], e)
     }
-  })
-
+  }))
+  
+  createHook.sync(hooks.FASTIFY_HACKS_AFTER, { fastify: server });
   setContext('fastify', server);
 };
 
