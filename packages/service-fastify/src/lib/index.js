@@ -60,25 +60,28 @@ const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
   });
 
   // Register routes with generic and specialized handlers
-  const routes = [
-    ...createHook.sync(hooks.FASTIFY_GET, { registerRoute: registerRoute.get, fastify: server }).map(makeRoute('GET')),
-    ...createHook.sync(hooks.FASTIFY_POST, { registerRoute: registerRoute.post, fastify: server }).map(makeRoute('POST')),
-    ...createHook.sync(hooks.FASTIFY_PUT, { registerRoute: registerRoute.put, fastify: server }).map(makeRoute('PUT')),
-    ...createHook.sync(hooks.FASTIFY_DELETE, { registerRoute: registerRoute.delete, fastify: server }).map(makeRoute('DELETE')),
-    ...createHook.sync(hooks.FASTIFY_ROUTE, { registerRoute, fastify: server }),
-  ]
-
+  
   // Let register a feature with the return value:
-  server.after(() => routes.forEach(route => {
-    try {
-      if (!route[0].hasOwnProperty('method')) throw new MissingPropertyError()
-      if (!route[0].hasOwnProperty('url')) throw new MissingPropertyError()
-      if (!route[0].hasOwnProperty('handler')) throw new MissingPropertyError()
-      registerRoute(route[0])
-    } catch (e) {
-      // console.error(route[0], e)
-    }
-  }))
+  server.after(() => {
+    const routes = [
+      ...createHook.sync(hooks.FASTIFY_GET, { registerRoute: registerRoute.get, fastify: server }).map(makeRoute('GET')),
+      ...createHook.sync(hooks.FASTIFY_POST, { registerRoute: registerRoute.post, fastify: server }).map(makeRoute('POST')),
+      ...createHook.sync(hooks.FASTIFY_PUT, { registerRoute: registerRoute.put, fastify: server }).map(makeRoute('PUT')),
+      ...createHook.sync(hooks.FASTIFY_DELETE, { registerRoute: registerRoute.delete, fastify: server }).map(makeRoute('DELETE')),
+      ...createHook.sync(hooks.FASTIFY_ROUTE, { registerRoute, fastify: server }),
+    ]
+    
+    routes.forEach(route => {
+      try {
+        if (!route[0].hasOwnProperty('method')) throw new MissingPropertyError()
+        if (!route[0].hasOwnProperty('url')) throw new MissingPropertyError()
+        if (!route[0].hasOwnProperty('handler')) throw new MissingPropertyError()
+        registerRoute(route[0])
+      } catch (e) {
+        // console.error(route[0], e)
+      }
+    })
+  })
   
   createHook.sync(hooks.FASTIFY_HACKS_AFTER, { fastify: server });
   setContext('fastify', server);
