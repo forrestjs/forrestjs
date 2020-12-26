@@ -56,15 +56,16 @@ const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
     decorate,
     decorateRequest,
     decorateReply,
+    fastify: server
   });
 
   // Register routes with generic and specialized handlers
   const routes = [
-    ...createHook.sync(hooks.FASTIFY_GET, { registerRoute: registerRoute.get }).map(makeRoute('GET')),
-    ...createHook.sync(hooks.FASTIFY_POST, { registerRoute: registerRoute.post }).map(makeRoute('POST')),
-    ...createHook.sync(hooks.FASTIFY_PUT, { registerRoute: registerRoute.put }).map(makeRoute('PUT')),
-    ...createHook.sync(hooks.FASTIFY_DELETE, { registerRoute: registerRoute.delete }).map(makeRoute('DELETE')),
-    ...createHook.sync(hooks.FASTIFY_ROUTE, { registerRoute }),
+    ...createHook.sync(hooks.FASTIFY_GET, { registerRoute: registerRoute.get, fastify: server }).map(makeRoute('GET')),
+    ...createHook.sync(hooks.FASTIFY_POST, { registerRoute: registerRoute.post, fastify: server }).map(makeRoute('POST')),
+    ...createHook.sync(hooks.FASTIFY_PUT, { registerRoute: registerRoute.put, fastify: server }).map(makeRoute('PUT')),
+    ...createHook.sync(hooks.FASTIFY_DELETE, { registerRoute: registerRoute.delete, fastify: server }).map(makeRoute('DELETE')),
+    ...createHook.sync(hooks.FASTIFY_ROUTE, { registerRoute, fastify: server }),
   ]
 
   // Let register a feature with the return value:
