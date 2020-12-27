@@ -21,18 +21,12 @@ const onInitServices = ({ getConfig }) => {
   }
 }
 
-const onFastifyPlugin = (
-  { registerPlugin },
-  { getConfig },
-) => {
+const onFastifyPlugin = ({ registerPlugin }) => {
   const decoratedJwtPlugin = async fastify => {
-    
-
     fastify.register(jwtPlugin, options);
 
     // Decorate the request object with the global jwt utilities
-    fastify.decorateRequest('jwt', {});
-    fastify.addHook('preHandler', (request, reply, done) => {
+    fastify.addHook('onRequest', (request, reply, done) => {
       request.jwt = fastify.jwt;
       done();
     });
