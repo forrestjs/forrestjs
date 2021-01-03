@@ -29,13 +29,8 @@ const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
   const server = fastify(options);
 
   const registerPlugin = (...options) => server.register(...options);
-  const registerRoute = (...options) => server.route(...options);
-
-  // Method aliases
-  registerRoute.get = (url, handler) => registerRoute({ method: 'GET', url, handler });
-  registerRoute.post = (url, handler) => registerRoute({ method: 'POST', url, handler });
-  registerRoute.put = (url, handler) => registerRoute({ method: 'PUT', url, handler });
-  registerRoute.delete = (url, handler) => registerRoute({ method: 'DELETE', url, handler });
+  
+  
 
   const decorate = (...options) => server.decorate(...options);
   const decorateRequest = (...options) => server.decorateRequest(...options);
@@ -58,10 +53,21 @@ const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
     decorateReply,
     fastify: server
   });
-
-  // Register routes with generic and specialized handlers
   
-  // Let register a feature with the return value:
+  setContext('fastify', server);
+};
+
+const onStartService = ({ getContext, getConfig, createHook }) => {
+  const server = getContext('fastify');
+
+  // Register route utilities:
+  const registerRoute = (...options) => server.route(...options);
+  registerRoute.get = (url, handler) => registerRoute({ method: 'GET', url, handler });
+  registerRoute.post = (url, handler) => registerRoute({ method: 'POST', url, handler });
+  registerRoute.put = (url, handler) => registerRoute({ method: 'PUT', url, handler });
+  registerRoute.delete = (url, handler) => registerRoute({ method: 'DELETE', url, handler });
+
+  // Register the routes in the "after" hook as suggested by new docs:
   server.after(() => {
     const routes = [
       ...createHook.sync(hooks.FASTIFY_GET, { registerRoute: registerRoute.get, fastify: server }).map(makeRoute('GET')),
@@ -81,14 +87,11 @@ const onInitService = ({ getConfig, setContext, createHook, getContext }) => {
         // console.error(route[0], e)
       }
     })
-  })
-  
-  createHook.sync(hooks.FASTIFY_HACKS_AFTER, { fastify: server });
-  setContext('fastify', server);
-};
+  });
 
-const onStartService = ({ getContext, getConfig, createHook }) => {
-  const server = getContext('fastify');
+  // Keep this hook for backward compatibility:
+  createHook.sync(hooks.FASTIFY_HACKS_AFTER, { fastify: server });
+
   const serverPort = getConfig('fastify.port', process.env.REACT_APP_PORT || process.env.PORT || 8080);
   const serverMeta = getConfig('fastify.meta', '::');
   createHook.sync(hooks.FASTIFY_HACKS_AFTER, { fastify: server });
