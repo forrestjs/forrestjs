@@ -1,20 +1,20 @@
 {
   "name": "@forrestjs/service-fastify",
   "description": "ForrestJS service which helps setting up a Fastify server.",
-  "version": "3.19.7",
+  "version": "3.19.8",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5",
-    "@forrestjs/hooks": "^3.19.7",
+    "@forrestjs/hooks": "^3.19.8",
     "fastify": "^3.8.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
-    "@forrestjs/babel-preset-package": "^3.19.7",
+    "@forrestjs/babel-preset-package": "^3.19.8",
     "@marcopeg/utils": "^2.0.1",
     "cross-env": "^7.0.2",
     "jest": "^26.2.3"
