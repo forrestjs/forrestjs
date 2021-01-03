@@ -15,6 +15,11 @@ const onInitService = ({ getConfig, getContext, setContext, createHook }) => {
   }
 
   const client = fetchq(applyConfig);
+  setContext('fetchq', client);
+};
+
+const onStartService = async ({ getConfig, getContext, createHook }) => {
+  const client = getContext('fetchq');
 
   // register feature's queues
   const queues = createHook.sync(hooks.FETCHQ_REGISTER_QUEUE, {
@@ -39,11 +44,6 @@ const onInitService = ({ getConfig, getContext, setContext, createHook }) => {
     const defs = Array.isArray(def[0]) ? def[0] : [def[0]];
     defs.forEach($ => client.workers.register($));
   });
-  setContext('fetchq', client);
-};
-
-const onStartService = async ({ getConfig, getContext, createHook }) => {
-  const client = getContext('fetchq');
 
   // Decorate Fetchq client to access context and configuration from the app
   client.getConfig = getConfig;
