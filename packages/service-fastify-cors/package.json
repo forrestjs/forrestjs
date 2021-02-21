@@ -7,17 +7,17 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.12.5",
+    "@babel/runtime": "^7.12.18",
     "@forrestjs/hooks": "^3.19.8",
     "fastify-cors": "4.1.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.12.3",
+    "@babel/cli": "^7.12.17",
+    "@babel/core": "^7.12.17",
     "@forrestjs/babel-preset-package": "^3.19.8",
     "@marcopeg/utils": "^2.0.1",
-    "cross-env": "^7.0.2",
-    "jest": "^26.2.3"
+    "cross-env": "^7.0.3",
+    "jest": "^26.6.3"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-cors#readme",
   "keywords": [

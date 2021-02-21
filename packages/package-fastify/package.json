@@ -22,7 +22,7 @@
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
   },
   "dependencies": {
-    "@babel/runtime": "^7.12.5",
+    "@babel/runtime": "^7.12.18",
     "@forrestjs/hooks": "^3.19.8",
     "@forrestjs/service-apollo": "^3.19.8",
     "@forrestjs/service-env": "^3.19.8",
