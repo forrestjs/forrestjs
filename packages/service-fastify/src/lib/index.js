@@ -87,14 +87,14 @@ const onStartService = ({ getContext, getConfig, createHook }) => {
         // console.error(route[0], e)
       }
     })
+
+    // Keep this hook for backward compatibility:
+    createHook.sync(hooks.FASTIFY_HACKS_AFTER, { fastify: server });
   });
 
-  // Keep this hook for backward compatibility:
-  createHook.sync(hooks.FASTIFY_HACKS_AFTER, { fastify: server });
 
   const serverPort = getConfig('fastify.port', process.env.REACT_APP_PORT || process.env.PORT || 8080);
   const serverMeta = getConfig('fastify.meta', '::');
-  createHook.sync(hooks.FASTIFY_HACKS_AFTER, { fastify: server });
   server.listen(serverPort, serverMeta);
 };
 

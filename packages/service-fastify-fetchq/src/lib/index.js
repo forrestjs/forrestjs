@@ -9,7 +9,10 @@ module.exports = ({ registerAction, registerHook }) => {
       const fetchq = getContext('fetchq', null);
       const fastify = getContext('fastify', null);
       if (fastify && fetchq) {
-        fastify.decorateRequest('fetchq', fetchq);
+        fastify.addHook('onRequest', (request, reply, done) => {
+          request.fetchq = fetchq
+          done()
+        });
       }
     },
   });

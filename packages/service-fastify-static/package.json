@@ -9,7 +9,7 @@
   "dependencies": {
     "@babel/runtime": "^7.12.18",
     "@forrestjs/hooks": "^3.20.1",
-    "fastify-static": "^3.3.0"
+    "fastify-static": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.17",

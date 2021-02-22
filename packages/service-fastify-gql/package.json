@@ -7,10 +7,10 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@apollo/federation": "^0.20.0",
+    "@apollo/federation": "^0.21.0",
     "@babel/runtime": "^7.12.18",
     "@forrestjs/hooks": "^3.20.1",
-    "apollo-server-fastify": "^2.19.0"
+    "apollo-server-fastify": "3.0.0-alpha.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.17",
