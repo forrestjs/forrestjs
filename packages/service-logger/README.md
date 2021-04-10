@@ -52,7 +52,7 @@ const serviceLogger = require('@forrestjs/service-logger')
 
 registerAction({
     hook: serviceLogger.LOGGER_TRANSPORTS,
-    hanlder: ({ registerTransport, winston }) =>
+    handler: ({ registerTransport, winston }) =>
         registerTransport(new winston.transports.Console())
 })
 ```
