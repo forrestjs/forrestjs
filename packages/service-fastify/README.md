@@ -57,7 +57,7 @@ All the hooks exposed by `service-fastify` are _asynchronous_ and executes in _s
 ### FASTIFY_HACKS_BEFORE
 
 This hook fires before any other step.<br>
-It receives a direct referenct to the `fastify` instance.
+It receives a direct reference to the `fastify` instance.
 
 ### FASTIFY_PLUGIN
 
@@ -68,12 +68,7 @@ const { FASTIFY_PLUGIN } = require('@forrestjs/service-fastify')
 
 registerAction({
     hook: FASTIFY_PLUGIN,
-    handler: ({ 
-        registerPlugin,
-        decorate,
-        decorateRequest,
-        decorateReply, 
-    }) =>
+    handler: ({ registerPlugin }) =>
         registerPlugin(/* fastify plugin */)
 })
 ```
@@ -92,9 +87,35 @@ registerAction({
             handler: (req, res) => res.send('Hello World'),
         })
 })
+
+// or with direct values
+
+registerAction({
+    hook: FASTIFY_ROUTE,
+    handler: () => ({
+        method: 'GET',
+        url: '/',
+        handler: (req, res) => res.send('Hello World'),
+    })
+})
+
+// even with multiple routes
+
+registerAction({
+    hook: FASTIFY_ROUTE,
+    handler: () => [{
+        method: 'GET',
+        url: '/p1',
+        handler: (req, res) => res.send('Page1'),
+    },{
+        method: 'GET',
+        url: '/p2',
+        handler: (req, res) => res.send('Page2'),
+    }]
+})
 ```
 
 ### FASTIFY_HACKS_AFTER
 
 This hook fires after any other step.<br>
-It receives a direct referenct to the `fastify` instance.
+It receives a direct reference to the `fastify` instance.
