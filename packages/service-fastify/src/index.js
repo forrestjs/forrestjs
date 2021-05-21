@@ -1,3 +1,34 @@
-export { default } from './lib/index'
-export * from './lib/index'
-export * from './lib/hooks'
+const { INIT_SERVICE, START_SERVICE } = require('@forrestjs/hooks');
+const hooks = require('./hooks');
+const tddHandler = require('./tdd-handler');
+const initServiceHandler = require('./init-service-handler');
+const startServiceHandler = require('./start-service-handler');
+
+const service = {
+  name: hooks.SERVICE_NAME,
+  trace: __filename,
+};
+
+module.exports = ({ registerAction, registerHook }) => {
+  registerHook(hooks);
+
+  if (['development', 'test'].includes(process.env.NODE_ENV)) {
+    registerAction({
+      ...service,
+      hook: '$FASTIFY_ROUTE',
+      handler: tddHandler,
+    });
+  }
+
+  registerAction({
+    ...service,
+    hook: INIT_SERVICE,
+    handler: initServiceHandler,
+  });
+
+  registerAction({
+    ...service,
+    hook: START_SERVICE,
+    handler: startServiceHandler,
+  });
+};

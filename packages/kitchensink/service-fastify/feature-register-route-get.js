@@ -8,21 +8,17 @@
  * - $FASTIFY_DELETE
  *
  */
-module.exports = ({
-  registerAction
-}) => {
+module.exports = ({ registerAction }) => {
   /**
    * Using the `registerRoute` API with positional arguments
    */
   registerAction({
     hook: '$FASTIFY_GET',
     name: 'registerRouteGet',
-    handler: ({
-      registerRoute
-    }) => {
+    handler: ({ registerRoute }) => {
       registerRoute('/info1', async () => 'Info1');
       registerRoute('/info2', async () => 'Info2');
-    }
+    },
   });
   /**
    * Using the returning API
@@ -34,8 +30,8 @@ module.exports = ({
     name: 'registerRouteGet_returningSingle',
     handler: () => ({
       url: '/info3',
-      handler: async () => 'Info3'
-    })
+      handler: async () => 'Info3',
+    }),
   });
   /**
    * Using the returning API
@@ -45,13 +41,16 @@ module.exports = ({
   registerAction({
     hook: '$FASTIFY_GET',
     name: 'registerRouteGet_returningMulti',
-    handler: () => [{
-      url: '/info4',
-      handler: async () => 'Info4'
-    }, {
-      url: '/info5',
-      handler: async () => 'Info5'
-    }]
+    handler: () => [
+      {
+        url: '/info4',
+        handler: async () => 'Info4',
+      },
+      {
+        url: '/info5',
+        handler: async () => 'Info5',
+      },
+    ],
   });
   /**
    * Using the declarative API
@@ -63,8 +62,8 @@ module.exports = ({
     name: 'registerRouteGet_declarativeSingle',
     handler: {
       url: '/info6',
-      handler: async () => 'Info6'
-    }
+      handler: async () => 'Info6',
+    },
   });
   /**
    * Using the declarative API
@@ -74,9 +73,11 @@ module.exports = ({
   registerAction({
     hook: '$FASTIFY_GET',
     name: 'registerRouteGet_declarativeMulti',
-    handler: [{
-      url: '/info7',
-      handler: async () => 'Info7'
-    }]
+    handler: [
+      {
+        url: '/info7',
+        handler: async () => 'Info7',
+      },
+    ],
   });
 };

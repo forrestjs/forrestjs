@@ -9,6 +9,8 @@ const FASTIFY_POST = `${SERVICE_NAME}/post`;
 const FASTIFY_PUT = `${SERVICE_NAME}/put`;
 const FASTIFY_DELETE = `${SERVICE_NAME}/delete`;
 const FASTIFY_HACKS_AFTER = `${SERVICE_NAME}/hacks/after`;
+const FASTIFY_TDD_ROUTE = `${SERVICE_NAME}/tdd/route`;
+const FASTIFY_TDD_CHECK = `${SERVICE_NAME}/tdd/check`;
 
 module.exports = {
   SERVICE_NAME,
@@ -20,4 +22,6 @@ module.exports = {
   FASTIFY_PUT,
   FASTIFY_DELETE,
   FASTIFY_HACKS_AFTER,
+  FASTIFY_TDD_ROUTE,
+  FASTIFY_TDD_CHECK,
 };

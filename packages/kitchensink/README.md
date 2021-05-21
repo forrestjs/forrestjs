@@ -1,9 +1,8 @@
-# ForrestJS Kitchensink
+# ForrestJS KitchenSink
 
-This project collects many demonstrational apps for the services that are currently exposed by ForrestJS.
-
-In order to run it, pick a project from the `/src` folder and run:
+This project collects many demonstrational apps - and E2E tests - for the services that are currently exposed by ForrestJS.
 
 ```bash
-npx nodemon src/xxx.js
+npm run start:{service-name}
+npm run test:{service-name}
 ```

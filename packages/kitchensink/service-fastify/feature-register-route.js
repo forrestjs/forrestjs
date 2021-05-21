@@ -8,27 +8,23 @@
  * NOTE: You can register as many routes as you may want within a
  * single feature.
  */
-module.exports = ({
-  registerAction
-}) => {
+module.exports = ({ registerAction }) => {
   /**
    * Using the full `registerRoute` API
    */
   registerAction({
     hook: '$FASTIFY_ROUTE',
     name: 'registerRoute',
-    handler: ({
-      registerRoute
-    }) => {
+    handler: ({ registerRoute }) => {
       registerRoute({
         method: 'GET',
         url: '/',
-        handler: async () => 'Home Page'
+        handler: async () => 'Home Page',
       });
       registerRoute({
         method: 'GET',
         url: '/page1',
-        handler: async () => 'Page1'
+        handler: async () => 'Page1',
       }); // Example with a schema validation applied to the route:
 
       registerRoute({
@@ -40,15 +36,15 @@ module.exports = ({
             properties: {
               name: {
                 type: 'string',
-                minLength: 1
-              }
+                minLength: 1,
+              },
             },
-            required: ['name']
-          }
+            required: ['name'],
+          },
         },
-        handler: async request => `Page2: ${request.params.name}`
+        handler: async (request) => `Page2: ${request.params.name}`,
       });
-    }
+    },
   });
   /**
    * Using the returning API
@@ -61,8 +57,8 @@ module.exports = ({
     handler: () => ({
       method: 'GET',
       url: '/page3',
-      handler: async () => 'Page3'
-    })
+      handler: async () => 'Page3',
+    }),
   });
   /**
    * Using the returning API
@@ -72,15 +68,18 @@ module.exports = ({
   registerAction({
     hook: '$FASTIFY_ROUTE',
     name: 'registerRoute_returningMulti',
-    handler: () => [{
-      method: 'GET',
-      url: '/page4',
-      handler: async () => 'Page4'
-    }, {
-      method: 'GET',
-      url: '/page5',
-      handler: async () => 'Page5'
-    }]
+    handler: () => [
+      {
+        method: 'GET',
+        url: '/page4',
+        handler: async () => 'Page4',
+      },
+      {
+        method: 'GET',
+        url: '/page5',
+        handler: async () => 'Page5',
+      },
+    ],
   });
   /**
    * Using the declarative API
@@ -93,8 +92,8 @@ module.exports = ({
     handler: {
       method: 'GET',
       url: '/page6',
-      handler: async () => 'Page6'
-    }
+      handler: async () => 'Page6',
+    },
   });
   /**
    * Using the declarative API
@@ -104,14 +103,17 @@ module.exports = ({
   registerAction({
     hook: '$FASTIFY_ROUTE',
     name: 'registerRoute_declarativeMulti',
-    handler: [{
-      method: 'GET',
-      url: '/page7',
-      handler: async () => 'Page7'
-    }, {
-      method: 'GET',
-      url: '/page8',
-      handler: async () => 'Page8'
-    }]
+    handler: [
+      {
+        method: 'GET',
+        url: '/page7',
+        handler: async () => 'Page7',
+      },
+      {
+        method: 'GET',
+        url: '/page8',
+        handler: async () => 'Page8',
+      },
+    ],
   });
 };
