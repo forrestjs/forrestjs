@@ -1,5 +1,3 @@
-const { post } = require('@forrestjs/service-fastify/test/globals');
-
 describe('service-fastify', () => {
   describe('routing', () => {
     [

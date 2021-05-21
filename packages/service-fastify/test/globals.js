@@ -11,6 +11,14 @@ const url = (uri = '/', baseUrl = BASE_URL) => `${baseUrl}${uri}`;
 const pause = (duration = 0) =>
   new Promise((resolve) => setTimeout(resolve, duration));
 
+// Produces a decent console log of a JSON object
+const prettify = (data) => console.info(JSON.stringify(data, null, 2));
+
+// Utilities to pick on random stuff
+const random = (min = 0, max = 10) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+const randomItem = (items = []) => items[random(0, items.length - 1)];
+
 // Awaits the availability of a generic uri inside the running app
 const awaitAppUri = ({ uri = '/', baseUrl, delay = 250 } = {}) =>
   Promise.resolve()
@@ -52,5 +60,8 @@ module.exports = {
   awaitAppUri,
   awaitTestHealthz,
   pause,
+  prettify,
+  random,
+  randomItem,
   ...http,
 };
