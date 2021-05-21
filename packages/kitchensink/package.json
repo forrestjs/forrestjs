@@ -1,0 +1,49 @@
+{
+  "name": "@forrestjs/kitchensink",
+  "description": "ForrestJS demonstrational tool",
+  "version": "3.20.2",
+  "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
+  "bugs": {
+    "url": "https://github.com/forrestjs/forrestjs/issues"
+  },
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json && rm -rf lib && rm -rf index.js",
+    "test": "jest",
+    "start": "npx nodemon src/index",
+    "build": "babel src --out-dir . --ignore **/__tests__",
+    "build:to": "babel src --out-dir \"${TARGET}/node_modules/${npm_package_name}\" --ignore **/__tests__",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__",
+    "watch:to": "babel -w src --out-dir \"${TARGET}/node_modules/${npm_package_name}\" --ignore **/__tests__",
+    "start:service-fastify": "npx nodemon src/service-fastify",
+    "test:service-fastify": "jest -t service-fastify",
+    "tdd:service-fastify": "jest -t service-fastify --watchAll"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.14.0",
+    "@forrestjs/hooks": "^3.20.2",
+    "@forrestjs/service-fastify": "^3.20.2",
+    "@forrestjs/service-fastify-gql": "^3.20.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@forrestjs/babel-preset-package": "^3.20.2",
+    "@marcopeg/utils": "^2.0.1",
+    "axios": "^0.21.1",
+    "cross-env": "^7.0.3",
+    "jest": "^26.6.3",
+    "promise-retry": "^2.0.1"
+  },
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify#readme",
+  "keywords": [
+    "forrestjs",
+    "kitchensink"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify",
+  "gitHead": "842378d848c42fb0c272e888ea538ec04335cfc4"
+}

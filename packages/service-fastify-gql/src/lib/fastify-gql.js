@@ -48,7 +48,8 @@ const fastifyGql = hooks => (fastify, opts, next) => {
     ...opts,
   });
 
-  fastify.register(server.createHandler());
+  const handler = server.createHandler()
+  // fastify.register(server.createHandler());
 
   next();
 };
