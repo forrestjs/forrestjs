@@ -13,6 +13,12 @@
  */
 module.exports = ({ registerAction }) => {
   registerAction({
+    hook: '$FASTIFY_TDD_ROOT',
+    name: 'registerTddRoute',
+    handler: () => async () => 'custom response',
+  });
+
+  registerAction({
     hook: '$FASTIFY_TDD_ROUTE',
     name: 'registerTddRoute',
     handler: ({ registerTddRoute }) => {

@@ -16,6 +16,9 @@
   - apollo-server-fastify (still doesn't work at all)
 - service-fastify
   - Fixes `$REGISTER_ROUTE` hook so to be synchronous and report injections in the boot report
+  - Remove babel and the build step
+  - Add extendable `/test` route for E2E test support
+  - Added globals utilities for E2E testing in Jest
 
 ## 3.20.2
 

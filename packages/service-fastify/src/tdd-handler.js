@@ -1,4 +1,8 @@
-const { FASTIFY_TDD_ROUTE, FASTIFY_TDD_CHECK } = require('./hooks');
+const {
+  FASTIFY_TDD_ROUTE,
+  FASTIFY_TDD_ROOT,
+  FASTIFY_TDD_CHECK,
+} = require('./hooks');
 
 const collectRoutes = (createHook, tddScope) => {
   const routes = [];
@@ -25,15 +29,20 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
   // Collect integrations from other services and features
   const routes = collectRoutes(createHook, tddScope);
   const healthzChecks = colleactHealthzChecks(createHook);
+  const rootHandler = createHook.sync(FASTIFY_TDD_ROOT);
 
   // Root endpoint definition
   registerRoute({
     method: 'GET',
     url: tddScope,
-    handler: async () => ({ success: true }),
+    handler: rootHandler.length
+      ? rootHandler[0][0]
+      : async () => ({ success: true }),
   });
 
-  // Healthz endpoint
+  // Healthz Endpoint - for testing
+  // different apps can inject checkpoints to make this
+  // endpoint available only after a specific moment
   registerRoute({
     method: 'GET',
     url: `${tddScope}${tddHealthz}`,
@@ -73,7 +82,6 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
       },
     },
     handler: async (request) => {
-      console.log(request.query);
       try {
         return {
           ...request.query,
@@ -92,6 +100,7 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
     },
   });
 
+  // Let the test overwrite configuration vars
   registerRoute({
     method: 'POST',
     url: `${tddScope}/config`,

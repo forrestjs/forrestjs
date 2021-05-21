@@ -1,20 +1,6 @@
-const axios = require('axios');
-const promiseRetry = require('promise-retry');
-
-const url = (uri = '/', url = 'http://localhost:8080') => `${url}${uri}`;
+const { post } = require('@forrestjs/service-fastify/test/globals');
 
 describe('service-fastify', () => {
-  // Await for target app to be available
-  beforeAll(() =>
-    promiseRetry((retry) =>
-      axios
-        .get(url())
-        .catch((err) =>
-          err.message.includes('ECONNREFUSED') ? retry() : true,
-        ),
-    ),
-  );
-
   describe('routing', () => {
     [
       '/',
@@ -35,30 +21,31 @@ describe('service-fastify', () => {
       '/info7',
     ].map((uri) =>
       it(`Should ping on "${uri}"`, async () => {
-        const res = await axios.get(url(uri));
+        const res = await rawGet(uri);
         expect(res.status).toBe(200);
       }),
     );
     it('Should run a parametric route', async () => {
-      const res = await axios.get(url('/page2/foo'));
-      expect(res.data).toContain('foo');
+      const res = await get('/page2/foo');
+      expect(res).toContain('foo');
     });
   });
 
   describe('testing', () => {
-    it('should expose a testing route', async () => {
-      await axios.get(url('/test'));
+    it('should expose a customizable testing route', async () => {
+      const res = await get('/test');
+      expect(res).toBe('custom response');
     });
 
     it('should expose an healthz route', async () => {
-      const res = await axios.get(url('/test/healthz'));
-      expect(res.data).toEqual(['check1', 'check2', 'check3']);
+      const res = await get('/test/healthz');
+      expect(res).toEqual(['check1', 'check2', 'check3']);
     });
 
     describe('Get App Config', () => {
       it('should expose the app configuration for an existing key of type "string"', async () => {
-        const res = await axios.get(url('/test/config?key=custom.string'));
-        expect(res.data).toEqual({
+        const res = await get('/test/config?key=custom.string');
+        expect(res).toEqual({
           key: 'custom.string',
           value: 'val',
           isSet: true,
@@ -66,8 +53,8 @@ describe('service-fastify', () => {
       });
 
       it('should expose the app configuration for an existing key of type "number"', async () => {
-        const res = await axios.get(url('/test/config?key=custom.number'));
-        expect(res.data).toEqual({
+        const res = await get('/test/config?key=custom.number');
+        expect(res).toEqual({
           key: 'custom.number',
           value: 123,
           isSet: true,
@@ -75,10 +62,8 @@ describe('service-fastify', () => {
       });
 
       it('should expose the app configuration for an existing key of type "boolean(true)"', async () => {
-        const res = await axios.get(
-          url('/test/config?key=custom.boolean.true'),
-        );
-        expect(res.data).toEqual({
+        const res = await get('/test/config?key=custom.boolean.true');
+        expect(res).toEqual({
           key: 'custom.boolean.true',
           value: true,
           isSet: true,
@@ -86,10 +71,8 @@ describe('service-fastify', () => {
       });
 
       it('should expose the app configuration for an existing key of type "boolean(true)"', async () => {
-        const res = await axios.get(
-          url('/test/config?key=custom.boolean.false'),
-        );
-        expect(res.data).toEqual({
+        const res = await get('/test/config?key=custom.boolean.false');
+        expect(res).toEqual({
           key: 'custom.boolean.false',
           value: false,
           isSet: true,
@@ -97,10 +80,8 @@ describe('service-fastify', () => {
       });
 
       it('should expose the app configuration for a non existing key with a default value', async () => {
-        const res = await axios.get(
-          url('/test/config?key=random.key&default=foobar'),
-        );
-        expect(res.data).toEqual({
+        const res = await get('/test/config?key=random.key&default=foobar');
+        expect(res).toEqual({
           key: 'random.key',
           value: 'foobar',
           default: 'foobar',
@@ -109,8 +90,8 @@ describe('service-fastify', () => {
       });
 
       it('should expose the app configuration for a non existing key ginving info', async () => {
-        const res = await axios.get(url('/test/config?key=random.key'));
-        expect(res.data).toEqual({
+        const res = await get('/test/config?key=random.key');
+        expect(res).toEqual({
           key: 'random.key',
           isSet: false,
         });
@@ -119,55 +100,55 @@ describe('service-fastify', () => {
 
     describe('Set App Config', () => {
       it('should set a configuration value in the app of type "string"', async () => {
-        const r1 = await axios.post(url('/test/config'), {
+        const r1 = await post('/test/config', {
           key: 'set.string',
           value: 'foobar',
         });
-        expect(r1.data).toEqual({
+        expect(r1).toEqual({
           key: 'set.string',
           value: 'foobar',
         });
       });
 
       it('should set a configuration value in the app of type "number"', async () => {
-        const r1 = await axios.post(url('/test/config'), {
+        const r1 = await post('/test/config', {
           key: 'set.number',
           value: 123,
         });
-        expect(r1.data).toEqual({
+        expect(r1).toEqual({
           key: 'set.number',
           value: 123,
         });
       });
 
       it('should set a configuration value in the app of type "boolean(true)"', async () => {
-        const r1 = await axios.post(url('/test/config'), {
+        const r1 = await post('/test/config', {
           key: 'set.boolean.true',
           value: true,
         });
-        expect(r1.data).toEqual({
+        expect(r1).toEqual({
           key: 'set.boolean.true',
           value: true,
         });
       });
 
       it('should set a configuration value in the app of type "boolean(false)"', async () => {
-        const r1 = await axios.post(url('/test/config'), {
+        const r1 = await post('/test/config', {
           key: 'set.boolean.false',
           value: false,
         });
-        expect(r1.data).toEqual({
+        expect(r1).toEqual({
           key: 'set.boolean.false',
           value: false,
         });
       });
 
       it('should set a configuration value in the app of "null"', async () => {
-        const r1 = await axios.post(url('/test/config'), {
+        const r1 = await post('/test/config', {
           key: 'set.null',
           value: null,
         });
-        expect(r1.data).toEqual({
+        expect(r1).toEqual({
           key: 'set.null',
           value: null,
         });
@@ -176,7 +157,7 @@ describe('service-fastify', () => {
 
     [('/test', '/test/t1')].map((uri) =>
       it(`Should ping on "${uri}"`, async () => {
-        const res = await axios.get(url(uri));
+        const res = await rawGet(uri);
         expect(res.status).toBe(200);
       }),
     );

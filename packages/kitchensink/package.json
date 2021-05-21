@@ -10,17 +10,12 @@
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json && rm -rf lib && rm -rf index.js",
     "test": "jest",
     "start:service-fastify": "cross-env NODE_ENV=development npx nodemon service-fastify",
-    "test:service-fastify": "jest -t service-fastify",
-    "tdd:service-fastify": "jest -t service-fastify --watchAll",
-    "start:service-tdd": "npx nodemon service-tdd",
-    "test:service-tdd": "jest -t service-tdd",
-    "tdd:service-tdd": "jest -t service-tdd --watchAll"
+    "test:service-fastify": "jest -t service-fastify --runInBand ",
+    "tdd:service-fastify": "jest -t service-fastify --runInBand  --watchAll"
   },
   "dependencies": {
     "@forrestjs/hooks": "^3.20.2",
-    "@forrestjs/service-fastify": "^3.20.2",
-    "axios": "^0.21.1",
-    "promise-retry": "^2.0.1"
+    "@forrestjs/service-fastify": "^3.20.2"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
