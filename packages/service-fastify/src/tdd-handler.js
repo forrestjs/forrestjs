@@ -18,7 +18,7 @@ const colleactHealthzChecks = (createHook) => {
   return promises.map(($) => (typeof $ === 'function' ? $() : $));
 };
 
-module.exports = ({ registerRoute }, { getConfig, createHook }) => {
+module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
   const tddScope = getConfig('fastify.tdd.scope', '/test');
   const tddHealthz = getConfig('fastify.tdd.healthz', '/healthz');
 
@@ -58,7 +58,13 @@ module.exports = ({ registerRoute }, { getConfig, createHook }) => {
           type: 'object',
           properties: {
             key: { type: 'string' },
-            value: { type: 'string' },
+            value: {
+              oneOf: [
+                { type: 'string' },
+                { type: 'number' },
+                { type: 'boolean' },
+              ],
+            },
             default: { type: 'string' },
             isSet: { type: 'boolean' },
           },
@@ -83,6 +89,47 @@ module.exports = ({ registerRoute }, { getConfig, createHook }) => {
           isSet: false,
         };
       }
+    },
+  });
+
+  registerRoute({
+    method: 'POST',
+    url: `${tddScope}/config`,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          key: { type: 'string' },
+          value: {
+            type: ['string', 'number', 'boolean', 'null'],
+          },
+        },
+        required: ['key', 'value'],
+      },
+      response: {
+        '2xx': {
+          type: 'object',
+          properties: {
+            key: { type: 'string' },
+            value: {
+              oneOf: [
+                { type: 'string' },
+                { type: 'number' },
+                { type: 'boolean' },
+                { type: 'null' },
+              ],
+            },
+          },
+          required: ['key', 'value'],
+        },
+      },
+    },
+    handler: async (request) => {
+      setConfig(request.body.key, request.body.value);
+      return {
+        ...request.body,
+        value: getConfig(request.body.key),
+      };
     },
   });
 

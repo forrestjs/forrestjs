@@ -55,32 +55,122 @@ describe('service-fastify', () => {
       expect(res.data).toEqual(['check1', 'check2', 'check3']);
     });
 
-    it('should expose the app configuration for an existing key', async () => {
-      const res = await axios.get(url('/test/config?key=custom.key'));
-      expect(res.data).toEqual({
-        key: 'custom.key',
-        value: 'val',
-        isSet: true,
+    describe('Get App Config', () => {
+      it('should expose the app configuration for an existing key of type "string"', async () => {
+        const res = await axios.get(url('/test/config?key=custom.string'));
+        expect(res.data).toEqual({
+          key: 'custom.string',
+          value: 'val',
+          isSet: true,
+        });
+      });
+
+      it('should expose the app configuration for an existing key of type "number"', async () => {
+        const res = await axios.get(url('/test/config?key=custom.number'));
+        expect(res.data).toEqual({
+          key: 'custom.number',
+          value: 123,
+          isSet: true,
+        });
+      });
+
+      it('should expose the app configuration for an existing key of type "boolean(true)"', async () => {
+        const res = await axios.get(
+          url('/test/config?key=custom.boolean.true'),
+        );
+        expect(res.data).toEqual({
+          key: 'custom.boolean.true',
+          value: true,
+          isSet: true,
+        });
+      });
+
+      it('should expose the app configuration for an existing key of type "boolean(true)"', async () => {
+        const res = await axios.get(
+          url('/test/config?key=custom.boolean.false'),
+        );
+        expect(res.data).toEqual({
+          key: 'custom.boolean.false',
+          value: false,
+          isSet: true,
+        });
+      });
+
+      it('should expose the app configuration for a non existing key with a default value', async () => {
+        const res = await axios.get(
+          url('/test/config?key=random.key&default=foobar'),
+        );
+        expect(res.data).toEqual({
+          key: 'random.key',
+          value: 'foobar',
+          default: 'foobar',
+          isSet: false,
+        });
+      });
+
+      it('should expose the app configuration for a non existing key ginving info', async () => {
+        const res = await axios.get(url('/test/config?key=random.key'));
+        expect(res.data).toEqual({
+          key: 'random.key',
+          isSet: false,
+        });
       });
     });
 
-    it('should expose the app configuration for a non existing key with a default value', async () => {
-      const res = await axios.get(
-        url('/test/config?key=random.key&default=foobar'),
-      );
-      expect(res.data).toEqual({
-        key: 'random.key',
-        value: 'foobar',
-        default: 'foobar',
-        isSet: false,
+    describe('Set App Config', () => {
+      it('should set a configuration value in the app of type "string"', async () => {
+        const r1 = await axios.post(url('/test/config'), {
+          key: 'set.string',
+          value: 'foobar',
+        });
+        expect(r1.data).toEqual({
+          key: 'set.string',
+          value: 'foobar',
+        });
       });
-    });
 
-    it('should expose the app configuration for a non existing key ginving info', async () => {
-      const res = await axios.get(url('/test/config?key=random.key'));
-      expect(res.data).toEqual({
-        key: 'random.key',
-        isSet: false,
+      it('should set a configuration value in the app of type "number"', async () => {
+        const r1 = await axios.post(url('/test/config'), {
+          key: 'set.number',
+          value: 123,
+        });
+        expect(r1.data).toEqual({
+          key: 'set.number',
+          value: 123,
+        });
+      });
+
+      it('should set a configuration value in the app of type "boolean(true)"', async () => {
+        const r1 = await axios.post(url('/test/config'), {
+          key: 'set.boolean.true',
+          value: true,
+        });
+        expect(r1.data).toEqual({
+          key: 'set.boolean.true',
+          value: true,
+        });
+      });
+
+      it('should set a configuration value in the app of type "boolean(false)"', async () => {
+        const r1 = await axios.post(url('/test/config'), {
+          key: 'set.boolean.false',
+          value: false,
+        });
+        expect(r1.data).toEqual({
+          key: 'set.boolean.false',
+          value: false,
+        });
+      });
+
+      it('should set a configuration value in the app of "null"', async () => {
+        const r1 = await axios.post(url('/test/config'), {
+          key: 'set.null',
+          value: null,
+        });
+        expect(r1.data).toEqual({
+          key: 'set.null',
+          value: null,
+        });
       });
     });
 

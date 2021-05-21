@@ -10,7 +10,12 @@ runHookApp({
   trace: 'compact',
   settings: {
     custom: {
-      key: 'val',
+      string: 'val',
+      number: 123,
+      boolean: {
+        true: true,
+        false: false,
+      },
     },
   },
   services: [serviceFastify],
