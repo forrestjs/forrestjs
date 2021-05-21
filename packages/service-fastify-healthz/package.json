@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-fastify-healthz",
   "description": "ForrestJS service which adds a healthcheck route to a Fastify server.",
-  "version": "3.20.2",
+  "version": "3.21.0-alpha.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",
-    "@forrestjs/hooks": "^3.20.2"
+    "@forrestjs/hooks": "^3.21.0-alpha.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.3",
