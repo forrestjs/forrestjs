@@ -30,7 +30,7 @@
   },
   "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify",
   "scripts": {
-    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json && rm -rf lib && rm -rf index.js",
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json",
     "test": "jest"
   },
   "gitHead": "842378d848c42fb0c272e888ea538ec04335cfc4"
