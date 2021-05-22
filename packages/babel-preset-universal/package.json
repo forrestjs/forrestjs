@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/babel-preset-universal",
-  "version": "3.21.0-alpha.3.1",
+  "version": "3.21.0-alpha.3.2",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com>",
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
