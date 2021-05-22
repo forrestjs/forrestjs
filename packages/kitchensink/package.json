@@ -9,6 +9,7 @@
   "scripts": {
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json",
     "test": "jest",
+    "start:hooks": "cross-env NODE_ENV=development npx nodemon hooks",
     "start:service-fastify": "cross-env NODE_ENV=development npx nodemon service-fastify",
     "test:service-fastify": "jest -t service-fastify --runInBand ",
     "tdd:service-fastify": "jest -t service-fastify --runInBand  --watchAll"

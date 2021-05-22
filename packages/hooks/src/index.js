@@ -1,24 +1,20 @@
-/**
- * ES5 Interface for the NPM Module
- */
+const { traceHook, logTrace, logBoot } = require('./tracer');
+const { createHook } = require('./create-hook');
+const { registerAction } = require('./register-action');
+const { createHookApp, runHookApp } = require('./create-hook-app');
+const { createHookContext } = require('./create-hook-context');
+const { getHook } = require('./create-hooks-registry');
+const constants = require('./constants');
 
-
-export { traceHook, logTrace, logBoot } from './lib/tracer'
-export { createHook } from './lib/create-hook'
-export { registerAction } from './lib/register-action'
-export { createHookApp, runHookApp } from './lib/create-hook-app'
-export { createHookContext } from './lib/create-hook-context'
-export { getHook } from './lib/create-hooks-registry'
-export * from './lib/constants'
-
-// Simple implementation of a trace boot service
-import { FINISH, SERVICE } from './lib/constants'
-import { logBoot } from './lib/tracer'
-export const traceBoot = [
-    FINISH,
-    () => logBoot(),
-    {
-        name: `${SERVICE} traceBoot`,
-    },
-]
-
+module.exports = {
+  traceHook,
+  logTrace,
+  logBoot,
+  createHook,
+  registerAction,
+  createHookApp,
+  runHookApp,
+  createHookContext,
+  getHook,
+  ...constants,
+};
