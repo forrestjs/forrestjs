@@ -1,4 +1,4 @@
-# @ForrestJS/core
+# @ForrestJS
 
 [![CircleCI](https://circleci.com/gh/forrestjs/forrestjs/tree/master.svg?style=svg)](https://circleci.com/gh/forrestjs/forrestjs/tree/master)
 ![NPM](https://img.shields.io/npm/l/forrest.svg)
@@ -11,7 +11,7 @@ Hey mate, thank you for landing here!
 
 ![ForrestJS Logo](./gitbook/images/forrestjs.png)
 
-> ForrestJS helps you to setup a 
+> ForrestJS helps you to setup a
 > **Modular NodeJS App**
 > based on the NodeJS stack.
 
