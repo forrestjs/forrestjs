@@ -5,28 +5,30 @@ const { traceHook } = require('./tracer');
 const { createHooksRegistry } = require('./create-hooks-registry');
 const constants = require('./constants');
 
-const runIntegrations = async (integrations, context) => {
+const runIntegrations = async (integrations, context, prefix = '') => {
   for (const service of integrations) {
-    let computed = null;
+    // Process different styles of registering services
+    const registerFn = service.register || service.default || service;
+    const integrationName = registerFn.name || service.name;
 
-    // full module that exposes "register" as API
-    if (service.register) {
-      computed = await service.register(context);
+    // Try to execute the register function, providing a registerAction
+    // function that is able to use the function's name as feature name
+    // That will reduce the need for using the property "name" during
+    // the registration of the features
+    const computed =
+      typeof registerFn === 'function'
+        ? await registerFn({
+            ...context,
+            registerAction: (config) =>
+              context.registerAction({
+                ...config,
+                name: `${prefix}${config.name || integrationName}`,
+              }),
+          })
+        : service;
 
-      // ES6 export default support
-    } else if (service.default) {
-      computed = await service.default(context);
-
-      // simple function that implements "register"
-    } else if (typeof service === 'function') {
-      computed = await service(context);
-    }
-
-    // try to use the result of a registering function as the
-    // instructions how to register an extension
-    computed = computed || service;
-
-    // register a single action as a feature
+    // register a single action given as configuration array
+    // [ hookName, handler, name ]
     // [ hookName, handler, { otherOptions }]
     if (
       Array.isArray(computed) &&
@@ -36,10 +38,23 @@ const runIntegrations = async (integrations, context) => {
     ) {
       const [hook, handler, options = {}] = computed;
       registerAction({
-        ...(typeof options === 'string' ? { name: options } : options),
+        ...(typeof options === 'string'
+          ? { name: `${prefix}${options}` }
+          : {
+              ...options,
+              name: `${prefix}${options.name || integrationName}`,
+            }),
         hook,
         // An handler could be a simple object to skip any running function
         handler: typeof handler === 'function' ? handler : () => handler,
+      });
+    }
+
+    // register a single action give an a configuration object
+    else if (computed && computed.hook && computed.handler) {
+      registerAction({
+        ...computed,
+        name: `${prefix}${computed.name || integrationName}`,
       });
     }
   }
@@ -160,10 +175,10 @@ const createHookApp =
     }
 
     // run lifecycle
-    await runIntegrations(services, internalContext);
+    await runIntegrations(services, internalContext, `${constants.SERVICE} `);
     await scopedCreateHook.serie(constants.START, internalContext);
     await scopedCreateHook.serie(constants.SETTINGS, internalContext);
-    await runIntegrations(features, internalContext);
+    await runIntegrations(features, internalContext, `${constants.FEATURE} `);
     await scopedCreateHook.parallel(constants.INIT_SERVICES, internalContext);
     await scopedCreateHook.serie(constants.INIT_SERVICE, internalContext);
     await scopedCreateHook.parallel(constants.INIT_FEATURES, internalContext);

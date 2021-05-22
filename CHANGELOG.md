@@ -16,6 +16,7 @@
   - apollo-server-fastify (still doesn't work at all)
 - hooks
   - removed babel
+  - Features and services names are extensively derived by their registration form and automatically prefixed
 - service-fastify
   - Fixes `$REGISTER_ROUTE` hook so to be synchronous and report injections in the boot report
   - Remove babel and the build step

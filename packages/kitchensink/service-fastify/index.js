@@ -1,5 +1,4 @@
 const { runHookApp } = require('@forrestjs/hooks');
-
 const serviceFastify = require('@forrestjs/service-fastify');
 
 const registerRoute = require('./feature-register-route');

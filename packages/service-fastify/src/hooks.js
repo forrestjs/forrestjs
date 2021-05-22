@@ -1,6 +1,3 @@
-const { SERVICE } = require('@forrestjs/hooks');
-
-const SERVICE_NAME = `${SERVICE} fastify`;
 const FASTIFY_HACKS_BEFORE = `${SERVICE_NAME}/hacks/before`;
 const FASTIFY_PLUGIN = `${SERVICE_NAME}/plugin`;
 const FASTIFY_ROUTE = `${SERVICE_NAME}/route`;
@@ -14,7 +11,6 @@ const FASTIFY_TDD_ROUTE = `${SERVICE_NAME}/tdd/route`;
 const FASTIFY_TDD_ROOT = `${SERVICE_NAME}/tdd/root`;
 
 module.exports = {
-  SERVICE_NAME,
   FASTIFY_HACKS_BEFORE,
   FASTIFY_PLUGIN,
   FASTIFY_ROUTE,
