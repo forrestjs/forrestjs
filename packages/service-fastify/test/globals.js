@@ -24,21 +24,12 @@ const awaitAppUri = ({ uri = '/', baseUrl, delay = 250 } = {}) =>
   Promise.resolve()
     .then(() => pause(delay))
     .then(() =>
-      promiseRetry((retry) =>
-        axios
-          .get(url(uri, baseUrl))
-          .catch((err) =>
-            err.message.includes('ECONNREFUSED') ? retry() : true,
-          ),
-      ),
+      promiseRetry((retry) => axios.get(url(uri, baseUrl)).catch(retry)),
     );
 
 // Awaits the availability of the test's healthz endpoint
-const awaitTestHealthz = ({
-  uri = `/${TEST_SCOPE}/healthz`,
-  baseUrl,
-  delay,
-} = {}) => awaitAppUri({ uri, baseUrl, delay });
+const awaitTestReady = ({ uri = `/${TEST_SCOPE}`, baseUrl, delay } = {}) =>
+  awaitAppUri({ uri, baseUrl, delay });
 
 // Wrapper around AXIOS that translates into the running app url
 const http = {
@@ -58,7 +49,7 @@ const http = {
 module.exports = {
   url,
   awaitAppUri,
-  awaitTestHealthz,
+  awaitTestReady,
   pause,
   prettify,
   random,

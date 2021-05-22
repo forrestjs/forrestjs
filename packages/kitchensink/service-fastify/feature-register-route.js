@@ -46,11 +46,11 @@ module.exports = ({ registerAction }) => {
       });
     },
   });
+
   /**
    * Using the returning API
    * (single value)
    */
-
   registerAction({
     hook: '$FASTIFY_ROUTE',
     name: 'registerRoute_returningSingle',
@@ -60,11 +60,11 @@ module.exports = ({ registerAction }) => {
       handler: async () => 'Page3',
     }),
   });
+
   /**
    * Using the returning API
    * (with multiple declarations)
    */
-
   registerAction({
     hook: '$FASTIFY_ROUTE',
     name: 'registerRoute_returningMulti',
@@ -81,11 +81,11 @@ module.exports = ({ registerAction }) => {
       },
     ],
   });
+
   /**
    * Using the declarative API
    * (single value)
    */
-
   registerAction({
     hook: '$FASTIFY_ROUTE',
     name: 'registerRoute_declarativeSingle',
@@ -95,11 +95,11 @@ module.exports = ({ registerAction }) => {
       handler: async () => 'Page6',
     },
   });
+
   /**
    * Using the declarative API
    * (multiple value)
    */
-
   registerAction({
     hook: '$FASTIFY_ROUTE',
     name: 'registerRoute_declarativeMulti',

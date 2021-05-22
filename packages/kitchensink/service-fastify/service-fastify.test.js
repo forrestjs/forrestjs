@@ -30,14 +30,21 @@ describe('service-fastify', () => {
   });
 
   describe('testing', () => {
-    it('should expose a customizable testing route', async () => {
+    it('should expose a customizable testing route with custom checks', async () => {
       const res = await get('/test');
       expect(res).toBe('custom response');
     });
 
-    it('should expose an healthz route', async () => {
-      const res = await get('/test/healthz');
-      expect(res).toEqual(['check1', 'check2', 'check3']);
+    it('should fail the test route if a specific condition is met by a tdd check middleware', async () => {
+      const fn = jest.fn();
+      try {
+        await rawGet('/test', { headers: { foobar: true } });
+      } catch (err) {
+        fn(err.response.status, err.response.data);
+      }
+
+      expect(fn.mock.calls[0][0]).toBe(418);
+      expect(fn.mock.calls[0][1]).toBe('oops');
     });
 
     describe('Get App Config', () => {

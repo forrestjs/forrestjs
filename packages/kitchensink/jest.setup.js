@@ -1,2 +1,2 @@
 const global = require('./jest.globals')();
-module.exports = global.awaitTestHealthz;
+module.exports = global.awaitTestReady;

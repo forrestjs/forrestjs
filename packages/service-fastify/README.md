@@ -1,6 +1,6 @@
 # @forrestjs/service-fastify
 
-ForrestJS service which helps setting up an FastifyJS server.  
+ForrestJS service which helps setting up an FastifyJS server.
 
 DEMO:  
 https://codesandbox.io/s/service-fastify-th8dq
@@ -15,27 +15,30 @@ set it up in your FastifyJS App:
 
 ```js
 // index.js
-const { runHookApp } = require('@forrestjs/hooks')
-const fastifyService = require('@forrestjs/service-fastify')
+const { runHookApp } = require('@forrestjs/hooks');
+const fastifyService = require('@forrestjs/service-fastify');
 
 // Create an Home Page for the Web App
-const homePageRoute = (req, res) => res.send('Hello World')
-const homePageAction = ({ registerRoute }) => registerRoute.get('/', homePageRoute)
+const homePageFeature = ({ registerAction }) =>
+  registerAction({
+    hook: '$FASTIFY_ROUTE',
+    handler: {
+      method: 'GET',
+      url: '/',
+      handler: async () => 'Hello World',
+    },
+  });
 
 // Run the app:
 runHookApp({
-    settings: {
-        fastify: {
-            port: 8080,
-        },
+  settings: {
+    fastify: {
+      port: 8080,
     },
-    services: [
-        fastifyService,
-    ],
-    features: [
-        [ '$FASTIFY_ROUTE', homePageAction ],
-    ],
-})
+  },
+  services: [fastifyService],
+  features: [homePageFeature],
+});
 ```
 
 ## Configuration & ENVs
@@ -52,7 +55,7 @@ It falls back to environment variables:
 
 ## Hooks
 
-All the hooks exposed by `service-fastify` are _asynchronous_ and executes in _serie_.
+All the hooks exposed by `service-fastify` are _synchronous_ and executes in _serie_.
 
 ### FASTIFY_HACKS_BEFORE
 
@@ -64,55 +67,57 @@ It receives a direct reference to the `fastify` instance.
 Let register Fastify plugins or decorate the instance.
 
 ```js
-const { FASTIFY_PLUGIN } = require('@forrestjs/service-fastify')
+const { FASTIFY_PLUGIN } = require('@forrestjs/service-fastify');
 
 registerAction({
-    hook: FASTIFY_PLUGIN,
-    handler: ({ registerPlugin }) =>
-        registerPlugin(/* fastify plugin */)
-})
+  hook: FASTIFY_PLUGIN,
+  handler: ({ registerPlugin }) => registerPlugin(/* fastify plugin */),
+});
 ```
 
 ### FASTIFY_ROUTE
 
 ```js
-const { FASTIFY_ROUTE } = require('@forrestjs/service-fastify')
+const { FASTIFY_ROUTE } = require('@forrestjs/service-fastify');
 
 registerAction({
-    hook: FASTIFY_ROUTE,
-    handler: ({ registerRoute }) =>
-        registerRoute({
-            method: 'GET',
-            url: '/',
-            handler: (req, res) => res.send('Hello World'),
-        })
-})
+  hook: FASTIFY_ROUTE,
+  handler: ({ registerRoute }) =>
+    registerRoute({
+      method: 'GET',
+      url: '/',
+      handler: (req, res) => res.send('Hello World'),
+    }),
+});
 
 // or with direct values
 
 registerAction({
-    hook: FASTIFY_ROUTE,
-    handler: () => ({
-        method: 'GET',
-        url: '/',
-        handler: (req, res) => res.send('Hello World'),
-    })
-})
+  hook: FASTIFY_ROUTE,
+  handler: () => ({
+    method: 'GET',
+    url: '/',
+    handler: (req, res) => res.send('Hello World'),
+  }),
+});
 
 // even with multiple routes
 
 registerAction({
-    hook: FASTIFY_ROUTE,
-    handler: () => [{
-        method: 'GET',
-        url: '/p1',
-        handler: (req, res) => res.send('Page1'),
-    },{
-        method: 'GET',
-        url: '/p2',
-        handler: (req, res) => res.send('Page2'),
-    }]
-})
+  hook: FASTIFY_ROUTE,
+  handler: () => [
+    {
+      method: 'GET',
+      url: '/p1',
+      handler: (req, res) => res.send('Page1'),
+    },
+    {
+      method: 'GET',
+      url: '/p2',
+      handler: (req, res) => res.send('Page2'),
+    },
+  ],
+});
 ```
 
 ### FASTIFY_HACKS_AFTER

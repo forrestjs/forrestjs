@@ -15,38 +15,31 @@ const collectRoutes = (createHook, tddScope) => {
   return routes;
 };
 
-const colleactHealthzChecks = (createHook) => {
-  const promises = [];
-  const registerTddCheck = (promise) => promises.push(promise);
+const collectChecks = (createHook) => {
+  const checksList = [];
+  const registerTddCheck = (check) => checksList.push(check);
   createHook.sync(FASTIFY_TDD_CHECK, { registerTddCheck });
-  return promises.map(($) => (typeof $ === 'function' ? $() : $));
+
+  // Filter out functions only
+  return checksList.filter((check) => typeof check === 'function');
 };
 
 module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
   const tddScope = getConfig('fastify.tdd.scope', '/test');
-  const tddHealthz = getConfig('fastify.tdd.healthz', '/healthz');
 
   // Collect integrations from other services and features
   const routes = collectRoutes(createHook, tddScope);
-  const healthzChecks = colleactHealthzChecks(createHook);
+  const rootChecks = collectChecks(createHook);
   const rootHandler = createHook.sync(FASTIFY_TDD_ROOT);
 
   // Root endpoint definition
   registerRoute({
     method: 'GET',
     url: tddScope,
+    preHandler: rootChecks,
     handler: rootHandler.length
-      ? rootHandler[0][0]
-      : async () => ({ success: true }),
-  });
-
-  // Healthz Endpoint - for testing
-  // different apps can inject checkpoints to make this
-  // endpoint available only after a specific moment
-  registerRoute({
-    method: 'GET',
-    url: `${tddScope}${tddHealthz}`,
-    handler: async () => Promise.all(healthzChecks),
+      ? rootHandler[rootHandler.length - 1][0]
+      : async () => '+ok',
   });
 
   // Let the test access configuration vars
