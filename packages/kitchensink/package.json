@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/kitchensink",
   "description": "ForrestJS demonstrational tool",
-  "version": "3.21.0-alpha.3.0",
+  "version": "3.21.0-alpha.3.1",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
@@ -15,8 +15,8 @@
     "tdd:service-fastify": "jest -t service-fastify --runInBand  --watchAll"
   },
   "dependencies": {
-    "@forrestjs/hooks": "^3.21.0-alpha.3.0",
-    "@forrestjs/service-fastify": "^3.21.0-alpha.3.0"
+    "@forrestjs/hooks": "^3.21.0-alpha.3.1",
+    "@forrestjs/service-fastify": "^3.21.0-alpha.3.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
