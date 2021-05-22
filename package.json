@@ -1,7 +1,7 @@
 {
-  "name": "@forrestjs/core",
-  "version": "0.0.2",
-  "description": "ForrestJS Monorepo",
+  "name": "@forrestjs/forrestjs",
+  "version": "0.0.0",
+  "description": "ForrestJS Lerna Monorepo",
   "scripts": {
     "boot": "npm install && lerna bootstrap -- --no-package-lock",
     "clean": "lerna run clean && lerna clean --yes && rm -rf node_modules",
