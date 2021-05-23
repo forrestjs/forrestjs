@@ -20,6 +20,14 @@ module.exports = ({ getConfig, setContext, createHook, getContext }) => {
   server.decorateReply('getConfig', getConfig);
   server.decorateReply('getContext', getContext);
 
+  // Integrate with the `service-env`
+  const getEnv = getContext('getEnv', null);
+  if (getEnv) {
+    server.decorate('getEnv', getEnv);
+    server.decorateRequest('getEnv', getEnv);
+    server.decorateReply('getEnv', getEnv);
+  }
+
   createHook.sync(hooks.FASTIFY_HACKS_BEFORE, { fastify: server });
   createHook.sync(hooks.FASTIFY_PLUGIN, {
     registerPlugin,

@@ -18,11 +18,19 @@
   - Removed babel
   - Features and services names defaults are derived by their registration form and automatically prefixed
   - Added support for positional definition in `registerRoute`
+- service-env
+  - Remove Babel
+  - Update to `setContext` API
 - service-fastify
   - Fixes `$REGISTER_ROUTE` hook so to be synchronous and report injections in the boot report
   - Remove babel and the build step
   - Add extendable `/test` route for E2E test support
   - Added globals utilities for E2E testing in Jest
+  - Integrates with `service-env` to provide direct access to `getEnv` in the route handlers
+- kitchensink
+  - Added examples for `@forrestjs/hooks`
+  - Added examples for `@forrestjs/service-fastify`
+  - Added `app01` examples for a complex app
 
 ## 3.20.2
 

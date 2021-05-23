@@ -6,16 +6,21 @@
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
+  "main": "src/index",
   "scripts": {
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json",
     "start:hooks": "cross-env NODE_ENV=development npx nodemon hooks",
     "start:service-fastify": "cross-env NODE_ENV=development npx nodemon service-fastify",
     "test:service-fastify": "jest -t service-fastify --runInBand ",
-    "tdd:service-fastify": "jest -t service-fastify --runInBand  --watchAll"
+    "tdd:service-fastify": "jest -t service-fastify --runInBand  --watchAll",
+    "start:app01": "cross-env NODE_ENV=development npx nodemon app01",
+    "test:app01": "jest -t app01 --runInBand ",
+    "tdd:app01": "jest -t app01 --runInBand  --watchAll"
   },
   "dependencies": {
     "@forrestjs/hooks": "^3.21.0-alpha.3.2",
-    "@forrestjs/service-fastify": "^3.21.0-alpha.3.2"
+    "@forrestjs/service-fastify": "^3.21.0-alpha.3.2",
+    "@forrestjs/service-env": "^3.21.0-alpha.3.2"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify#readme",
   "keywords": [
