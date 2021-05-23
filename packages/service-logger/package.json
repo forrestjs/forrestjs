@@ -14,8 +14,7 @@
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
-    "@forrestjs/babel-preset-package": "^3.21.0-alpha.3.2",
-    "cross-env": "^5.1.4"
+    "@forrestjs/babel-preset-package": "^3.21.0-alpha.3.2"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-logger#readme",
   "keywords": [

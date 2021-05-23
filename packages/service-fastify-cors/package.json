@@ -14,10 +14,7 @@
   "devDependencies": {
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
-    "@forrestjs/babel-preset-package": "^3.21.0-alpha.3.2",
-    "@marcopeg/utils": "^2.0.1",
-    "cross-env": "^7.0.3",
-    "jest": "^26.6.3"
+    "@forrestjs/babel-preset-package": "^3.21.0-alpha.3.2"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-cors#readme",
   "keywords": [

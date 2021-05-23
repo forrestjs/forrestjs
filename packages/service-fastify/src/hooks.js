@@ -1,3 +1,4 @@
+const SERVICE_NAME = 'fastify';
 const FASTIFY_HACKS_BEFORE = `${SERVICE_NAME}/hacks/before`;
 const FASTIFY_PLUGIN = `${SERVICE_NAME}/plugin`;
 const FASTIFY_ROUTE = `${SERVICE_NAME}/route`;
