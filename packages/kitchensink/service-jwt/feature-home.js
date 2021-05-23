@@ -1,10 +1,7 @@
-const homeRouteHandler = async (request) => {
-  const jwt = request.getContext('jwt');
-  return jwt.sign({ foo: 'bar ' });
-};
+const homeRouteHandler = async (request) => request.jwt.sign({ foo: 'bar ' });
 
 module.exports = {
   name: 'home',
-  hook: '$FASTIFY_GET',
+  hook: '$FASTIFY_GET?',
   handler: [{ url: '/', handler: homeRouteHandler }],
 };

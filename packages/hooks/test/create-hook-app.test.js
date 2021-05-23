@@ -196,4 +196,28 @@ describe('hooks/create-hook-app', () => {
       expect(handler.mock.calls.length).toBe(0);
     });
   });
+
+  describe('run all registerHook before registerAction', () => {
+    it('Services and Features should be able to use nominal hooks to extend each other', async () => {
+      const s1Handler = jest.fn();
+      const s2Handler = jest.fn();
+
+      const s1 = ({ registerHook, registerAction, createHook }) => {
+        registerHook('s1', 's1');
+        registerAction('$INIT_SERVICE', () => createHook.sync('s1'));
+        registerAction('$s2', s2Handler);
+      };
+
+      const s2 = ({ registerHook, registerAction, createHook }) => {
+        registerHook('s2', 's2');
+        registerAction('$INIT_SERVICE', () => createHook.sync('s2'));
+        registerAction('$s1', s1Handler);
+      };
+
+      await runHookApp({ services: [s1, s2] });
+
+      expect(s1Handler.mock.calls.length).toBe(1);
+      expect(s2Handler.mock.calls.length).toBe(1);
+    });
+  });
 });

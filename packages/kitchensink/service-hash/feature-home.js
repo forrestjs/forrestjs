@@ -1,10 +1,22 @@
-const homeRouteHandler = async (request) => {
-  const hash = request.getContext('hash');
-  return hash.encode('foo');
-};
+const encodeHandler = async (request) =>
+  request.hash.encode(request.params.input);
+
+const compareHandler = async (request) =>
+  request.hash.compare(request.body.input, request.body.hash);
 
 module.exports = {
   name: 'home',
-  hook: '$FASTIFY_GET',
-  handler: [{ url: '/', handler: homeRouteHandler }],
+  hook: '$FASTIFY_ROUTE',
+  handler: [
+    {
+      method: 'GET',
+      url: '/encode/:input',
+      handler: encodeHandler,
+    },
+    {
+      method: 'POST',
+      url: '/compare',
+      handler: compareHandler,
+    },
+  ],
 };

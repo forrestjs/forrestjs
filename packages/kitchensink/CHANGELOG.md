@@ -1,6 +1,6 @@
 # Change Log
 
-## v1.21.0
+## v4.0.0
 
 - Added examples for `@forrestjs/hooks`
 - Added examples for `@forrestjs/service-fastify`

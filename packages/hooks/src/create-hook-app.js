@@ -5,7 +5,25 @@ const { traceHook } = require('./tracer');
 const { createHooksRegistry } = require('./create-hooks-registry');
 const constants = require('./constants');
 
+/**
+ * All the utilization of "registerAction" by an integration's
+ * manifest will be queued into an in-memory store and applied only
+ * after all the integration have fired.
+ *
+ * This lets each integration the possibility to use the `registerHook`
+ * API and declare its own nominal hooks capabilities.
+ *
+ * This asynchronous behaviour allows service2service and feature2feature
+ * extensibility without enforcing strict registration order.
+ *
+ * @param {*} integrations
+ * @param {*} context
+ * @param {*} prefix
+ */
 const runIntegrations = async (integrations, context, prefix = '') => {
+  const registeredActions = [];
+
+  // Execute the integration functions
   for (const service of integrations) {
     // Process different styles of registering services
     const registerFn = service.register || service.default || service;
@@ -25,17 +43,21 @@ const runIntegrations = async (integrations, context, prefix = '') => {
               // registerAction('hook', () => {}, 'name')
               // registerAction('hook', () => {}, { name: 'name' })
               if (typeof ag1 === 'string') {
-                return context.registerAction(ag1, ag2, {
-                  ...(typeof ag3 === 'string' ? { name: ag3 } : ag3),
-                  name: `${prefix}${
-                    (typeof ag3 === 'string' ? ag3 : ag3.name) ||
-                    integrationName
-                  }`,
-                });
+                return registeredActions.push([
+                  ag1,
+                  ag2,
+                  {
+                    ...(typeof ag3 === 'string' ? { name: ag3 } : ag3),
+                    name: `${prefix}${
+                      (typeof ag3 === 'string' ? ag3 : ag3.name) ||
+                      integrationName
+                    }`,
+                  },
+                ]);
               }
 
               // Handle definition as an object
-              return context.registerAction({
+              return registeredActions.push({
                 ...ag1,
                 name: `${prefix}${ag1.name || integrationName}`,
               });
@@ -53,7 +75,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
       (typeof computed[1] === 'function' || typeof computed[1] === 'object')
     ) {
       const [hook, handler, options = {}] = computed;
-      registerAction({
+      registeredActions.push({
         ...(typeof options === 'string'
           ? { name: `${prefix}${options}` }
           : {
@@ -68,12 +90,15 @@ const runIntegrations = async (integrations, context, prefix = '') => {
 
     // register a single action give an a configuration object
     else if (computed && computed.hook && computed.handler) {
-      registerAction({
+      registeredActions.push({
         ...computed,
         name: `${prefix}${computed.name || integrationName}`,
       });
     }
   }
+
+  // Register all the actions declared by the integrations that have been executed
+  registeredActions.forEach((actionDef) => context.registerAction(actionDef));
 };
 
 const objectSetter = (targetObject) => (path, value) => {

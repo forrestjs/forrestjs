@@ -1,6 +1,6 @@
 const { runHookApp } = require('@forrestjs/hooks');
-const serviceFastify = require('@forrestjs/service-fastify');
 const serviceJwt = require('@forrestjs/service-jwt');
+const serviceFastify = require('@forrestjs/service-fastify');
 
 const featureHome = require('./feature-home');
 

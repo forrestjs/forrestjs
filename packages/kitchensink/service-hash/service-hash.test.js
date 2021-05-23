@@ -1,8 +1,20 @@
 describe('service-hash', () => {
   it('Should return a signed object', async () => {
-    const res = await get('/');
+    const fn = jest.fn();
+    const input = 'foobar';
+    const hash = await get(`/encode/${input}`);
 
-    // A valid JWT should have 3 dots in it
-    expect(res.split('.').length).toBe(2);
+    try {
+      await post(`/compare`, {
+        input,
+        hash,
+      });
+      fn(true);
+    } catch (err) {
+      fn(false);
+    }
+
+    expect(fn.mock.calls.length).toBe(1);
+    expect(fn.mock.calls[0][0]).toBe(true);
   });
 });

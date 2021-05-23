@@ -1,4 +1,4 @@
-## 3.21.0
+## 4.0.0
 
 - Add VSCode and Prettier config
 - Start Kitchensink demo package
@@ -18,6 +18,7 @@
   - Removed babel
   - Features and services names defaults are derived by their registration form and automatically prefixed
   - Added support for positional definition in `registerRoute`
+  - Allows for order-independent service2service and feature2feature integration
 - service-env
   - Remove Babel
   - Update to `setContext` API

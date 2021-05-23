@@ -39,7 +39,7 @@ const serviceJwt = ({ registerAction }) => {
     hook: '$INIT_SERVICES',
     name: hooks.SERVICE_NAME,
     trace: __filename,
-    handler: ({ getConfig }, ctx) => {
+    handler: ({ getConfig }, { setContext }) => {
       secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---');
       duration = getConfig('jwt.duration', process.env.JWT_DURATION || '---');
       settings = getConfig('jwt.settings', {});
@@ -79,7 +79,35 @@ const serviceJwt = ({ registerAction }) => {
         );
 
       // Decorate the context
-      ctx.jwt = { sign, verify, decode };
+      setContext('jwt', { sign, verify, decode });
+    },
+  });
+
+  // Fastify Integration (optional hook)
+  registerAction({
+    hook: '$FASTIFY_HACKS_AFTER?',
+    name: hooks.SERVICE_NAME,
+    trace: __filename,
+    handler: ({ fastify }, { getContext }) => {
+      const jwt = getContext('jwt');
+
+      // Prepare the shape of the decorators
+      fastify.decorate('jwt', jwt);
+      fastify.decorateRequest('jwt', null);
+      fastify.decorateReply('jwt', null);
+
+      // Add the references using hooks to comply with the decoratos API
+      // https://www.fastify.io/docs/v3.15.x/Decorators/
+
+      fastify.addHook('onRequest', (request, reply, done) => {
+        request.jwt = jwt;
+        done();
+      });
+
+      fastify.addHook('onResponse', (request, reply, done) => {
+        reply.jwt = jwt;
+        done();
+      });
     },
   });
 };

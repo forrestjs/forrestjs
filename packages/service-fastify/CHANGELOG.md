@@ -1,6 +1,6 @@
 # Change Log
 
-## v1.21.0
+## ## v4.0.0
 
 - Refactored to remove babel and the build step
 - Added support for a `/test` route that can be extended

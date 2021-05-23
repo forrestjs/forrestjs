@@ -1,5 +1,6 @@
 # Change Log
 
-## v1.21.0
+## ## v4.0.0
 
 - Remove Babel
+- Integrates with `service-fastify` (conditionally)
