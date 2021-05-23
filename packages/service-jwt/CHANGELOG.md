@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.21.0
+
+- Remove Babel
+
 ## v3.13.3
 
 - automagically apply default values in `development` and `test`.

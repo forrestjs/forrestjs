@@ -21,6 +21,8 @@
 - service-env
   - Remove Babel
   - Update to `setContext` API
+- service-jwt
+  - Remove Babel
 - service-fastify
   - Fixes `$REGISTER_ROUTE` hook so to be synchronous and report injections in the boot report
   - Remove babel and the build step
@@ -30,6 +32,7 @@
 - kitchensink
   - Added examples for `@forrestjs/hooks`
   - Added examples for `@forrestjs/service-fastify`
+  - Added examples for `@forrestjs/service-jwt`
   - Added `app01` examples for a complex app
 
 ## 3.20.2
