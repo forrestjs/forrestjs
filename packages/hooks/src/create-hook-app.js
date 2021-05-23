@@ -19,11 +19,27 @@ const runIntegrations = async (integrations, context, prefix = '') => {
       typeof registerFn === 'function'
         ? await registerFn({
             ...context,
-            registerAction: (config) =>
-              context.registerAction({
-                ...config,
-                name: `${prefix}${config.name || integrationName}`,
-              }),
+            registerAction: (ag1, ag2, ag3 = {}) => {
+              // Handle positional arguments:
+              // registerAction('hook', () => {})
+              // registerAction('hook', () => {}, 'name')
+              // registerAction('hook', () => {}, { name: 'name' })
+              if (typeof ag1 === 'string') {
+                return context.registerAction(ag1, ag2, {
+                  ...(typeof ag3 === 'string' ? { name: ag3 } : ag3),
+                  name: `${prefix}${
+                    (typeof ag3 === 'string' ? ag3 : ag3.name) ||
+                    integrationName
+                  }`,
+                });
+              }
+
+              // Handle definition as an object
+              return context.registerAction({
+                ...ag1,
+                name: `${prefix}${ag1.name || integrationName}`,
+              });
+            },
           })
         : service;
 

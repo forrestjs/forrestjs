@@ -52,7 +52,12 @@ const ft5 = () => ['$INIT_FEATURE', () => console.log('ft5')];
  */
 const ft6 = ['$INIT_FEATURE', () => console.log('ft6'), 'ft6'];
 
+const ft7 = ({ registerAction }) => {
+  registerAction('$INIT_FEATURE', () => console.log('ft7a'), 'ft7a');
+  registerAction('$INIT_FEATURE', () => console.log('ft7b'), { name: 'ft7b' });
+};
+
 runHookApp({
   trace: 'compact',
-  features: [ft1, ft2, ft3, ft4, ft5, ft6],
+  features: [ft1, ft2, ft3, ft4, ft5, ft6, ft7],
 }).catch((err) => console.error(err));
