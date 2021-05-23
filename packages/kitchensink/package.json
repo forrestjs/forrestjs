@@ -16,6 +16,9 @@
     "start:service-jwt": "cross-env NODE_ENV=development npx nodemon service-jwt",
     "test:service-jwt": "jest -t service-jwt --runInBand ",
     "tdd:service-jwt": "jest -t service-jwt --runInBand  --watchAll",
+    "start:service-hash": "cross-env NODE_ENV=development npx nodemon service-hash",
+    "test:service-hash": "jest -t service-hash --runInBand ",
+    "tdd:service-hash": "jest -t service-hash --runInBand  --watchAll",
     "start:app01": "cross-env NODE_ENV=development npx nodemon app01",
     "test:app01": "jest -t app01 --runInBand ",
     "tdd:app01": "jest -t app01 --runInBand  --watchAll"
@@ -24,7 +27,8 @@
     "@forrestjs/hooks": "^3.21.0-alpha.3.2",
     "@forrestjs/service-fastify": "^3.21.0-alpha.3.2",
     "@forrestjs/service-env": "^3.21.0-alpha.3.2",
-    "@forrestjs/service-jwt": "^3.21.0-alpha.3.2"
+    "@forrestjs/service-jwt": "^3.21.0-alpha.3.2",
+    "@forrestjs/service-hash": "^3.21.0-alpha.3.2"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify#readme",
   "keywords": [
