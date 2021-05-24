@@ -59,16 +59,46 @@ const onStartService = async ({ getConfig, getContext, createHook }) => {
 
 module.exports = ({ registerAction, registerHook }) => {
   registerHook(hooks);
+
   registerAction({
     hook: '$INIT_SERVICE',
     name: SERVICE_NAME,
     trace: __filename,
     handler: onInitService,
   });
+
   registerAction({
     hook: '$START_SERVICE',
     name: SERVICE_NAME,
     trace: __filename,
     handler: onStartService,
+  });
+
+  // Fastify Integration (optional hook)
+  registerAction({
+    hook: '$FASTIFY_HACKS_AFTER?',
+    name: hooks.SERVICE_NAME,
+    trace: __filename,
+    handler: ({ fastify }, { getContext }) => {
+      const fetchq = getContext('fetchq');
+
+      // Prepare the shape of the decorators
+      fastify.decorate('fetchq', fetchq);
+      fastify.decorateRequest('fetchq', null);
+      fastify.decorateReply('fetchq', null);
+
+      // Add the references using hooks to comply with the decoratos API
+      // https://www.fastify.io/docs/v3.15.x/Decorators/
+
+      fastify.addHook('onRequest', (request, reply, done) => {
+        request.fetchq = fetchq;
+        done();
+      });
+
+      fastify.addHook('onResponse', (request, reply, done) => {
+        reply.fetchq = fetchq;
+        done();
+      });
+    },
   });
 };

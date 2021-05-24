@@ -28,6 +28,7 @@
   - Remove Babel
 - service-fetchq
   - Remove Babel
+  - Integrate with `service-fastify`
 - service-fastify
   - Fixes `$REGISTER_ROUTE` hook so to be synchronous and report injections in the boot report
   - Remove babel and the build step

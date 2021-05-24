@@ -1,8 +1,9 @@
 # Change Log
 
-## v3.21.0
+## v4.0.0
 
 - Remove Babel
+- Integrate with `service-fastify`
 
 ## v3.13.6
 
