@@ -1,0 +1,51 @@
+const { runHookApp } = require('@forrestjs/hooks');
+const serviceFastify = require('@forrestjs/service-fastify');
+const serviceFastifyCookie = require('@forrestjs/service-fastify-cookie');
+
+// Application logic to set a cookie in the client
+const setCookie = (request, reply) => {
+  const value = Date.now();
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+  reply.setCookie('lastTime', value, options).send(`lastTime set to: ${value}`);
+};
+
+// Application logic to read a previously set cookie
+const getCookie = (request, reply) => {
+  if (request.cookies.lastTime) {
+    const value = request.cookies.lastTime;
+    reply.send(`lastTime was set to: ${value}`);
+  } else {
+    reply.code(500).send('Cookie was not set');
+  }
+};
+
+runHookApp({
+  trace: 'compact',
+  settings: {
+    fastify: {
+      cookie: {
+        secret: 'forrestjs',
+      },
+    },
+  },
+  services: [serviceFastify, serviceFastifyCookie],
+  features: [
+    {
+      name: 'test-cookie',
+      hook: '$FASTIFY_GET',
+      handler: [
+        {
+          url: '/',
+          handler: setCookie,
+        },
+        {
+          url: '/get',
+          handler: getCookie,
+        },
+      ],
+    },
+  ],
+}).catch((err) => console.error(err));

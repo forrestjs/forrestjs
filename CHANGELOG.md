@@ -39,11 +39,14 @@
   - Remove Babel
 - service-fastify-cors
   - Remove Babel
+- service-fastify-cookie
+  - Remove Babel
 - kitchensink
   - Added examples for `@forrestjs/hooks`
   - Added examples for `@forrestjs/service-fastify`
   - Added examples for `@forrestjs/service-fastify-static`
   - Added examples for `@forrestjs/service-fastify-cors`
+  - Added examples for `@forrestjs/service-fetchq-cookie`
   - Added examples for `@forrestjs/service-jwt`
   - Added examples for `@forrestjs/service-hash`
   - Added examples for `@forrestjs/service-fetchq`
