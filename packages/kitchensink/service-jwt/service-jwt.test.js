@@ -1,8 +1,10 @@
 describe('service-jwt', () => {
   it('Should return a signed object', async () => {
-    const res = await get('/');
+    const payload = 'foobar';
+    const signed = await get(`/jwt/sign/${payload}`);
+    const verified = await post(`/jwt/verify`, { signed });
 
     // A valid JWT should have 3 dots in it
-    expect(res.split('.').length).toBe(3);
+    expect(verified.payload).toBe(payload);
   });
 });

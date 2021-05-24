@@ -14,19 +14,25 @@ module.exports = ({ getConfig, setContext, createHook, getContext }) => {
   server.decorate('getConfig', getConfig);
   server.decorate('getContext', getContext);
 
-  server.decorateRequest('getConfig', getConfig);
-  server.decorateRequest('getContext', getContext);
+  // Prepare the shape of request/reply object
+  server.decorateRequest('getConfig', null);
+  server.decorateRequest('getContext', null);
+  server.decorateReply('getConfig', null);
+  server.decorateReply('getContext', null);
 
-  server.decorateReply('getConfig', getConfig);
-  server.decorateReply('getContext', getContext);
+  // Inject references in each request object
+  server.addHook('onRequest', (request, reply, done) => {
+    request.getConfig = getConfig;
+    request.getContext = getContext;
+    done();
+  });
 
-  // Integrate with the `service-env`
-  const getEnv = getContext('getEnv', null);
-  if (getEnv) {
-    server.decorate('getEnv', getEnv);
-    server.decorateRequest('getEnv', getEnv);
-    server.decorateReply('getEnv', getEnv);
-  }
+  // Inject references in each reply object
+  server.addHook('onResponse', (request, reply, done) => {
+    request.getConfig = getConfig;
+    request.getContext = getContext;
+    done();
+  });
 
   createHook.sync(hooks.FASTIFY_HACKS_BEFORE, { fastify: server });
   createHook.sync(hooks.FASTIFY_PLUGIN, {
