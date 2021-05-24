@@ -37,10 +37,13 @@
   - Integrates with `service-env` to provide direct access to `getEnv` in the route handlers
 - service-fastify-static
   - Remove Babel
+- service-fastify-cors
+  - Remove Babel
 - kitchensink
   - Added examples for `@forrestjs/hooks`
   - Added examples for `@forrestjs/service-fastify`
   - Added examples for `@forrestjs/service-fastify-static`
+  - Added examples for `@forrestjs/service-fastify-cors`
   - Added examples for `@forrestjs/service-jwt`
   - Added examples for `@forrestjs/service-hash`
   - Added examples for `@forrestjs/service-fetchq`
