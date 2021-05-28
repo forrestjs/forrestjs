@@ -8,13 +8,13 @@ const {
 } = require('./hooks');
 const defaultSchema = require('./schema');
 
-const fastifyGql = hooks => (fastify, opts, next) => {
+const fastifyGql = (hooks) => async (fastify, opts, next) => {
   const { createHook } = hooks;
 
   // Collect schema extensions from other features/services
   const schemaExtensions = createHook
     .sync(FASTIFY_GQL_EXTEND_SCHEMA)
-    .map(ext => ext[0]);
+    .map((ext) => ext[0]);
 
   // Create the full schema
   const schema = buildFederatedSchema([
@@ -24,7 +24,7 @@ const fastifyGql = hooks => (fastify, opts, next) => {
   ]);
 
   // Set the handlers' execution schema
-  const context = request => {
+  const context = (request) => {
     const params = {
       request,
       fastify,
@@ -48,8 +48,13 @@ const fastifyGql = hooks => (fastify, opts, next) => {
     ...opts,
   });
 
-  const handler = server.createHandler()
-  // fastify.register(server.createHandler());
+  // Optionally start the server
+  if (server.state.phase === 'initialized with schema') {
+    await server.start();
+  }
+
+  // const handler = server.createHandler();
+  fastify.register(server.createHandler());
 
   next();
 };

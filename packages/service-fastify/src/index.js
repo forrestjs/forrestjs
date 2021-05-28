@@ -16,6 +16,7 @@ module.exports = ({ registerAction, registerHook }) => {
     registerAction({
       ...service,
       hook: '$FASTIFY_ROUTE',
+      name: 'fastify-tdd',
       handler: tddHandler,
     });
   }

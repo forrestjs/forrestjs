@@ -3,19 +3,15 @@
   "description": "ForrestJS service which adds GraphQL utilities to a Fastify server.",
   "version": "3.21.0-alpha.3.2",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
+  "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@apollo/federation": "^0.21.0",
-    "@babel/runtime": "^7.14.0",
+    "@apollo/federation": "^0.25.0",
     "@forrestjs/hooks": "^3.21.0-alpha.3.2",
-    "apollo-server-fastify": "3.0.0-alpha.4"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.14.3",
-    "@babel/core": "^7.14.3",
-    "@forrestjs/babel-preset-package": "^3.21.0-alpha.3.2"
+    "apollo-server-fastify": "3.0.0-lambda.0",
+    "apollo-server-core": "3.0.0-lambda.0"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-gql#readme",
   "keywords": [
@@ -31,12 +27,7 @@
   },
   "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-gql",
   "scripts": {
-    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json && rm -rf lib && rm -rf index.js",
-    "build": "babel src --out-dir . --ignore **/__tests__",
-    "build:to": "babel src --out-dir \"${TARGET}/node_modules/${npm_package_name}\" --ignore **/__tests__",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir . --ignore **/__tests__",
-    "watch:to": "babel -w src --out-dir \"${TARGET}/node_modules/${npm_package_name}\" --ignore **/__tests__"
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
   },
   "gitHead": "842378d848c42fb0c272e888ea538ec04335cfc4"
 }

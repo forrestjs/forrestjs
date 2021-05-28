@@ -44,12 +44,16 @@
   - Remove Babel
 - service-fastify-cookie
   - Remove Babel
+- service-fastify-gql
+  - Remove Babel
+  - Update to 3.0.0-lambda.0
 - kitchensink
   - Added examples for `@forrestjs/hooks`
   - Added examples for `@forrestjs/service-fastify`
   - Added examples for `@forrestjs/service-fastify-static`
   - Added examples for `@forrestjs/service-fastify-cors`
   - Added examples for `@forrestjs/service-fetchq-cookie`
+  - Added examples for `@forrestjs/service-fetchq-gql`
   - Added examples for `@forrestjs/service-jwt`
   - Added examples for `@forrestjs/service-hash`
   - Added examples for `@forrestjs/service-fetchq`
