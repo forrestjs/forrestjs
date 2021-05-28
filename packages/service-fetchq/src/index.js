@@ -76,7 +76,7 @@ module.exports = ({ registerAction, registerHook }) => {
 
   // Fastify Integration (optional hook)
   registerAction({
-    hook: '$FASTIFY_HACKS_AFTER?',
+    hook: '$FASTIFY_HACKS_BEFORE?',
     name: hooks.SERVICE_NAME,
     trace: __filename,
     handler: ({ fastify }, { getContext }) => {

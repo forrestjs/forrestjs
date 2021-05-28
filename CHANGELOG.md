@@ -29,6 +29,9 @@
 - service-fetchq
   - Remove Babel
   - Integrate with `service-fastify`
+- service-apollo
+  - Remove Babel
+  - Integrate with `service-fastify`
 - service-fastify
   - Fixes `$REGISTER_ROUTE` hook so to be synchronous and report injections in the boot report
   - Remove babel and the build step
@@ -50,6 +53,7 @@
   - Added examples for `@forrestjs/service-jwt`
   - Added examples for `@forrestjs/service-hash`
   - Added examples for `@forrestjs/service-fetchq`
+  - Added examples for `@forrestjs/service-apollo`
   - Added `app01` examples for a complex app
 
 ## 3.20.2

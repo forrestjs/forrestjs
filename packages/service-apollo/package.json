@@ -3,21 +3,16 @@
   "description": "ForrestJS service which adds an Apollo GraphQL client to the App's context.",
   "version": "3.21.0-alpha.3.2",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
+  "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.14.0",
     "@forrestjs/hooks": "^3.21.0-alpha.3.2",
     "apollo-boost": "^0.4.9",
-    "cross-fetch": "^3.0.6",
+    "cross-fetch": "^3.1.4",
     "graphql": "^15.5.0",
-    "graphql-tag": "^2.11.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.14.3",
-    "@babel/core": "^7.14.3",
-    "@forrestjs/babel-preset-package": "^3.21.0-alpha.3.2"
+    "graphql-tag": "^2.12.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-apollo#readme",
   "keywords": [
@@ -32,12 +27,7 @@
   },
   "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-apollo",
   "scripts": {
-    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json && rm -rf lib && rm -rf index.js",
-    "build": "babel src --out-dir . --ignore **/__tests__",
-    "build:to": "babel src --out-dir \"${TARGET}/node_modules/${npm_package_name}\" --ignore **/__tests__",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir . --ignore **/__tests__",
-    "watch:to": "babel -w src --out-dir \"${TARGET}/node_modules/${npm_package_name}\" --ignore **/__tests__"
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
   },
   "gitHead": "842378d848c42fb0c272e888ea538ec04335cfc4"
 }
