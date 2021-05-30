@@ -53,13 +53,17 @@
 - service-fastify-gql
   - Remove Babel
   - Update to 3.0.0-lambda.0
+- service-fastify-healthz
+  - Remove Babel
+  - Add support for healtz preHandler checks
 - kitchensink
   - Added examples for `@forrestjs/hooks`
   - Added examples for `@forrestjs/service-fastify`
   - Added examples for `@forrestjs/service-fastify-static`
   - Added examples for `@forrestjs/service-fastify-cors`
-  - Added examples for `@forrestjs/service-fetchq-cookie`
-  - Added examples for `@forrestjs/service-fetchq-gql`
+  - Added examples for `@forrestjs/service-fastify-cookie`
+  - Added examples for `@forrestjs/service-fastify-gql`
+  - Added examples for `@forrestjs/service-fastify-healthz`
   - Added examples for `@forrestjs/service-jwt`
   - Added examples for `@forrestjs/service-hash`
   - Added examples for `@forrestjs/service-fetchq`

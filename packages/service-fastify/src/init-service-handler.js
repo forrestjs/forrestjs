@@ -3,9 +3,10 @@ const hooks = require('./hooks');
 
 module.exports = ({ getConfig, setContext, createHook, getContext }) => {
   // Get overridable options from the app's context
-  const { value: options } = createHook.waterfall(hooks.FASTIFY_OPTIONS, {
-    options: getConfig('fastify.instance.options', {}),
-  });
+  const { value: options } = createHook.waterfall(
+    hooks.FASTIFY_OPTIONS,
+    getConfig('fastify.instance.options', {}),
+  );
   const server = fastify(options);
 
   const registerPlugin = (...options) => server.register(...options);
