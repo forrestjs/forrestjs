@@ -4,6 +4,9 @@
 
 - Remove Babel
 - Integrate with `service-fastify`
+  - Integrate with the test healthcheck
+  - Provide `/test/fetchq/query` get/post utility
+- Integrate with `service-fastify-healthz`
 
 ## v3.13.6
 

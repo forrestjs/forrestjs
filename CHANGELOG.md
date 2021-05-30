@@ -29,6 +29,8 @@
 - service-fetchq
   - Remove Babel
   - Integrate with `service-fastify`
+    - Integrate with the test healthcheck
+    - Provide `/test/fetchq/query` get/post utility
 - service-apollo
   - Remove Babel
   - Integrate with `service-fastify`

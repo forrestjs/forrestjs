@@ -4,6 +4,9 @@ const {
   FASTIFY_TDD_CHECK,
 } = require('./hooks');
 
+const healthzCheckTypeErrorMessage =
+  '[fastify/tdd] The healthz check must be a Fastify compatible preHandler function';
+
 const collectRoutes = (createHook, tddScope) => {
   const routes = [];
   const registerTddRoute = (routeDef = {}) =>
@@ -17,8 +20,15 @@ const collectRoutes = (createHook, tddScope) => {
 
 const collectChecks = (createHook) => {
   const checksList = [];
-  const registerTddCheck = (check) => checksList.push(check);
-  createHook.sync(FASTIFY_TDD_CHECK, { registerTddCheck });
+  const registerTddCheck = (check) => {
+    if (typeof check !== 'function') {
+      throw new Error(healthzCheckTypeErrorMessage);
+    }
+    checksList.push(check);
+  };
+  createHook
+    .sync(FASTIFY_TDD_CHECK, { registerTddCheck })
+    .forEach((result) => registerTddCheck(result[0]));
 
   // Filter out functions only
   return checksList.filter((check) => typeof check === 'function');

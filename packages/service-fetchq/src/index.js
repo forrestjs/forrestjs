@@ -74,7 +74,10 @@ module.exports = ({ registerAction, registerHook }) => {
     handler: onStartService,
   });
 
-  // Fastify Integration (optional hook)
+  /**
+   * Provide the Fetchq client reference into Fastify's context
+   */
+
   registerAction({
     hook: '$FASTIFY_HACKS_BEFORE?',
     name: hooks.SERVICE_NAME,
@@ -85,7 +88,6 @@ module.exports = ({ registerAction, registerHook }) => {
       // Prepare the shape of the decorators
       fastify.decorate('fetchq', fetchq);
       fastify.decorateRequest('fetchq', null);
-      fastify.decorateReply('fetchq', null);
 
       // Add the references using hooks to comply with the decoratos API
       // https://www.fastify.io/docs/v3.15.x/Decorators/
@@ -94,11 +96,73 @@ module.exports = ({ registerAction, registerHook }) => {
         request.fetchq = fetchq;
         done();
       });
+    },
+  });
 
-      fastify.addHook('onResponse', (request, reply, done) => {
-        reply.fetchq = fetchq;
-        done();
+  /**
+   * Integrate with the Fastify TDD API
+   */
+
+  registerAction({
+    hook: '$FASTIFY_TDD_ROUTE?',
+    name: hooks.SERVICE_NAME,
+    trace: __filename,
+    handler: ({ registerTddRoute }) => {
+      const schemaFields = {
+        type: 'object',
+        properties: {
+          q: { type: 'string' },
+        },
+        required: ['q'],
+      };
+
+      registerTddRoute({
+        method: 'GET',
+        url: '/fetchq/query',
+        schema: { query: schemaFields },
+        handler: (request) => {
+          const { q: sql } = request.query;
+          return request.fetchq.pool.query(sql);
+        },
+      });
+
+      registerTddRoute({
+        method: 'POST',
+        url: '/fetchq/query',
+        schema: { body: schemaFields },
+        handler: (request) => {
+          const { q: sql } = request.body;
+          return request.fetchq.pool.query(sql);
+        },
       });
     },
+  });
+
+  /**
+   * Integrate with the TDD and Healthz preHandlers check so that
+   * the app's status should await a working pool
+   */
+
+  const healthcheckHandler = async (request, reply, next) => {
+    try {
+      await request.fetchq.pool.query('SELECT NOW()');
+      next();
+    } catch (err) {
+      reply.status(412).send('Fetchq client not yet ready');
+    }
+  };
+
+  registerAction({
+    hook: '$FASTIFY_TDD_CHECK?',
+    name: hooks.SERVICE_NAME,
+    trace: __filename,
+    handler: () => healthcheckHandler,
+  });
+
+  registerAction({
+    hook: '$FASTIFY_HEALTHZ_CHECK?',
+    name: hooks.SERVICE_NAME,
+    trace: __filename,
+    handler: () => healthcheckHandler,
   });
 };
