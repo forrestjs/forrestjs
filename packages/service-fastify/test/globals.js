@@ -35,18 +35,20 @@ const awaitTestReady = ({ uri = `/${TEST_SCOPE}`, baseUrl, delay } = {}) =>
 const http = {
   get: async (uri, config = {}) => (await axios.get(url(uri), config)).data,
   rawGet: async (uri, config = {}) => axios.get(url(uri), config),
-  post: async (uri, data, config = {}) =>
+  post: async (uri, data = {}, config = {}) =>
     (await axios.post(url(uri), data, config)).data,
-  rawPost: async (uri, data, config = {}) => axios.post(url(uri), data, config),
-  put: async (uri, data, config = {}) =>
+  rawPost: async (uri, data = {}, config = {}) =>
+    axios.post(url(uri), data, config),
+  put: async (uri, data = {}, config = {}) =>
     (await axios.put(url(uri), data, config)).data,
-  rawPut: async (uri, data, config = {}) => axios.put(url(uri), data, config),
+  rawPut: async (uri, data = {}, config = {}) =>
+    axios.put(url(uri), data, config),
   delete: async (uri, config = {}) =>
     (await axios.delete(url(uri), config)).data,
   rawDelete: async (uri, config = {}) => axios.delete(url(uri), config),
 };
 
-module.exports = {
+module.exports = (global = {}) => ({
   url,
   awaitAppUri,
   awaitTestReady,
@@ -55,4 +57,5 @@ module.exports = {
   random,
   randomItem,
   ...http,
-};
+  ...global,
+});

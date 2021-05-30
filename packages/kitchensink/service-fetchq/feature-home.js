@@ -1,8 +1,4 @@
-const homeRouteHandler = async (request) => {
-  // const jwt = request.getContext('jwt');
-  // return jwt.sign({ foo: 'bar ' });
-  return 'fetchq';
-};
+const homeRouteHandler = async () => 'fetchq';
 
 module.exports = {
   name: 'home',

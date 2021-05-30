@@ -31,6 +31,10 @@
   - Integrate with `service-fastify`
     - Integrate with the test healthcheck
     - Provide `/test/fetchq/query` get/post utility
+    - Provide `/test/fetchq/:queue/:subject` to retrieve a document status
+    - Provide `/test/fetchq/await/:queue/:subject` to await a document status with a configurable timeout
+  - Provides Jest global utility functions
+  - Integrate with `service-fastify-healthz`
 - service-apollo
   - Remove Babel
   - Integrate with `service-fastify`

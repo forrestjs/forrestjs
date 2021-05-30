@@ -7,6 +7,11 @@
  * @param {*} param0
  */
 
+const pushDocHandler = (request) =>
+  request.fetchq.doc.push(request.params.queue, {
+    subject: request.params.subject,
+  });
+
 const appendDocHandler = (request) =>
   request.fetchq.doc.append(request.params.queue, request.params);
 
@@ -20,7 +25,10 @@ const readDocHandler = async (request) => {
 };
 
 const workerQ1 = (doc) => doc.drop();
-const workerQ2 = async (doc) => doc.complete();
+const workerQ2 = async (doc) => {
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  return doc.complete();
+};
 
 const featureQ1 = ({ registerAction }) => {
   // Here we upsert a few queues:
@@ -68,6 +76,10 @@ const featureQ1 = ({ registerAction }) => {
       {
         url: '/fetchq/append/:queue/:name',
         handler: appendDocHandler,
+      },
+      {
+        url: '/fetchq/push/:queue/:subject',
+        handler: pushDocHandler,
       },
       {
         url: '/fetchq/status/:queue/:subject',

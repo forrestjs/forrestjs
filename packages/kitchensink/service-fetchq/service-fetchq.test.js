@@ -1,4 +1,6 @@
 describe('service-fetchq', () => {
+  beforeEach(fetchq.resetState);
+
   it('should queue a document into Q1', async () => {
     const res = await get('/fetchq/append/q1/foobar');
     expect(res).toMatchObject({ subject: expect.any(String) });
@@ -13,12 +15,25 @@ describe('service-fetchq', () => {
     const r1 = await get('/fetchq/append/q2/foobar');
 
     // Await for the queue to process the document
-    // TODO: this must be replaced with the "awaitStatus" helper function
-    await pause(500);
+    await fetchq.awaitDocument('q2', r1.subject);
 
-    // TODO: this must become a "/test/fetchq/status/:queue/:subject" call
-    const r2 = await get(`/fetchq/status/q2/${r1.subject}`);
+    // Check the final status
+    const r2 = await fetchq.getDocument('q2', r1.subject);
     expect(r2.status).toBe(3);
+  });
+
+  it('should fail the await status in case of timeout', async () => {
+    const fn = jest.fn();
+    try {
+      const r1 = await get('/fetchq/append/q2/foobar');
+      await fetchq.awaitDocument('q2', r1.subject, { timeout: 10 });
+    } catch (err) {
+      fn(err);
+    }
+
+    expect(fn.mock.calls.length).toBe(1);
+    const response = fn.mock.calls[0][0].response;
+    expect(response.status).toBe(412);
   });
 
   it('should integrate with service-fastify-healthz', async () => {
@@ -36,5 +51,46 @@ describe('service-fetchq', () => {
     const r1 = await post('/test/fetchq/query', { q: 'SELECT NOW()' });
     expect(r1.rowCount).toBe(1);
     expect(typeof r1.rows[0].now).toBe('string');
+  });
+
+  it('should integrate the utility query method', async () => {
+    const r1 = await fetchq.query('SELECT NOW()');
+    expect(r1.rowCount).toBe(1);
+    expect(typeof r1.rows[0].now).toBe('string');
+  });
+
+  it('should provide the lazyQuery utility method', async () => {
+    setTimeout(() => get('/fetchq/push/q2/foobar'), 50);
+
+    const res = await fetchq.lazyQuery(`
+      SELECT * FROM "fetchq_data"."q2__docs"
+      WHERE "subject" = 'foobar'
+        AND "status" = 3
+    `);
+
+    expect(res.rowCount).toBe(1);
+    expect(res.rows[0].subject).toBe('foobar');
+  });
+
+  it('should timeout lazyQuery with an error', async () => {
+    const fn = jest.fn();
+    setTimeout(() => get('/fetchq/push/q2/foobar'), 100);
+
+    try {
+      await fetchq.lazyQuery(
+        `
+      SELECT * FROM "fetchq_data"."q2__docs"
+      WHERE "subject" = 'foobar'
+        AND "status" = 3
+    `,
+        { timeout: 50 },
+      );
+    } catch (err) {
+      fn(err);
+    }
+
+    expect(fn.mock.calls.length).toBe(1);
+    const err = fn.mock.calls[0][0];
+    expect(err.message).toBe('timeout');
   });
 });
