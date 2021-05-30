@@ -7,6 +7,7 @@
 - Added examples for `@forrestjs/service-jwt`
 - Added examples for `@forrestjs/service-hash`
 - Added examples for `@forrestjs/service-fetchq`
+- Added examples for `@forrestjs/service-logger`
 - Added examples for `@forrestjs/service-fetchq-static`
 - Added examples for `@forrestjs/service-fetchq-cors`
 - Added examples for `@forrestjs/service-fetchq-cookie`

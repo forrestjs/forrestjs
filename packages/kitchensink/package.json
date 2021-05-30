@@ -37,6 +37,9 @@
     "start:service-apollo": "cross-env NODE_ENV=development npx nodemon service-apollo",
     "test:service-apollo": "jest -t service-apollo --runInBand ",
     "tdd:service-apollo": "jest -t service-apollo --runInBand  --watchAll",
+    "start:service-logger": "cross-env NODE_ENV=development npx nodemon service-logger",
+    "test:service-logger": "jest -t service-logger --runInBand ",
+    "tdd:service-logger": "jest -t service-logger --runInBand  --watchAll",
     "start:app01": "cross-env NODE_ENV=development npx nodemon app01",
     "test:app01": "jest -t app01 --runInBand ",
     "tdd:app01": "jest -t app01 --runInBand  --watchAll"
@@ -53,6 +56,7 @@
     "@forrestjs/service-fetchq": "^3.21.0-alpha.3.2",
     "@forrestjs/service-hash": "^3.21.0-alpha.3.2",
     "@forrestjs/service-jwt": "^3.21.0-alpha.3.2",
+    "@forrestjs/service-logger": "^3.21.0-alpha.3.2",
     "axios": "^0.21.1",
     "graphql-tag": "^2.12.4"
   },

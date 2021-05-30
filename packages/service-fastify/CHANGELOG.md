@@ -6,6 +6,7 @@
 - Added support for a `/test` route that can be extended
 - Added globals utilities for E2E testing in Jest
 - Integrates with `service-env` to provide direct access to `getEnv` in the route handlers
+- Add `FASTIFY_OPTIONS` hook that lets hijack into the `fastify.instance.options` object at run time
 
 ## v1.13.1
 

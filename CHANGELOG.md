@@ -32,12 +32,18 @@
 - service-apollo
   - Remove Babel
   - Integrate with `service-fastify`
+- service-logger
+  - Remove Babel
+  - Remove custom methods
+  - Rename context's instance api to `log`
+  - Improve fastify integration
 - service-fastify
   - Fixes `$REGISTER_ROUTE` hook so to be synchronous and report injections in the boot report
   - Remove babel and the build step
   - Add extendable `/test` route for E2E test support
   - Added globals utilities for E2E testing in Jest
   - Integrates with `service-env` to provide direct access to `getEnv` in the route handlers
+  - Add `FASTIFY_OPTIONS` hook that lets hijack into the `fastify.instance.options` object at run time
 - service-fastify-static
   - Remove Babel
 - service-fastify-cors
@@ -58,6 +64,7 @@
   - Added examples for `@forrestjs/service-hash`
   - Added examples for `@forrestjs/service-fetchq`
   - Added examples for `@forrestjs/service-apollo`
+  - Added examples for `@forrestjs/service-logger`
   - Added `app01` examples for a complex app
 
 ## 3.20.2

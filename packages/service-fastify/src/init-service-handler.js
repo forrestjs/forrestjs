@@ -2,11 +2,13 @@ const fastify = require('fastify');
 const hooks = require('./hooks');
 
 module.exports = ({ getConfig, setContext, createHook, getContext }) => {
-  const options = getConfig('fastify.instance.options', {});
+  // Get overridable options from the app's context
+  const { value: options } = createHook.waterfall(hooks.FASTIFY_OPTIONS, {
+    options: getConfig('fastify.instance.options', {}),
+  });
   const server = fastify(options);
 
   const registerPlugin = (...options) => server.register(...options);
-
   const decorate = (...options) => server.decorate(...options);
   const decorateRequest = (...options) => server.decorateRequest(...options);
   const decorateReply = (...options) => server.decorateReply(...options);
