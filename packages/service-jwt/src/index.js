@@ -94,7 +94,6 @@ const serviceJwt = ({ registerAction }) => {
       // Prepare the shape of the decorators
       fastify.decorate('jwt', jwt);
       fastify.decorateRequest('jwt', null);
-      fastify.decorateReply('jwt', null);
 
       // Add the references using hooks to comply with the decoratos API
       // https://www.fastify.io/docs/v3.15.x/Decorators/
@@ -103,10 +102,43 @@ const serviceJwt = ({ registerAction }) => {
         request.jwt = jwt;
         done();
       });
+    },
+  });
 
-      fastify.addHook('onResponse', (request, reply, done) => {
-        reply.jwt = jwt;
-        done();
+  /**
+   * Integrate with the Fastify TDD API
+   */
+
+  registerAction({
+    hook: '$FASTIFY_TDD_ROUTE?',
+    name: hooks.SERVICE_NAME,
+    trace: __filename,
+    handler: ({ registerTddRoute }) => {
+      registerTddRoute({
+        method: 'POST',
+        url: '/jwt/sign',
+        handler: (request) => {
+          const { jwt } = request;
+          return jwt.sign(request.body.payload);
+        },
+      });
+
+      registerTddRoute({
+        method: 'POST',
+        url: '/jwt/verify',
+        handler: (request) => {
+          const { jwt } = request;
+          return jwt.verify(request.body.jwt);
+        },
+      });
+
+      registerTddRoute({
+        method: 'POST',
+        url: '/jwt/decode',
+        handler: (request) => {
+          const { jwt } = request;
+          return jwt.decode(request.body.jwt);
+        },
       });
     },
   });
