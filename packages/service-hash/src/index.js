@@ -106,6 +106,44 @@ const serviceBcrypt = ({ registerAction }) => {
       });
     },
   });
+
+  /**
+   * Integrate with the Fastify TDD API
+   */
+
+  registerAction({
+    hook: '$FASTIFY_TDD_ROUTE?',
+    name: hooks.SERVICE_NAME,
+    trace: __filename,
+    handler: ({ registerTddRoute }) => {
+      registerTddRoute({
+        method: 'POST',
+        url: '/hash/encode',
+        handler: (request) => {
+          const { hash } = request;
+          return hash.encode(request.body.payload);
+        },
+      });
+
+      registerTddRoute({
+        method: 'POST',
+        url: '/hash/compare',
+        handler: (request) => {
+          const { hash } = request;
+          return hash.compare(request.body.payload, request.body.hash);
+        },
+      });
+
+      registerTddRoute({
+        method: 'POST',
+        url: '/hash/genSalt/:rounds',
+        handler: (request) => {
+          const { hash } = request;
+          return hash.genSalt(request.params.rounds);
+        },
+      });
+    },
+  });
 };
 
 serviceBcrypt.compare = compare;

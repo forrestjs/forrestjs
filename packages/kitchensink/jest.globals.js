@@ -1,6 +1,7 @@
 const fastifyTestUtils = require('@forrestjs/service-fastify/test/globals');
 const fetchqTestUtils = require('@forrestjs/service-fetchq/test/globals');
 const jwtTestUtils = require('@forrestjs/service-jwt/test/globals');
+const hashTestUtils = require('@forrestjs/service-hash/test/globals');
 
 // Fastify provides the basic global functions that make
 // E2E testing very easy.
@@ -19,4 +20,5 @@ module.exports = () => ({
   ...fastifyGlobals,
   ...fetchqTestUtils(fastifyGlobals),
   ...jwtTestUtils(fastifyGlobals),
+  ...hashTestUtils(fastifyGlobals),
 });
