@@ -33,7 +33,11 @@ It exposes a simple interface to logging using [Winston](https://www.npmjs.com/p
 
 ### service-fastify
 
-It creates a Fastify instance into the ForrestJS app, and let other features extend it with routes and plugins.
+It creates a [Fastify](https://www.fastify.io/) instance into the ForrestJS app, and let other features extend it with routes and plugins.
+
+👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-fastify)  
+👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify/README.md#readme)  
+👉 [**Open the CodeSandbox example**](https://codesandbox.io/s/service-fastify-th8dq)
 
 ### service-fastify-healthz
 
@@ -41,31 +45,57 @@ It integrates with Fastify to expose a `/healthz` healthcheck endpoint. Features
 
 ### service-fastify-static
 
-It integrates with Fastify and easily let you serve static files. (Althoug, I want to remember you that NGiNX or a simple CDN will do better)
+It integrates with Fastify for serving static files. (Although, I want to remember you that NGiNX or a simple CDN will do better)
+
+Wrapper around [fastify-static](https://www.npmjs.com/package/fastify-static) plugin.
+
+👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-fastify-static)  
+👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify-static/README.md#readme)  
+👉 [**Open the CodeSandbox example**](https://codesandbox.io/s/service-fastify-static-6u8mm)
 
 ### service-fastify-cookie
 
 It integrates with Fastify and exposes an interface to read and write cookies, safely.
 
+Wrapper around [fastify-cookie](https://github.com/fastify/fastify-cookie) plugin.
+
+👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-fastify-cookie)  
+👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify-cookie/README.md#readme)  
+👉 [**Open the CodeSandbox example**](https://codesandbox.io/s/service-fastify-cookie-pq2m0)
+
 ### service-fastify-gql
 
-It integrates Apollo Server with Fastify and exposes an interface to easily define your GraphQL types, queries and mutations.
+Sets up an [Apollo Graphql Server](https://www.apollographql.com/docs/apollo-server/)
+in the ForrestJS app and provides hooks to extend the schema from a feature.
+
+👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-fastify-gql)  
+👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify-gql/README.md#readme)  
+👉 [**Open the CodeSandbox example**](https://codesandbox.io/s/service-fastify-gql-3ijs6)
 
 ### service-apollo
 
-It integrates Apollo Client and exposes a simple interface to consume a GraphQL endpoint.
+Sets up an Apollo Client in the ForrestJS app and makes it available to route handlers.
+
+👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-fastify-apollo)  
+👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify-apollo/README.md#readme)  
+👉 [**Open the CodeSandbox example**](https://codesandbox.io/s/service-fastify-apollo-80oug)
 
 ### service-fetchq
 
-It connects with Postgres and manages a Fetchq client for you. It exposes a simple hook based API to create queues and associate workers.
+Sets up an Fetchq Client in the ForrestJS app and makes it available to route handlers.
+
+👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-fastify-fetchq)  
+👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify-fetchq/README.md#readme)  
+👉 [**Open the CodeSandbox example**](https://codesandbox.io/s/service-fastify-fetchq-0by8x)
 
 ### service-jwt
 
 Helps to issue and validate _JWT_ tokens. It is mainly a _Promise_ wrapper around the
 package `jsonwebtoken`.
 
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-jwt)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-jwt/README.md#readme)
+👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-jwt)  
+👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-jwt/README.md#readme)  
+👉 [**Open the CodeSandbox example**](https://codesandbox.io/s/service-fastify-jwt-fnfqc)
 
 ### service-hash
 
