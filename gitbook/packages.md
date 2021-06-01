@@ -1,18 +1,15 @@
 # ForrestJS Packages
 
-Over many many years I found myself configuring some basic stuff over and over again.
+Over the years, I found myself configuring some basic stuff over and over again.
 Nowadays I do my best to abstract generic needs into sharable and reusable packages
 that you find listed here.
 
 Most of them consist in very little amount of code, but they provide _hooks_ so that
 your application can **easily extend and customize their behaviour**.
 
-## Core
+## Hooks
 
-#### hooks
-
-This is the core of ForrestJS modularity. It allows you to implement an extensible applications
-made of composable feature pretty much like Wordpress plugins, but in a Node fashion and with
+This is the core of ForrestJS modularity. It allows you to implement extensible applications made of composable feature pretty much **like Wordpress does with their plugins**, but in a Node fashion and with
 traceable and debuggable support.
 
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/hooks)<br>
@@ -20,21 +17,49 @@ traceable and debuggable support.
 
 ## Services
 
-#### service-env
+### service-env
 
-Reads environment configuration from different _dot-files_ into your `process.env`.
+Reads environment configuration from different _dot-files_ into your `process.env` variable, and provides a safe interface to access environmental variables.
 
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-env)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-env/README.md#readme)
 
-#### service-logger
+### service-logger
 
-Offers a simple interface to logging using [Winston](https://www.npmjs.com/package/winston) under the hood.
+It exposes a simple interface to logging using [Winston](https://www.npmjs.com/package/winston) under the hood.
 
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-logger)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-logger/README.md#readme)
 
-#### service-jwt
+### service-fastify
+
+It creates a Fastify instance into the ForrestJS app, and let other features extend it with routes and plugins.
+
+### service-fastify-healthz
+
+It integrates with Fastify to expose a `/healthz` healthcheck endpoint. Features can integrate here to run their checks and invalidate it in case something goes wrong.
+
+### service-fastify-static
+
+It integrates with Fastify and easily let you serve static files. (Althoug, I want to remember you that NGiNX or a simple CDN will do better)
+
+### service-fastify-cookie
+
+It integrates with Fastify and exposes an interface to read and write cookies, safely.
+
+### service-fastify-gql
+
+It integrates Apollo Server with Fastify and exposes an interface to easily define your GraphQL types, queries and mutations.
+
+### service-apollo
+
+It integrates Apollo Client and exposes a simple interface to consume a GraphQL endpoint.
+
+### service-fetchq
+
+It connects with Postgres and manages a Fetchq client for you. It exposes a simple hook based API to create queues and associate workers.
+
+### service-jwt
 
 Helps to issue and validate _JWT_ tokens. It is mainly a _Promise_ wrapper around the
 package `jsonwebtoken`.
@@ -42,86 +67,22 @@ package `jsonwebtoken`.
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-jwt)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-jwt/README.md#readme)
 
-#### service-hash
+### service-hash
 
 It provides some basic cryptographic helper methods to safely hash passwords.
 
-[[ to be completed ]]
+[[to be completed]]
 
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-hash)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-hash/README.md#readme)
 
-#### service-express
-
-It helps setting up and running an _ExpressJS_ App. You will be able to provide custom
-routes and middlewares by hooking into it.
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-express)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-express/README.md#readme)
-
-#### service-express-cookies
-
-It helps handling cookies in both server and client, decorating your Express app with some
-helper methods like `req.getCookie('foo')` and `res.setCookie('foo', 'content')`.
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-express-cookies)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-express-cookies/README.md#readme)
-
-#### service-express-graphql
-
-It provides a _GraphQL_ endpoint in your _ExpressJS_ app, and simple ways to inject
-custom queries and mutations.
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-express-graphql)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-express-graphql/README.md#readme)
-
-#### service-express-graphql-test
-
-It provides a _GraphQL_ testing endpoint that allows a simple protection strategy.
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-express-graphql-test)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-express-graphql-test/README.md#readme)
-
-#### service-postgres
+### service-postgres
 
 It helps establishing a reliable connection with one or more _Postgres_ databases using the
 library `sequelize`. It also provide hooks for features to provide their own data models in
 isolation.
 
-[[ to be completed ]]
+[[to be completed]]
 
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-postgres)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-postgres/README.md#readme)
-
-## Features
-
-#### feature-storage
-
-Provides universal redux dispatch-able actions to handle `localStorage` and `cookies`.
-
-[[ to be completed ]]
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/feature-storage)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/feature-storage/README.md#readme)
-
-#### feature-network
-
-It provides universal redux dispatch-able action to issue _REST_ requests and _GraphQL_ queries.
-
-It also provides reducers and containers to monitor the network status and detect 
-online/offline changes.
-
-[[ to be completed ]]
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/feature-network)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/feature-network/README.md#readme)
-
-#### feature-locale
-
-This is a full-stack feature that helps dealing with multilanguage and translatable apps.
-It integrates with your _GraphQL_ endpoint and storage/network features.
-
-[[ to be completed ]]
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/feature-locale)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/feature-locale/README.md#readme)
