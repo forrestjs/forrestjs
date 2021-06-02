@@ -14,6 +14,7 @@ traceable and debuggable support.
 
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/hooks)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/hooks/README.md#readme)  
+👉 [Introduction Example on CodeSandbox](https://codesandbox.io/s/intro-yjxhe?file=/src/index.js)
 👉 [Kitchen Sink Example](https://github.com/forrestjs/forrestjs/blob/master/packages/kitchensink/hooks/index.js)
 
 ## Services
