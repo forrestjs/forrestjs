@@ -13,7 +13,8 @@ This is the core of ForrestJS modularity. It allows you to implement extensible 
 traceable and debuggable support.
 
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/hooks)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/hooks/README.md#readme)
+👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/hooks/README.md#readme)  
+👉 [Kitchen Sink Example](https://github.com/forrestjs/forrestjs/blob/master/packages/kitchensink/hooks/index.js)
 
 ## Services
 
