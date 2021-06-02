@@ -6,7 +6,12 @@ const { createHookContext } = require('./create-hook-context');
 const { getHook } = require('./create-hooks-registry');
 const constants = require('./constants');
 
+// Temporary hack to rename "createHook" -> "runHook"
 const runHook = (...args) => createHook(...args);
+runHook.sync = (...args) => createHook.sync(...args);
+runHook.serie = (...args) => createHook.serie(...args);
+runHook.parallel = (...args) => createHook.parallel(...args);
+runHook.waterfall = (...args) => createHook.waterfall(...args);
 
 module.exports = {
   traceHook,
