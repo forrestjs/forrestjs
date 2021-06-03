@@ -9,7 +9,7 @@
   "dependencies": {
     "@babel/runtime": "^7.12.18",
     "@forrestjs/hooks": "^3.20.2",
-    "fetchq": "3.2.2"
+    "fetchq": "4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.17",
