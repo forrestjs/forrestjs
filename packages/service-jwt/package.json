@@ -1,20 +1,20 @@
 {
   "name": "@forrestjs/service-jwt",
   "description": "ForrestJS service which helps handling jwt activities.",
-  "version": "3.20.2",
+  "version": "3.20.3",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.12.18",
-    "@forrestjs/hooks": "^3.20.2",
+    "@forrestjs/hooks": "^3.20.3",
     "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.17",
     "@babel/core": "^7.12.17",
-    "@forrestjs/babel-preset-package": "^3.20.2",
+    "@forrestjs/babel-preset-package": "^3.20.3",
     "@marcopeg/utils": "^2.0.1",
     "cross-env": "^7.0.3",
     "jest": "^26.6.3"
