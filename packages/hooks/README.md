@@ -6,25 +6,27 @@ ForrestJS Hooks helps you splitting your Apps into small and reusable
 Yes, it is a **simple plugin system** inspired by the way Wordpress works.<br>
 But traceable and fully debuggable.
 
+## Quick Code Example
+
 ```js
-import { registerAction, createHook } from '@forrestjs/hooks'
+import { registerAction, createHook } from '@forrestjs/hooks';
 
 // This is a basic "extension"
 registerAction('extendDoSmthCool', () => {
-    console.log('Inject even more cool stuff')
-})
+  console.log('Inject even more cool stuff');
+});
 
 // This function implements an "extension point"
 const doSmthCool = () => {
-    console.log('First cool thing')
-    createHook('extendDoSmthCool')
-    console.log('Another cool thing')
-}
+  console.log('First cool thing');
+  createHook('extendDoSmthCool');
+  console.log('Another cool thing');
+};
 
-doSmthCool()
+doSmthCool();
 ```
 
-If you run the code above you get:
+If you run the code above, you'll get:
 
 ```bash
 First cool thing
@@ -34,6 +36,16 @@ Another cool thing
 
 The cool part is that it **supports both synchronous and asynchronous extension points**,
 and that an asynchronous extension point can **run in both series or parallel**.
+
+---
+
+## Live Demoes on CodeSandbox
+
+- [Intro to Hooks](https://codesandbox.io/s/intro-yjxhe)
+- [Waterfall Mode](https://codesandbox.io/s/waterfall-6e3gz)
+- [Basic App](https://codesandbox.io/s/basic-app-lw4g1)
+
+---
 
 ## Install & Setup
 
@@ -61,21 +73,21 @@ App **open for extensions** that come from modules you haven't yet thought of:
 
 ```js
 // server.js
-import express from 'express'
-import { createHook } from '@forrestjs/hooks'
+import express from 'express';
+import { createHook } from '@forrestjs/hooks';
 
 // Setup a basic Express app:
-const app = express()
-app.get('/', (req, res) => res.send('hello world'))
+const app = express();
+app.get('/', (req, res) => res.send('hello world'));
 
 // Allow extensions to inject new routes:
-const registerRoute = (route, fn) => app.get(route, fn)
-createHook.sync('express/routes', { registerRoute })
+const registerRoute = (route, fn) => app.get(route, fn);
+createHook.sync('express/routes', { registerRoute });
 
 // Allow extensions to alter a simple value in waterfall:
-const port = createHook.waterfall('express/port', 8080).value
+const port = createHook.waterfall('express/port', 8080).value;
 
-app.listen(port)
+app.listen(port);
 ```
 
 👉 read also: [`createHook()` api](./docs/create-hook.md)
@@ -91,25 +103,25 @@ your app:
 
 ```js
 // mighty-offer.js
-import { registerAction } from '@forrestjs/hooks'
+import { registerAction } from '@forrestjs/hooks';
 
 registerAction({
-    name: 'mightyOffer',
-    hook: 'express/routes',
-    handler: ({ registerRoute }) => {
-        registerRoute('/mighty-offer', (req, res) => {
-            res.send('oh boy, you should buy this and that and more...')
-        })
-    },
-})
+  name: 'mightyOffer',
+  hook: 'express/routes',
+  handler: ({ registerRoute }) => {
+    registerRoute('/mighty-offer', (req, res) => {
+      res.send('oh boy, you should buy this and that and more...');
+    });
+  },
+});
 ```
 
 Then you simply need to `import` your new extension before `server.js`:
 
 ```js
 // index.js
-require('./mighty-offer')
-require('./server')
+require('./mighty-offer');
+require('./server');
 ```
 
 That's it!
@@ -118,8 +130,8 @@ If you want to add an extension that changes the default port `8080` you should 
 something like that in `index.js`:
 
 ```js
-const customPort = () => 5050
-require('@forrestjs/hooks').registerAction('express/port', customPort)
+const customPort = () => 5050;
+require('@forrestjs/hooks').registerAction('express/port', customPort);
 
 // rest of the code...
 ```
@@ -138,10 +150,10 @@ Don't you worry, we have this covered. Add this to your `index.js`:
 ```js
 // rest of the code...
 
-const { traceHook } = require('@forrestjs/hooks')
-console.log('Boot Trace:')
-console.log('=================')
-console.log(traceHook()('compact')('cli').join('\n'))
+const { traceHook } = require('@forrestjs/hooks');
+console.log('Boot Trace:');
+console.log('=================');
+console.log(traceHook()('compact')('cli').join('\n'));
 ```
 
 You should see something like that:
@@ -183,7 +195,7 @@ Boot Trace:
 ```
 
 - You can read each line as `X hooks into Y`, where `Y` is the hook name and `X` is the extension name.
-- The vertical order is the sequence in which each hook is triggered. 
+- The vertical order is the sequence in which each hook is triggered.
 - The indentation represents nested hooks.
 
 (The little icons are part of the `runHookApp()` utility that we cover in the next paragraph.=
@@ -191,111 +203,115 @@ Boot Trace:
 I find this visualization quite simple to follow. But if you want an extensive reporting you should try:
 
 ```js
-const fullTrace = traceHook()('full')('json')
-console.log(fullTrace)
+const fullTrace = traceHook()('full')('json');
+console.log(fullTrace);
 ```
 
 👉 read also: [`traceHook()` api](./docs/trace-hook.md)
 
-
 ## Scaffold a Full Hooks App
 
 This paragraph is going to cover a utility that **provides a Hook based lifecycle** for
-developing a generic backend application. Long story short it helps you 
+developing a generic backend application. Long story short it helps you
 **packaging extension into reusable features**.
 
 Here is the examples we saw so far, packaged as a `runHookApp()`:
 
 ```js
-const { runHookApp } = require('@forrestjs/hooks')
-const { INIT_SERVICES, START_SERVICES } = require('@forrestjs/hooks')
+const { runHookApp } = require('@forrestjs/hooks');
+const { INIT_SERVICES, START_SERVICES } = require('@forrestjs/hooks');
 
 // This service runs a simple Express server that can be extended
 // by other services or features.
-const express = require('express')
+const express = require('express');
 const expressService = ({ registerAction }) => {
-    const name = 'express'
-    const app = express()
+  const name = 'express';
+  const app = express();
 
-    const registerRoute = (route, fn) => app.get(route, fn)
-    const registerMiddleware = (mountPoint, fn) => app.use(mountPoint, fn)
+  const registerRoute = (route, fn) => app.get(route, fn);
+  const registerMiddleware = (mountPoint, fn) => app.use(mountPoint, fn);
 
-    registerAction({
-        name,
-        hook: INIT_SERVICES,
-        handler: async ({ createHook, getConfig }) => {
-            await createHook.serie(expressService.EXPRESS_MIDDLEWARES, { registerMiddleware })
-            await createHook.serie(expressService.EXPRESS_ROUTES, { registerRoute })
-        },
-    })
-    
-    registerAction({
-        name,
-        hook: START_SERVICES,
-        handler: ({ getConfig }) => {
-            const port = getConfig('express.port', 8080)
-            app.listen(port, () => console.log(`Express listening on: ${port}`))
-        },
-    })
-}
+  registerAction({
+    name,
+    hook: INIT_SERVICES,
+    handler: async ({ createHook, getConfig }) => {
+      await createHook.serie(expressService.EXPRESS_MIDDLEWARES, {
+        registerMiddleware,
+      });
+      await createHook.serie(expressService.EXPRESS_ROUTES, { registerRoute });
+    },
+  });
+
+  registerAction({
+    name,
+    hook: START_SERVICES,
+    handler: ({ getConfig }) => {
+      const port = getConfig('express.port', 8080);
+      app.listen(port, () => console.log(`Express listening on: ${port}`));
+    },
+  });
+};
 
 // It is always a good idea for a service to export its hooks, so that other
 // features can use those symbols instead of strings. Strings can lead to mispells.
-expressService.EXPRESS_MIDDLEWARES = `express/middlewares`
-expressService.EXPRESS_ROUTES = `express/routes`
+expressService.EXPRESS_MIDDLEWARES = `express/middlewares`;
+expressService.EXPRESS_ROUTES = `express/routes`;
 
 // This is just an extension handler, it needs to be packaged into an
 // "immediate feature" (see later in the code when we "runHookApp()")
 const homePageRoute = ({ registerRoute }) =>
-    registerRoute('/', (req, res) => {
-        res.send('Home!')
-    })
+  registerRoute('/', (req, res) => {
+    res.send('Home!');
+  });
 
 // This feature rely on some configuration to be provided, and can
 // conditionally register actions based on the app settings.
-const mightyOfferFeature = ({ registerAction, getConfig }) => {
-    getConfig('mightyOffer.enabled') && registerAction({
-        name: 'mightyOffer',
-        hook: expressService.EXPRESS_ROUTES,
-        handler: ({ registerRoute }) => {
-            registerRoute('/offer', (req, res) => {
-                res.send(`mighty offer... only for today ${getConfig('mightyOffer.price')}$!!!`)
-            })
-        }
-    })
-}
+const mightyOfferFeature = ({ registerAction, getConfig }) => {
+  getConfig('mightyOffer.enabled') &&
+    registerAction({
+      name: 'mightyOffer',
+      hook: expressService.EXPRESS_ROUTES,
+      handler: ({ registerRoute }) => {
+        registerRoute('/offer', (req, res) => {
+          res.send(
+            `mighty offer... only for today ${getConfig(
+              'mightyOffer.price',
+            )}$!!!`,
+          );
+        });
+      },
+    });
+};
 
 runHookApp({
-    // optional debug helper
-    // try also "full"
-    trace: 'compact',
+  // optional debug helper
+  // try also "full"
+  trace: 'compact',
 
-    // settings can be just an object, or an sync/async function
-    settings: async ({ setConfig }) => {
-        setConfig('express.port', 5050)
-        setConfig('mightyOffer.enabled', true)
-        setConfig('mightyOffer.price', 5000)
-    },
+  // settings can be just an object, or an sync/async function
+  settings: async ({ setConfig }) => {
+    setConfig('express.port', 5050);
+    setConfig('mightyOffer.enabled', true);
+    setConfig('mightyOffer.price', 5000);
+  },
 
-    // services can do some cool stuff that features can't ;-)
-    // they boot before features, so features can count on stuff
-    // that is provided by the services.
-    services: [
-        expressService,
-    ],
+  // services can do some cool stuff that features can't ;-)
+  // they boot before features, so features can count on stuff
+  // that is provided by the services.
+  services: [expressService],
 
-    // package your business values into small feature that is easy
-    // to work with. 
-    features: [
-        [ expressService.EXPRESS_ROUTES, homePageRoute ],
-        mightyOfferFeature,
-    ],
-}).catch(err => console.error(err))
+  // package your business values into small feature that is easy
+  // to work with.
+  features: [
+    [expressService.EXPRESS_ROUTES, homePageRoute],
+    mightyOfferFeature,
+  ],
+}).catch((err) => console.error(err));
 ```
 
 I would normally split this code into multiple files:
 
-- `express-service.js` 
+- `express-service.js`
 - `home-route.js` (woule export the array we have in `features`)
 - `mighty-offer.js`
 - `index.js` would run stuff and provide the configuration
@@ -310,7 +326,7 @@ services/features may refer to them by name instead of importing constants:
 
 ```js
 const service1 = ({ registerHook, registerAction, createHook }) => {
-    
+
     // Register the feature's hooks within the App's context
     registerHook({ S1_START: 's1' })
 
@@ -339,4 +355,3 @@ runHookApp({
     ],
 }).catch(err => console.error(err))
 ```
-
