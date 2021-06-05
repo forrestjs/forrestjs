@@ -33,19 +33,71 @@ const awaitTestReady = ({ uri = `/${TEST_SCOPE}`, baseUrl, delay } = {}) =>
 
 // Wrapper around AXIOS that translates into the running app url
 const http = {
-  get: async (uri, config = {}) => (await axios.get(url(uri), config)).data,
-  rawGet: async (uri, config = {}) => axios.get(url(uri), config),
-  post: async (uri, data = {}, config = {}) =>
-    (await axios.post(url(uri), data, config)).data,
-  rawPost: async (uri, data = {}, config = {}) =>
-    axios.post(url(uri), data, config),
-  put: async (uri, data = {}, config = {}) =>
-    (await axios.put(url(uri), data, config)).data,
-  rawPut: async (uri, data = {}, config = {}) =>
-    axios.put(url(uri), data, config),
-  delete: async (uri, config = {}) =>
-    (await axios.delete(url(uri), config)).data,
-  rawDelete: async (uri, config = {}) => axios.delete(url(uri), config),
+  get: async (uri, config = {}) => {
+    try {
+      const res = await axios.get(url(uri), config);
+      return res.data;
+    } catch (err) {
+      console.log(err.message);
+      throw err;
+    }
+  },
+  rawGet: async (uri, config = {}) => {
+    try {
+      return await axios.get(url(uri), config);
+    } catch (err) {
+      console.log(err.message);
+      throw err;
+    }
+  },
+  post: async (uri, data = {}, config = {}) => {
+    try {
+      return (await axios.post(url(uri), data, config)).data;
+    } catch (err) {
+      console.log(err.message);
+      throw err;
+    }
+  },
+  rawPost: async (uri, data = {}, config = {}) => {
+    try {
+      return await axios.post(url(uri), data, config);
+    } catch (err) {
+      console.log(err.message);
+      throw err;
+    }
+  },
+  put: async (uri, data = {}, config = {}) => {
+    try {
+      return (await axios.put(url(uri), data, config)).data;
+    } catch (err) {
+      console.log(err.message);
+      throw err;
+    }
+  },
+  rawPut: async (uri, data = {}, config = {}) => {
+    try {
+      return await axios.put(url(uri), data, config);
+    } catch (err) {
+      console.log(err.message);
+      throw err;
+    }
+  },
+  delete: async (uri, config = {}) => {
+    try {
+      return (await axios.delete(url(uri), config)).data;
+    } catch (err) {
+      console.log(err.message);
+      throw err;
+    }
+  },
+  rawDelete: async (uri, config = {}) => {
+    try {
+      await axios.delete(url(uri), config);
+    } catch (err) {
+      console.log(err.message);
+      throw err;
+    }
+  },
 };
 
 module.exports = (global = {}) => ({
