@@ -31,6 +31,12 @@ const awaitAppUri = ({ uri = '/', baseUrl, delay = 250 } = {}) =>
 const awaitTestReady = ({ uri = `/${TEST_SCOPE}`, baseUrl, delay } = {}) =>
   awaitAppUri({ uri, baseUrl, delay });
 
+const logAxiosError = (err) => {
+  console.error(`@axios: ${err.message}`);
+  err.response && console.error(err.response.data);
+  throw err;
+};
+
 // Wrapper around AXIOS that translates into the running app url
 const http = {
   get: async (uri, config = {}) => {
@@ -38,64 +44,56 @@ const http = {
       const res = await axios.get(url(uri), config);
       return res.data;
     } catch (err) {
-      console.log(err.message);
-      throw err;
+      logAxiosError(err);
     }
   },
   rawGet: async (uri, config = {}) => {
     try {
       return await axios.get(url(uri), config);
     } catch (err) {
-      console.log(err.message);
-      throw err;
+      logAxiosError(err);
     }
   },
   post: async (uri, data = {}, config = {}) => {
     try {
       return (await axios.post(url(uri), data, config)).data;
     } catch (err) {
-      console.log(err.message);
-      throw err;
+      logAxiosError(err);
     }
   },
   rawPost: async (uri, data = {}, config = {}) => {
     try {
       return await axios.post(url(uri), data, config);
     } catch (err) {
-      console.log(err.message);
-      throw err;
+      logAxiosError(err);
     }
   },
   put: async (uri, data = {}, config = {}) => {
     try {
       return (await axios.put(url(uri), data, config)).data;
     } catch (err) {
-      console.log(err.message);
-      throw err;
+      logAxiosError(err);
     }
   },
   rawPut: async (uri, data = {}, config = {}) => {
     try {
       return await axios.put(url(uri), data, config);
     } catch (err) {
-      console.log(err.message);
-      throw err;
+      logAxiosError(err);
     }
   },
   delete: async (uri, config = {}) => {
     try {
       return (await axios.delete(url(uri), config)).data;
     } catch (err) {
-      console.log(err.message);
-      throw err;
+      logAxiosError(err);
     }
   },
   rawDelete: async (uri, config = {}) => {
     try {
       await axios.delete(url(uri), config);
     } catch (err) {
-      console.log(err.message);
-      throw err;
+      logAxiosError(err);
     }
   },
 };
