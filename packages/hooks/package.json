@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/hooks",
   "description": "ForrestJS library which helps to decouple your application into small and reusable modules.",
-  "version": "4.0.0-alpha.4",
+  "version": "4.0.0-alpha.5",
   "main": "src/index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
@@ -28,5 +28,5 @@
     "test": "jest",
     "tdd": "jest --watchAll"
   },
-  "gitHead": "842378d848c42fb0c272e888ea538ec04335cfc4"
+  "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578"
 }
