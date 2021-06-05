@@ -80,7 +80,7 @@ module.exports = ({ registerAction, registerHook }) => {
 
   registerAction({
     hook: '$FASTIFY_HACKS_BEFORE?',
-    name: hooks.SERVICE_NAME,
+    name: SERVICE_NAME,
     trace: __filename,
     handler: ({ fastify }, { getContext }) => {
       const fetchq = getContext('fetchq');
@@ -105,7 +105,7 @@ module.exports = ({ registerAction, registerHook }) => {
 
   registerAction({
     hook: '$FASTIFY_TDD_ROUTE?',
-    name: hooks.SERVICE_NAME,
+    name: SERVICE_NAME,
     trace: __filename,
     handler: ({ registerTddRoute }, { createHook }) => {
       const schemaFields = {
@@ -266,14 +266,14 @@ module.exports = ({ registerAction, registerHook }) => {
 
   registerAction({
     hook: '$FASTIFY_TDD_CHECK?',
-    name: hooks.SERVICE_NAME,
+    name: SERVICE_NAME,
     trace: __filename,
     handler: () => healthcheckHandler,
   });
 
   registerAction({
     hook: '$FASTIFY_HEALTHZ_CHECK?',
-    name: hooks.SERVICE_NAME,
+    name: SERVICE_NAME,
     trace: __filename,
     handler: () => healthcheckHandler,
   });
