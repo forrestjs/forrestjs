@@ -77,6 +77,12 @@ module.exports = ({ registerAction }) => {
         url: '/t1',
         handler: async () => 't1',
       });
+
+      registerTddRoute({
+        method: 'POST',
+        url: '/t1',
+        handler: async () => 't1',
+      });
     },
   });
 };

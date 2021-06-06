@@ -33,6 +33,28 @@ const awaitAppUri = ({ uri = '/', baseUrl, delay = 250 } = {}) =>
 const awaitTestReady = ({ uri = `/${TEST_SCOPE}`, baseUrl, delay } = {}) =>
   awaitAppUri({ uri, baseUrl, delay });
 
+/**
+ * =================
+ * TEST HTTP LIBRARY
+ * =================
+ *
+ * The test HTTP library is an Axios wrapper that provides some
+ * automation in building the urls towards the tested App or the
+ * TDD endpoints.
+ *
+ * Usage:
+ *
+ * -- Get a request's data:
+ * await global.get('/foobar')
+ * await global.post('/foobar')
+ * await global.post('/foobar', { body: 'data' })
+ *
+ * -- Get the raw Axios object:
+ * await global.rawGet('/foobar')
+ * await global.rawPost('/foobar')
+ * await global.rawPost('/foobar', { body: 'data' })
+ */
+
 class AxiosRequestFailed extends Error {
   constructor(method, url, args, originalError) {
     super();
@@ -83,21 +105,43 @@ class AxiosRequestFailed extends Error {
 const makeAxiosRequest = (method, buildUrl, raw = false) => {
   const handler = axios[method];
 
+  // Automatically defaults a request body to an empty object
+  // for requests that are not GET.
   const fn = async (...args) => {
-    const [uri, ...rest] = args;
-    const requestUrl = buildUrl(uri);
-    const res = await handler(requestUrl, ...rest);
-    return raw ? res : res.data;
-  };
-
-  fn.debug = async (...args) => {
-    const [uri, ...rest] = args;
-    const requestUrl = buildUrl(uri);
-    try {
+    if (method === 'get') {
+      const [uri, ...rest] = args;
+      const requestUrl = buildUrl(uri);
       const res = await handler(requestUrl, ...rest);
       return raw ? res : res.data;
-    } catch (err) {
-      throw new AxiosRequestFailed(method, requestUrl, rest, err);
+    } else {
+      const [uri, body = {}, ...rest] = args;
+      const requestUrl = buildUrl(uri);
+      const res = await handler(requestUrl, body, ...rest);
+      return raw ? res : res.data;
+    }
+  };
+
+  // Automatically defaults a request body to an empty object
+  // for requests that are not GET.
+  fn.debug = async (...args) => {
+    if (method === 'get') {
+      const [uri, ...rest] = args;
+      const requestUrl = buildUrl(uri);
+      try {
+        const res = await handler(requestUrl, ...rest);
+        return raw ? res : res.data;
+      } catch (err) {
+        throw new AxiosRequestFailed(method, requestUrl, rest, err);
+      }
+    } else {
+      const [uri, body = {}, ...rest] = args;
+      const requestUrl = buildUrl(uri);
+      try {
+        const res = await handler(requestUrl, body, ...rest);
+        return raw ? res : res.data;
+      } catch (err) {
+        throw new AxiosRequestFailed(method, requestUrl, rest, err);
+      }
     }
   };
 
@@ -126,6 +170,31 @@ const http = {
   testRawDelete: makeAxiosRequest('delete', testUrl, true),
 };
 
+const getConfig = (key, defaultValue) =>
+  http.testGet(
+    `/config?key=${key}${defaultValue ? `&default=${defaultValue}` : ''}`,
+  );
+
+const setConfig = (key, value) => http.testPost(`/config`, { key, value });
+
+/**
+ * ===============
+ * CONFIG MOCK API
+ * ===============
+ *
+ * Offers an easy API to temporary mock an App's
+ * configuration value.
+ *
+ * -- Set a mock:
+ * const reset = await global.mockConfig('key', 'newValue')
+ * ... do your stuff
+ * await reset()
+ *
+ * -- Reset all existing mocks:
+ *    (useful in "afterEach")
+ * await mockConfig.reset()
+ *
+ */
 const mockConfig = async (key = null, value = null) => {
   const original = await http.testGet(`/config?key=${key}`);
   const current = await http.testPost(`/config`, { key, value });
@@ -156,6 +225,8 @@ module.exports = (global = {}) => ({
   random,
   randomItem,
   ...http,
+  setConfig,
+  getConfig,
   mockConfig,
   ...global,
 });
