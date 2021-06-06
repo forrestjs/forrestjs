@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-logger",
   "description": "ForrestJS service which helps logging stuff in the server.",
-  "version": "4.0.0-alpha.7",
+  "version": "4.0.0-alpha.8",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/hooks": "^4.0.0-alpha.7",
+    "@forrestjs/hooks": "^4.0.0-alpha.8",
     "winston": "^3.3.3"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-logger#readme",
