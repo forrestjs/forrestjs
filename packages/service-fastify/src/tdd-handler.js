@@ -21,17 +21,21 @@ const collectRoutes = (createHook, tddScope) => {
 const collectChecks = (createHook) => {
   const checksList = [];
   const registerTddCheck = (check) => {
+    // Validate the input to the register check function
     if (typeof check !== 'function') {
       throw new Error(healthzCheckTypeErrorMessage);
     }
+
     checksList.push(check);
   };
   createHook
     .sync(FASTIFY_TDD_CHECK, { registerTddCheck })
-    .forEach((result) => registerTddCheck(result[0]));
+    .map((result) => result[0])
+    .filter((check) => check !== undefined) // skip empty values
+    .forEach(registerTddCheck);
 
   // Filter out functions only
-  return checksList.filter((check) => typeof check === 'function');
+  return checksList;
 };
 
 module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
@@ -75,7 +79,10 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
                 { type: 'string' },
                 { type: 'number' },
                 { type: 'boolean' },
+                { type: 'object', additionalProperties: true },
+                { type: 'array' },
               ],
+              // type: 'object',
             },
             default: { type: 'string' },
             isSet: { type: 'boolean' },
@@ -138,6 +145,7 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
     },
     handler: async (request) => {
       setConfig(request.body.key, request.body.value);
+
       return {
         ...request.body,
         value: getConfig(request.body.key),

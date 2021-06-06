@@ -45,7 +45,6 @@ module.exports = ({ registerAction }) => {
       });
     },
   });
-
   /**
    * It is also possible to customize the test's root route
    * by providing a custom handler.

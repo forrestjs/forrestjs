@@ -1,4 +1,4 @@
-describe('service-fastify', () => {
+describe('service-fastify-standalone', () => {
   describe('routing', () => {
     [
       '/',
@@ -31,14 +31,14 @@ describe('service-fastify', () => {
 
   describe('testing', () => {
     it('should expose a customizable testing route with custom checks', async () => {
-      const res = await get('/test');
+      const res = await testGet('/');
       expect(res).toBe('custom response');
     });
 
     it('should fail the test route if a specific condition is met by a tdd check middleware', async () => {
       const fn = jest.fn();
       try {
-        await rawGet('/test', { headers: { foobar: true } });
+        await testRawGet('/', { headers: { foobar: true } });
       } catch (err) {
         fn(err.response.status, err.response.data);
       }
@@ -49,7 +49,7 @@ describe('service-fastify', () => {
 
     describe('Get App Config', () => {
       it('should expose the app configuration for an existing key of type "string"', async () => {
-        const res = await get('/test/config?key=custom.string');
+        const res = await testGet('/config?key=custom.string');
         expect(res).toEqual({
           key: 'custom.string',
           value: 'val',
@@ -58,7 +58,7 @@ describe('service-fastify', () => {
       });
 
       it('should expose the app configuration for an existing key of type "number"', async () => {
-        const res = await get('/test/config?key=custom.number');
+        const res = await testGet('/config?key=custom.number');
         expect(res).toEqual({
           key: 'custom.number',
           value: 123,
@@ -67,7 +67,7 @@ describe('service-fastify', () => {
       });
 
       it('should expose the app configuration for an existing key of type "boolean(true)"', async () => {
-        const res = await get('/test/config?key=custom.boolean.true');
+        const res = await testGet('/config?key=custom.boolean.true');
         expect(res).toEqual({
           key: 'custom.boolean.true',
           value: true,
@@ -76,7 +76,7 @@ describe('service-fastify', () => {
       });
 
       it('should expose the app configuration for an existing key of type "boolean(true)"', async () => {
-        const res = await get('/test/config?key=custom.boolean.false');
+        const res = await testGet('/config?key=custom.boolean.false');
         expect(res).toEqual({
           key: 'custom.boolean.false',
           value: false,
@@ -85,7 +85,7 @@ describe('service-fastify', () => {
       });
 
       it('should expose the app configuration for a non existing key with a default value', async () => {
-        const res = await get('/test/config?key=random.key&default=foobar');
+        const res = await testGet('/config?key=random.key&default=foobar');
         expect(res).toEqual({
           key: 'random.key',
           value: 'foobar',
@@ -95,7 +95,7 @@ describe('service-fastify', () => {
       });
 
       it('should expose the app configuration for a non existing key ginving info', async () => {
-        const res = await get('/test/config?key=random.key');
+        const res = await testGet('/config?key=random.key');
         expect(res).toEqual({
           key: 'random.key',
           isSet: false,
@@ -105,7 +105,7 @@ describe('service-fastify', () => {
 
     describe('Set App Config', () => {
       it('should set a configuration value in the app of type "string"', async () => {
-        const r1 = await post('/test/config', {
+        const r1 = await testPost('/config', {
           key: 'set.string',
           value: 'foobar',
         });
@@ -116,7 +116,7 @@ describe('service-fastify', () => {
       });
 
       it('should set a configuration value in the app of type "number"', async () => {
-        const r1 = await post('/test/config', {
+        const r1 = await testPost('/config', {
           key: 'set.number',
           value: 123,
         });
@@ -127,7 +127,7 @@ describe('service-fastify', () => {
       });
 
       it('should set a configuration value in the app of type "boolean(true)"', async () => {
-        const r1 = await post('/test/config', {
+        const r1 = await testPost('/config', {
           key: 'set.boolean.true',
           value: true,
         });
@@ -138,7 +138,7 @@ describe('service-fastify', () => {
       });
 
       it('should set a configuration value in the app of type "boolean(false)"', async () => {
-        const r1 = await post('/test/config', {
+        const r1 = await testPost('/config', {
           key: 'set.boolean.false',
           value: false,
         });
@@ -149,7 +149,7 @@ describe('service-fastify', () => {
       });
 
       it('should set a configuration value in the app of "null"', async () => {
-        const r1 = await post('/test/config', {
+        const r1 = await testPost('/config', {
           key: 'set.null',
           value: null,
         });
@@ -160,11 +160,53 @@ describe('service-fastify', () => {
       });
     });
 
-    [('/test', '/test/t1')].map((uri) =>
+    [('/', '/t1')].map((uri) =>
       it(`Should ping on "${uri}"`, async () => {
-        const res = await rawGet(uri);
+        const res = await testRawGet(uri);
         expect(res.status).toBe(200);
       }),
     );
+  });
+
+  it('should mock a config and reset it', async () => {
+    // Create a random configuration value that will be mocked during the test
+    const r1 = await global.testPost('/config', { key: 'foobar', value: 123 });
+    const r2 = await global.testGet('/config?key=foobar');
+    expect(r1.key).toEqual(r2.key);
+    expect(r1.value).toEqual(r2.value);
+
+    // Set the mock and test it
+    const resetMock = await global.mockConfig('foobar', 'aaa');
+    const r3 = await global.testGet('/config?key=foobar');
+    expect(resetMock.original.key).toBe(r2.key);
+    expect(resetMock.original.value).toBe(r2.value);
+    expect(resetMock.current.key).toBe(r3.key);
+    expect(resetMock.current.value).toBe(r3.value);
+
+    // Reset the mock and check the consistency of the value
+    const r4 = await resetMock();
+    expect(r4.key).toEqual(r2.key);
+    expect(r4.value).toEqual(r2.value);
+  });
+
+  it('Should mock multiple configurations at the time', async () => {
+    // Set a bunch of config
+    await global.testPost('/config', { key: 'test.f1', value: 111 });
+    await global.testPost('/config', { key: 'test.f2', value: 222 });
+    await global.testPost('/config', { key: 'test.f3', value: 333 });
+    const r1 = await global.testGet('/config?key=test');
+    expect(r1.value).toMatchObject({ f1: 111, f2: 222, f3: 333 });
+
+    // Mock a bunch of configs
+    await mockConfig('test.f1', 'a1');
+    await mockConfig('test.f2', 'a2');
+    await mockConfig('test.f3', 'a3');
+    const r2 = await global.testGet('/config?key=test');
+    expect(r2.value).toMatchObject({ f1: 'a1', f2: 'a2', f3: 'a3' });
+
+    // Should reset all the mocked values
+    await mockConfig.reset();
+    const r3 = await global.testGet('/config?key=test');
+    expect(r3.value).toMatchObject(r1.value);
   });
 });

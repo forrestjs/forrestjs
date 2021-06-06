@@ -6,6 +6,8 @@ const TEST_SCOPE = process.env.TEST_SCOPE || 'test';
 
 // The `url()` method is used to compose urls that aim to the running app
 const url = (uri = '/', baseUrl = BASE_URL) => `${baseUrl}${uri}`;
+const testUrl = (uri = '/', baseUrl = `${BASE_URL}/${TEST_SCOPE}`) =>
+  uri === '/' ? baseUrl : `${baseUrl}${uri}`;
 
 // Async way to stop the process for a while
 const pause = (duration = 0) =>
@@ -31,75 +33,122 @@ const awaitAppUri = ({ uri = '/', baseUrl, delay = 250 } = {}) =>
 const awaitTestReady = ({ uri = `/${TEST_SCOPE}`, baseUrl, delay } = {}) =>
   awaitAppUri({ uri, baseUrl, delay });
 
-const logAxiosError = (err) => {
-  console.error(`@axios: ${err.message}`);
-  err.response && console.error(err.response.data);
-  throw err;
+class AxiosRequestFailed extends Error {
+  constructor(method, url, args, originalError) {
+    super();
+    this.request = { method, url, args };
+    this.originalError = originalError;
+    this.message = `Axios.${method}(${url})\n${this.getMessage()}`;
+    this.response = originalError.response;
+    this.logMessage();
+  }
+
+  getMessage() {
+    const err = this.originalError;
+    if (err.response && err.response.data && err.response.data.message) {
+      return `[${err.response.data.status || err.response.status}] ${
+        err.response.data.message
+      }`;
+    }
+
+    if (err.response) {
+      return `[${err.response.status}] ${err.response.statusText}`;
+    }
+
+    return err.message;
+  }
+
+  logMessage() {
+    const err = this.originalError;
+    console.log(`[axios] error ... ${err.message}`);
+    console.log(`[axios] url ..... ${this.request.url}`);
+    console.log(`[axios] method .. ${this.request.method}`);
+    this.request.args.length &&
+      console.log(
+        `[axios] args .... ${JSON.parse(
+          JSON.stringify(this.request.args),
+          null,
+          2,
+        )}`,
+      );
+    if (err.response) {
+      console.log(`[axios] status .. ${err.response.status}`);
+      console.log(`[axios] text .... ${err.response.statusText}`);
+      console.log(`[axios] data:`);
+      console.log(JSON.parse(JSON.stringify(err.response.data), null, 2));
+    }
+  }
+}
+
+const makeAxiosRequest = (method, buildUrl, raw = false) => {
+  const handler = axios[method];
+
+  const fn = async (...args) => {
+    const [uri, ...rest] = args;
+    const requestUrl = buildUrl(uri);
+    const res = await handler(requestUrl, ...rest);
+    return raw ? res : res.data;
+  };
+
+  fn.debug = async (...args) => {
+    const [uri, ...rest] = args;
+    const requestUrl = buildUrl(uri);
+    try {
+      const res = await handler(requestUrl, ...rest);
+      return raw ? res : res.data;
+    } catch (err) {
+      throw new AxiosRequestFailed(method, requestUrl, rest, err);
+    }
+  };
+
+  return fn;
 };
 
 // Wrapper around AXIOS that translates into the running app url
 const http = {
-  get: async (uri, config = {}) => {
-    try {
-      const res = await axios.get(url(uri), config);
-      return res.data;
-    } catch (err) {
-      logAxiosError(err);
-    }
-  },
-  rawGet: async (uri, config = {}) => {
-    try {
-      return await axios.get(url(uri), config);
-    } catch (err) {
-      logAxiosError(err);
-    }
-  },
-  post: async (uri, data = {}, config = {}) => {
-    try {
-      return (await axios.post(url(uri), data, config)).data;
-    } catch (err) {
-      logAxiosError(err);
-    }
-  },
-  rawPost: async (uri, data = {}, config = {}) => {
-    try {
-      return await axios.post(url(uri), data, config);
-    } catch (err) {
-      logAxiosError(err);
-    }
-  },
-  put: async (uri, data = {}, config = {}) => {
-    try {
-      return (await axios.put(url(uri), data, config)).data;
-    } catch (err) {
-      logAxiosError(err);
-    }
-  },
-  rawPut: async (uri, data = {}, config = {}) => {
-    try {
-      return await axios.put(url(uri), data, config);
-    } catch (err) {
-      logAxiosError(err);
-    }
-  },
-  delete: async (uri, config = {}) => {
-    try {
-      return (await axios.delete(url(uri), config)).data;
-    } catch (err) {
-      logAxiosError(err);
-    }
-  },
-  rawDelete: async (uri, config = {}) => {
-    try {
-      await axios.delete(url(uri), config);
-    } catch (err) {
-      logAxiosError(err);
-    }
-  },
+  // Production API
+  get: makeAxiosRequest('get', url),
+  rawGet: makeAxiosRequest('get', url, true),
+  post: makeAxiosRequest('post', url),
+  rawPost: makeAxiosRequest('post', url, true),
+  put: makeAxiosRequest('put', url),
+  rawPut: makeAxiosRequest('put', url, true),
+  delete: makeAxiosRequest('delete', url),
+  rawDelete: makeAxiosRequest('delete', url, true),
+  // Test API
+  testGet: makeAxiosRequest('get', testUrl),
+  testRawGet: makeAxiosRequest('get', testUrl, true),
+  testPost: makeAxiosRequest('post', testUrl),
+  testRawPost: makeAxiosRequest('post', testUrl, true),
+  testPut: makeAxiosRequest('put', testUrl),
+  testRawPut: makeAxiosRequest('put', testUrl, true),
+  testDelete: makeAxiosRequest('delete', testUrl),
+  testRawDelete: makeAxiosRequest('delete', testUrl, true),
+};
+
+const mockConfig = async (key = null, value = null) => {
+  const original = await http.testGet(`/config?key=${key}`);
+  const current = await http.testPost(`/config`, { key, value });
+
+  const resetMock = () =>
+    http.testPost(`/config`, { key, value: original.value });
+  mockConfig.__mocks.push(resetMock);
+
+  resetMock.original = original;
+  resetMock.current = current;
+
+  return resetMock;
+};
+
+mockConfig.__mocks = [];
+mockConfig.reset = async () => {
+  await Promise.all(mockConfig.__mocks.map((resetFn) => resetFn()));
+  mockConfig.__mocks = [];
 };
 
 module.exports = (global = {}) => ({
   url,
+  testUrl,
   awaitAppUri,
   awaitTestReady,
   pause,
@@ -107,5 +156,6 @@ module.exports = (global = {}) => ({
   random,
   randomItem,
   ...http,
+  mockConfig,
   ...global,
 });
