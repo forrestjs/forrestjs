@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@forrestjs/hooks": "^4.0.0-alpha.9",
-    "fetchq": "3.2.2"
+    "fetchq": "4.0.0"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fetchq#readme",
   "keywords": [
