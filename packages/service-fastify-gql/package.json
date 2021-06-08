@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/service-fastify-gql",
   "description": "ForrestJS service which adds GraphQL utilities to a Fastify server.",
-  "version": "4.0.0-alpha.10",
+  "version": "4.0.0-alpha.11",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@apollo/federation": "^0.25.0",
-    "@forrestjs/hooks": "^4.0.0-alpha.10",
+    "@forrestjs/hooks": "^4.0.0-alpha.11",
     "apollo-server-core": "3.0.0-lambda.0",
     "apollo-server-fastify": "3.0.0-lambda.0"
   },
