@@ -215,6 +215,8 @@ mockConfig.reset = async () => {
   mockConfig.__mocks = [];
 };
 
+const reset = () => http.testGet('/reset');
+
 module.exports = (global = {}) => ({
   url,
   testUrl,
@@ -225,6 +227,7 @@ module.exports = (global = {}) => ({
   random,
   randomItem,
   ...http,
+  reset,
   setConfig,
   getConfig,
   mockConfig,

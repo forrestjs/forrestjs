@@ -1,4 +1,7 @@
 describe('service-fastify-standalone', () => {
+  // This is how to use the reset utility
+  // beforeEach(global.reset);
+
   describe('routing', () => {
     [
       '/',
@@ -226,5 +229,11 @@ describe('service-fastify-standalone', () => {
 
   it('should apply a default value to a post requests when using the test api', async () => {
     await global.testPost('/t1');
+  });
+
+  it('should run the reset endpoint', async () => {
+    const res = await global.reset();
+    expect(res.success).toBe(true);
+    console.log(res.data.results);
   });
 });

@@ -5,6 +5,28 @@ const registerRoute = require('./feature-register-route');
 const registerRouteGET = require('./feature-register-route-get');
 const registerTddRoute = require('./feature-register-tdd-route');
 
+const addStuffIntoReset = () => ({
+  hook: '$FASTIFY_TDD_RESET',
+  handler: ({ registerResetHandler }) => {
+    // You can just provide an anonymous handler:
+    registerResetHandler(() => 'unknownHandler');
+
+    // Or you can give it a name:
+    registerResetHandler(() => 'first', 'firstHandler');
+
+    // Handlers can be asynchronous:
+    registerResetHandler(
+      () => new Promise((r) => setTimeout(() => r('asyncHandler'), 100)),
+      'asyncHandler',
+    );
+
+    // You can also return the handler, it will be
+    // register with the same function as here above
+    const returningHandler = () => 'returninHandler';
+    return returningHandler;
+  },
+});
+
 runHookApp({
   trace: 'compact',
   settings: {
@@ -18,5 +40,10 @@ runHookApp({
     },
   },
   services: [serviceFastify],
-  features: [registerRoute, registerRouteGET, registerTddRoute],
+  features: [
+    registerRoute,
+    registerRouteGET,
+    registerTddRoute,
+    addStuffIntoReset,
+  ],
 }).catch((err) => console.error(err));

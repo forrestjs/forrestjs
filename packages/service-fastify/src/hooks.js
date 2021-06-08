@@ -11,6 +11,7 @@ const FASTIFY_HACKS_AFTER = `${SERVICE_NAME}/hacks/after`;
 const FASTIFY_TDD_CHECK = `${SERVICE_NAME}/tdd/check`;
 const FASTIFY_TDD_ROUTE = `${SERVICE_NAME}/tdd/route`;
 const FASTIFY_TDD_ROOT = `${SERVICE_NAME}/tdd/root`;
+const FASTIFY_TDD_RESET = `${SERVICE_NAME}/tdd/reset`;
 
 module.exports = {
   FASTIFY_OPTIONS,
@@ -25,4 +26,5 @@ module.exports = {
   FASTIFY_TDD_CHECK,
   FASTIFY_TDD_ROUTE,
   FASTIFY_TDD_ROOT,
+  FASTIFY_TDD_RESET,
 };

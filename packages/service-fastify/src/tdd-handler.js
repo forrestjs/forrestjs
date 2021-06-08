@@ -2,10 +2,14 @@ const {
   FASTIFY_TDD_ROUTE,
   FASTIFY_TDD_ROOT,
   FASTIFY_TDD_CHECK,
+  FASTIFY_TDD_RESET,
 } = require('./hooks');
 
 const healthzCheckTypeErrorMessage =
   '[fastify/tdd] The healthz check must be a Fastify compatible preHandler function';
+
+const resetHandlerTypeErrorMessage =
+  '[fastify/tdd] Reset handlers must be function';
 
 const collectRoutes = (createHook, tddScope) => {
   const routes = [];
@@ -15,6 +19,7 @@ const collectRoutes = (createHook, tddScope) => {
       url: `${tddScope}${routeDef.url}`,
     });
   createHook.sync(FASTIFY_TDD_ROUTE, { registerTddRoute });
+
   return routes;
 };
 
@@ -28,14 +33,37 @@ const collectChecks = (createHook) => {
 
     checksList.push(check);
   };
+
   createHook
     .sync(FASTIFY_TDD_CHECK, { registerTddCheck })
     .map((result) => result[0])
     .filter((check) => check !== undefined) // skip empty values
     .forEach(registerTddCheck);
 
-  // Filter out functions only
   return checksList;
+};
+
+const collectResetHandlers = (createHook) => {
+  const handlers = [];
+  const registerResetHandler = (handler, name = null) => {
+    // Validate the input to the register handler function
+    if (typeof handler !== 'function') {
+      throw new Error(resetHandlerTypeErrorMessage);
+    }
+
+    handlers.push({
+      name: name || handler.name,
+      fn: handler,
+    });
+  };
+
+  createHook
+    .sync(FASTIFY_TDD_RESET, { registerResetHandler })
+    .map((result) => result[0])
+    .filter((check) => check !== undefined) // skip empty values
+    .forEach(registerResetHandler);
+
+  return handlers;
 };
 
 module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
@@ -45,6 +73,7 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
   const routes = collectRoutes(createHook, tddScope);
   const rootChecks = collectChecks(createHook);
   const rootHandler = createHook.sync(FASTIFY_TDD_ROOT);
+  const resetHandlers = collectResetHandlers(createHook);
 
   // Root endpoint definition
   registerRoute({
@@ -57,6 +86,7 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
   });
 
   // Let the test access configuration vars
+  // GET://test/config
   registerRoute({
     method: 'GET',
     url: `${tddScope}/config`,
@@ -111,6 +141,7 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
   });
 
   // Let the test overwrite configuration vars
+  // POST://test/config
   registerRoute({
     method: 'POST',
     url: `${tddScope}/config`,
@@ -150,6 +181,28 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
         ...request.body,
         value: getConfig(request.body.key),
       };
+    },
+  });
+
+  registerRoute({
+    method: 'GET',
+    url: `${tddScope}/reset`,
+    handler: async (request, reply) => {
+      console.log('RESET ROUTE');
+      const results = [];
+
+      for (const handler of resetHandlers) {
+        const result = await handler.fn();
+        results.push({
+          name: handler.name,
+          result,
+        });
+      }
+
+      reply.send({
+        success: true,
+        data: { results },
+      });
     },
   });
 
