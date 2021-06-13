@@ -13,3 +13,4 @@
 - Added examples for `@forrestjs/service-fastify-cookie`
 - Added examples for `@forrestjs/service-fastify-healthz`
 - Added `app01` examples for a complex app
+- Added `mock-axios-e2e` examples for mocking a server side HTTP request

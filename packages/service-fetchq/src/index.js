@@ -79,23 +79,13 @@ module.exports = ({ registerAction, registerHook }) => {
    */
 
   registerAction({
-    hook: '$FASTIFY_HACKS_BEFORE?',
+    hook: '$FASTIFY_PLUGIN?',
     name: SERVICE_NAME,
     trace: __filename,
-    handler: ({ fastify }, { getContext }) => {
+    handler: ({ decorate, decorateRequest }, { getContext }) => {
       const fetchq = getContext('fetchq');
-
-      // Prepare the shape of the decorators
-      fastify.decorate('fetchq', fetchq);
-      fastify.decorateRequest('fetchq', null);
-
-      // Add the references using hooks to comply with the decoratos API
-      // https://www.fastify.io/docs/v3.15.x/Decorators/
-
-      fastify.addHook('onRequest', (request, reply, done) => {
-        request.fetchq = fetchq;
-        done();
-      });
+      decorate('fetchq', fetchq);
+      decorateRequest('fetchq', fetchq);
     },
   });
 

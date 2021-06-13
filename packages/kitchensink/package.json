@@ -45,7 +45,10 @@
     "tdd:service-logger": "jest -t service-logger --runInBand  --watchAll",
     "start:app01": "cross-env NODE_ENV=development npx nodemon app01",
     "test:app01": "jest -t app01 --runInBand ",
-    "tdd:app01": "jest -t app01 --runInBand  --watchAll"
+    "tdd:app01": "jest -t app01 --runInBand  --watchAll",
+    "start:mock-axios-e2e": "cross-env NODE_ENV=development npx nodemon mock-axios-e2e",
+    "test:mock-axios-e2e": "jest -t mock-axios-e2e --runInBand ",
+    "tdd:mock-axios-e2e": "jest -t mock-axios-e2e --runInBand  --watchAll"
   },
   "dependencies": {
     "@forrestjs/hooks": "^4.0.0-alpha.11",
@@ -61,7 +64,6 @@
     "@forrestjs/service-hash": "^4.0.0-alpha.11",
     "@forrestjs/service-jwt": "^4.0.0-alpha.11",
     "@forrestjs/service-logger": "^4.0.0-alpha.11",
-    "axios": "^0.21.1",
     "graphql-tag": "^2.12.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify#readme",

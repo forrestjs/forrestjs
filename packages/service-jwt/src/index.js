@@ -43,7 +43,6 @@ const serviceJwt = ({ registerAction }) => {
       secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---');
       duration = getConfig('jwt.duration', process.env.JWT_DURATION || '---');
       settings = getConfig('jwt.settings', {});
-
       // Automagically setup the secret in "development" or "test"
       if (
         secret === '---' &&
@@ -55,7 +54,6 @@ const serviceJwt = ({ registerAction }) => {
         );
         console.warn(`[service-jwt] value: "${secret}"`);
       }
-
       // Automagically setup the duration in "development" or "test"
       if (
         duration === '---' &&
@@ -67,7 +65,6 @@ const serviceJwt = ({ registerAction }) => {
         );
         console.warn(`[service-jwt] value: "${duration}"`);
       }
-
       // Validate configuration
       if (secret === '---')
         throw new Error(
@@ -77,7 +74,6 @@ const serviceJwt = ({ registerAction }) => {
         throw new Error(
           '[service-jwt] Please configure "jwt.duration" or "process.env.JWT_DURATION"',
         );
-
       // Decorate the context
       setContext('jwt', { sign, verify, decode });
     },
@@ -85,30 +81,19 @@ const serviceJwt = ({ registerAction }) => {
 
   // Fastify Integration (optional hook)
   registerAction({
-    hook: '$FASTIFY_HACKS_BEFORE?',
+    hook: '$FASTIFY_PLUGIN?',
     name: hooks.SERVICE_NAME,
     trace: __filename,
-    handler: ({ fastify }, { getContext }) => {
+    handler: ({ decorate, decorateRequest }, { getContext }) => {
       const jwt = getContext('jwt');
-
-      // Prepare the shape of the decorators
-      fastify.decorate('jwt', jwt);
-      fastify.decorateRequest('jwt', null);
-
-      // Add the references using hooks to comply with the decoratos API
-      // https://www.fastify.io/docs/v3.15.x/Decorators/
-
-      fastify.addHook('onRequest', (request, reply, done) => {
-        request.jwt = jwt;
-        done();
-      });
+      decorate('jwt', jwt);
+      decorateRequest('jwt', jwt);
     },
   });
 
   /**
    * Integrate with the Fastify TDD API
    */
-
   registerAction({
     hook: '$FASTIFY_TDD_ROUTE?',
     name: hooks.SERVICE_NAME,
@@ -122,7 +107,6 @@ const serviceJwt = ({ registerAction }) => {
           return jwt.sign(request.body.payload);
         },
       });
-
       registerTddRoute({
         method: 'POST',
         url: '/jwt/verify',
@@ -131,7 +115,6 @@ const serviceJwt = ({ registerAction }) => {
           return jwt.verify(request.body.jwt);
         },
       });
-
       registerTddRoute({
         method: 'POST',
         url: '/jwt/decode',

@@ -81,29 +81,13 @@ const serviceBcrypt = ({ registerAction }) => {
 
   // Fastify Integration (optional hook)
   registerAction({
-    hook: '$FASTIFY_HACKS_BEFORE?',
+    hook: '$FASTIFY_PLUGIN?',
     name: hooks.SERVICE_NAME,
     trace: __filename,
-    handler: ({ fastify }, { getContext }) => {
+    handler: ({ decorate, decorateRequest }, { getContext }) => {
       const hash = getContext('hash');
-
-      // Prepare the shape of the decorators
-      fastify.decorate('hash', hash);
-      fastify.decorateRequest('hash', null);
-      fastify.decorateReply('hash', null);
-
-      // Add the references using hooks to comply with the decoratos API
-      // https://www.fastify.io/docs/v3.15.x/Decorators/
-
-      fastify.addHook('onRequest', (request, reply, done) => {
-        request.hash = hash;
-        done();
-      });
-
-      fastify.addHook('onResponse', (request, reply, done) => {
-        reply.hash = hash;
-        done();
-      });
+      decorate('hash', hash);
+      decorateRequest('hash', hash);
     },
   });
 

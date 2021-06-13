@@ -1,3 +1,5 @@
+const moxios = require('moxios');
+
 const {
   FASTIFY_TDD_ROUTE,
   FASTIFY_TDD_ROOT,
@@ -13,12 +15,32 @@ const resetHandlerTypeErrorMessage =
 
 const collectRoutes = (createHook, tddScope) => {
   const routes = [];
+
   const registerTddRoute = (routeDef = {}) =>
     routes.push({
       ...routeDef,
       url: `${tddScope}${routeDef.url}`,
     });
-  createHook.sync(FASTIFY_TDD_ROUTE, { registerTddRoute });
+
+  // Also collects definition in the form of hook's results
+  // Integrations can return either a single route definition
+  // or a list of routes.
+  createHook.sync(FASTIFY_TDD_ROUTE, { registerTddRoute }).map((result) => {
+    // Skip null or undefined returns from hooks
+    if (!result[0]) {
+      return;
+    }
+
+    // Handle return in array form
+    if (Array.isArray(result[0])) {
+      result[0].map(registerTddRoute);
+    }
+
+    // Handle return in object form
+    else {
+      registerTddRoute(result[0]);
+    }
+  });
 
   return routes;
 };
@@ -184,6 +206,8 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
     },
   });
 
+  // Let the test handle a full state reset for the app
+  // GET://reset
   registerRoute({
     method: 'GET',
     url: `${tddScope}/reset`,
@@ -203,6 +227,178 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
         success: true,
         data: { results },
       });
+    },
+  });
+
+  registerRoute({
+    method: 'POST',
+    url: `${tddScope}/axios/stubs`,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          url: { type: 'string' },
+          response: {
+            type: 'object',
+            additionalProperties: true,
+          },
+        },
+        required: ['url', 'response'],
+      },
+      response: {
+        '2xx': {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            data: {
+              type: 'object',
+              properties: {
+                items: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      url: { type: 'string' },
+                      response: {
+                        type: 'object',
+                        additionalProperties: true,
+                      },
+                    },
+                    required: ['url', 'response'],
+                  },
+                },
+              },
+              required: ['items'],
+            },
+          },
+          required: ['success', 'data'],
+        },
+        '4xx': {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            data: {
+              type: 'object',
+              properties: {
+                items: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      url: { type: 'string' },
+                      response: {
+                        type: 'object',
+                        additionalProperties: true,
+                      },
+                    },
+                    required: ['url', 'response'],
+                  },
+                },
+              },
+              required: ['items'],
+            },
+            errors: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  message: { type: 'string' },
+                },
+                required: ['message'],
+                additionalProperties: true,
+              },
+            },
+          },
+          required: ['success', 'errors', 'data'],
+        },
+      },
+    },
+    handler: (request, reply) => {
+      if (moxios.stubs.__items.length === 0) {
+        moxios.install();
+      }
+
+      const { url, response } = request.body;
+
+      // Prevent from declaring the same stub twice
+      const checkItem = moxios.stubs.__items.find((item) => item.url === url);
+      if (checkItem) {
+        return reply.status(400).send({
+          success: false,
+          errors: [{ message: 'Stub already exists' }],
+          data: {
+            items: moxios.stubs.__items,
+          },
+        });
+      }
+
+      moxios.stubRequest(url, response);
+
+      reply.send({
+        success: true,
+        data: {
+          items: moxios.stubs.__items,
+        },
+      });
+    },
+  });
+
+  registerRoute({
+    method: 'DELETE',
+    url: `${tddScope}/axios/stubs`,
+    schema: {
+      response: {
+        '2xx': {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            data: {
+              type: 'object',
+              properties: {
+                didReset: { type: 'boolean' },
+              },
+              required: ['didReset'],
+            },
+          },
+          required: ['success', 'data'],
+        },
+        '4xx': {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            data: {
+              type: 'object',
+              additionalProperties: true,
+            },
+            errors: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  message: { type: 'string' },
+                },
+                required: ['message'],
+                additionalProperties: true,
+              },
+            },
+          },
+          required: ['success', 'data'],
+        },
+      },
+    },
+    handler: (request, reply) => {
+      if (moxios.stubs.__items.length !== 0) {
+        moxios.uninstall();
+        reply.send({
+          success: true,
+          data: { didReset: true },
+        });
+      } else {
+        reply.send({
+          success: true,
+          data: { didReset: false },
+        });
+      }
     },
   });
 

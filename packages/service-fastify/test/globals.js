@@ -217,6 +217,10 @@ mockConfig.reset = async () => {
 
 const reset = () => http.testGet('/reset');
 
+const mockAxios = (url, response) =>
+  http.testPost('/axios/stubs', { url, response });
+mockAxios.reset = () => http.testDelete('/axios/stubs');
+
 module.exports = (global = {}) => ({
   url,
   testUrl,
@@ -231,5 +235,6 @@ module.exports = (global = {}) => ({
   setConfig,
   getConfig,
   mockConfig,
+  mockAxios,
   ...global,
 });

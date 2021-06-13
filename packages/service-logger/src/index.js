@@ -55,6 +55,13 @@ const serviceLogger = ({ registerAction, registerHook }) => {
 
   // Fastify Integration (optional hook)
   // Override the default logger with the Winston's instance
+  //
+  // NOTE: we can not use the "FASTIFY_PLUGIN" with the
+  // "decorate" and "decorateRequest" utilities as the
+  // keyword "log" has already been taken by Fastify.
+  //
+  // Here we are truly messing around with it and overriding
+  // the standard logger with Winston.
   registerAction({
     hook: '$FASTIFY_HACKS_BEFORE?',
     name: hooks.SERVICE_NAME,
@@ -64,8 +71,6 @@ const serviceLogger = ({ registerAction, registerHook }) => {
 
       // Replace the default logger with Winston's instance
       fastify.log = logger;
-
-      // Replace the default logger with Winston's instance
       fastify.addHook('onRequest', (request, reply, done) => {
         request.log = logger;
         done();
