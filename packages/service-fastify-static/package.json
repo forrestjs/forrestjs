@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-fastify-static",
   "description": "ForrestJS service which adds static content serving to a Fastify server.",
-  "version": "4.0.0-alpha.11",
+  "version": "4.0.0-alpha.12",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/hooks": "^4.0.0-alpha.11",
+    "@forrestjs/hooks": "^4.0.0-alpha.12",
     "fastify-static": "^4.2.2"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-static#readme",
