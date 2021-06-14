@@ -238,6 +238,11 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
         type: 'object',
         properties: {
           url: { type: 'string' },
+          method: {
+            type: 'string',
+            enum: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+            default: 'GET',
+          },
           response: {
             type: 'object',
             additionalProperties: true,
@@ -318,7 +323,7 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
         moxios.install();
       }
 
-      const { url, response } = request.body;
+      const { method, url, response } = request.body;
 
       // Prevent from declaring the same stub twice
       const checkItem = moxios.stubs.__items.find((item) => item.url === url);
@@ -332,7 +337,7 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
         });
       }
 
-      moxios.stubRequest(url, response);
+      moxios.stubRequest(method, url, response);
 
       reply.send({
         success: true,
