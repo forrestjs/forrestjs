@@ -53,5 +53,6 @@ module.exports = ({ getConfig, setContext, createHook, getContext }) => {
     fastify: server,
   });
 
+  setContext('axios', axios);
   setContext('fastify', server);
 };
