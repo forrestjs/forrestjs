@@ -1,4 +1,5 @@
 const moxios = require('moxios');
+const axios = require('axios');
 
 const {
   FASTIFY_TDD_ROUTE,
@@ -241,7 +242,6 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
           method: {
             type: 'string',
             enum: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-            default: 'GET',
           },
           response: {
             type: 'object',
@@ -337,7 +337,12 @@ module.exports = ({ registerRoute }, { getConfig, setConfig, createHook }) => {
         });
       }
 
-      moxios.stubRequest(method, url, response);
+      // Provide the optional method to match a specific stub
+      if (method) {
+        moxios.stubRequest(method, url, response);
+      } else {
+        moxios.stubRequest(url, response);
+      }
 
       reply.send({
         success: true,
