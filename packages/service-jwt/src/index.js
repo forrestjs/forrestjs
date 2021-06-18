@@ -12,7 +12,7 @@ const sign = (payload, customSettings = settings, customSecret = secret) =>
       expiresIn: customSettings.expiresIn || duration,
     };
 
-    jwt.sign({ payload }, customSecret, localSettings, (err, token) => {
+    jwt.sign(payload, customSecret, localSettings, (err, token) => {
       if (err) {
         reject(err);
       } else {

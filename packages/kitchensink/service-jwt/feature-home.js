@@ -1,4 +1,4 @@
-const signHandler = async (request) => request.jwt.sign(request.params.payload);
+const signHandler = async (request) => request.jwt.sign(request.body.payload);
 const verifyHandler = async (request) =>
   request.jwt.verify(request.body.signed);
 
@@ -7,8 +7,8 @@ module.exports = {
   hook: '$FASTIFY_ROUTE',
   handler: [
     {
-      method: 'GET',
-      url: '/jwt/sign/:payload',
+      method: 'POST',
+      url: '/jwt/sign',
       handler: signHandler,
     },
     {
