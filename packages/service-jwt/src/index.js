@@ -91,6 +91,18 @@ const serviceJwt = ({ registerAction }) => {
     },
   });
 
+  // Fetchq Integration (optional hook)
+  // Injects the `log` API into the registered workers.
+  registerAction({
+    hook: '$FETCHQ_DECORATE_CONTEXT?',
+    name: hooks.SERVICE_NAME,
+    trace: __filename,
+    handler: (context, { getContext }) => ({
+      ...context,
+      jwt: getContext('jwt'),
+    }),
+  });
+
   /**
    * Integrate with the Fastify TDD API
    */

@@ -25,9 +25,11 @@
   - Update to `setContext` API
 - service-jwt
   - Remove Babel
+  - Injects the `jwt` API into Fetchq's registered workers
 - service-hash
   - Remove Babel
 - service-fetchq
+  - Upgrade to `@fetchq/node-client` v4.1.0
   - Remove Babel
   - Integrate with `service-fastify`
     - Integrate with the test healthcheck
@@ -36,6 +38,7 @@
     - Provide `/test/fetchq/await/:queue/:subject` to await a document status with a configurable timeout
   - Provides Jest global utility functions
   - Integrate with `service-fastify-healthz`
+  - Add `FETCHQ_DECORATE_CONTEXT` waterfall hook to decorate workers' context
 - service-apollo
   - Remove Babel
   - Integrate with `service-fastify`
@@ -44,6 +47,7 @@
   - Remove custom methods
   - Rename context's instance api to `log`
   - Improve fastify integration
+  - Injects the `log` API into Fetchq's registered workers
 - service-fastify
   - Fixes `$REGISTER_ROUTE` hook so to be synchronous and report injections in the boot report
   - Remove babel and the build step

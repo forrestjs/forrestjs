@@ -77,6 +77,18 @@ const serviceLogger = ({ registerAction, registerHook }) => {
       });
     },
   });
+
+  // Fetchq Integration (optional hook)
+  // Injects the `log` API into the registered workers.
+  registerAction({
+    hook: '$FETCHQ_DECORATE_CONTEXT?',
+    name: hooks.SERVICE_NAME,
+    trace: __filename,
+    handler: (context, { getContext }) => ({
+      ...context,
+      log: getContext('log'),
+    }),
+  });
 };
 
 module.exports = serviceLogger;

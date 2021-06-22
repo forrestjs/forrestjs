@@ -25,9 +25,28 @@ const readDocHandler = async (request) => {
 };
 
 const workerQ1 = (doc) => doc.drop();
-const workerQ2 = async (doc) => {
+
+const workerQ2 = async (doc, ctx) => {
+  ctx.log.info('Running WorkerQ1');
   await new Promise((resolve) => setTimeout(resolve, 250));
   return doc.complete();
+};
+
+const workerQ3 = async (doc, { log, jwt }) => {
+  log.info(`Apply JWT sign to "${doc.subject}"`);
+
+  const signed = await jwt.sign({ subject: doc.subject });
+  const verified = await jwt.verify(signed);
+  const decoded = await jwt.decode(signed);
+
+  return doc.complete({
+    payload: {
+      ...doc.payload,
+      signed,
+      verified,
+      decoded,
+    },
+  });
 };
 
 const featureQ1 = ({ registerAction }) => {
@@ -41,6 +60,9 @@ const featureQ1 = ({ registerAction }) => {
       },
       {
         name: 'q2',
+      },
+      {
+        name: 'q3',
       },
     ],
   });
@@ -57,6 +79,10 @@ const featureQ1 = ({ registerAction }) => {
       {
         queue: 'q2',
         handler: workerQ2,
+      },
+      {
+        queue: 'q3',
+        handler: workerQ3,
       },
     ],
   });

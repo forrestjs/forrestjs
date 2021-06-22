@@ -1,4 +1,5 @@
 const SERVICE_NAME = `fetchq`;
+const FETCHQ_DECORATE_CONTEXT = `${SERVICE_NAME}/decorate-context`;
 const FETCHQ_REGISTER_QUEUE = `${SERVICE_NAME}/register/queue`;
 const FETCHQ_REGISTER_WORKER = `${SERVICE_NAME}/register/worker`;
 const FETCHQ_READY = `${SERVICE_NAME}/ready`;
@@ -6,6 +7,7 @@ const FETCHQ_BEFORE_START = `${SERVICE_NAME}/before-start`;
 
 module.exports = {
   SERVICE_NAME,
+  FETCHQ_DECORATE_CONTEXT,
   FETCHQ_REGISTER_QUEUE,
   FETCHQ_REGISTER_WORKER,
   FETCHQ_READY,

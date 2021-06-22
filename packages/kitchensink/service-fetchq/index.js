@@ -1,5 +1,6 @@
 const { runHookApp } = require('@forrestjs/hooks');
 const serviceLogger = require('@forrestjs/service-logger');
+const serviceJwt = require('@forrestjs/service-jwt');
 const serviceFetchq = require('@forrestjs/service-fetchq');
 const serviceFastify = require('@forrestjs/service-fastify');
 const serviceFastifyHealthz = require('@forrestjs/service-fastify-healthz');
@@ -17,6 +18,7 @@ runHookApp({
   },
   services: [
     serviceLogger,
+    serviceJwt,
     serviceFetchq,
     serviceFastify,
     serviceFastifyHealthz,

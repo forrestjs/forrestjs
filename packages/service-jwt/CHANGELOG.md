@@ -4,6 +4,7 @@
 
 - Remove Babel
 - Integrates with `service-fastify` (conditionally)
+- Injects the `jwt` API into Fetchq's registered workers
 
 ## v3.13.3
 

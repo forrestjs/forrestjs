@@ -74,7 +74,7 @@ describe('service-fetchq', () => {
 
   it('should timeout lazyQuery with an error', async () => {
     const fn = jest.fn();
-    setTimeout(() => get('/fetchq/push/q2/foobar'), 100);
+    const timer = setTimeout(() => get('/fetchq/push/q2/foobar'), 100);
 
     try {
       await fetchq.lazyQuery(
@@ -87,10 +87,32 @@ describe('service-fetchq', () => {
       );
     } catch (err) {
       fn(err);
+    } finally {
+      clearTimeout(timer);
     }
 
     expect(fn.mock.calls.length).toBe(1);
     const err = fn.mock.calls[0][0];
     expect(err.message).toBe('timeout');
+  });
+
+  it('should use JWT to sign a payload', async () => {
+    await get('/fetchq/push/q3/foobar');
+
+    const res = await fetchq.lazyQuery(
+      `
+      SELECT * FROM "fetchq_data"."q3__docs"
+      WHERE "subject" = 'foobar'
+        AND "status" = 3
+      `,
+    );
+
+    const { signed, decoded, verified } = res.rows[0].payload;
+
+    // Use JWT test API to doublecheck
+    const verified1 = await global.jwt.verify(signed);
+    const decoded1 = await global.jwt.decode(signed);
+    expect(verified).toMatchObject(verified1);
+    expect(decoded).toMatchObject(decoded1);
   });
 });

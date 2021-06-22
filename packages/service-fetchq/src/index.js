@@ -4,10 +4,18 @@ const { SERVICE_NAME, ...hooks } = require('./hooks');
 const onInitService = ({ getConfig, getContext, setContext, createHook }) => {
   // Decorate the Fetchq context with a reference to the getters in the hooks app:
   const receivedConfig = getConfig('fetchq', {});
+
+  // Let other services/features to inject APIs into Fetchq's workers' context.
+  const { value: extendedContext } = createHook.waterfall(
+    hooks.FETCHQ_DECORATE_CONTEXT,
+    {},
+  );
+
   const applyConfig = {
     ...receivedConfig,
     decorateContext: {
       ...(receivedConfig.decorateContext ? receivedConfig.decorateContext : {}),
+      ...extendedContext,
       getConfig,
       getContext,
     },
@@ -90,9 +98,38 @@ module.exports = ({ registerAction, registerHook }) => {
   });
 
   /**
-   * Integrate with the Fastify TDD API
+   * HEALTHCHECK
+   * Integrate with the TDD and Healthz preHandlers check so that
+   * the app's status should await a working pool
    */
 
+  const healthcheckHandler = async (request, reply, next) => {
+    try {
+      await request.fetchq.pool.query('SELECT NOW()');
+      next();
+    } catch (err) {
+      reply.status(412).send('Fetchq client not yet ready');
+    }
+  };
+
+  registerAction({
+    hook: '$FASTIFY_TDD_CHECK?',
+    name: SERVICE_NAME,
+    trace: __filename,
+    handler: () => healthcheckHandler,
+  });
+
+  registerAction({
+    hook: '$FASTIFY_HEALTHZ_CHECK?',
+    name: SERVICE_NAME,
+    trace: __filename,
+    handler: () => healthcheckHandler,
+  });
+
+  /**
+   * TDD
+   * Integrate with the Fastify TDD API
+   */
   registerAction({
     hook: '$FASTIFY_TDD_ROUTE?',
     name: SERVICE_NAME,
@@ -238,33 +275,5 @@ module.exports = ({ registerAction, registerHook }) => {
         },
       });
     },
-  });
-
-  /**
-   * Integrate with the TDD and Healthz preHandlers check so that
-   * the app's status should await a working pool
-   */
-
-  const healthcheckHandler = async (request, reply, next) => {
-    try {
-      await request.fetchq.pool.query('SELECT NOW()');
-      next();
-    } catch (err) {
-      reply.status(412).send('Fetchq client not yet ready');
-    }
-  };
-
-  registerAction({
-    hook: '$FASTIFY_TDD_CHECK?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: () => healthcheckHandler,
-  });
-
-  registerAction({
-    hook: '$FASTIFY_HEALTHZ_CHECK?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: () => healthcheckHandler,
   });
 };
