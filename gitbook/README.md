@@ -10,6 +10,8 @@ Hey mate, thank you for landing here!
 
 ## Try It Out:
 
+The easiest way to start with ForrestJS is to see it in action on CodeSandbox:
+
 - [Basic webapp with Fastify](https://codesandbox.io/s/service-fastify-th8dq)
 - [service: Static Website](https://codesandbox.io/s/service-fastify-static-6u8mm)
 - [service: Healthcheck](https://codesandbox.io/s/service-fastify-healthz-4g3my)
@@ -21,9 +23,9 @@ Hey mate, thank you for landing here!
 
 ## What You Get
 
-- Modular and interoperable architecture perfectly suited for SRP
+- Modular and interoperable architecture perfectly suited for microservices
 - App lifecycle hooks to coordinate booting procedures
-- Modules composition traceability and report
+- Modules composition traceability and reporting
 - Configuration API
 - Context API
 - Ready-to-use services available on NPM

@@ -78,16 +78,16 @@ in the ForrestJS app and provides hooks to extend the schema from a feature.
 
 Sets up an Apollo Client in the ForrestJS app and makes it available to route handlers.
 
-👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-fastify-apollo)  
-👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify-apollo/README.md#readme)  
+👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-apollo)  
+👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-apollo/README.md#readme)  
 👉 [**Open the CodeSandbox example**](https://codesandbox.io/s/service-fastify-apollo-80oug)
 
 ### service-fetchq
 
 Sets up an Fetchq Client in the ForrestJS app and makes it available to route handlers.
 
-👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-fastify-fetchq)  
-👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify-fetchq/README.md#readme)  
+👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-fetchq)  
+👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fetchq/README.md#readme)  
 👉 [**Open the CodeSandbox example**](https://codesandbox.io/s/service-fastify-fetchq-0by8x)
 
 ### service-jwt
