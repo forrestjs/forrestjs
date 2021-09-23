@@ -2,7 +2,6 @@
 
 * [ForrestJS](README.md)
 * [Give us a star on GitHub!](https://github.com/forrestjs/forrestjs)
-* [Install from NPM](https://www.npmjs.com/package/forrest)
 
 ---
 
