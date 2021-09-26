@@ -6,3 +6,12 @@
 .book-logo img {
     width: 110px;
 }
+
+h1.tutorial-step {
+  margin-bottom: 0;
+  font-size: 1.2em;
+}
+
+h1.tutorial-step span {
+  color: #666;
+}
