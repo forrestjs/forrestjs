@@ -12,8 +12,16 @@ npm add @forrestjs/service-fastify
 npm add @forrestjs/service-fastify-healthz
 ```
 
+We will also connect to a PostgreSQL database using the library [pg](https://node-postgres.com/):
+
+```bash
+npm add pg
+```
+
 ## Step By Step
 
-- ...
-- ...
+- [Fastify App Scaffold](./010-fastify-app-scaffold/README.md)
+- [Create a Simple Home Page](./020-fastify-home-page/README.md)
+- [The Users Feature](./030-the-users-feature/README.md)
+- [Add a New User](./040-add-new-user/README.md)
 

@@ -12,15 +12,15 @@
 ### Step By Step Tutorial
 
 - [Introduction to ForrestJS](https://marcopeg.com/2019/modular-node-apps-with-hooks)
+- [&raquo; My First Feature](./howto/my-first-feature/README.md)
+  - [ForrestJS App Scaffold](./howto/my-first-feature/010-forrestjs-app-scaffold/README.md)
+  - [A Feature Anathomy](./howto/my-first-feature/020-forrestjs-feature-anathomy/README.md)
+  - [The Boot Order & App's Lifecycle](./howto/my-first-feature/030-forrestjs-app-lifecycle/README.md)
 - [&raquo; My First REST API](./howto/my-first-rest-api/README.md)
   - [Fastify App Scaffold](./howto/my-first-rest-api/010-fastify-app-scaffold/README.md)
   - [Create a Simple Home Page](./howto/my-first-rest-api/020-fastify-home-page/README.md)
   - [The Users Feature](./howto/my-first-rest-api/030-the-users-feature/README.md)
   - [Add a New User](./howto/my-first-rest-api/040-add-new-user/README.md)
-- [&raquo; My First Feature](./howto/my-first-feature/README.md)
-  - [ForrestJS App Scaffold](./howto/my-first-feature/010-forrestjs-app-scaffold/README.md)
-  - [A Feature Anathomy](./howto/my-first-feature/020-forrestjs-feature-anathomy/README.md)
-  - [The Boot Order & App's Lifecycle](./howto/my-first-feature/030-forrestjs-app-lifecycle/README.md)
 
 ### API
 
