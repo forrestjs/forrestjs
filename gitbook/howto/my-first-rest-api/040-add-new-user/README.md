@@ -6,14 +6,18 @@
 
 # Add a New User
 
+Let's look at another small evolution of our REST API. Now it's time to get some real data from the user and modify our small database.
 
 ### Setup Route & Schema
 
-In `/users/routes/add-user.js`:
+I usually start by scaffolding the route's handler. I don't implement any logic, but I strongly suggest you to implement the [route's schema definition](https://ruanmartinelli.com/posts/using-schemas-fastify-fun-and-profit) so to add some safety to your internal logic.
+
+Start with `/users/routes/add-user.js`:
 
 ```js
 const handler = (request, reply) => {
   // Logic will go here
+  reply.send('ok')
 };
 
 const schema = {
@@ -30,7 +34,7 @@ const schema = {
 module.exports = { handler, schema };
 ```
 
-Then in `/users/index.js` we can configure the new route with a handler and the schema applied to it:
+Then in `/users/index.js` we can simply add a new route's definition to the list that we have already prepared:
 
 ```js
 {
@@ -41,11 +45,21 @@ Then in `/users/index.js` we can configure the new route with a handler and the 
 }
 ```
 
-https://codesandbox.io/s/040-add-a-new-user-g0h0h?file=/src/users/index.js
+Check it out here:  
+https://codesandbox.io/s/040-add-a-new-user-g0h0h?file=/src/users/index.js:470-610
 
-### Modify the Context memory
+### Modify the App's Context
 
+The implementation of our handler is still very simplicistic, but again we use the [`getContext()`](../../../api/get-context/README.md) API to take a reference to the User's DB we store in the App's context and modify it:
 
+```js
+const handler = (request, reply) => {
+  const users = request.getContext("users.list");
+  users.push(request.query.name);
+
+  reply.send(users);
+};
+```
 
 
 ---
