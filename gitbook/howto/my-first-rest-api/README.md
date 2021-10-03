@@ -16,6 +16,7 @@ We will also connect to a PostgreSQL database using the library [pg](https://nod
 
 ```bash
 npm add pg
+npm add envalid
 ```
 
 ## Step By Step

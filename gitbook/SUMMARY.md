@@ -21,6 +21,8 @@
   - [Create a Simple Home Page](./howto/my-first-rest-api/020-fastify-home-page/README.md)
   - [The Users Feature](./howto/my-first-rest-api/030-the-users-feature/README.md)
   - [Add a New User](./howto/my-first-rest-api/040-add-new-user/README.md)
+  - [Connect to Postgres as a Service](./howto/my-first-rest-api/050-postgres-service/README.md)
+  - [Integrate Services and Features](./howto/my-first-rest-api/060-integrate-services-and-features/README.md)
 
 ### API
 
