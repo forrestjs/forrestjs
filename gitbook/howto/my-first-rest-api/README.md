@@ -25,4 +25,7 @@ npm add envalid
 - [Create a Simple Home Page](./020-fastify-home-page/README.md)
 - [The Users Feature](./030-the-users-feature/README.md)
 - [Add a New User](./040-add-new-user/README.md)
+- [Connect to Postgres as a Service](./050-postgres-service/README.md)
+- [Integrate Services and Features](./060-integrate-services-and-features/README.md)
 
+[[ TO BE CONTINUED ]]
