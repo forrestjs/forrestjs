@@ -27,5 +27,8 @@ npm add envalid
 - [Add a New User](./040-add-new-user/README.md)
 - [Connect to Postgres as a Service](./050-postgres-service/README.md)
 - [Integrate Services and Features](./060-integrate-services-and-features/README.md)
+- [Schema & Data Seeding](./070-schema-and-data-seeding/README.md)
+- [Integrate Services And Services](./080-integrate-services-and-services/README.md)
+- [Evolve Your Schema](./090-evolve-your-schema/README.md)
 
-[[ TO BE CONTINUED ]]
+[[TO BE CONTINUED]]
