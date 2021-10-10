@@ -23,13 +23,17 @@
   - [Add a New User](./howto/my-first-rest-api/040-add-new-user/README.md)
   - [Connect to Postgres as a Service](./howto/my-first-rest-api/050-postgres-service/README.md)
   - [Integrate Services and Features](./howto/my-first-rest-api/060-integrate-services-and-features/README.md)
+  - [Schema & Data Seeding](./howto/my-first-rest-api/070-schema-and-data-seeding/README.md)
+  - [Integrate Services And Services](./howto/my-first-rest-api/080-integrate-services-and-services/README.md)
 
 ### API
 
 - [setConfig](./api/set-config/README.md)
 - [getConfig](./api/get-config/README.md)
 - [setContext](./api/set-context/README.md)
-- [getContext](./api/get-context/README.md)
+- [createHook](./api/create-hook/README.md)
+- [registerAction](./api/register-action/README.md)
+- [registerHook](./api/register-hook/README.md)
 
 ### Articles
 

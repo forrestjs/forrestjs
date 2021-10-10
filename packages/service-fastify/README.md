@@ -45,7 +45,7 @@ runHookApp({
 
 ### port
 
-`fastify.port: 5000` sets up the port on which the server runs.
+`setConfig('fastify.port', 8080)` sets up the port on which the server will listen for requests.
 
 It falls back to environment variables:
 
@@ -53,14 +53,52 @@ It falls back to environment variables:
 - process.env.PORT
 - 8080 (default value)
 
+## Context
+
+The service's App will be decorated with:
+
+### fastify
+
+A reference to the Fastify instance as configured during the booting of the App. It allows to fully manipulate the running server.
+
+```js
+getContext('fastify');
+```
+
+### axios
+
+A reference to the static instance of Axios.
+
+```js
+const axios = getContext('fastify');
+await axios.get('/');
+```
+
 ## Hooks
 
 All the hooks exposed by `service-fastify` are _synchronous_ and executes in _serie_.
+
+### FASTIFY_OPTIONS
+
+It allows to programmatically modify the options that are given to the Fastify's instance, it works in **waterfall**.
+
+[[TODO: CREATE AN EXAMPLE]]  
+[[TODO: CREATE AN CODESANDBOX]]
 
 ### FASTIFY_HACKS_BEFORE
 
 This hook fires before any other step.<br>
 It receives a direct reference to the `fastify` instance.
+
+```js
+registerAction({
+  hook: '$FASTIFY_HACKS_BEFORE',
+  handler: ({ fastify }) => {
+    // Do something with the Fastify's instance
+    fastify.register();
+  },
+});
+```
 
 ### FASTIFY_PLUGIN
 
@@ -75,13 +113,14 @@ registerAction({
 });
 ```
 
+[[TODO: CREATE AN CODESANDBOX]]
+
 ### FASTIFY_ROUTE
 
 ```js
-const { FASTIFY_ROUTE } = require('@forrestjs/service-fastify');
-
+// with the API:
 registerAction({
-  hook: FASTIFY_ROUTE,
+  hook: '$FASTIFY_ROUTE',
   handler: ({ registerRoute }) =>
     registerRoute({
       method: 'GET',
@@ -90,10 +129,9 @@ registerAction({
     }),
 });
 
-// or with direct values
-
+// or with direct values:
 registerAction({
-  hook: FASTIFY_ROUTE,
+  hook: '$FASTIFY_ROUTE',
   handler: () => ({
     method: 'GET',
     url: '/',
@@ -102,9 +140,8 @@ registerAction({
 });
 
 // even with multiple routes
-
 registerAction({
-  hook: FASTIFY_ROUTE,
+  hook: '$FASTIFY_ROUTE',
   handler: () => [
     {
       method: 'GET',
@@ -124,3 +161,13 @@ registerAction({
 
 This hook fires after any other step.<br>
 It receives a direct reference to the `fastify` instance.
+
+```js
+registerAction({
+  hook: '$FASTIFY_HACKS_AFTER',
+  handler: ({ fastify }) => {
+    // Do something with the Fastify's instance
+    fastify.register();
+  },
+});
+```

@@ -1,6 +1,6 @@
 <h1 class="tutorial-step"><span>My First REST API &raquo;</span> Connect to Postgres as a Service</h1>
 
-[My First Feature](../README.md) &raquo; [Connect to Postgres as a Service](./README.md)
+[My First REST API](../README.md) &raquo; [Connect to Postgres as a Service](./README.md)
 
 ---
 

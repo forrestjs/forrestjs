@@ -1,6 +1,6 @@
 <h1 class="tutorial-step"><span>My First REST API &raquo;</span> Add a New User</h1>
 
-[My First Feature](../README.md) &raquo; [Add a New User](./README.md)
+[My First REST API](../README.md) &raquo; [Add a New User](./README.md)
 
 ---
 

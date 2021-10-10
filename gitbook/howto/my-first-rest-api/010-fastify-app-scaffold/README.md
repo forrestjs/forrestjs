@@ -1,6 +1,6 @@
 <h1 class="tutorial-step"><span>My First REST API &raquo;</span> Fastify App's Scaffold</h1>
 
-[My First Feature](../README.md) &raquo; [Fastify App's Scaffold](./README.md)
+[My First REST API](../README.md) &raquo; [Fastify App's Scaffold](./README.md)
 
 ---
 

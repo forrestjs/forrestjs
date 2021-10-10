@@ -1,6 +1,6 @@
 <h1 class="tutorial-step"><span>My First REST API &raquo;</span> Create a Simple Home Page</h1>
 
-[My First Feature](../README.md) &raquo; [Create a Simple Home Page](./README.md)
+[My First REST API](../README.md) &raquo; [Create a Simple Home Page](./README.md)
 
 ---
 
