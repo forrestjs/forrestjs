@@ -6,9 +6,9 @@
 
 # Register Action
 
-Register and Action to a hook is the way we add new capabilities to a ForrestJS App.
+To "register an _Action_ to a _Hook_" is the way we introduce new capabilities to a ForrestJS _App_.
 
-You normally use the `registerAction()` API inside a Service or Feature's Manifest function:
+You normally use the `registerAction()` API inside a _Service_ or _Feature_'s _Manifest_ function:
 
 ```js
 const firstFeature = ({ registerAction }) => {

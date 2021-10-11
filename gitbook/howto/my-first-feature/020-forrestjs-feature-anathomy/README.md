@@ -6,12 +6,12 @@
 
 # A Feature's Anatomy
 
-A ForrestJS feature is a **Javascript module** that receives a bunch of APIs to **describe how to integrate** with the rest of the app.
+A ForrestJS _Feature_ is a **JavaScript module** that receives a bunch of APIs and **describes how to integrate** with the rest of the _App_.
 
 Start by creating a feature's scaffold into `my-first-feature.js`:
 
 ```js
-const myFirstFeature = ({ registerAction, getConfig, ...otherApi }) => {
+const myFirstFeature = ({ registerAction, getConfig, ...otherApi }) => {
   // ... the feature's manifest goes here ...
 };
 
@@ -31,21 +31,19 @@ runHookApp({
 
 > 👉 It is very important to **give a name to your feature** using a named arrow function (as we do here) or by using the `function` keyword as in old fashioned functions.
 
-
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/forrestjs-feature-anathomy-46e7c?file=/src/index.js
 
 ---
-
 
 ## It's Just a Manifest
 
 I believe that it is important to point out that **both App's and Feature's entry files are just manifests**.
 
-- The single responsibility of an App's manifest is to describe which Services and Features are at play in the app
-- The single responsibility of a Feature's manifest is to describe how the Feature integrates with the App's lifecycle and services
+- The single responsibility of an **App's Manifest** is to describe which _Services_ and _Features_ are at play in the _App_
+- The single responsibility of a **Feature's Manifest** is to describe how the Feature integrates with the _App_'s lifecycle and _Services_
 
 > All your logic should always be places inside a registered action (see next chapter)
 
@@ -62,10 +60,11 @@ Here are a few different syntaxes how to export a Feature's manifest from a Java
 With the `function` keyword:
 
 ```js
-module.exports = function myFirstFeature () {}
+module.exports = function myFirstFeature() {};
 ```
 
-With a named function:
+With a named function:  
+<small>(this is the preferred way)</small>
 
 ```js
 const myFirstFeature = () => {};
