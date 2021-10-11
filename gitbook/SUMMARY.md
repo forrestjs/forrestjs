@@ -28,11 +28,10 @@
 
 ### API
 
-- [setConfig](./api/set-config/README.md)
-- [getConfig](./api/get-config/README.md)
-- [setContext](./api/set-context/README.md)
-- [createHook](./api/create-hook/README.md)
-- [registerAction](./api/register-action/README.md)
+- [The App Context](./api/app-context/README.md)
+- [The App Config](./api/app-config/README.md)
+- [Create Hook](./api/create-hook/README.md)
+- [Register Action](./api/register-action/README.md)
 - [registerHook](./api/register-hook/README.md)
 
 ### Articles
