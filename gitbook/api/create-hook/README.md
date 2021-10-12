@@ -136,24 +136,112 @@ registerAction({
 
 ## Passing Arguments
 
-[[TO BE COMPLETED]]
+When you create a Hook you can pass arguments to it as a single object:
+
+```js
+createHook.sync('hookName', {
+  foo: 'bar',
+});
+
+registerAction({
+  hook: 'hookName',
+  handler: ({ foo }) => console.log(`foo: ${foo}`),
+});
+```
+
+This mechanic is often used to pass down APIs and/or utility functions.
+
+---
+
+**💻 Live on CodeSandbox:**  
+https://codesandbox.io/s/create-hook-arguments-pgmwz?file=/src/index.js
+
+---
 
 ## Collecting Actions Returing Values
 
-[[TO BE COMPLETED]]
+It is also possible to collect and manipulate each registered Action's returning values:
 
-## createHook.sync
+```js
+const data = createHook.sync('foobar');
 
-[[TO BE COMPLETED]]
+registerAction({
+  hook: 'foobar',
+  handler: () => 5,
+});
+```
 
-## createHook.serie
+---
 
-[[TO BE COMPLETED]]
+**💻 Live on CodeSandbox:**  
+https://codesandbox.io/s/create-hook-returning-values-66xq3?file=/src/index.js
 
-## createHook.parallel
+---
 
-[[TO BE COMPLETED]]
+Each Action's returning value is represented by a _positional array_ with:
 
-## createHook.waterfall
+- [0] raw returning value
+- [1] action configuration
+- [2] hook configuration
 
-[[TO BE COMPLETED]]
+[[TO BE EXPANDED]]
+
+## createHook.sync()
+
+The `sync` method is the most common and used Hook. It runs its registered actions in serie, sorted by priority, and it expects only synchronous functions.
+
+Use this method to provide ways to enrich or modify configuration at boot time. A good example is how we register routes in the [Fastify Service](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify/src/start-service-handler.js#L41).
+
+```js
+const results = createHook.sync('hookName', { arg1: 'x', arg2: 'y' });
+```
+
+## createHook.serie()
+
+Use the `serie` method when you want **asynchronous** Action handlers to **execute one after the other**, by the registration or priority order.
+
+> The returning values will reflect the execution order.
+
+---
+
+**💻 Live on CodeSandbox:**  
+https://codesandbox.io/s/create-hook-serie-e6670?file=/src/index.js
+
+---
+
+## createHook.parallel()
+
+Use the `parallel` method when you want **asynchronous** Action handlers to **execute at the same time**, triggered by by the registration or priority order.
+
+> The returning values will reflect the trigger order.
+
+```js
+const results = createHook.parallel('hookName', { arg1: 'x', arg2: 'y' });
+```
+
+---
+
+**💻 Live on CodeSandbox:**  
+https://codesandbox.io/s/create-hook-parallel-qylzn?file=/src/index.js
+
+---
+
+## createHook.waterfall()
+
+Use the `waterfall` method if you want to let **synchronous** Action handlers to transform a received input by returning a new version of it.
+
+> The Action handlers are executed by the registration or priority order.
+
+In the end, the returning value will yield the value that was returned by the last handler.
+
+```js
+const result = createHook.watefall('hookName', 10);
+console.log(result.value);
+```
+
+---
+
+**💻 Live on CodeSandbox:**  
+https://codesandbox.io/s/create-hook-waterfall-j4hnc?file=/src/index.js
+
+---
