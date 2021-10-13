@@ -25,6 +25,9 @@
   - [Schema & Data Seeding](./howto/my-first-rest-api/070-schema-and-data-seeding/README.md)
   - [Integrate Services And Services](./howto/my-first-rest-api/080-integrate-services-and-services/README.md)
   - [Evolve Your Schema](./howto/my-first-rest-api/090-evolve-your-schema/README.md)
+- [&raquo; My First React App](./howto/my-first-react-app/README.md)
+  - [Render a ForrestJS React App](./howto/my-first-react-app/010-react-root/README.md)
+  - [Add Material UI Component Library](./howto/my-first-react-app/020-react-mui/README.md)
 
 ### API
 
