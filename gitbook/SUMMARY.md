@@ -28,6 +28,7 @@
 - [&raquo; My First React App](./howto/my-first-react-app/README.md)
   - [Render a ForrestJS React App](./howto/my-first-react-app/010-react-root/README.md)
   - [Add Material UI Component Library](./howto/my-first-react-app/020-react-mui/README.md)
+  - [Refactor Your First Feature](./howto/my-first-react-app/030-first-feature/README.md)
 
 ### API
 

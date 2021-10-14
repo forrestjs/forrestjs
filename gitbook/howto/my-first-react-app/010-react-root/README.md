@@ -62,9 +62,9 @@ Here is a preview of the resulting App:
 
 As we will build a fully custom App using [MUI](https://mui.com/) as Component Library, you can now remove all the other _CRA_ boilerplate files from your `/src` folder.
 
----
-
-**💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/react-root-mccs7?file=/src/index.js:137-266
-
----
+<iframe src="https://codesandbox.io/embed/010-react-root-mccs7?fontsize=14&hidenavigation=1&theme=dark"
+     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+     title="010-react-root"
+     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+   ></iframe>
