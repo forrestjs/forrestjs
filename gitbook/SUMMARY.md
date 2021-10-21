@@ -30,6 +30,7 @@
   - [Add Material UI Component Library](./howto/my-first-react-app/020-react-mui/README.md)
   - [Refactor Your First Feature](./howto/my-first-react-app/030-first-feature/README.md)
   - [The Login Feature](./howto/my-first-react-app/040-login-feature/README.md)
+  - [Customize Material UI](./howto/my-first-react-app/050-customize-material-ui/README.md)
 
 ### API
 

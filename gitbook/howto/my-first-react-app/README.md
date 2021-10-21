@@ -32,5 +32,9 @@ npm add @forrestjs/react-router
 ## Step By Step
 
 - [Render a ForrestJS React App](./010-react-root/README.md)
+- [Add Material UI Component Library](./020-react-mui/README.md)
+- [Refactor Your First Feature](./030-first-feature/README.md)
+- [The Login Feature](./040-login-feature/README.md)
+- [Customize Material UI](./050-customize-material-ui/README.md)
 
 [[TO BE CONTINUED]]
