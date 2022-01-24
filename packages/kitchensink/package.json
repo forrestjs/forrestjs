@@ -58,13 +58,14 @@
     "@forrestjs/service-fastify-cookie": "^4.0.0-alpha.20",
     "@forrestjs/service-fastify-cors": "^4.0.0-alpha.20",
     "@forrestjs/service-fastify-gql": "^4.0.0-alpha.20",
-    "@forrestjs/service-fastify-healthz": "^4.0.0-alpha.11",
+    "@forrestjs/service-fastify-healthz": "^4.0.0-alpha.20",
     "@forrestjs/service-fastify-static": "^4.0.0-alpha.20",
     "@forrestjs/service-fetchq": "^4.0.0-alpha.20",
     "@forrestjs/service-hash": "^4.0.0-alpha.20",
     "@forrestjs/service-jwt": "^4.0.0-alpha.20",
     "@forrestjs/service-logger": "^4.0.0-alpha.20",
-    "graphql-tag": "^2.12.4"
+    "graphql": "^16.2.0",
+    "graphql-tag": "^2.12.6"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify#readme",
   "keywords": [
@@ -76,5 +77,9 @@
     "access": "public"
   },
   "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify",
-  "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578"
+  "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^27.4.7"
+  }
 }
