@@ -31,6 +31,7 @@
   - [Refactor Your First Feature](./howto/my-first-react-app/030-first-feature/README.md)
   - [The Login Feature](./howto/my-first-react-app/040-login-feature/README.md)
   - [Customize Material UI](./howto/my-first-react-app/050-customize-material-ui/README.md)
+  - [Add React Router](./howto/my-first-react-app/060-add-react-router/README.md)
 
 ### API
 
