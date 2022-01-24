@@ -50,16 +50,18 @@ import Typography from '@material-ui/core/Typography';
 And then let's use them in our custom Root Component:
 
 ```js
+const MyComponent = () => (
+  <Box sx={{ margin: 5 }}>
+    <Typography>My First React App - with MaterialUI</Typography>
+    <Link href="https://mui.com" color="primary" variant="body2">
+      Open MUI Documentation
+    </Link>
+  </Box>
+);
+
 const customRoot = {
   hook: '$REACT_ROOT_COMPONENT',
-  handler: () => (
-    <Box>
-      <Typography>My First React App - with MaterialUI</Typography>
-      <Link href="https://mui.com" color="primary" variant="body2">
-        Open MUI Documentation
-      </Link>
-    </Box>
-  ),
+  handler: { component: MyComponent },
 };
 ```
 

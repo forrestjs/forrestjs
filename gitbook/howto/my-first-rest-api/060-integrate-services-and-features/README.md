@@ -12,12 +12,12 @@ In your Service Initialization code, you need to create the utility method and e
 
 ```js
 const query = pool.query.bind(pool);
-setContext("pg.query", query);
+setContext('pg.query', query);
 ```
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:531-672
 
 ---
@@ -26,15 +26,15 @@ With this part done, a potential feature's code would change to:
 
 ```js
 registerAction({
-  hook: "$START_FEATURE",
+  hook: '$START_FEATURE',
   handler: async ({ getContext }) => {
-    const query = getContext("pg.query");
+    const query = getContext('pg.query');
     await query('SELECT ...');
-  }
+  },
 });
 ```
 
-It's a small improvement, right?   
+It's a small improvement, right?  
 **🧘‍♀️ But Life is made good by the little things! 🧘‍♀️**
 
 ## Offer a New Hook "$PG_READY"
@@ -47,10 +47,10 @@ What if a feature could run a piece of code like that:
 registerAction({
   hook: '$PG_READY',
   handler: async ({ query }) => {
-    await query(`CREATE TABLE IF NOT EXISTS ...`)
-    await query(`INSERT INTO "xxx" VALUES... `)
-  }
-})
+    await query(`CREATE TABLE IF NOT EXISTS ...`);
+    await query(`INSERT INTO "xxx" VALUES... `);
+  },
+});
 ```
 
 As you may have guessed already, that's exactly what we're going to do.
@@ -63,7 +63,7 @@ Create a `/pg/hooks.js` module:
 
 ```js
 module.exports = {
-  PG_READY: "pg/ready"
+  PG_READY: 'pg/ready',
 };
 ```
 
@@ -71,7 +71,7 @@ That's right. Hooks are just strings, but we always export them as a **library o
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/hooks.js:0-45
 
 ---
@@ -95,14 +95,14 @@ With these steps performed, it is now possibile for any Feature (or other Servic
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:32-209
 
 ---
 
 ## Implement A Hook
 
-Implementing a hook looks much like **calling a function** using the [`createHook()` API](../../api/create-hook/README.md). We invoke a hook by its name, we can pass arguments to it, and we can collect its returning value(s).
+Implementing a hook looks much like **calling a function** using the [`createHook()` API](../../../api/create-hook/README.md). We invoke a hook by its name, we can pass arguments to it, and we can collect its returning value(s).
 
 > But we can't control what happens inside it, as different Features and Services are allowed to inject logic into it.
 
@@ -110,19 +110,19 @@ With this theory covered, it's time to implent our shiny new hook right after a 
 
 ```js
 registerAction({
-  hook: "$START_SERVICE",
+  hook: '$START_SERVICE',
   handler: async ({ createHook }) => {
     // ... connect to PostgreSQL ...
 
     // Call the hook:
     await createHook.serie(hooks.PG_READY, { query, pool });
-  }
+  },
 });
 ```
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:1435-1650
 
 ---
@@ -133,17 +133,17 @@ Finally, we can consume that hook in our Users Feature:
 
 ```js
 registerAction({
-  hook: "$PG_READY",
+  hook: '$PG_READY',
   handler: async ({ query }) => {
-    const res = await query("SELECT NOW()");
-    console.log("on pg/ready", res.rows);
-  }
+    const res = await query('SELECT NOW()');
+    console.log('on pg/ready', res.rows);
+  },
 });
 ```
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/users/index.js:626-804
 
 ---

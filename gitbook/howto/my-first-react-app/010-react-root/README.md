@@ -41,7 +41,7 @@ In order to customize the _root Component_ of the App, we can write the simplest
 ```js
 const customRoot = {
   hook: '$REACT_ROOT_COMPONENT',
-  handler: () => <div>My Custom Root Component</div>,
+  handler: { component: () => <div>My Custom Root Component</div> },
 };
 ```
 

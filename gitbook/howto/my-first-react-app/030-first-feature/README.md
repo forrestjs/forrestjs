@@ -69,7 +69,7 @@ import { CustomRoot } from './CustomRoot';
 export const customRoot = ({ registerAction }) => {
   registerAction({
     hook: '$REACT_ROOT_COMPONENT',
-    handler: CustomRoot,
+    handler: { component: CustomRoot },
   });
 };
 ```

@@ -23,7 +23,7 @@ You can get a free PostgreSQL database on [ElephantSQL](https://www.elephantsql.
 postgres://ghstdny:jGTHd9Xf9KsGlfgg9fifSCjkdl4fw1G-g@tai.db.elephantsql.com/ghstdny
 ```
 
-Then you should add it in the Sandbox's **Environmental Variables** as `PGSTRING`.
+👉 Then you should add it in the Sandbox's **Environmental Variables** as `PGSTRING`.
 
 ## Barebone Codebase
 
@@ -31,22 +31,22 @@ If we had to "just get it done", without ForrestJS, and without thinking in term
 
 ```js
 // Create a connection pool:
-const { Pool } = require('pg');
+const { Pool } = require('pg');
 const pool = new Pool({ connectionString: process.env.PGSTRING });
 
 // Run a query:
 const result = await pool.query(`SELECT NOW() AS "current_time"`);
-console.log(result.rows[0])
+console.log(result.rows[0]);
 ```
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/050-postgres-connect-osqg3?file=/src/index.js:231-483
 
 ---
 
-But that is not our goal, isn't it? We're here to **package this simple logic into a reusable service** that makes it easy for one or more Features to deal with a PostgreSQL database. 
+But that is not our goal, isn't it? We're here to **package this simple logic into a reusable service** that makes it easy for one or more Features to deal with a PostgreSQL database.
 
 > Features should not bother with the infrastructural challenges, they **focus on business logic**!
 
@@ -71,33 +71,33 @@ module.exports = pg;
 
 ## Settings Propagation
 
-Services often need some form of configuration. 
+Services often need some form of configuration.
 
 In our case, the `pg` service will need to know the _PostgreSQL Connection String_ and the maximum amount of concurent clients that we want to keep alive and connected to our db. Stuff like that are usually done by reading an environmental variable. But accessing environmental variables froum inside our services or features may lead to some nasty bugs when you misspell stuff.
 
 > I strongly recommend you **checkout all your environmental variables** in your App's manifest, and propagate them using the App's `settings` and the `getConfig()` API. Also, you should consider validating your environment using stuff like [envalid](https://www.npmjs.com/package/envalid):
 
 ```js
-const envalid = require("envalid");
+const envalid = require('envalid');
 
 const env = envalid.cleanEnv(process.env, {
   PGSTRING: envalid.url(),
-  PG_MAX: envalid.num({ default: 1 })
+  PG_MAX: envalid.num({ default: 1 }),
 });
 
 runHookApp({
   settings: {
     pg: {
       connectionString: env.PGSTRING,
-      maxConnections: env.PGMAX
-    }
+      maxConnections: env.PGMAX,
+    },
   },
-})
+});
 ```
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/index.js:678-759
 
 ---
@@ -110,27 +110,27 @@ First thing, we hook into the `$INIT_SERVICE` where we create the pool and share
 
 ```js
 registerAction({
-  hook: "$INIT_SERVICE",
+  hook: '$INIT_SERVICE',
   handler: ({ getConfig, setContext }) => {
     // 1. Get the configuration
-    const connectionString = getConfig("pg.connectionString");
-    const max = getConfig("pg.maxConnections");
+    const connectionString = getConfig('pg.connectionString');
+    const max = getConfig('pg.maxConnections');
 
     // 2. Create the pool
     const pool = new Pool({
       connectionString,
-      max
+      max,
     });
 
     // 3. Share it
-    setContext("pg.pool", pool);
-  }
+    setContext('pg.pool', pool);
+  },
 });
 ```
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js:168-523
 
 ---
@@ -145,9 +145,9 @@ We can simply achieve this goal by hooking into `$SERVICE_START` and checking ou
 
 ```js
 registerAction({
-  hook: "$START_SERVICE",
+  hook: '$START_SERVICE',
   handler: async ({ getContext }) => {
-    const pool = getContext("pg.pool");
+    const pool = getContext('pg.pool');
 
     try {
       const res = await pool.query(`SELECT now() AS "pgtime"`);
@@ -156,13 +156,13 @@ registerAction({
     } catch (err) {
       throw new Error(`Could not connect to PostgreSQL`);
     }
-  }
+  },
 });
 ```
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js:780-1230
 
 ---
@@ -172,7 +172,7 @@ https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js:780-12
 ## Features Integration
 
 One of the most important behaviors of a Service is **how does it facilitates Features**.  
-Basically:   
+Basically:
 
 > what API does your Service provide?
 
@@ -180,17 +180,17 @@ Witht the code we wrote so far, any feature could run a query **after service in
 
 ```js
 registerAction({
-  hook: "$START_FEATURE",
+  hook: '$START_FEATURE',
   handler: async ({ getContext }) => {
-    const pool = getContext("pg.pool");
+    const pool = getContext('pg.pool');
     await pool.query('SELECT ...');
-  }
+  },
 });
 ```
 
 ---
 
-**💻 Live on CodeSandbox:**   
-https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js
+**💻 Live on CodeSandbox:**  
+https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/index.js:459-771
 
 ---
