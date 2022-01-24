@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@forrestjs/hooks": "^4.0.0-alpha.19",
-    "fastify-cors": "6.0.1"
+    "fastify-cors": "6.0.2"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-cors#readme",
   "keywords": [

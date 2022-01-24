@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@babel/cli": "^7.5.5",
-    "@babel/register": "^7.5.5",
+    "@babel/register": "^7.16.9",
     "@forrestjs/babel-preset-universal": "^3.19.0",
     "@forrestjs/eslint-config-universal": "^3.19.0",
     "concurrently": "^4.1.0",
