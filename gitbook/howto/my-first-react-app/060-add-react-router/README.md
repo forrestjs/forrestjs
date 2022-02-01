@@ -31,18 +31,17 @@ The first component is the `Page` that will target a navigation command and uses
 Open your editor to `/src/routes/Page.js`:
 
 ```js
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-export const InternalPage = ({
-  match: {
-    params: { pageId },
-  },
-}) => (
-  <div>
-    <h4>Page {pageId}</h4>
-    <Link to="/">Go home</Link>
-  </div>
-);
+export const InternalPage = () => {
+  const { pageId } = useParams();
+  return (
+    <div>
+      <h4>Page {pageId}</h4>
+      <Link to="/">Go home</Link>
+    </div>
+  );
+};
 ```
 
 [![Edit 050-customize-material-ui](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/060-add-react-router-4lxe6?file=/src/routes/InternalPage.js)
@@ -74,18 +73,18 @@ export const HomePage = () => (
 
 ## The `Routes` Component
 
-The `src/routes/Routes.js` component represents the glue between hour HomePage and InternalPage views:
+The `src/routes/AppRoutes.js` component represents the glue between hour HomePage and InternalPage views:
 
 ```jsx
-import { Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { HomePage } from './HomePage';
 import { InternalPage } from './InternalPage';
 
-export const Routes = () => (
-  <>
-    <Route path="/" exact component={HomePage} />
-    <Route path="/page/:pageId" component={InternalPage} />
-  </>
+export const AppRoutes = () => (
+  <Routes>
+    <Route path="/" exact element={<HomePage />} />
+    <Route path="/page/:pageId" element={<InternalPage />} />
+  </Routes>
 );
 ```
 
@@ -102,12 +101,12 @@ But this is nothing new to you. You did before, right?
 `src/routes/index.js`
 
 ```js
-import { Routes } from './Routes';
+import { AppRoutes } from './AppRoutes';
 
 export const routes = ({ registerAction }) => {
   registerAction({
     hook: '$REACT_ROOT_COMPONENT',
-    handler: () => <Routes />,
+    handler: { component: AppRoutes },
   });
 };
 ```

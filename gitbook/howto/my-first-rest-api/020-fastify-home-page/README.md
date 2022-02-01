@@ -15,16 +15,16 @@ const HOME_PAGE_CONTENT = `
 `;
 
 const fastifyRouteHandler = (request, reply) => {
-  reply.type("text/html").send(HOME_PAGE_CONTENT);
+  reply.type('text/html').send(HOME_PAGE_CONTENT);
 };
 
 const homePageFeature = ({ registerAction }) => {
   registerAction({
-    hook: "$FASTIFY_GET",
+    hook: '$FASTIFY_GET',
     handler: {
-      url: "/",
-      handler: fastifyRouteHandler
-    }
+      url: '/',
+      handler: fastifyRouteHandler,
+    },
   });
 };
 
@@ -47,14 +47,14 @@ Your shiny static HTML content should definitely show up!
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/create-a-simple-home-page-l6pec?file=/src/index.js
 
 ---
 
 ## Feature's Folder Structure
 
-Until now, we used a single Javascript module to host our entire feature. 
+Until now, we used a single Javascript module to host our entire feature.
 
 This approach may work for some simple features, but **it will definitely go out of control** in case you are working on a more sophisticated piece of logic.
 After all, you want to keep your modules as small as possible to facilitate reading throught them, right?
@@ -63,8 +63,7 @@ Let's then separate our Home Page logic into smaller pieces, that implement diff
 
 ### The Route Handler
 
-The route handler is the piece of logic that is supposed to handle the user's requests and provide some kind of output. 
-
+The route handler is the piece of logic that is supposed to handle the user's requests and provide some kind of output.
 
 > This responsibility has nothing to share with ForrestJS or the App's composition.  
 > It is a truly isolated piece of logic, who's shape depends only on Fastify's APIs
@@ -78,7 +77,7 @@ const HOME_PAGE_CONTENT = `
 `;
 
 module.exports = (request, reply) => {
-  reply.type("text/html").send(HOME_PAGE_CONTENT);
+  reply.type('text/html').send(HOME_PAGE_CONTENT);
 };
 ```
 
@@ -90,15 +89,15 @@ How to link this route implementation with the Fastify service.
 We do so in the Feature's manifest file: `/home-page/index.js`:
 
 ```js
-const homePageRoute = require("./routes/home-page");
+const homePageRoute = require('./routes/home-page');
 
 const homePageFeature = ({ registerAction }) => {
   registerAction({
-    hook: "$FASTIFY_GET",
+    hook: '$FASTIFY_GET',
     handler: {
-      url: "/",
-      handler: homePageRoute
-    }
+      url: '/',
+      handler: homePageRoute,
+    },
   });
 };
 
@@ -107,9 +106,11 @@ module.exports = homePageFeature;
 
 The Feature's manifest file "explains" to the rest of the ForrestJS App **how to connect the dots**, so to speak.
 
+Here you can try out a slightly refactored example:
+
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/025-fastify-home-page-reorganized-7dwuh?file=/src/home-page/index.js
 
 ---

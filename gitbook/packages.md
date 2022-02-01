@@ -15,23 +15,9 @@ traceable and debuggable support.
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/hooks)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/hooks/README.md#readme)  
 👉 [Introduction Example on CodeSandbox](https://codesandbox.io/s/intro-yjxhe?file=/src/index.js)  
-👉 [Kitchen Sink Example](https://github.com/forrestjs/forrestjs/blob/master/packages/kitchensink/hooks/index.js)
+👉 [Kitchensink Example](https://github.com/forrestjs/forrestjs/blob/master/packages/kitchensink/hooks/index.js)
 
 ## Services
-
-### service-env
-
-Reads environment configuration from different _dot-files_ into your `process.env` variable, and provides a safe interface to access environmental variables.
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-env)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-env/README.md#readme)
-
-### service-logger
-
-It exposes a simple interface to logging using [Winston](https://www.npmjs.com/package/winston) under the hood.
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-logger)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-logger/README.md#readme)
 
 ### service-fastify
 
@@ -44,6 +30,10 @@ It creates a [Fastify](https://www.fastify.io/) instance into the ForrestJS app,
 ### service-fastify-healthz
 
 It integrates with Fastify to expose a `/healthz` healthcheck endpoint. Features can integrate here to run their checks and invalidate it in case something goes wrong.
+
+👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-fastify-healthz)  
+👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify-healthz/README.md#readme)  
+👉 [**Open the CodeSandbox example**](https://codesandbox.io/s/service-fastify-healthz-4g3my)
 
 ### service-fastify-static
 
@@ -118,3 +108,17 @@ isolation.
 
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-postgres)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-postgres/README.md#readme)
+
+### service-env
+
+Reads environment configuration from different _dot-files_ into your `process.env` variable, and provides a safe interface to access environmental variables.
+
+👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-env)<br>
+👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-env/README.md#readme)
+
+### service-logger
+
+It exposes a simple interface to logging using [Winston](https://www.npmjs.com/package/winston) under the hood.
+
+👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-logger)<br>
+👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-logger/README.md#readme)

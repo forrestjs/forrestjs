@@ -36,7 +36,7 @@ describe('service-fetchq', () => {
     expect(response.status).toBe(412);
   });
 
-  it('should integrate with service-fastify-healthz', async () => {
+  it('should integrate with service fastify healthz', async () => {
     const r1 = await rawGet('/healthz');
     expect(r1.status).toBe(200);
   });

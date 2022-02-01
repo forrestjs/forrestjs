@@ -1,28 +1,24 @@
 {
-  "name": "@forrestjs/service-fastify-cookie",
-  "description": "ForrestJS service which adds cookie management capabilities to a Fastify server.",
+  "name": "@forrestjs/service-fastify-healthz",
+  "description": "ForrestJS service which adds a healthcheck route to a Fastify server.",
   "version": "4.0.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
-  "dependencies": {
-    "@forrestjs/hooks": "^4.0.0",
-    "fastify-cookie": "^5.5.0"
-  },
-  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-cookie#readme",
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-healthz#readme",
   "keywords": [
     "forrestjs",
     "service",
     "fastify",
-    "cookie"
+    "healthz"
   ],
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-cookie",
+  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-healthz",
   "scripts": {
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
   },

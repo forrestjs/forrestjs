@@ -117,7 +117,7 @@ const login = ({ registerAction }) => {
   registerAction({
     priority: -1,
     hook: '$REACT_ROOT_COMPONENT',
-    handler: (App) => <LoginRoot rootComponent={App} />,
+    handler: (App) => ({ component: () => <LoginRoot rootComponent={App} /> }),
   });
 };
 ```
@@ -197,7 +197,7 @@ To put in place our `LoginContextProvider` we are going to register a new action
 ```js
 registerAction({
   hook: '$REACT_ROOT_WRAPPER',
-  handler: (App) => <LoginContextProvider app={App} />,
+  handler: { component: LoginContextProvider },
 });
 ```
 

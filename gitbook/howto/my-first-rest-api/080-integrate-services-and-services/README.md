@@ -58,7 +58,7 @@ This **Integration Action** uses API methods to fetch a reference from the App's
 
 ## Service Order Matter
 
-One cool thing about the [`getContext()` API](../../api/get-context/README.md) is that **it throws an error in case the desired path does not exits**.
+One cool thing about the [`getContext()` API](../../../api/app-context/README.md#reading-from-the-context) is that **it throws an error in case the desired path does not exits**.
 
 This is important beause it let us write data paths as strings, but it will validate their correctness, **majestically reducing runtime errors by typos**.
 

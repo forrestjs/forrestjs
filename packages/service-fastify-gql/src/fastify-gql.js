@@ -1,6 +1,6 @@
 const fp = require('fastify-plugin');
 const { ApolloServer } = require('apollo-server-fastify');
-const { buildFederatedSchema } = require('@apollo/federation');
+const { buildSubgraphSchema } = require('@apollo/federation');
 
 const {
   FASTIFY_GQL_EXTEND_SCHEMA,
@@ -17,7 +17,7 @@ const fastifyGql = (hooks) => async (fastify, opts, next) => {
     .map((ext) => ext[0]);
 
   // Create the full schema
-  const schema = buildFederatedSchema([
+  const schema = buildSubgraphSchema([
     defaultSchema.query,
     defaultSchema.mutation,
     ...schemaExtensions,
@@ -49,7 +49,7 @@ const fastifyGql = (hooks) => async (fastify, opts, next) => {
   });
 
   // Optionally start the server
-  if (server.state.phase === 'initialized with schema') {
+  if (server.state.phase !== 'started') {
     await server.start();
   }
 
