@@ -1,8 +1,15 @@
+## 5.0.0 (roadmap)
+
+- [ ] remove support for declarative array definition `const f1 = [hook, handler]`
+- [ ] remove `runHookApp` and `createHookApp`
+
 ## 4.1.0
 
-- [ ] Handle a list of declarative hooks as a Feature manifest
+- [x] Deprecate array based declarative features [ hook, handler, ... ]
+- [x] Deprecate `runHookApp`
+- [x] Deprecate `createHookApp`
+- [x] Handle a list of declarative hooks as a Feature manifest
 - [x] Expose `forrestjs.run()` API
-- [ ] Deprecate `runForrestApp`
 - [ ] Update _service-apollo_ with state of the art Apollo Client
 
 ## 4.0.0

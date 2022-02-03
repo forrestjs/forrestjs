@@ -29,7 +29,7 @@ run.createHookContext = createHookContext;
 // Remove in v5.0.0
 run.createHookApp = (...args) => {
   console.warn(
-    'NOTE: `createHookApp()` is deprecated in favour of `forrestjs.create()` and will be remove in next major version 5.0.0',
+    '[DEPRECATED] `createHookApp()` is deprecated in favour of `forrestjs.create()` and will be remove in next major version 5.0.0',
   );
   return createHookApp(...args);
 };
@@ -37,7 +37,7 @@ run.getHook = getHook;
 // Remove in v5.0.0
 run.runHookApp = (...args) => {
   console.warn(
-    'NOTE: `runHookApp()` is deprecated in favour of `forrestjs.run()` and will be remove in next major version 5.0.0',
+    '[DEPRECATED] `runHookApp()` is deprecated in favour of `forrestjs.run()` and will be remove in next major version 5.0.0',
   );
   return runHookApp(...args);
 };

@@ -5,6 +5,12 @@ const { traceHook } = require('./tracer');
 const { createHooksRegistry } = require('./create-hooks-registry');
 const constants = require('./constants');
 
+const isDeclarativeAction = ({ hook, handler }) =>
+  typeof hook === 'string' &&
+  (typeof handler === 'object' || typeof handler === 'function');
+
+const isListOfDeclarativeActions = (list) =>
+  Array.isArray(list) && list.every(isDeclarativeAction);
 /**
  * All the utilization of "registerAction" by an integration's
  * manifest will be queued into an in-memory store and applied only
@@ -65,15 +71,30 @@ const runIntegrations = async (integrations, context, prefix = '') => {
           })
         : service;
 
+    // Register a list of hooks in a declarative way:
+    // [ { hook, handler, ... }, { ... }]
+    if (isListOfDeclarativeActions(computed)) {
+      computed.forEach((item) =>
+        registeredActions.push({
+          ...item,
+          name: `${prefix}${item.name || integrationName}`,
+        }),
+      );
+    }
+
+    // DEPRECATED
     // register a single action given as configuration array
-    // [ hookName, handler, name ]
-    // [ hookName, handler, { otherOptions }]
-    if (
+    // [ hook, handler, name ]
+    // [ hook, handler, { otherOptions }]
+    else if (
       Array.isArray(computed) &&
       computed.length >= 2 &&
       typeof computed[0] === 'string' &&
       (typeof computed[1] === 'function' || typeof computed[1] === 'object')
     ) {
+      console.log(
+        '[DEPRECATED] please use the object base declarative pattern { hook, handler, ... } - this API will be removed in v5.0.0',
+      );
       const [hook, handler, options = {}] = computed;
       registeredActions.push({
         ...(typeof options === 'string'
@@ -89,6 +110,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
     }
 
     // register a single action give an a configuration object
+    // { hook, handler, ... }
     else if (computed && computed.hook && computed.handler) {
       registeredActions.push({
         ...computed,
@@ -239,4 +261,9 @@ const createHookApp =
 // Convenient method to skip the double function
 const runHookApp = (...args) => createHookApp(...args)();
 
-module.exports = { createHookApp, runHookApp };
+module.exports = {
+  createHookApp,
+  runHookApp,
+  isDeclarativeAction,
+  isListOfDeclarativeActions,
+};
