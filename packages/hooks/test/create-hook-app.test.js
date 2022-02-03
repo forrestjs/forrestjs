@@ -1,5 +1,5 @@
 const { resetState } = require('../src/state');
-const { runHookApp } = require('../src/create-hook-app');
+const forrestjs = require('../src/index');
 const { registerAction } = require('../src/register-action');
 const constants = require('../src/constants');
 
@@ -7,7 +7,7 @@ describe('hooks/create-hook-app', () => {
   beforeEach(resetState);
 
   it('should run an empty app', async () => {
-    await runHookApp();
+    await forrestjs.run();
   });
 
   it('should register a service or feature from an ES module', async () => {
@@ -19,7 +19,7 @@ describe('hooks/create-hook-app', () => {
       },
     };
 
-    await runHookApp({
+    await forrestjs.run({
       services: [s1],
       features: [s1],
     });
@@ -31,7 +31,7 @@ describe('hooks/create-hook-app', () => {
     const handler = jest.fn();
     const s1 = () => handler();
 
-    await runHookApp({
+    await forrestjs.run({
       services: [s1],
       features: [s1],
     });
@@ -44,7 +44,7 @@ describe('hooks/create-hook-app', () => {
     const s1 = ['foo', handler];
     const f1 = ({ createHook }) => createHook('foo');
 
-    await runHookApp({
+    await forrestjs.run({
       services: [s1],
       features: [f1],
     });
@@ -53,7 +53,7 @@ describe('hooks/create-hook-app', () => {
   });
 
   it('should run an app that provides settings as a function', async () => {
-    await runHookApp({
+    await forrestjs.run({
       settings: ({ setConfig }) => {
         setConfig('foo.faa', 22);
       },
@@ -67,7 +67,7 @@ describe('hooks/create-hook-app', () => {
   });
 
   it('should provide a config getter to any registered action', async () => {
-    await runHookApp({
+    await forrestjs.run({
       settings: ({ setConfig }) => {
         setConfig('foo.faa', 22);
       },
@@ -91,7 +91,7 @@ describe('hooks/create-hook-app', () => {
   });
 
   it('should lock a context and decorate it with internal methods', async () => {
-    await runHookApp({
+    await forrestjs.run({
       settings: {
         increment: 1,
       },
@@ -126,14 +126,14 @@ describe('hooks/create-hook-app', () => {
       registerAction(constants.SETTINGS, ({ settings }) => {
         expect(settings).toBe(undefined);
       });
-      await runHookApp({ settings: { foo: 1 } });
+      await forrestjs.run({ settings: { foo: 1 } });
     });
 
     it('should handle settings with getters/setters', async () => {
       registerAction(constants.SETTINGS, ({ getConfig, setConfig }) => {
         setConfig('foo', getConfig('foo') + 1);
       });
-      const app = await runHookApp({ settings: { foo: 1 } });
+      const app = await forrestjs.run({ settings: { foo: 1 } });
       expect(app.settings.foo).toBe(2);
     });
 
@@ -141,7 +141,7 @@ describe('hooks/create-hook-app', () => {
       registerAction(constants.SETTINGS, ({ getConfig, setConfig }) => {
         setConfig('new.faa.foo', getConfig('foo') + 1);
       });
-      const app = await runHookApp({ settings: { foo: 1 } });
+      const app = await forrestjs.run({ settings: { foo: 1 } });
       expect(app.settings.new.faa.foo).toBe(2);
     });
   });
@@ -159,7 +159,7 @@ describe('hooks/create-hook-app', () => {
       const handler = jest.fn();
       const f1 = ['$S1', handler];
 
-      await runHookApp({
+      await forrestjs.run({
         services: [s1],
         features: [f1],
       });
@@ -173,7 +173,7 @@ describe('hooks/create-hook-app', () => {
 
       let error = null;
       try {
-        await runHookApp({
+        await forrestjs.run({
           // services: [s1],
           features: [f1],
         });
@@ -188,7 +188,7 @@ describe('hooks/create-hook-app', () => {
       const handler = jest.fn();
       const f1 = ['$S1?', handler];
 
-      await runHookApp({
+      await forrestjs.run({
         // services: [s1],
         features: [f1],
       });
@@ -214,7 +214,7 @@ describe('hooks/create-hook-app', () => {
         registerAction('$s1', s1Handler);
       };
 
-      await runHookApp({ services: [s1, s2] });
+      await forrestjs.run({ services: [s1, s2] });
 
       expect(s1Handler.mock.calls.length).toBe(1);
       expect(s2Handler.mock.calls.length).toBe(1);

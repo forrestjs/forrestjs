@@ -1,5 +1,9 @@
 # Change Log
 
+## v4.1.0
+
+- Expose `forrestjs.run()` API
+
 ## v4.0.0
 
 - Removed babel

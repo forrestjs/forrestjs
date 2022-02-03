@@ -13,16 +13,52 @@ runHook.serie = (...args) => createHook.serie(...args);
 runHook.parallel = (...args) => createHook.parallel(...args);
 runHook.waterfall = (...args) => createHook.waterfall(...args);
 
-module.exports = {
-  traceHook,
-  logTrace,
-  logBoot,
-  createHook,
-  runHook,
-  registerAction,
-  createHookApp,
-  runHookApp,
-  createHookContext,
-  getHook,
-  ...constants,
+// 4.1.0 renaming of the "runHookApp" API
+const run = runHookApp;
+run.run = run;
+
+// Export the old API
+run.traceHook = traceHook;
+run.logTrace = logTrace;
+run.logBoot = logBoot;
+run.createHook = createHook;
+run.runHook = runHook;
+run.registerAction = registerAction;
+run.createHookContext = createHookContext;
+
+// Remove in v5.0.0
+run.createHookApp = (...args) => {
+  console.warn(
+    'NOTE: `createHookApp()` is deprecated in favour of `forrestjs.create()` and will be remove in next major version 5.0.0',
+  );
+  return createHookApp(...args);
 };
+run.getHook = getHook;
+// Remove in v5.0.0
+run.runHookApp = (...args) => {
+  console.warn(
+    'NOTE: `runHookApp()` is deprecated in favour of `forrestjs.run()` and will be remove in next major version 5.0.0',
+  );
+  return runHookApp(...args);
+};
+
+// Export the internal constants
+run.CORE = constants.CORE;
+run.BOOT = constants.BOOT;
+run.SERVICE = constants.SERVICE;
+run.FEATURE = constants.FEATURE;
+run.SYMBOLS = constants.SYMBOLS;
+run.SEPARATOR = constants.SEPARATOR;
+run.START = constants.START;
+run.SETTINGS = constants.SETTINGS;
+run.INIT_SERVICE = constants.INIT_SERVICE;
+run.INIT_SERVICES = constants.INIT_SERVICES;
+run.INIT_FEATURE = constants.INIT_FEATURE;
+run.INIT_FEATURES = constants.INIT_FEATURES;
+run.START_SERVICE = constants.START_SERVICE;
+run.START_SERVICES = constants.START_SERVICES;
+run.START_FEATURE = constants.START_FEATURE;
+run.START_FEATURES = constants.START_FEATURES;
+run.FINISH = constants.FINISH;
+
+module.exports = run;

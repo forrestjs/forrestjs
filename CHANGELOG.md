@@ -1,3 +1,10 @@
+## 4.1.0
+
+- [ ] Handle a list of declarative hooks as a Feature manifest
+- [x] Expose `forrestjs.run()` API
+- [ ] Deprecate `runForrestApp`
+- [ ] Update _service-apollo_ with state of the art Apollo Client
+
 ## 4.0.0
 
 - Add VSCode and Prettier config
