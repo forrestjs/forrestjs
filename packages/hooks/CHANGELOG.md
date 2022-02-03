@@ -2,6 +2,10 @@
 
 ## v4.1.0
 
+- Deprecate array based declarative features [ hook, handler, ... ]
+- Deprecate `runHookApp`
+- Deprecate `createHookApp`
+- Handle a list of declarative hooks as a Feature manifest
 - Expose `forrestjs.run()` API
 
 ## v4.0.0
