@@ -19,7 +19,7 @@ In a ForrestJS React App thing are much different, as the only thing you would n
 import reactMUI from '@forrestjs/react-mui';
 
 // Just add the service:
-runHookApp({
+forrestjs.run({
   services: [reactRoot, reactMUI],
 });
 ```

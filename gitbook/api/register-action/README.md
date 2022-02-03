@@ -6,15 +6,15 @@
 
 # Register Action
 
-To "register an _Action_ to a _Hook_" is the way we introduce new capabilities to a ForrestJS _App_.
+You need to **register an _Action_ into a _Hook_** to add functionalities to a ForrestJS App.
 
-You normally use the `registerAction()` API inside a _Service_ or _Feature_'s _Manifest_ function:
+Use the `registerAction()` API inside a _Service_ or _Feature_'s _Manifest_ function:
 
 ```js
-const firstFeature = ({ registerAction }) => {
+const myFirstFeature = ({ registerAction }) => {
   registerAction({
     hook: '$INIT_FEATURE',
-    handler: () => console.log('Init First Feature'),
+    handler: () => console.log('My First Feature'),
   });
 };
 ```
@@ -92,7 +92,7 @@ const secondFeature = {
   handler: () => console.log('Init Second Feature'),
 };
 
-runHookApp([firstFeature, secondFeature]);
+forrestjs.run([firstFeature, secondFeature]);
 ```
 
 The result of this application would be:
@@ -117,7 +117,7 @@ const secondFeature = {
   priority: 1,
 };
 
-runHookApp([firstFeature, secondFeature]);
+forrestjs.run([firstFeature, secondFeature]);
 ```
 
 The result of this application is now:

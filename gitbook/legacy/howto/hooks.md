@@ -14,17 +14,17 @@ Here is a simplistic implementation of an app that should be able to
 **sum two integers**:
 
 ```js
-const express = require('express')
-const app = express()
-const port = process.env.PORT || 8080
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 8080;
 
 app.get('/:p1/:p2', (req, res) => {
-    const { p1, p2 } = req.params
-    const sum = Number(p1) + Number(p2)
-    res.send(`${p1} + ${p2} = ${sum}`)
-})
+  const { p1, p2 } = req.params;
+  const sum = Number(p1) + Number(p2);
+  res.send(`${p1} + ${p2} = ${sum}`);
+});
 
-app.listen(port, () => console.log('Running...'))
+app.listen(port, () => console.log('Running...'));
 ```
 
 This works and it is not much code, but if you focus on the business requirement:
@@ -34,7 +34,7 @@ This works and it is not much code, but if you focus on the business requirement
 you quickly find out that the only relevant piece of code would be:
 
 ```js
-const sum = Number(p1) + Number(p2)
+const sum = Number(p1) + Number(p2);
 ```
 
 Ok, this is quite a strict interpretation. Let's say that the code that is relevant
@@ -62,14 +62,13 @@ This structural code has the following characteristics:
 **find a way to separate business from infrastructure, and reuse infrastructure**,
 you would surely see your profits growing. Either in more money or just free time.
 
-
 ## WordPress almost nailed it... 🤔
 
 Engineers at WordPress found out, a long time ago, that **the value of a platform root in its
 capability to run external plugins**.
 
 > WordPress wouldn't be WordPress without
-a rich plugins echosystem.
+> a rich plugins echosystem.
 
 WordPress provides you with some _core functionalities_ and a huge amount of
 **extension points**. You can write a file that basically asks WP to:
@@ -95,33 +94,33 @@ Javascript application.
 With the hooks you can refactor the code we wrote earlier into this:
 
 ```js
-const { runHookApp, createHook, START_SERVICES } = require('@forrestjs/hooks')
+const { runHookApp, createHook, START_SERVICES } = require('@forrestjs/hooks');
 
 // Infrastructure
 const expressService = () => {
-    const express = require('express')
-    const app = express()
-    const port = process.env.PORT || 8080
+  const express = require('express');
+  const app = express();
+  const port = process.env.PORT || 8080;
 
-    // Allows for other features to hook into
-    // the Express app and provide their own custom logic
-    createHook('express', { args: { app }})
+  // Allows for other features to hook into
+  // the Express app and provide their own custom logic
+  createHook('express', { args: { app } });
 
-    app.listen(port, () => console.log('Running...'))
-}
+  app.listen(port, () => console.log('Running...'));
+};
 
 // Real Business Value
 const featureSum = ({ app }) =>
-    app.get('/:p1/:p2', (req, res) => {
-        const { p1, p2 } = req.params
-        const sum = Number(p1) + Number(p2)
-        res.send(`${p1} + ${p2} = ${sum}`)
-    })
+  app.get('/:p1/:p2', (req, res) => {
+    const { p1, p2 } = req.params;
+    const sum = Number(p1) + Number(p2);
+    res.send(`${p1} + ${p2} = ${sum}`);
+  });
 
-runHookApp([
-    [ START_SERVICES, expressService ],
-    [ 'express', featureSum ],
-])
+forrestjs.run([
+  [START_SERVICES, expressService],
+  ['express', featureSum],
+]);
 ```
 
 Although is a little bit longer, it enables a clear **separation of responsibilities**
@@ -136,21 +135,20 @@ and is one of the most important things you can learn for engineering and Life �
 As a matter of fact, _ForrestJS_ did exactly that:
 
 ```js
-const { runHookApp } = require('@forrestjs/hooks')
-const { EXPRESS_ROUTE, ...expressService } = require('@forrestjs/service-express')
+const { runHookApp } = require('@forrestjs/hooks');
+const {
+  EXPRESS_ROUTE,
+  ...expressService
+} = require('@forrestjs/service-express');
 
 const featureSum = ({ app }) =>
-    app.get('/:p1/:p2', (req, res) => {
-        const { p1, p2 } = req.params
-        const sum = Number(p1) + Number(p2)
-        res.send(`${p1} + ${p2} = ${sum}`)
-    })
+  app.get('/:p1/:p2', (req, res) => {
+    const { p1, p2 } = req.params;
+    const sum = Number(p1) + Number(p2);
+    res.send(`${p1} + ${p2} = ${sum}`);
+  });
 
-runHookApp([
-    expressService,
-    [ EXPRESS_ROUTE, featureSum ],
-])
-
+forrestjs.run([expressService, [EXPRESS_ROUTE, featureSum]]);
 ```
 
 This is a perfectly viable NodeJS app that **focuses on implementing the business
@@ -174,7 +172,7 @@ const { runHookApp, traceBoot } = require('@forrestjs/hooks')
 
 ... your business logic ...
 
-runHookApp([
+forrestjs.run([
     traceBoot,
     expressService,
     [ EXPRESS_ROUTE, featureSum ],
@@ -205,4 +203,3 @@ There are [many other packages already released in NPM](https://www.npmjs.com/se
 
 👉 We are working hard to document them, we are moving our first steps and things can
 only improve :-)
-

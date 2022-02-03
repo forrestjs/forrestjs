@@ -9,16 +9,18 @@
 Create a new `app.js` file and use the following scaffold to kick off a new ForrestJS App:
 
 ```js
-const { runHookApp } = require("@forrestjs/hooks");
-const fastify = require("@forrestjs/service-fastify");
-const fastifyHealthz = require("@forrestjs/service-fastify-healthz");
+const { runHookApp } = require('@forrestjs/hooks');
+const fastify = require('@forrestjs/service-fastify');
+const fastifyHealthz = require('@forrestjs/service-fastify-healthz');
 
-runHookApp({
-  trace: "compact",
-  settings: {},
-  services: [fastify, fastifyHealthz],
-  features: []
-}).catch(console.error);
+forrestjs
+  .run({
+    trace: 'compact',
+    settings: {},
+    services: [fastify, fastifyHealthz],
+    features: [],
+  })
+  .catch(console.error);
 ```
 
 Once ready, you can run it with:
@@ -36,7 +38,7 @@ Once the app is running, you should test it at the following urls:
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/fastify-app-scaffold-oc3q9?file=/src/index.js
 
 > **NOTE:** CodeSandbox requires the following settings in order to setup the proper ports binding.
@@ -44,7 +46,7 @@ https://codesandbox.io/s/fastify-app-scaffold-oc3q9?file=/src/index.js
 ```js
 settings: {
   fastify: {
-    meta: null
+    meta: null;
   }
 }
 ```

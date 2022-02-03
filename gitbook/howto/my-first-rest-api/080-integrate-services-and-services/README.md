@@ -69,7 +69,7 @@ In our small _integration action_ we want to access `pg.query` from the context,
 One simple solution would be to list `pg` as first service in our App's manifest:
 
 ```js
-runHookApp({
+forrestjs.run({
   services: [pg, serviceFastify],
 });
 ```

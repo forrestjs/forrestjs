@@ -16,22 +16,22 @@ A ForrestJS App ships [a list of **lifecycle hooks**](https://github.com/forrest
 const feature1 = ({ registerAction }) => {
   registerAction({
     hook: '$INIT_FEATURE',
-    handler: () => console.log('> feature 1')
-  })
-}
+    handler: () => console.log('> feature 1'),
+  });
+};
 
 const feature2 = ({ registerAction }) => {
   registerAction({
     hook: '$INIT_FEATURE',
-    handler: () => console.log('> feature 2')
-  })
-}
+    handler: () => console.log('> feature 2'),
+  });
+};
 ```
 
 In the example above, both features register an action into the same hook. In this case, the order of the features will determine which one comes first:
 
 ```js
-runHookApp({
+forrestjs.run({
   ...
   features: [
     feature1,
@@ -42,7 +42,7 @@ runHookApp({
 // > feature 1
 // > feature 2
 
-runHookApp({
+forrestjs.run({
   ...
   features: [
     feature2,
@@ -71,7 +71,7 @@ const feature2 = ({ registerAction }) => {
   })
 }
 
-runHookApp({
+forrestjs.run({
   ...
   features: [
     feature1,
@@ -87,10 +87,9 @@ This happens because the `$INIT_FEATURE` hooks is always fired _before_ the `$ST
 
 > Use the lifecycle hooks if you want to guarantee a proper timing in the execution of your logic.
 
-
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/forrestjs-app-lifecycle-qkxep?file=/src/index.js
 
 ---

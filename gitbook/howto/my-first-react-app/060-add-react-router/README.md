@@ -15,7 +15,7 @@ ForrestJS makes things dramatically easy for you:
 import reactRouter from '@forrestjs/react-router';
 
 // Just add it to the services list
-runHookApp({
+forrestjs.run({
   services: [reactRoot, reactRouter],
 });
 ```

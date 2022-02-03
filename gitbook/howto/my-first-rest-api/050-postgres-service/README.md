@@ -85,7 +85,7 @@ const env = envalid.cleanEnv(process.env, {
   PG_MAX: envalid.num({ default: 1 }),
 });
 
-runHookApp({
+forrestjs.run({
   settings: {
     pg: {
       connectionString: env.PGSTRING,

@@ -34,7 +34,7 @@ module.exports = homePageFeature;
 Once you've created the feature, simply add it to your App's manifest:
 
 ```js
-runHookApp({
+forrestjs.run({
   ...
   features: [
     require('./home-page')

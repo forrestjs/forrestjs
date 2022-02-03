@@ -91,10 +91,12 @@ import reactMUI from '@forrestjs/react-mui';
 // Import Features:
 import { customRoot } from './custom-root';
 
-runHookApp({
-  services: [reactRoot, reactMUI],
-  features: [customRoot],
-}).catch((err) => console.error(`Boot: ${err.message}`));
+forrestjs
+  .run({
+    services: [reactRoot, reactMUI],
+    features: [customRoot],
+  })
+  .catch((err) => console.error(`Boot: ${err.message}`));
 ```
 
 Here is the full source code that you can run, fork, and play with:

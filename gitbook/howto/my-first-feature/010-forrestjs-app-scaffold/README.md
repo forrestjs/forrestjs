@@ -9,14 +9,16 @@
 Create a new `app.js` file and use the following scaffold to kick off a new ForrestJS App:
 
 ```js
-const { runHookApp } = require("@forrestjs/hooks");
+const { runHookApp } = require('@forrestjs/hooks');
 
-runHookApp({
-  trace: "compact",
-  settings: {},
-  services: [],
-  features: []
-}).catch(console.error);
+forrestjs
+  .run({
+    trace: 'compact',
+    settings: {},
+    services: [],
+    features: [],
+  })
+  .catch(console.error);
 ```
 
 Once ready, you can run it with:
@@ -27,7 +29,7 @@ npx nodemon app
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/010-forrestjs-app-scaffold-23g6w?file=/src/index.js
 
 ---
