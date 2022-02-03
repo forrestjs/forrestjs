@@ -3,14 +3,18 @@
 - [ ] remove support for declarative array definition `const f1 = [hook, handler]`
 - [ ] remove `runHookApp` and `createHookApp`
 
+## 4.2.0 (roadmap)
+
+- [ ] Update _service-apollo_ with state of the art Apollo Client
+- [ ] Fix kitchensink/mock-axios-e2e
+
 ## 4.1.0
 
-- [x] Deprecate array based declarative features [ hook, handler, ... ]
-- [x] Deprecate `runHookApp`
-- [x] Deprecate `createHookApp`
-- [x] Handle a list of declarative hooks as a Feature manifest
-- [x] Expose `forrestjs.run()` API
-- [ ] Update _service-apollo_ with state of the art Apollo Client
+- Deprecate array based declarative features [ hook, handler, ... ]
+- Deprecate `runHookApp`
+- Deprecate `createHookApp`
+- Handle a list of declarative hooks as a Feature manifest
+- Expose `forrestjs.run()` API
 
 ## 4.0.0
 
