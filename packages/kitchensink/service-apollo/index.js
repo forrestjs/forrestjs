@@ -3,21 +3,28 @@ const serviceFastify = require('@forrestjs/service-fastify');
 const serviceApollo = require('@forrestjs/service-apollo');
 const gql = require('graphql-tag');
 
+const GET_COUNTRIES = gql`
+  query countries {
+    countries {
+      code
+      name
+    }
+  }
+`;
+
 const homePage = () => ({
   hook: '$FASTIFY_GET',
   handler: {
     url: '/',
     handler: (request) =>
-      request.apollo.query({
-        query: gql`
-          query countries {
-            countries {
-              code
-              name
-            }
-          }
-        `,
-      }),
+      request.apollo.query(
+        {
+          query: GET_COUNTRIES,
+        },
+        {
+          fetchPolicy: 'network-only',
+        },
+      ),
   },
 });
 
