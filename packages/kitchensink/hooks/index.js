@@ -1,4 +1,4 @@
-const { runHookApp } = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/hooks');
 
 /**
  * This feature uses the `registerAction()` pattern and provides
@@ -57,7 +57,7 @@ const ft7 = ({ registerAction }) => {
   registerAction('$INIT_FEATURE', () => console.log('ft7b'), { name: 'ft7b' });
 };
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   features: [ft1, ft2, ft3, ft4, ft5, ft6, ft7],
 }).catch((err) => console.error(err));

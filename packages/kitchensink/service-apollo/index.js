@@ -1,4 +1,4 @@
-const { runHookApp } = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/hooks');
 const serviceFastify = require('@forrestjs/service-fastify');
 const serviceApollo = require('@forrestjs/service-apollo');
 const gql = require('graphql-tag');
@@ -21,7 +21,7 @@ const homePage = () => ({
   },
 });
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   settings: {
     apollo: {

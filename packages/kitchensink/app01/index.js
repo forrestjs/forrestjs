@@ -1,4 +1,4 @@
-const { runHookApp } = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/hooks');
 const serviceFastify = require('@forrestjs/service-fastify');
 const serviceEnv = require('@forrestjs/service-env');
 const serviceHash = require('@forrestjs/service-hash');
@@ -6,7 +6,7 @@ const serviceHash = require('@forrestjs/service-hash');
 const featureHome = require('./feature-home');
 const featureHash = require('./feature-hash');
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   settings: {
     hash: {

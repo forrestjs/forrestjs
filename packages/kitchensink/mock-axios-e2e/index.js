@@ -1,9 +1,9 @@
-const { runHookApp } = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/hooks');
 const serviceFastify = require('@forrestjs/service-fastify');
 
 const featureJokes = require('./feature-jokes');
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   settings: {
     hash: {

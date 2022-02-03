@@ -1,4 +1,4 @@
-import { runHookApp } from '@forrestjs/hooks';
+import forrestjs from '@forrestjs/hooks';
 
 // Services
 import { reactRoot } from './services/react-root';
@@ -13,7 +13,7 @@ import { dashboard } from './features/dashboard';
 import { users } from './features/users';
 import { invoices } from './features/invoices';
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   services: [reactRoot, reactMUI, reactLang, reactRouter],
   features: [muiTheme, layout, dashboard, users, invoices],

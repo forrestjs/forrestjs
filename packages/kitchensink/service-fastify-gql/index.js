@@ -1,11 +1,11 @@
-const { runHookApp } = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/hooks');
 const serviceFastify = require('@forrestjs/service-fastify');
 const serviceFastifyGQL = require('@forrestjs/service-fastify-gql');
 
 const featureHome = require('./feature-home');
 const featurePing = require('./feature-ping');
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   settings: {
     fastify: {
