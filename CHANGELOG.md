@@ -2,10 +2,12 @@
 
 - [ ] remove support for declarative array definition `const f1 = [hook, handler]`
 - [ ] remove `runHookApp` and `createHookApp`
+- [ ] action's parameter will be reversed (ctx, action's data)
 
 ## 4.2.0 (roadmap)
 
-- [ ] Update _service-apollo_ with state of the art Apollo Client
+- [ ] Deprecate `createHook` for `runActions`
+- [ ] Deprecate `registerHook` for `registerHooks` who always get a map of hooks to add
 - [ ] Fix kitchensink/mock-axios-e2e
 
 ## 4.1.0

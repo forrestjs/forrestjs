@@ -8,10 +8,11 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@apollo/federation": "^0.33.9",
+    "@apollo/federation": "^0.34.0",
     "@forrestjs/hooks": "^4.1.1",
     "apollo-server-core": "3.6.2",
-    "apollo-server-fastify": "3.6.2"
+    "apollo-server-fastify": "3.6.2",
+    "graphql": "16.3.0"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-gql#readme",
   "keywords": [
