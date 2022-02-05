@@ -13,42 +13,26 @@ Features and Services manifest are **executed synchronously and in the same orde
 A ForrestJS App ships [a list of **lifecycle hooks**](https://github.com/forrestjs/forrestjs/blob/master/packages/hooks/docs/create-hook-app.md) that can be used to manage an orchestated the booting sequence of your application:
 
 ```js
-const feature1 = ({ registerAction }) => {
-  registerAction({
-    hook: '$INIT_FEATURE',
-    handler: () => console.log('> feature 1'),
-  });
+const feature1 = {
+  hook: '$INIT_FEATURE',
+  handler: () => console.log('> feature 1'),
 };
 
-const feature2 = ({ registerAction }) => {
-  registerAction({
-    hook: '$INIT_FEATURE',
-    handler: () => console.log('> feature 2'),
-  });
+const feature2 = {
+  hook: '$INIT_FEATURE',
+  handler: () => console.log('> feature 2'),
 };
 ```
 
 In the example above, both features register an action into the same hook. In this case, the order of the features will determine which one comes first:
 
 ```js
-forrestjs.run({
-  ...
-  features: [
-    feature1,
-    feature2
-  ]
-})
+forrestjs.run([feature1, feature2]);
 
 // > feature 1
 // > feature 2
 
-forrestjs.run({
-  ...
-  features: [
-    feature2,
-    feature1
-  ]
-})
+forrestjs.run([feature2, feature1]);
 
 // > feature 2
 // > feature 1
@@ -56,28 +40,20 @@ forrestjs.run({
 
 But the order of the features doesn't affect the execution order of different lifecycle hooks:
 
+> 👉 INIT comes before START
+
 ```js
-const feature1 = ({ registerAction }) => {
-  registerAction({
-    hook: '$START_FEATURE',
-    handler: () => console.log('> feature 1')
-  })
-}
+const feature1 = {
+  hook: '$START_FEATURE',
+  handler: () => console.log('> feature 1'),
+};
 
-const feature2 = ({ registerAction }) => {
-  registerAction({
-    hook: '$INIT_FEATURE',
-    handler: () => console.log('> feature 2')
-  })
-}
+const feature2 = {
+  hook: '$INIT_FEATURE',
+  handler: () => console.log('> feature 2'),
+};
 
-forrestjs.run({
-  ...
-  features: [
-    feature1,
-    feature2
-  ]
-})
+forrestjs.run([feature1, feature2]);
 
 // > feature 2
 // > feature 1
