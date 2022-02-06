@@ -2,13 +2,16 @@
 
 - [ ] remove support for declarative array definition `const f1 = [hook, handler]`
 - [ ] remove `runHookApp` and `createHookApp`
+- [ ] remove `createHook` support
+- [ ] remove `registerAction` support
+- [ ] remove `registerHook` support
 - [ ] action's parameter will be reversed (ctx, action's data)
 
 ## 4.2.0 (roadmap)
 
 - [x] Deprecate `createHook` for `runActions`
 - [x] Deprecate `registerAction({ hook: 'xxx' })` for `registerAction({ action: 'xxx', name: 'yyy' })`
-- [ ] Deprecate `registerAction` for `registerExtension`
+- [x] Deprecate `registerAction` for `registerExtension`
 - [ ] Deprecate `registerHook` for `registerActions` who always get a map of hooks to add
 - [ ] Fix kitchensink/mock-axios-e2e
 - [ ] Fix service order dependency in `service-fetchq` - it should work seamlessly before/after `service-fastify`
