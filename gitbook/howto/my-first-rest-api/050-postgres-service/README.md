@@ -17,7 +17,7 @@ A service is the best match for this kind of stuff.
 
 ## Get a Database
 
-You can get a free PostgreSQL database on [ElephantSQL](https://www.elephantsql.com/). Once you set it up, you need to get the full connection string that looks a lot like:
+You can get a free PostgreSQL database on [ElephantSQL](https://www.elephantsql.com/) by following [this tutorial](https://marcopeg.com/setup-a-free-postgresql-database/). Once you set it up, you need to get the full connection string that looks a lot like:
 
 ```bash
 postgres://ghstdny:jGTHd9Xf9KsGlfgg9fifSCjkdl4fw1G-g@tai.db.elephantsql.com/ghstdny
@@ -39,6 +39,8 @@ const result = await pool.query(`SELECT NOW() AS "current_time"`);
 console.log(result.rows[0]);
 ```
 
+👉 In the beginning, you can simply replace `process.env.PGSTRING` with the hard coded ElephantSQL connection string. Then try to refactor your code so to learn how to use environmental variables.
+
 ---
 
 **💻 Live on CodeSandbox:**  
@@ -57,11 +59,15 @@ The service that we are going to build implements 2 main responsibilities:
 
 ## Scaffold your Service
 
-A Service has the very same internal structure of a Feature. Basically, it just uses a different set of Lifecycle hooks, and gets registered before any feature.
+A Service has the very same internal structure of a Feature. Basically, it just uses a different set of Lifecycle hooks, and gets registered before any Feature.
+
+> Moreover, a Service will _likely_ perform some slightly more complex logic compared to a Feature. For this reason, I usually scaffold my services using the Functional Manifest definition.
 
 Create the `/pg/index.js` Service manifest:
 
 ```js
+// Functional Manifest Definition
+// (yes, it's just another JS function)
 const pg = ({ registerAction }) => {};
 
 module.exports = pg;
@@ -98,7 +104,7 @@ forrestjs.run({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/index.js:678-759
+https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/index.js:1253-1340
 
 ---
 
@@ -131,7 +137,7 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js:168-523
+https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js:179-642
 
 ---
 
@@ -163,7 +169,7 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js:780-1230
+https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js:646-1200
 
 ---
 
@@ -191,6 +197,6 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/index.js:459-771
+https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/index.js:454-777
 
 ---
