@@ -113,12 +113,10 @@ We are ready to move into connect-the-dots time. We need to add out _login Featu
 `/src/login/index.js`
 
 ```js
-const login = ({ registerAction }) => {
-  registerAction({
-    priority: -1,
-    hook: '$REACT_ROOT_COMPONENT',
-    handler: (App) => ({ component: () => <LoginRoot rootComponent={App} /> }),
-  });
+export default {
+  priority: -1, // Make sure it runs LAST
+  hook: '$REACT_ROOT_COMPONENT',
+  handler: (App) => ({ component: () => <LoginRoot rootComponent={App} /> }),
 };
 ```
 
@@ -182,7 +180,7 @@ In a normal React App you have the "context hell" issue, where you find a list o
 </ReactRouter>
 ```
 
-> If you ask me, this is pretty awful and \*_we get this issue solved for good_ with ForrestJS.
+> If you ask me, this is pretty awful and we get [this issue **solved for good** with ForrestJS](https://marcopeg.com/context-provider-hell/).
 
 Our provider component receives the `app` property and **wraps it with whatever is needed only for this specific Feature**.
 
@@ -201,7 +199,7 @@ registerAction({
 });
 ```
 
-[![Edit 040-login-feature-s1](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/040-login-feature-s1-mugq5?file=/src/login/index.js)
+[![Edit 040-login-feature-s1](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/040-login-feature-s1-mugq5?file=/src/login/index.js:334-421)
 
 This is just another waterfall hook, each Action handler will receive the previous value, and it is supposed to return it as well. Or, in our case, a wrapped version of it.
 

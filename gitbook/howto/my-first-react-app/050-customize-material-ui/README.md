@@ -17,17 +17,15 @@ As you may imagine, the [`react-mui` Service](https://github.com/forrestjs/react
 The first step is to create a new Feature `/src/mui-theme/index.js`:
 
 ```js
-const muiTheme = ({ registerAction }) => {
-  registerAction({
-    hook: "$MUI_SET_THEME",
-    handler: (theme) => ({
-      ...theme,
-      palette: {
-        background: {
-          default: '#E0F1F1'
-        },
-    })
-  });
+export default {
+  hook: "$MUI_SET_THEME",
+  handler: (theme) => ({
+    ...theme,
+    palette: {
+      background: {
+        default: '#E0F1F1'
+      },
+  })
 };
 ```
 

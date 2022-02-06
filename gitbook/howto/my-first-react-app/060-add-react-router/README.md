@@ -103,11 +103,9 @@ But this is nothing new to you. You did before, right?
 ```js
 import { AppRoutes } from './AppRoutes';
 
-export const routes = ({ registerAction }) => {
-  registerAction({
-    hook: '$REACT_ROOT_COMPONENT',
-    handler: { component: AppRoutes },
-  });
+export default {
+  hook: '$REACT_ROOT_COMPONENT',
+  handler: { component: AppRoutes },
 };
 ```
 
