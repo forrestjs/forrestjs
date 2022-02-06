@@ -14,16 +14,18 @@ In a ForrestJS App things are a bit different, as we use the `/index.js` as the 
 
 ```js
 // Import Libraries:
-import { runHookApp } from '@forrestjs/hooks';
+import forrestjs from '@forrestjs/hooks';
 
 // Import Services:
 import reactRoot from '@forrestjs/react-root';
 
 // Run the ForrestJS App:
-runHookApp({
-  trace: 'compact',
-  services: [reactRoot],
-}).catch((err) => console.error(`Boot: ${err.message}`));
+forrestjs
+  .run({
+    trace: 'compact',
+    services: [reactRoot],
+  })
+  .catch((err) => console.error(`Boot: ${err.message}`));
 ```
 
 > The [react-root](https://github.com/forrestjs/react/tree/main/packages/react-root#readme) Service **renders the root Component** of your App, and provides hooks to customize such component, as well as to apply any number of wrappers.
@@ -48,10 +50,12 @@ const customRoot = {
 and then list it into the App's manifest:
 
 ```js
-runHookApp({
-  services: [reactRoot],
-  features: [customRoot],
-}).catch((err) => console.error(`Boot: ${err.message}`));
+forrestjs
+  .run({
+    services: [reactRoot],
+    features: [customRoot],
+  })
+  .catch((err) => console.error(`Boot: ${err.message}`));
 ```
 
 Here is a preview of the resulting App:

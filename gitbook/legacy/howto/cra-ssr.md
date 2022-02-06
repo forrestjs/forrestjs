@@ -1,19 +1,17 @@
 # Create React App > Universal
 
-In this step-by-step tutorial you are going to take a 
+In this step-by-step tutorial you are going to take a
 [Create React App (CRA)](https://facebook.github.io/create-react-app/)
-app, and turn it into a fully featured 
+app, and turn it into a fully featured
 **Universal PWA with server-side rendering**,
 served by an [ExpressJS](https://expressjs.com) server.
 
 > **NOTE:**<br>
-> If you just want to enjoy a ready-to-use and feature-rich app, type this in a terminal:<br>
-> `npx forrest run my-new-universal-cra -p 8080`
->
+> If you just want to enjoy a ready-to-use and feature-rich app, type this in a terminal:<br> > `npx forrest run my-new-universal-cra -p 8080`
 
 ## Step n.1 - Kickoff your CRA
 
-Initialize a new CRA project (*):
+Initialize a new CRA project (\*):
 
     npx create-react-app my-new-universal-cra && \
     cd my-new-universal-cra
@@ -32,7 +30,7 @@ Now install some `ForrestJS` modules:<br>
 
 ## About NPM Scripts
 
-So far we just installed dependencies so the basic _package.json scripts_ that were created 
+So far we just installed dependencies so the basic _package.json scripts_ that were created
 by `create-react-app` are in place with their default behaviour.
 
 **This will not change during the course of this tutorial :-)**
@@ -66,13 +64,13 @@ vi src/index.ssr.js
 and paste this code into it:
 
 ```js
-import { createSSRRender } from '@forrestjs/core/lib/create-ssr-render'
+import { createSSRRender } from '@forrestjs/core/lib/create-ssr-render';
 
 // project specific modules
-import App from './App'
-import './index.css'
+import App from './App';
+import './index.css';
 
-export const staticRender = createSSRRender(App)
+export const staticRender = createSSRRender(App);
 ```
 
 ### Modular NodeJS Server
@@ -87,20 +85,20 @@ and paste this code into it:
 
 ```js
 // Makes NodeJS understand ES6
-process.env.NODE_ENV = 'development'
-require('@babel/polyfill')
-require('@babel/register')
+process.env.NODE_ENV = 'development';
+require('@babel/polyfill');
+require('@babel/register');
 
 // List our server capabilities
 const services = [
-    require('@forrestjs/service-express'),
-    require('@forrestjs/service-express-ssr'),
-]
+  require('@forrestjs/service-express'),
+  require('@forrestjs/service-express-ssr'),
+];
 
 // Start the app
 require('@forrestjs/hooks')
-    .runHookApp(services)
-    .catch(err => console.log(err.message))
+  .forrestjs.run(services)
+  .catch((err) => console.log(err.message));
 ```
 
 [👉 Click here to learn more about how we use Hooks &raquo;](./hooks.md)
@@ -146,10 +144,10 @@ In the next lesson you are going to **fix some headers** and **add some routes**
 
 ## Download
 
-If you experienced any trouble following the steps above, 
+If you experienced any trouble following the steps above,
 [download this tutorial codebase here](../downloads/cra-ssr.zip).
 
-## (*) react-scripts-rewired
+## (\*) react-scripts-rewired
 
 Most of the examples work with the default setup, but when it comes to
 the **server side rendering of an application that implements code splitting** with

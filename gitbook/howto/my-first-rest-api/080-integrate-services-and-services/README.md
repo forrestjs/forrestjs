@@ -48,7 +48,7 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/080-integrate-services-and-services-6zc8x?file=/src/pg/index.js:1666-1863
+https://codesandbox.io/s/080-integrate-services-and-services-6zc8x?file=/src/pg/index.js:1868-2065
 
 ---
 
@@ -69,7 +69,7 @@ In our small _integration action_ we want to access `pg.query` from the context,
 One simple solution would be to list `pg` as first service in our App's manifest:
 
 ```js
-runHookApp({
+forrestjs.run({
   services: [pg, serviceFastify],
 });
 ```
@@ -95,7 +95,7 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/080-integrate-services-and-services-6zc8x?file=/src/pg/index.js:826-899
+https://codesandbox.io/s/080-integrate-services-and-services-6zc8x?file=/src/pg/index.js:948-1021
 
 ---
 

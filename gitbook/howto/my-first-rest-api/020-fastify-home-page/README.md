@@ -9,32 +9,30 @@
 Create a new `home-page.js` file and use the following code to scaffold a simple feature that hooks into _Fastify's Service API_ to implement a Home Page route:
 
 ```js
-const HOME_PAGE_CONTENT = `
-  <h2>Home Page</h2>
-  <p>Welcome to yet a new amazing website!</p>
-`;
-
+// This will kick in when a user requests the "/" url:
 const fastifyRouteHandler = (request, reply) => {
-  reply.type('text/html').send(HOME_PAGE_CONTENT);
+  reply.type('text/html').send(`
+        <h2>Home Page</h2>
+        <p>Welcome to yet a new amazing website!</p>
+      `);
 };
 
-const homePageFeature = ({ registerAction }) => {
-  registerAction({
-    hook: '$FASTIFY_GET',
-    handler: {
-      url: '/',
-      handler: fastifyRouteHandler,
-    },
-  });
-};
-
-module.exports = homePageFeature;
+// Export our logic as a ForrestJS Feature that integrates
+// with the Fastify Service:
+exports.name = 'homePage';
+exports.register = () => ({
+  hook: '$FASTIFY_GET',
+  handler: {
+    url: '/',
+    handler: fastifyRouteHandler,
+  },
+});
 ```
 
 Once you've created the feature, simply add it to your App's manifest:
 
 ```js
-runHookApp({
+forrestjs.run({
   ...
   features: [
     require('./home-page')
@@ -54,9 +52,9 @@ https://codesandbox.io/s/create-a-simple-home-page-l6pec?file=/src/index.js
 
 ## Feature's Folder Structure
 
-Until now, we used a single Javascript module to host our entire feature.
+Until now, we used a single Javascript module to host our entire Feature.
 
-This approach may work for some simple features, but **it will definitely go out of control** in case you are working on a more sophisticated piece of logic.
+This approach may work for some simple Features, but **it will definitely go out of control** in case you are working on a more sophisticated piece of logic.
 After all, you want to keep your modules as small as possible to facilitate reading throught them, right?
 
 Let's then separate our Home Page logic into smaller pieces, that implement different responsibilities.
@@ -91,17 +89,14 @@ We do so in the Feature's manifest file: `/home-page/index.js`:
 ```js
 const homePageRoute = require('./routes/home-page');
 
-const homePageFeature = ({ registerAction }) => {
-  registerAction({
-    hook: '$FASTIFY_GET',
-    handler: {
-      url: '/',
-      handler: homePageRoute,
-    },
-  });
-};
-
-module.exports = homePageFeature;
+exports.name = 'homePage';
+exports.register = () => ({
+  hook: '$FASTIFY_GET',
+  handler: {
+    url: '/',
+    handler: homePageRoute,
+  },
+});
 ```
 
 The Feature's manifest file "explains" to the rest of the ForrestJS App **how to connect the dots**, so to speak.

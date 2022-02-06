@@ -1,4 +1,4 @@
-const { runHookApp } = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/hooks');
 const serviceLogger = require('@forrestjs/service-logger');
 const serviceFastify = require('@forrestjs/service-fastify');
 const serviceFastifyHealthz = require('@forrestjs/service-fastify-healthz');
@@ -11,7 +11,7 @@ const customCheck = () => ({
   },
 });
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   settings: {
     fastify: {

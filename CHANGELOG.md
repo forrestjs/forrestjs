@@ -1,3 +1,25 @@
+## 5.0.0 (roadmap)
+
+- [ ] remove support for declarative array definition `const f1 = [hook, handler]`
+- [ ] remove `runHookApp` and `createHookApp`
+- [ ] action's parameter will be reversed (ctx, action's data)
+
+## 4.2.0 (roadmap)
+
+- [ ] Deprecate `createHook` for `runActions`
+- [ ] Deprecate `registerHook` for `registerHooks` who always get a map of hooks to add
+- [ ] Fix kitchensink/mock-axios-e2e
+- [ ] Fix service order dependency in `service-fetchq` - it should work seamlessly before/after `service-fastify`
+- [ ] Should be able to `exports.name = 'featureName'; exports.actions = [{ hook, handler }, ...]`
+
+## 4.1.0
+
+- Deprecate array based declarative features [ hook, handler, ... ]
+- Deprecate `runHookApp`
+- Deprecate `createHookApp`
+- Handle a list of declarative hooks as a Feature manifest
+- Expose `forrestjs.run()` API
+
 ## 4.0.0
 
 - Add VSCode and Prettier config

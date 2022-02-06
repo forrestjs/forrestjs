@@ -15,7 +15,7 @@ ForrestJS makes things dramatically easy for you:
 import reactRouter from '@forrestjs/react-router';
 
 // Just add it to the services list
-runHookApp({
+forrestjs.run({
   services: [reactRoot, reactRouter],
 });
 ```
@@ -103,11 +103,9 @@ But this is nothing new to you. You did before, right?
 ```js
 import { AppRoutes } from './AppRoutes';
 
-export const routes = ({ registerAction }) => {
-  registerAction({
-    hook: '$REACT_ROOT_COMPONENT',
-    handler: { component: AppRoutes },
-  });
+export default {
+  hook: '$REACT_ROOT_COMPONENT',
+  handler: { component: AppRoutes },
 };
 ```
 

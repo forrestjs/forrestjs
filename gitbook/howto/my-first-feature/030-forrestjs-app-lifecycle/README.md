@@ -13,42 +13,26 @@ Features and Services manifest are **executed synchronously and in the same orde
 A ForrestJS App ships [a list of **lifecycle hooks**](https://github.com/forrestjs/forrestjs/blob/master/packages/hooks/docs/create-hook-app.md) that can be used to manage an orchestated the booting sequence of your application:
 
 ```js
-const feature1 = ({ registerAction }) => {
-  registerAction({
-    hook: '$INIT_FEATURE',
-    handler: () => console.log('> feature 1')
-  })
-}
+const feature1 = {
+  hook: '$INIT_FEATURE',
+  handler: () => console.log('> feature 1'),
+};
 
-const feature2 = ({ registerAction }) => {
-  registerAction({
-    hook: '$INIT_FEATURE',
-    handler: () => console.log('> feature 2')
-  })
-}
+const feature2 = {
+  hook: '$INIT_FEATURE',
+  handler: () => console.log('> feature 2'),
+};
 ```
 
 In the example above, both features register an action into the same hook. In this case, the order of the features will determine which one comes first:
 
 ```js
-runHookApp({
-  ...
-  features: [
-    feature1,
-    feature2
-  ]
-})
+forrestjs.run([feature1, feature2]);
 
 // > feature 1
 // > feature 2
 
-runHookApp({
-  ...
-  features: [
-    feature2,
-    feature1
-  ]
-})
+forrestjs.run([feature2, feature1]);
 
 // > feature 2
 // > feature 1
@@ -56,28 +40,20 @@ runHookApp({
 
 But the order of the features doesn't affect the execution order of different lifecycle hooks:
 
+> 👉 INIT comes before START
+
 ```js
-const feature1 = ({ registerAction }) => {
-  registerAction({
-    hook: '$START_FEATURE',
-    handler: () => console.log('> feature 1')
-  })
-}
+const feature1 = {
+  hook: '$START_FEATURE',
+  handler: () => console.log('> feature 1'),
+};
 
-const feature2 = ({ registerAction }) => {
-  registerAction({
-    hook: '$INIT_FEATURE',
-    handler: () => console.log('> feature 2')
-  })
-}
+const feature2 = {
+  hook: '$INIT_FEATURE',
+  handler: () => console.log('> feature 2'),
+};
 
-runHookApp({
-  ...
-  features: [
-    feature1,
-    feature2
-  ]
-})
+forrestjs.run([feature1, feature2]);
 
 // > feature 2
 // > feature 1
@@ -87,10 +63,9 @@ This happens because the `$INIT_FEATURE` hooks is always fired _before_ the `$ST
 
 > Use the lifecycle hooks if you want to guarantee a proper timing in the execution of your logic.
 
-
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/forrestjs-app-lifecycle-qkxep?file=/src/index.js
 
 ---

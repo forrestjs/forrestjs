@@ -66,11 +66,9 @@ import { CustomRoot } from './CustomRoot';
 
 // Explain how to integrate our custom logic
 // with the rest of the App:
-export const customRoot = ({ registerAction }) => {
-  registerAction({
-    hook: '$REACT_ROOT_COMPONENT',
-    handler: { component: CustomRoot },
-  });
+export default {
+  hook: '$REACT_ROOT_COMPONENT',
+  handler: { component: CustomRoot },
 };
 ```
 
@@ -82,19 +80,21 @@ Now that our Feature is complete it is time to refactor the App's manifest `/src
 
 ```js
 // Import Libraries:
-import { runHookApp } from '@forrestjs/hooks';
+import forrestjs from '@forrestjs/hooks';
 
 // Import Services:
 import reactRoot from '@forrestjs/react-root';
 import reactMUI from '@forrestjs/react-mui';
 
 // Import Features:
-import { customRoot } from './custom-root';
+import customRoot from './custom-root';
 
-runHookApp({
-  services: [reactRoot, reactMUI],
-  features: [customRoot],
-}).catch((err) => console.error(`Boot: ${err.message}`));
+forrestjs
+  .run({
+    services: [reactRoot, reactMUI],
+    features: [customRoot],
+  })
+  .catch((err) => console.error(`Boot: ${err.message}`));
 ```
 
 Here is the full source code that you can run, fork, and play with:

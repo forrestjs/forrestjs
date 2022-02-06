@@ -8,7 +8,7 @@
 
 Now it's time to build a dynamic feature that is capable of storing some state, and offer an API to read it and modify it.
 
-We are going to build a CRUD API over a list of users. To keep things simple, we will keep the state in the process' memory (in the simple form of an _Array_) and each user will be a simple string. 
+We are going to build a CRUD API over a list of users. To keep things simple, we will keep the state in the process' memory (in the simple form of an _Array_) and each user will be a simple string.
 
 > The goal is to study how we can leverage in ForrestJS' **context API** to handle a dynamic memory allocation that is safely scoped to the running App.
 
@@ -23,23 +23,17 @@ The first goal to achive is to allocate a piece of memory where to store our lis
 With that in mind, let's create the feature's manifest and register the first action in `/users/index.js`:
 
 ```js
-const usersFeature = ({ registerAction }) => {
-  registerAction({
-    hook: "$INIT_FEATURES",
-    handler: ({ setContext }) => {
-      setContext("users.list", [
-        'Luke Skywalker', 
-        'Ian Solo'
-      ]);
-    }
-  });
+module.exports = {
+  name: 'usersFeature',
+  hook: '$INIT_FEATURES',
+  handler: ({ setContext }) => {
+    setContext('users.list', ['Luke Skywalker', 'Ian Solo']);
+  },
 };
-
-module.exports = usersFeature;
 ```
 
-> The `$INIT_FEATURES` hook is part of a ForrestJS App lifecycle.   
-> It allows to inject custom logic during the booting of our App. 
+> The `$INIT_FEATURES` hook is part of a ForrestJS App lifecycle.  
+> It allows to inject custom logic during the booting of our App.
 
 In our specific case, we use it to inizialize the _Users Database_ with some dummy data from Star Wars.
 
@@ -53,7 +47,7 @@ Let's create `./routes/list-users.js`:
 
 ```js
 module.exports = (request, reply) => {
-  const users = request.getContext("users.list");
+  const users = request.getContext('users.list');
   reply.send(users);
 };
 ```
@@ -69,33 +63,34 @@ The logic here is trivial:
 The last bit is to integrate this route handler with Fastify Service in the Feature's manifest:
 
 ```js
-const listUsersRoute = require("./routes/list-users");
+const listUsersRoute = require('./routes/list-users');
 
-const usersFeature = ({ registerAction }) => {
+// Export the Feature's Manifest:
+exports.name = 'usersFeature';
+exports.register = () => [
   // $INIT_FEATURES
+  // (or register to other Actions)
 
-  registerAction({
-    hook: "$FASTIFY_ROUTE",
-    handler: [
-      {
-        method: "GET",
-        url: "/users",
-        handler: listUsersRoute
-      }
-    ]
-  });
-};
-
-module.exports = usersFeature;
+  // Add routes definitions into the Fastify App:
+  {
+    hook: '$FASTIFY_ROUTE',
+    // This could be one single object, or an array of routes:
+    handler: {
+      method: 'GET',
+      url: '/users',
+      handler: listUsersRoute,
+    },
+  },
+];
 ```
 
 Please note that here we are using a different Fastify _hook_ in this example: `$FASTFY_ROUTE`.  
-This hooks let us setup a complete route definition as in [`fastify.route()`](https://www.fastify.io/docs/latest/Routes/#full-declaration), 
+This hooks let us setup a complete route definition as in [`fastify.route()`](https://www.fastify.io/docs/latest/Routes/#full-declaration),
 which is actually called [under the hood](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify/src/start-service-handler.js#L92).
 
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/030-the-users-feature-gqqp3
 
 ---

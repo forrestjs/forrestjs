@@ -1,4 +1,4 @@
-const { runHookApp } = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/hooks');
 const serviceFastify = require('@forrestjs/service-fastify');
 
 const registerRoute = require('./feature-register-route');
@@ -27,7 +27,7 @@ const addStuffIntoReset = () => ({
   },
 });
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   settings: {
     custom: {

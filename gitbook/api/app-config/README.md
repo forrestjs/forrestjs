@@ -13,7 +13,7 @@ A ForrestJS App shares a piece of memory where to **collect any boot-time config
 You can use the declarative style where the settings are provided as a simple JavaScript object:
 
 ```js
-runHookApp({
+forrestjs.run({
   settings: {
     key: 'value',
   },
@@ -30,7 +30,7 @@ https://codesandbox.io/s/app-config-declarative-dcqg5?file=/src/index.js:1101-11
 Or run a more rich settings composition, using an asynchronous function that can perform calculations, or maybe **fetch some secrects from a vault**:
 
 ```js
-runHookApp({
+forrestjs.run({
   settings: async () => {
     return {
       key: 'value',

@@ -1,10 +1,10 @@
-const { runHookApp } = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/hooks');
 const serviceJwt = require('@forrestjs/service-jwt');
 const serviceFastify = require('@forrestjs/service-fastify');
 
 const featureHome = require('./feature-home');
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   settings: {},
   services: [serviceJwt, serviceFastify],

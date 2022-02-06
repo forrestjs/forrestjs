@@ -1,13 +1,13 @@
 # GraphQL made easy with Hooks
 
-Facebook's crew didn't only came up with [React](https://reactjs.org/) and 
+Facebook's crew didn't only came up with [React](https://reactjs.org/) and
 [PropTypes](https://reactjs.org/docs/typechecking-with-proptypes.html)... they also produced
 [GraphQL](https://graphql.org/)!
 
 > GraphQL is to _REST Api_ what PropTypes is to _React Components' Props_
 
 This is the simplest explanation to GraphQL that I came up with.<br>
-You basically **describe the arguments to a particular request**, and you 
+You basically **describe the arguments to a particular request**, and you
 **describe the output data structure**.
 
 GraphQL provides 2 major benefits (plus many other):
@@ -37,8 +37,10 @@ yarn add @forrestjs/hooks
 Then copy this [_Hooks_](./hooks.md) skeleton app into `index.js`:
 
 ```js
-const { runHookApp } = require('@forrestjs/hooks')
-runHookApp([ /* features go here */ ])
+const { runHookApp } = require('@forrestjs/hooks');
+forrestjs.run([
+  /* features go here */
+]);
 ```
 
 At last you can run this app with `npx`:
@@ -69,9 +71,7 @@ yarn add @forrestjs/service-express
 Then modify `index.js` to register the new service:
 
 ```js
-runHookApp([
-    require('@forrestjs/service-express'),
-])
+forrestjs.run([require('@forrestjs/service-express')]);
 ```
 
 Run the app again and we notice that some kind onf service is up and running on `8080`:
@@ -82,7 +82,7 @@ But if you try to navigate to `http://localhost:8080` you'll face bad luck:
 
 ![hooks-graphql-express-entrypoint](../images/hooks-graphql-express-entrypoint.png)
 
-That is because `@forrestjs/service-express` creates an ExpressJS app for you all right, 
+That is because `@forrestjs/service-express` creates an ExpressJS app for you all right,
 but it doesn't provide any route route to it.
 
 ### 2b - Add your first route
@@ -99,12 +99,11 @@ vi home.route.js
 And paste this code into it:
 
 ```js
-const { EXPRESS_ROUTE } = require('@forrestjs/service-express')
+const { EXPRESS_ROUTE } = require('@forrestjs/service-express');
 
-const routeHome = ({ app }) =>
-    app.get('/', (_, res) => res.send('Welcome!'))
+const routeHome = ({ app }) => app.get('/', (_, res) => res.send('Welcome!'));
 
-module.exports = [ EXPRESS_ROUTE, routeHome ]
+module.exports = [EXPRESS_ROUTE, routeHome];
 ```
 
 Believe it or not, this is a perfectly functionable _ForrestJS_'s feature!
@@ -112,10 +111,7 @@ Believe it or not, this is a perfectly functionable _ForrestJS_'s feature!
 The next step is just to register it into your _Hooks App_:
 
 ```js
-runHookApp([
-    require('@forrestjs/service-express'),
-    require('./home.route'),
-])
+forrestjs.run([require('@forrestjs/service-express'), require('./home.route')]);
 ```
 
 Reload your `http://localhost:8080` and the magic is just blowing out your mind!
@@ -138,7 +134,7 @@ Then register it into pur App:
 ```js
 ...
 
-runHookApp([
+forrestjs.run([
     ...
     require('@forrestjs/service-express-graphql'),
 ])
@@ -180,28 +176,28 @@ vi welcome.query.js
 And paste this code in it:
 
 ```js
-const { EXPRESS_GRAPHQL } = require('@forrestjs/service-express-graphql')
-const { GraphQLList, GraphQLString } = require('graphql')
+const { EXPRESS_GRAPHQL } = require('@forrestjs/service-express-graphql');
+const { GraphQLList, GraphQLString } = require('graphql');
 
 const welcomeHandler = (_, args, { req }) => [
-    `Welcome, ${args.name}!`,
-    req.protocol + '://' + req.get('host') + req.originalUrl,
-]
+  `Welcome, ${args.name}!`,
+  req.protocol + '://' + req.get('host') + req.originalUrl,
+];
 
-const welcomeQuery = ({ queries }) => 
-    queries.welcome = {
-        description: 'Welcome the user',
-        args: {
-            name: {
-                type: GraphQLString,
-                defaultValue: 'user',
-            },
-        },
-        type: new GraphQLList(GraphQLString),
-        resolve: welcomeHandler,
-    }
+const welcomeQuery = ({ queries }) =>
+  (queries.welcome = {
+    description: 'Welcome the user',
+    args: {
+      name: {
+        type: GraphQLString,
+        defaultValue: 'user',
+      },
+    },
+    type: new GraphQLList(GraphQLString),
+    resolve: welcomeHandler,
+  });
 
-module.exports = [ EXPRESS_GRAPHQL, welcomeQuery ]
+module.exports = [EXPRESS_GRAPHQL, welcomeQuery];
 ```
 
 Now it's just a matter of registering the new feature in your app:
@@ -209,7 +205,7 @@ Now it's just a matter of registering the new feature in your app:
 ```js
 ...
 
-runHookApp([
+forrestjs.run([
     ...
     require('./welcome.query'),
 ])
@@ -235,28 +231,31 @@ Say you don't like `/api` as endpoint for your GraphQL... say you'd prefer `/gra
 Here is how you can hook into the App's boot process and provide custom configuration:
 
 ```js
-const { runHookApp } = require('@forrestjs/hooks')
-const { registerAction, SETTINGS } = require('@forrestjs/hooks')
+const { runHookApp } = require('@forrestjs/hooks');
+const { registerAction, SETTINGS } = require('@forrestjs/hooks');
 
-registerAction([SETTINGS, ({ settings }) => {
+registerAction([
+  SETTINGS,
+  ({ settings }) => {
     settings.express = {
-        graphql: {
-            mountPoint: '/graphql',
-        },
-    }
-}])
+      graphql: {
+        mountPoint: '/graphql',
+      },
+    };
+  },
+]);
 
-runHookApp([
-    require('@forrestjs/service-express'),
-    require('./home.route'),
-    require('@forrestjs/service-express-graphql'),
-    require('./welcome.query'),
-])
+forrestjs.run([
+  require('@forrestjs/service-express'),
+  require('./home.route'),
+  require('@forrestjs/service-express-graphql'),
+  require('./welcome.query'),
+]);
 ```
 
 ## Download
 
-If you experienced any trouble following the steps above, 
+If you experienced any trouble following the steps above,
 [download this tutorial codebase here](../downloads/hooks-graphql.zip).
 
 ## Challenge

@@ -17,25 +17,21 @@ To "create a new Hook" is the way for other Services or Feature to inject logic 
 It's important to understand that a Hook is just a programmable function that we call within a registered action:
 
 ```js
-const myService = ({ registerAction }) => {
-  registerAction({
-    hook: '$INIT_SERVICE',
-    handler: ({ createHook }) => {
-      console.log('myService::init()');
-      createHook.sync('myService::init');
-      console.log('myService::afterInit');
-    },
-  });
+const myService = {
+  hook: '$INIT_SERVICE',
+  handler: ({ createHook }) => {
+    console.log('myService::init()');
+    createHook.sync('myService::init');
+    console.log('myService::afterInit');
+  },
 };
 
-const myFeature = ({ registerAction }) => {
-  registerAction({
-    hook: 'myService::init',
-    handler: () => console.log('myFeature, on myService::init'),
-  });
+const myFeature = {
+  hook: 'myService::init',
+  handler: () => console.log('myFeature, on myService::init'),
 };
 
-runHookApp({
+forrestjs.run({
   services: [myService],
   features: [myFeature],
 });

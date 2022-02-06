@@ -1,11 +1,11 @@
 const path = require('path');
-const { runHookApp } = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/hooks');
 const serviceFastify = require('@forrestjs/service-fastify');
 const serviceFastifyStatic = require('@forrestjs/service-fastify-static');
 
 const featureCustomRoutes = require('./feature-custom-routes');
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   settings: {
     fastify: {

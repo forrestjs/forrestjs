@@ -1,4 +1,4 @@
-const { runHookApp } = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/hooks');
 const serviceLogger = require('@forrestjs/service-logger');
 const serviceJwt = require('@forrestjs/service-jwt');
 const serviceFetchq = require('@forrestjs/service-fetchq');
@@ -8,7 +8,7 @@ const serviceFastifyHealthz = require('@forrestjs/service-fastify-healthz');
 const featureHome = require('./feature-home');
 const featureQ1 = require('./feature-q1');
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   settings: {
     fetchq: {

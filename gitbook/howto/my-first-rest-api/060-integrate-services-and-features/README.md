@@ -6,7 +6,7 @@
 
 # Integrate Services and Features
 
-What we've done so far is already pretty cool, but let's just make an small extra export to expose a `query` function instead of the entire pool.
+What we've done so far is already pretty cool, but let's just make an small extra affort and expose a `query` function instead of the entire pool.
 
 In your Service Initialization code, you need to create the utility method and export it:
 
@@ -18,7 +18,7 @@ setContext('pg.query', query);
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:531-672
+https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:794-935
 
 ---
 
@@ -72,7 +72,7 @@ That's right. Hooks are just strings, but we always export them as a **library o
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/hooks.js:0-45
+https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/hooks.js:122-166
 
 ---
 
@@ -96,11 +96,11 @@ With these steps performed, it is now possibile for any Feature (or other Servic
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:32-209
+https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:242-331
 
 ---
 
-## Implement A Hook
+## Create a new Action
 
 Implementing a hook looks much like **calling a function** using the [`createHook()` API](../../../api/create-hook/README.md). We invoke a hook by its name, we can pass arguments to it, and we can collect its returning value(s).
 
@@ -123,7 +123,7 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:1435-1650
+https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:1557-1772
 
 ---
 
@@ -144,6 +144,6 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/users/index.js:626-804
+https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/users/index.js:748-926
 
 ---

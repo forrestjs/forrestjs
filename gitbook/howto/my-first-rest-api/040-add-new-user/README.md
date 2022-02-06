@@ -17,18 +17,18 @@ Start with `/users/routes/add-user.js`:
 ```js
 const handler = (request, reply) => {
   // Logic will go here
-  reply.send('ok')
+  reply.send('ok');
 };
 
 const schema = {
   query: {
-    type: "object",
+    type: 'object',
     properties: {
-      name: { type: "string" }
+      name: { type: 'string' },
     },
     additionalProperties: false,
-    required: ["name"]
-  }
+    required: ['name'],
+  },
 };
 
 module.exports = { handler, schema };
@@ -46,7 +46,7 @@ Then in `/users/index.js` we can simply add a new route's definition to the list
 ```
 
 Check it out here:  
-https://codesandbox.io/s/040-add-a-new-user-g0h0h?file=/src/users/index.js:470-610
+https://codesandbox.io/s/040-add-a-new-user-g0h0h?file=/src/users/index.js:532-775
 
 ### Modify the App's Context
 
@@ -54,17 +54,17 @@ The implementation of our handler is still very simplicistic, but again we use t
 
 ```js
 const handler = (request, reply) => {
-  const users = request.getContext("users.list");
+  // Use the getContext() API to access the App's Context memory:
+  const users = request.getContext('users.list');
   users.push(request.query.name);
 
   reply.send(users);
 };
 ```
 
-
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/040-add-a-new-user-g0h0h
 
 ---

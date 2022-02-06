@@ -1,9 +1,7 @@
-const {
-  runHookApp
-} = require('@forrestjs/hooks');
+const { runHookApp } = require('@forrestjs/hooks');
 
-runHookApp({
+forrestjs({
   trace: 'compact',
   services: [],
-  features: []
-}).catch(err => console.error(err));
+  features: [],
+}).catch((err) => console.error(err));
