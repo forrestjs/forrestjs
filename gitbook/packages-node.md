@@ -1,4 +1,4 @@
-# ForrestJS Packages
+# NodeJS Packages - ForrestJS
 
 Over the years, I found myself configuring some basic stuff over and over again.
 Nowadays I do my best to abstract generic needs into sharable and reusable packages
@@ -7,7 +7,9 @@ that you find listed here.
 Most of them consist in very little amount of code, but they provide _hooks_ so that
 your application can **easily extend and customize their behaviour**.
 
-## Hooks
+👉 [Get Started with NodeJS and ForrestJS](./howto/my-first-rest-api/README.md)
+
+## Core (Javascript Hooks Library)
 
 This is the core of ForrestJS modularity. It allows you to implement extensible applications made of composable feature pretty much **like Wordpress does with their plugins**, but in a Node fashion and with
 traceable and debuggable support.
