@@ -1,6 +1,6 @@
 const dotted = require('@marcopeg/dotted').default;
 const { createAction } = require('./create-action');
-const { registerAction } = require('./register-extension');
+const { registerExtension } = require('./register-extension');
 const { traceHook } = require('./tracer');
 const { createHooksRegistry } = require('./create-hooks-registry');
 const constants = require('./constants');
@@ -28,7 +28,7 @@ const isListOfDeclarativeActions = (list) =>
  * @param {*} prefix
  */
 const runIntegrations = async (integrations, context, prefix = '') => {
-  const registeredActions = [];
+  const registeredExtensions = [];
 
   // Execute the integration functions
   for (const service of integrations) {
@@ -40,17 +40,19 @@ const runIntegrations = async (integrations, context, prefix = '') => {
     // function that is able to use the function's name as feature name
     // That will reduce the need for using the property "name" during
     // the registration of the features
+    // const registerExtension = ;
+
     const computed =
       typeof registerFn === 'function'
         ? await registerFn({
             ...context,
-            registerAction: (ag1, ag2, ag3 = {}) => {
+            registerExtension: (ag1, ag2, ag3 = {}) => {
               // Handle positional arguments:
               // registerAction('hook', () => {})
               // registerAction('hook', () => {}, 'name')
               // registerAction('hook', () => {}, { name: 'name' })
               if (typeof ag1 === 'string') {
-                return registeredActions.push([
+                return registeredExtensions.push([
                   ag1,
                   ag2,
                   {
@@ -64,7 +66,36 @@ const runIntegrations = async (integrations, context, prefix = '') => {
               }
 
               // Handle definition as an object
-              return registeredActions.push({
+              return registeredExtensions.push({
+                ...ag1,
+                name: `${prefix}${ag1.name || integrationName}`,
+              });
+            },
+            // DEPRECATED: remove in v5.0.0
+            registerAction: (ag1, ag2, ag3 = {}) => {
+              console.warn(
+                '[DEPRECATED] use "feature.registerExtension" instead of "feature.registerAction". It will be removed in v5.0.0',
+              );
+              // Handle positional arguments:
+              // registerAction('hook', () => {})
+              // registerAction('hook', () => {}, 'name')
+              // registerAction('hook', () => {}, { name: 'name' })
+              if (typeof ag1 === 'string') {
+                return registeredExtensions.push([
+                  ag1,
+                  ag2,
+                  {
+                    ...(typeof ag3 === 'string' ? { name: ag3 } : ag3),
+                    name: `${prefix}${
+                      (typeof ag3 === 'string' ? ag3 : ag3.name) ||
+                      integrationName
+                    }`,
+                  },
+                ]);
+              }
+
+              // Handle definition as an object
+              return registeredExtensions.push({
                 ...ag1,
                 name: `${prefix}${ag1.name || integrationName}`,
               });
@@ -76,7 +107,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
     // [ { hook, handler, ... }, { ... }]
     if (isListOfDeclarativeActions(computed)) {
       computed.forEach((item) =>
-        registeredActions.push({
+        registeredExtensions.push({
           ...item,
           name: `${prefix}${item.name || integrationName}`,
         }),
@@ -97,7 +128,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
         '[DEPRECATED] please use the object base declarative pattern { hook, handler, ... } - this API will be removed in v5.0.0',
       );
       const [hook, handler, options = {}] = computed;
-      registeredActions.push({
+      registeredExtensions.push({
         ...(typeof options === 'string'
           ? { name: `${prefix}${options}` }
           : {
@@ -118,7 +149,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
       (computed.hook || computed.action) &&
       computed.handler
     ) {
-      registeredActions.push({
+      registeredExtensions.push({
         ...computed,
         name: `${prefix}${computed.name || integrationName}`,
       });
@@ -126,7 +157,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
   }
 
   // Register all the actions declared by the integrations that have been executed
-  registeredActions.forEach((actionDef) => context.registerAction(actionDef));
+  registeredExtensions.forEach(context.registerExtension);
 };
 
 const objectSetter = (targetObject) => (path, value) => {
@@ -170,7 +201,7 @@ const createHookApp =
     const internalSettings =
       typeof settings === 'function'
         ? (() => {
-            registerAction({
+            registerExtension({
               name: `${constants.BOOT} app/settings`,
               action: constants.SETTINGS,
               handler: async () => {
@@ -196,11 +227,19 @@ const createHookApp =
     const internalContext = {
       ...context,
       ...hooksRegistry,
-      registerAction,
+      registerAction: (...args) => {
+        console.warn(
+          '[DEPRECATED] use "app.registerExtension" instead of "app.registerAction". It will be removed in v.5.0.0.',
+        );
+        return registerExtension(...args);
+      },
+      registerExtension,
       setConfig,
       getConfig,
       setContext: null,
       getContext: null,
+      createAction: null,
+      createHook: null, // DEPRECATED: remove in v5.0.0
     };
 
     // provide an api to deal with the internal context
@@ -217,10 +256,32 @@ const createHookApp =
       _createAction(name, { args, mode: 'parallel' });
     _createAction.waterfall = (name, args) =>
       _createAction(name, { args, mode: 'waterfall' });
-    internalContext.createHook = _createAction;
+    internalContext.createAction = _createAction;
+
+    // DEPRECATED: remove in v5.0.0
+    internalContext.createHook = (...args) => {
+      console.warn('[DEPRECATED] createHook');
+      return _createAction(...args);
+    };
+    internalContext.createHook.sync = (...args) => {
+      console.warn('[DEPRECATED] createHook');
+      return _createAction.sync(...args);
+    };
+    internalContext.createHook.serie = (...args) => {
+      console.warn('[DEPRECATED] createHook');
+      return _createAction.serie(...args);
+    };
+    internalContext.createHook.parallel = (...args) => {
+      console.warn('[DEPRECATED] createHook');
+      return _createAction.parallel(...args);
+    };
+    internalContext.createHook.waterfall = (...args) => {
+      console.warn('[DEPRECATED] createHook');
+      return _createAction.waterfall(...args);
+    };
 
     if (trace) {
-      registerAction({
+      registerExtension({
         name: `${constants.BOOT} app/trace`,
         hook: constants.FINISH,
         handler: () => {

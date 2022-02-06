@@ -1,6 +1,9 @@
 const { resetState } = require('../src/state');
 const forrestjs = require('../src/index');
-const { registerAction } = require('../src/register-extension');
+const {
+  registerAction,
+  registerExtension,
+} = require('../src/register-extension');
 const {
   isDeclarativeAction,
   isListOfDeclarativeActions,
@@ -72,11 +75,11 @@ describe('hooks/create-hook-app', () => {
     expect(handler.mock.calls.length).toBe(2);
   });
 
-  // DEPRECATED
+  // DEPRECATED: remove in v5.0.0
   it.skip('should register a service as single hook setup', async () => {
     const handler = jest.fn();
     const s1 = ['foo', handler];
-    const f1 = ({ createHook }) => createHook('foo');
+    const f1 = ({ createAction }) => createAction('foo');
 
     await forrestjs.run({
       services: [s1],
@@ -111,8 +114,8 @@ describe('hooks/create-hook-app', () => {
       },
       services: [
         // register a programmatic feature
-        ({ registerAction }) =>
-          registerAction({
+        ({ registerExtension }) =>
+          registerExtension({
             action: '$INIT_SERVICE',
             handler: ({ getConfig, setConfig }) =>
               setConfig('foo', getConfig('foo.faa') * 2),
@@ -144,14 +147,14 @@ describe('hooks/create-hook-app', () => {
       services: [
         {
           action: '$START_SERVICE',
-          handler: async ({ createHook }) => {
-            const r1 = createHook.sync('aaa', { value: 1 });
+          handler: async ({ createAction }) => {
+            const r1 = createAction.sync('aaa', { value: 1 });
             f1(r1[0][0]);
 
-            const r2 = await createHook.serie('bbb', { value: 2 });
+            const r2 = await createAction.serie('bbb', { value: 2 });
             f2(r2[0][0]);
 
-            const r3 = await createHook.parallel('ccc', { value: 3 });
+            const r3 = await createAction.parallel('ccc', { value: 3 });
             f3(r3[0][0]);
           },
         },
@@ -170,14 +173,14 @@ describe('hooks/create-hook-app', () => {
 
   describe('createHookApp getters / setters', () => {
     it('SETTINGS should not pass reference to the internal object', async () => {
-      registerAction(constants.SETTINGS, ({ settings }) => {
+      registerExtension(constants.SETTINGS, ({ settings }) => {
         expect(settings).toBe(undefined);
       });
       await forrestjs.run({ settings: { foo: 1 } });
     });
 
     it('should handle settings with getters/setters', async () => {
-      registerAction(constants.SETTINGS, ({ getConfig, setConfig }) => {
+      registerExtension(constants.SETTINGS, ({ getConfig, setConfig }) => {
         setConfig('foo', getConfig('foo') + 1);
       });
       const app = await forrestjs.run({ settings: { foo: 1 } });
@@ -185,7 +188,7 @@ describe('hooks/create-hook-app', () => {
     });
 
     it('should handle settings with nested paths', async () => {
-      registerAction(constants.SETTINGS, ({ getConfig, setConfig }) => {
+      registerExtension(constants.SETTINGS, ({ getConfig, setConfig }) => {
         setConfig('new.faa.foo', getConfig('foo') + 1);
       });
       const app = await forrestjs.run({ settings: { foo: 1 } });
@@ -194,11 +197,11 @@ describe('hooks/create-hook-app', () => {
   });
 
   describe('createHookApp / registerHook', () => {
-    const s1 = ({ registerHook, registerAction, createHook }) => {
+    const s1 = ({ registerHook, registerExtension, createAction }) => {
       registerHook({ S1: 's1' });
-      registerAction({
+      registerExtension({
         action: '$START_SERVICE',
-        handler: () => createHook.sync('s1'),
+        handler: () => createAction.sync('s1'),
       });
     };
 
@@ -249,16 +252,16 @@ describe('hooks/create-hook-app', () => {
       const s1Handler = jest.fn();
       const s2Handler = jest.fn();
 
-      const s1 = ({ registerHook, registerAction, createHook }) => {
+      const s1 = ({ registerHook, registerExtension, createAction }) => {
         registerHook('s1', 's1');
-        registerAction('$INIT_SERVICE', () => createHook.sync('s1'));
-        registerAction('$s2', s2Handler);
+        registerExtension('$INIT_SERVICE', () => createAction.sync('s1'));
+        registerExtension('$s2', s2Handler);
       };
 
-      const s2 = ({ registerHook, registerAction, createHook }) => {
+      const s2 = ({ registerHook, registerExtension, createAction }) => {
         registerHook('s2', 's2');
-        registerAction('$INIT_SERVICE', () => createHook.sync('s2'));
-        registerAction('$s1', s1Handler);
+        registerExtension('$INIT_SERVICE', () => createAction.sync('s2'));
+        registerExtension('$s1', s1Handler);
       };
 
       await forrestjs.run({ services: [s1, s2] });
