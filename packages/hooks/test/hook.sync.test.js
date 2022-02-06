@@ -8,7 +8,7 @@ describe('hooks/sync', () => {
   it('should run hooks', () => {
     const handler = jest.fn();
     registerAction({
-      hook: 'foo',
+      action: 'foo',
       handler,
     });
     createAction('foo');
@@ -16,9 +16,9 @@ describe('hooks/sync', () => {
   });
 
   it('should log action names', () => {
-    const ac1 = { hook: 'foo', name: 'ac1', handler: () => 22 };
+    const ac1 = { action: 'foo', name: 'ac1', handler: () => 22 };
     const ac2 = {
-      hook: 'foo',
+      action: 'foo',
       handler: function ac2() {
         return 23;
       },
@@ -38,7 +38,7 @@ describe('hooks/sync', () => {
   it('should run sync hooks with helper function', () => {
     const handler = jest.fn();
     registerAction({
-      hook: 'foo',
+      action: 'foo',
       handler,
     });
     createAction.sync('foo');

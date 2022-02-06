@@ -6,8 +6,9 @@
 
 ## 4.2.0 (roadmap)
 
-- [ ] Deprecate `createHook` for `runActions`
-- [ ] Deprecate `registerHook` for `registerHooks` who always get a map of hooks to add
+- [x] Deprecate `createHook` for `runActions`
+- [x] Deprecate `registerAction({ hook: 'xxx' })` for `registerAction({ action: 'xxx', name: 'yyy' })`
+- [ ] Deprecate `registerHook` for `registerActions` who always get a map of hooks to add
 - [ ] Fix kitchensink/mock-axios-e2e
 - [ ] Fix service order dependency in `service-fetchq` - it should work seamlessly before/after `service-fastify`
 - [ ] Should be able to `exports.name = 'featureName'; exports.actions = [{ hook, handler }, ...]`

@@ -14,62 +14,71 @@ const { appendAction } = require('./state');
 const { logAction } = require('./logger');
 const { getHook } = require('./create-hooks-registry');
 
-const registerAction = (
-  payload = {},
-  receivedHandler = null,
-  receivedOptions = {},
-) => {
+const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   // (name, handler, options)
-  if (typeof payload === 'string') {
+  if (typeof __arg1 === 'string') {
     return registerAction({
-      ...receivedOptions,
-      hook: payload,
-      handler: receivedHandler,
+      ...__arg3,
+      action: __arg1,
+      handler: __arg2,
     });
   }
 
   // ([ name, handler, options ])
-  if (Array.isArray(payload)) {
+  if (Array.isArray(__arg1)) {
     return registerAction({
-      ...(payload[2] || {}),
-      hook: payload[0],
-      handler: payload[1],
+      ...(__arg1[2] || {}),
+      action: __arg1[0],
+      handler: __arg1[1],
     });
   }
 
-  // ({ hook: 'xxx', handler: () => {}, ...options })
+  // ({ to: 'xxx', handler: () => {}, ...options })
   // "handler" can also be a scalar value and is going to be replaces into a function.
   const {
-    hook: receivedHook,
+    hook: deprecatedReceivedHook, // DEPRECATER: will be removed in v5.0.0
+    action: receivedTarget,
     name,
     trace,
-    handler: receivedPayloadHandler,
+    handler: receivedHandler,
     priority,
     ...meta
-  } = payload;
-  if (!receivedHook) {
-    throw new Error('[hooks] actions must have a "hook" property!');
+  } = __arg1;
+
+  // Backward compatibility until v5.0.0
+  const targetAction = receivedTarget || deprecatedReceivedHook;
+
+  if (!targetAction) {
+    throw new Error(
+      '[ForrestJS] extensions must declare an "action" property!',
+    );
   }
 
-  if (!receivedPayloadHandler) {
+  if (!receivedHandler) {
     throw new Error(
-      '[hooks] actions must have a "handler" property as fuction!',
+      '[ForrestJS] extensions must declare a "handler" property!',
+    );
+  }
+
+  if (deprecatedReceivedHook) {
+    console.warn(
+      '[DEPRECATED] The "hook" property is deprecated and will be removed in v5.0.0\nUse "to" instead.',
     );
   }
 
   const handler =
-    typeof receivedPayloadHandler === 'function'
-      ? receivedPayloadHandler
-      : () => receivedPayloadHandler;
+    typeof receivedHandler === 'function'
+      ? receivedHandler
+      : () => receivedHandler;
 
   // Hooks name can be expressed as variables:
   // '$FOO'  - required reference
   // '$FOO?' - optional reference
   try {
     const hook =
-      receivedHook.substr(0, 1) === '$'
-        ? getHook(receivedHook.substr(1))
-        : receivedHook;
+      targetAction.substr(0, 1) === '$'
+        ? getHook(targetAction.substr(1))
+        : targetAction;
 
     // the hook could be null in case of an optional reference was required
     // '$FOO?'
@@ -95,7 +104,7 @@ const registerAction = (
 
     // An optional hook fails silently
   } catch (err) {
-    if (!payload.optional) {
+    if (!__arg1.optional) {
       throw err;
     }
   }

@@ -5,8 +5,9 @@ const { traceHook } = require('./tracer');
 const { createHooksRegistry } = require('./create-hooks-registry');
 const constants = require('./constants');
 
-const isDeclarativeAction = ({ hook, handler }) =>
-  typeof hook === 'string' &&
+// DEPRECATED: property "hook" is deprecated and will be removed in v5.0.0
+const isDeclarativeAction = ({ hook, action, handler }) =>
+  (typeof hook === 'string' || typeof action === 'string') &&
   (typeof handler === 'object' || typeof handler === 'function');
 
 const isListOfDeclarativeActions = (list) =>
@@ -111,7 +112,12 @@ const runIntegrations = async (integrations, context, prefix = '') => {
 
     // register a single action give an a configuration object
     // { hook, handler, ... }
-    else if (computed && computed.hook && computed.handler) {
+    // DEPRECATED: "hook" in favor for "action" - remove in v5.0.0
+    else if (
+      computed &&
+      (computed.hook || computed.action) &&
+      computed.handler
+    ) {
       registeredActions.push({
         ...computed,
         name: `${prefix}${computed.name || integrationName}`,
@@ -166,7 +172,7 @@ const createHookApp =
         ? (() => {
             registerAction({
               name: `${constants.BOOT} app/settings`,
-              hook: constants.SETTINGS,
+              action: constants.SETTINGS,
               handler: async () => {
                 const values = await settings(internalContext, internalContext);
                 values &&

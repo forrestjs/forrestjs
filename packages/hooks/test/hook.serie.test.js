@@ -9,7 +9,7 @@ describe('hooks/serie', () => {
   it('should run serie hooks', async () => {
     const handler = jest.fn();
     registerAction({
-      hook: 'foo',
+      action: 'foo',
       handler: async () => {
         await pause();
         handler();
@@ -22,7 +22,7 @@ describe('hooks/serie', () => {
   it('should run serie hooks - with helper', async () => {
     const handler = jest.fn();
     registerAction({
-      hook: 'foo',
+      action: 'foo',
       handler: async () => {
         await pause();
         handler();

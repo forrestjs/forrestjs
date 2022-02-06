@@ -9,7 +9,7 @@ describe('hooks/serie', () => {
   it('should run parallel hooks', async () => {
     const handler = jest.fn();
     registerAction({
-      hook: 'foo',
+      action: 'foo',
       handler: async () => {
         await pause();
         handler();
@@ -27,7 +27,7 @@ describe('hooks/serie', () => {
     };
 
     registerAction({
-      hook: 'foo',
+      action: 'foo',
       handler,
     });
     registerAction(['foo', handler]);

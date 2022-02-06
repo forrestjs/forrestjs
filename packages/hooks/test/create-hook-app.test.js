@@ -13,15 +13,15 @@ describe('hooks/create-hook-app', () => {
   describe('utils', () => {
     const featureA = [
       {
-        hook: 'foo',
+        action: 'foo',
         handler: () => {},
       },
       {
-        hook: 'foo',
+        action: 'foo',
         handler: [],
       },
       {
-        hook: 'foo',
+        action: 'foo',
         handler: {},
       },
     ];
@@ -94,7 +94,7 @@ describe('hooks/create-hook-app', () => {
       },
       features: [
         {
-          hook: '$START_FEATURE',
+          action: '$START_FEATURE',
           handler: ({ getConfig }) => f1(getConfig('foo.faa')),
         },
       ],
@@ -113,7 +113,7 @@ describe('hooks/create-hook-app', () => {
         // register a programmatic feature
         ({ registerAction }) =>
           registerAction({
-            hook: '$INIT_SERVICE',
+            action: '$INIT_SERVICE',
             handler: ({ getConfig, setConfig }) =>
               setConfig('foo', getConfig('foo.faa') * 2),
           }),
@@ -121,7 +121,7 @@ describe('hooks/create-hook-app', () => {
       features: [
         // register a declarative feature
         {
-          hook: '$START_FEATURE',
+          action: '$START_FEATURE',
           handler: ({ getConfig }) => f1(getConfig('foo')),
         },
       ],
@@ -143,7 +143,7 @@ describe('hooks/create-hook-app', () => {
       },
       services: [
         {
-          hook: '$START_SERVICE',
+          action: '$START_SERVICE',
           handler: async ({ createHook }) => {
             const r1 = createHook.sync('aaa', { value: 1 });
             f1(r1[0][0]);
@@ -157,9 +157,9 @@ describe('hooks/create-hook-app', () => {
         },
       ],
       features: [
-        { hook: 'aaa', handler: (args, ctx) => ctx.foo(args, ctx) },
-        { hook: 'bbb', handler: (args, ctx) => ctx.foo(args, ctx) },
-        { hook: 'ccc', handler: (args, ctx) => ctx.foo(args, ctx) },
+        { action: 'aaa', handler: (args, ctx) => ctx.foo(args, ctx) },
+        { action: 'bbb', handler: (args, ctx) => ctx.foo(args, ctx) },
+        { action: 'ccc', handler: (args, ctx) => ctx.foo(args, ctx) },
       ],
     });
 
@@ -197,14 +197,14 @@ describe('hooks/create-hook-app', () => {
     const s1 = ({ registerHook, registerAction, createHook }) => {
       registerHook({ S1: 's1' });
       registerAction({
-        hook: '$START_SERVICE',
+        action: '$START_SERVICE',
         handler: () => createHook.sync('s1'),
       });
     };
 
     it('should run a required service by reference', async () => {
       const handler = jest.fn();
-      const f1 = { hook: '$S1', handler };
+      const f1 = { action: '$S1', handler };
 
       await forrestjs.run({
         services: [s1],
@@ -216,7 +216,7 @@ describe('hooks/create-hook-app', () => {
 
     it('should fail to run a required service by reference', async () => {
       const handler = jest.fn();
-      const f1 = { hook: '$S1', handler };
+      const f1 = { action: '$S1', handler };
 
       let error = null;
       try {
@@ -233,7 +233,7 @@ describe('hooks/create-hook-app', () => {
 
     it('should ignore an optional service by reference', async () => {
       const handler = jest.fn();
-      const f1 = { hook: '$S1?', handler };
+      const f1 = { action: '$S1?', handler };
 
       await forrestjs.run({
         // services: [s1],
@@ -274,7 +274,7 @@ describe('hooks/create-hook-app', () => {
 
       await forrestjs.run([
         {
-          hook: '$INIT_SERVICE',
+          action: '$INIT_SERVICE',
           handler: handler1,
         },
       ]);
@@ -289,11 +289,11 @@ describe('hooks/create-hook-app', () => {
       await forrestjs.run([
         [
           {
-            hook: '$INIT_SERVICE',
+            action: '$INIT_SERVICE',
             handler: handler1,
           },
           {
-            hook: '$INIT_SERVICE',
+            action: '$INIT_SERVICE',
             handler: handler2,
           },
         ],
