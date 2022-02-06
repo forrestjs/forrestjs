@@ -1,6 +1,6 @@
 const pause = require('@marcopeg/utils/lib/pause');
 const { resetState } = require('../src/state');
-const { createHook } = require('../src/create-hook');
+const { createAction } = require('../src/create-action');
 const { registerAction } = require('../src/register-action');
 
 describe('hooks/serie', () => {
@@ -15,7 +15,7 @@ describe('hooks/serie', () => {
         handler();
       },
     });
-    await createHook('foo', { mode: 'parallel' });
+    await createAction('foo', { mode: 'parallel' });
     expect(handler.mock.calls.length).toBe(1);
   });
 
@@ -33,7 +33,7 @@ describe('hooks/serie', () => {
     registerAction(['foo', handler]);
     registerAction('foo', handler);
 
-    await createHook.parallel('foo');
+    await createAction.parallel('foo');
     expect(spy.mock.calls.length).toBe(3);
   });
 });

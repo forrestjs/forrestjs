@@ -1,5 +1,5 @@
 const dotted = require('@marcopeg/dotted').default;
-const { createHook } = require('./create-hook');
+const { createAction } = require('./create-action');
 const { registerAction } = require('./register-action');
 const { traceHook } = require('./tracer');
 const { createHooksRegistry } = require('./create-hooks-registry');
@@ -201,17 +201,17 @@ const createHookApp =
     internalContext.getContext = objectGetter(internalContext);
     internalContext.setContext = objectSetter(internalContext);
 
-    // createHook scoped to the Hook App context
-    const scopedCreateHook = (name, options) =>
-      createHook(name, { ...options, context: internalContext });
-    scopedCreateHook.sync = (name, args) => scopedCreateHook(name, { args });
-    scopedCreateHook.serie = (name, args) =>
-      scopedCreateHook(name, { args, mode: 'serie' });
-    scopedCreateHook.parallel = (name, args) =>
-      scopedCreateHook(name, { args, mode: 'parallel' });
-    scopedCreateHook.waterfall = (name, args) =>
-      scopedCreateHook(name, { args, mode: 'waterfall' });
-    internalContext.createHook = scopedCreateHook;
+    // createAction scoped to the ForrestJS App context
+    const _createAction = (name, options) =>
+      createAction(name, { ...options, context: internalContext });
+    _createAction.sync = (name, args) => _createAction(name, { args });
+    _createAction.serie = (name, args) =>
+      _createAction(name, { args, mode: 'serie' });
+    _createAction.parallel = (name, args) =>
+      _createAction(name, { args, mode: 'parallel' });
+    _createAction.waterfall = (name, args) =>
+      _createAction(name, { args, mode: 'waterfall' });
+    internalContext.createHook = _createAction;
 
     if (trace) {
       registerAction({
@@ -239,18 +239,18 @@ const createHookApp =
 
     // run lifecycle
     await runIntegrations(services, internalContext, `${constants.SERVICE} `);
-    await scopedCreateHook.serie(constants.START, internalContext);
-    await scopedCreateHook.serie(constants.SETTINGS, internalContext);
+    await _createAction.serie(constants.START, internalContext);
+    await _createAction.serie(constants.SETTINGS, internalContext);
     await runIntegrations(features, internalContext, `${constants.FEATURE} `);
-    await scopedCreateHook.parallel(constants.INIT_SERVICES, internalContext);
-    await scopedCreateHook.serie(constants.INIT_SERVICE, internalContext);
-    await scopedCreateHook.parallel(constants.INIT_FEATURES, internalContext);
-    await scopedCreateHook.serie(constants.INIT_FEATURE, internalContext);
-    await scopedCreateHook.parallel(constants.START_SERVICES, internalContext);
-    await scopedCreateHook.serie(constants.START_SERVICE, internalContext);
-    await scopedCreateHook.parallel(constants.START_FEATURES, internalContext);
-    await scopedCreateHook.serie(constants.START_FEATURE, internalContext);
-    await scopedCreateHook.serie(constants.FINISH, internalContext);
+    await _createAction.parallel(constants.INIT_SERVICES, internalContext);
+    await _createAction.serie(constants.INIT_SERVICE, internalContext);
+    await _createAction.parallel(constants.INIT_FEATURES, internalContext);
+    await _createAction.serie(constants.INIT_FEATURE, internalContext);
+    await _createAction.parallel(constants.START_SERVICES, internalContext);
+    await _createAction.serie(constants.START_SERVICE, internalContext);
+    await _createAction.parallel(constants.START_FEATURES, internalContext);
+    await _createAction.serie(constants.START_FEATURE, internalContext);
+    await _createAction.serie(constants.FINISH, internalContext);
 
     return {
       settings: internalSettings,
