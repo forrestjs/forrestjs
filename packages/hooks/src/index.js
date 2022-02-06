@@ -1,6 +1,6 @@
 const { traceHook, logTrace, logBoot } = require('./tracer');
 const { createHook, createAction } = require('./create-action');
-const { registerAction } = require('./register-action');
+const { registerAction } = require('./register-extension');
 const { createHookApp, runHookApp } = require('./create-hook-app');
 const { createHookContext } = require('./create-hook-context');
 const { getHook } = require('./create-hooks-registry');

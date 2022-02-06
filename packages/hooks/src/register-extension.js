@@ -14,10 +14,10 @@ const { appendAction } = require('./state');
 const { logAction } = require('./logger');
 const { getHook } = require('./create-hooks-registry');
 
-const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
+const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   // (name, handler, options)
   if (typeof __arg1 === 'string') {
-    return registerAction({
+    return registerExtension({
       ...__arg3,
       action: __arg1,
       handler: __arg2,
@@ -26,7 +26,7 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
 
   // ([ name, handler, options ])
   if (Array.isArray(__arg1)) {
-    return registerAction({
+    return registerExtension({
       ...(__arg1[2] || {}),
       action: __arg1[0],
       handler: __arg1[1],
@@ -110,4 +110,11 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   }
 };
 
-module.exports = { registerAction };
+const registerAction = (...args) => {
+  console.warn(
+    '[DEPRECATED] use "registerExtension" instead of "registerAction()". It will be removed in v5.0.0',
+  );
+  return registerExtension(...args);
+};
+
+module.exports = { registerAction, registerExtension };

@@ -1,6 +1,6 @@
 const dotted = require('@marcopeg/dotted').default;
 const { createAction } = require('./create-action');
-const { registerAction } = require('./register-action');
+const { registerAction } = require('./register-extension');
 const { traceHook } = require('./tracer');
 const { createHooksRegistry } = require('./create-hooks-registry');
 const constants = require('./constants');

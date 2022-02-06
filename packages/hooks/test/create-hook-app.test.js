@@ -1,6 +1,6 @@
 const { resetState } = require('../src/state');
 const forrestjs = require('../src/index');
-const { registerAction } = require('../src/register-action');
+const { registerAction } = require('../src/register-extension');
 const {
   isDeclarativeAction,
   isListOfDeclarativeActions,

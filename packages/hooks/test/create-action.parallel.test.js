@@ -1,14 +1,14 @@
 const pause = require('@marcopeg/utils/lib/pause');
 const { resetState } = require('../src/state');
 const { createAction } = require('../src/create-action');
-const { registerAction } = require('../src/register-action');
+const { registerExtension } = require('../src/register-extension');
 
 describe('hooks/serie', () => {
   beforeEach(resetState);
 
   it('should run parallel hooks', async () => {
     const handler = jest.fn();
-    registerAction({
+    registerExtension({
       action: 'foo',
       handler: async () => {
         await pause();
@@ -26,12 +26,12 @@ describe('hooks/serie', () => {
       spy();
     };
 
-    registerAction({
+    registerExtension({
       action: 'foo',
       handler,
     });
-    registerAction(['foo', handler]);
-    registerAction('foo', handler);
+    registerExtension(['foo', handler]);
+    registerExtension('foo', handler);
 
     await createAction.parallel('foo');
     expect(spy.mock.calls.length).toBe(3);
