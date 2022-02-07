@@ -17,7 +17,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
 
   // '$FOO'  - required reference (trigger error if not exists)
   // '$FOO?' - optional reference (returns `null` if not exists)
-  const getExtension = (name) => {
+  const getAction = (name) => {
     const isOptional = name.slice(-1) === '?';
     const hookName = isOptional ? name.substr(0, name.length - 1) : name;
 
@@ -35,12 +35,12 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
   // DEPRECATED: remove in v5.0.0
   const getHook = (name) => {
     console.warn(
-      '[DEPRECATED] use "getExtension()" instead of "getHook()". It will be removed in v5.0.0',
+      '[DEPRECATED] use "getAction()" instead of "getHook()". It will be removed in v5.0.0',
     );
-    return getExtension(name);
+    return getAction(name);
   };
 
-  const registerExtension = (name, value) => {
+  const registerAction = (name, value) => {
     // handle key/value input
     if (knownExtensions[name]) {
       throw new Error(`Duplicate hook "${name}"`);
@@ -48,58 +48,58 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
     knownExtensions[name] = value;
   };
 
-  const registerExtensions = (name, value) => {
+  const registerActions = (name, value) => {
     // handle a disctionary input
     if (typeof name === 'object') {
       Object.keys(name)
         .filter((key) => !SKIP_REGISTER_LIFECYCLE_EXTENSIONS.includes(key))
-        .forEach((key) => registerExtension(key, name[key]));
+        .forEach((key) => registerAction(key, name[key]));
       return;
     }
 
     console.warn(
-      '[DEPRECATED] use "registerExtensions({ name: value })". The support for registering a single action is deprecated and will be remove in v5.0.0',
+      '[DEPRECATED] use "registerActions({ name: value })". The support for registering a single action is deprecated and will be remove in v5.0.0',
     );
 
-    registerExtension(name, value);
+    registerAction(name, value);
   };
 
   // DEPRECATED: remove in v5.0.0
   const registerHook = (name, value) => {
     console.warn(
-      '[DEPRECATED] use "registerExtensions()" instead of "registerHook()". It will be removed in v5.0.0',
+      '[DEPRECATED] use "registerActions()" instead of "registerHook()". It will be removed in v5.0.0',
     );
-    registerExtensions(name, value);
+    registerActions(name, value);
   };
 
   // Initialize the registry with the lifecycle Actions
-  registerExtensions(initialExtensions);
+  registerActions(initialExtensions);
 
   // Save a global list of registries
   const registry = {
+    registerActions,
+    getAction,
     getHook, // DEPRECATED: remove in v5.0.0
-    getExtension,
     registerHook, // DEPRECATED: remove in v5.0.0
-    registerExtensions,
   };
   registries[registryName || `default${registries.length || ''}`] = registry;
 
   return registry;
 };
 
-const getExtension = (hookName, registryName = 'default') => {
+const getAction = (hookName, registryName = 'default') => {
   const registry = registries[registryName];
   if (!registry) {
     throw new Error(`Registry not found "${registryName}"`);
   }
-  return registry.getExtension(hookName);
+  return registry.getAction(hookName);
 };
 
 const getHook = (...args) => {
   console.warn(
-    '[DEPRECATED] use "getExtension()" instead of "getHook()". It will be removed in v5.0.0',
+    '[DEPRECATED] use "getAction()" instead of "getHook()". It will be removed in v5.0.0',
   );
-  return getExtension(...args);
+  return getAction(...args);
 };
 
 // Test support
@@ -109,7 +109,7 @@ const resetState = () => {
 
 module.exports = {
   createRegistry,
-  getHook, // DEPRECATED: remove in v5.0.0
-  getExtension,
+  getAction,
   resetState,
+  getHook, // DEPRECATED: remove in v5.0.0
 };

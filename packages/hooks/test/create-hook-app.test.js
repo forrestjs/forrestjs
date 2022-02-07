@@ -194,8 +194,8 @@ describe('hooks/create-hook-app', () => {
   });
 
   describe('createHookApp / registerHook', () => {
-    const s1 = ({ registerExtensions, registerExtension, createExtension }) => {
-      registerExtensions({ S1: 's1' });
+    const s1 = ({ registerActions, registerExtension, createExtension }) => {
+      registerActions({ S1: 's1' });
       registerExtension({
         action: '$START_SERVICE',
         handler: () => createExtension.sync('s1'),
@@ -249,22 +249,14 @@ describe('hooks/create-hook-app', () => {
       const s1Handler = jest.fn();
       const s2Handler = jest.fn();
 
-      const s1 = ({
-        registerExtensions,
-        registerExtension,
-        createExtension,
-      }) => {
-        registerExtensions({ s1: 's1' });
+      const s1 = ({ registerActions, registerExtension, createExtension }) => {
+        registerActions({ s1: 's1' });
         registerExtension('$INIT_SERVICE', () => createExtension.sync('s1'));
         registerExtension('$s2', s2Handler);
       };
 
-      const s2 = ({
-        registerExtensions,
-        registerExtension,
-        createExtension,
-      }) => {
-        registerExtensions({ s2: 's2' });
+      const s2 = ({ registerActions, registerExtension, createExtension }) => {
+        registerActions({ s2: 's2' });
         registerExtension('$INIT_SERVICE', () => createExtension.sync('s2'));
         registerExtension('$s1', s1Handler);
       };

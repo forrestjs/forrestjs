@@ -2,7 +2,7 @@ const dotted = require('@marcopeg/dotted').default;
 const { createExtension } = require('./create-extension');
 const { registerExtension } = require('./register-extension');
 const { traceHook } = require('./tracer');
-const { createRegistry } = require('./create-extensions-registry');
+const { createRegistry } = require('./create-actions-registry');
 const constants = require('./constants');
 
 // DEPRECATED: property "hook" is deprecated and will be removed in v5.0.0

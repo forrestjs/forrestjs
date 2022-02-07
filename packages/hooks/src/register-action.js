@@ -12,12 +12,12 @@
 
 const { appendAction } = require('./state');
 const { logAction } = require('./logger');
-const { getAction } = require('./create-actions-registry');
+const { getExtension } = require('./create-extensions-registry');
 
-const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
+const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   // (name, handler, options)
   if (typeof __arg1 === 'string') {
-    return registerExtension({
+    return registerAction({
       ...__arg3,
       action: __arg1,
       handler: __arg2,
@@ -26,7 +26,7 @@ const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
 
   // ([ name, handler, options ])
   if (Array.isArray(__arg1)) {
-    return registerExtension({
+    return registerAction({
       ...(__arg1[2] || {}),
       action: __arg1[0],
       handler: __arg1[1],
@@ -77,7 +77,7 @@ const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   try {
     const hook =
       targetAction.substr(0, 1) === '$'
-        ? getAction(targetAction.substr(1))
+        ? getExtension(targetAction.substr(1))
         : targetAction;
 
     // the hook could be null in case of an optional reference was required
@@ -110,11 +110,16 @@ const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   }
 };
 
-const registerAction = (...args) => {
-  console.warn(
-    '[DEPRECATED] use "registerExtension" instead of "registerAction()". It will be removed in v5.0.0',
-  );
-  return registerExtension(...args);
+// const registerAction = (...args) => {
+//   console.warn(
+//     '[DEPRECATED] use "registerExtension" instead of "registerAction()". It will be removed in v5.0.0',
+//   );
+//   return registerExtension(...args);
+// };
+
+const registerExtension = (...args) => {
+  console.warn('FOOOO');
+  return registerAction(...args);
 };
 
 module.exports = { registerAction, registerExtension };
