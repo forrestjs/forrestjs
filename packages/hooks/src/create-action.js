@@ -113,7 +113,7 @@ const createAction = (name, receivedOptions = {}) => {
  */
 
 createAction.sync = (name, args, context) =>
-  createAction(name, { args, context });
+  createAction(name, { args, context, mode: 'sync' });
 
 createAction.serie = (name, args, context) =>
   createAction(name, { args, context, mode: 'serie' });

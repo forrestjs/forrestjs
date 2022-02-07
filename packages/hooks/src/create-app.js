@@ -182,8 +182,21 @@ const objectGetter = (targetObject) => (path, defaultValue) => {
   throw new Error(`path "${path}" does not exists!`);
 };
 
+const registerSettingsExtension = (buildAppSettings) => {
+  registerExtension({
+    name: `${constants.BOOT} app/settings`,
+    action: constants.SETTINGS,
+    handler: async (ctx) => {
+      const values = await buildAppSettings(ctx, ctx);
+      values &&
+        Object.keys(values).forEach((key) => ctx.setConfig(key, values[key]));
+    },
+  });
+  return {};
+};
+
 const createApp =
-  (appDefinition = {}) =>
+  (appManifest = {}) =>
   async () => {
     // accepts a single param as [] of features
     const {
@@ -192,32 +205,17 @@ const createApp =
       settings = {},
       context = {},
       trace = null,
-    } = Array.isArray(appDefinition)
-      ? { features: appDefinition }
-      : appDefinition;
+    } = Array.isArray(appManifest) ? { features: appManifest } : appManifest;
 
     // creates initial internal settings from an object
     // or automatically register the provided settings callback
     const internalSettings =
       typeof settings === 'function'
-        ? (() => {
-            registerExtension({
-              name: `${constants.BOOT} app/settings`,
-              action: constants.SETTINGS,
-              handler: async () => {
-                const values = await settings(internalContext, internalContext);
-                values &&
-                  Object.keys(values).forEach((key) => {
-                    internalSettings[key] = values[key];
-                  });
-              },
-            });
-            return {};
-          })()
+        ? registerSettingsExtension(settings)
         : settings;
 
-    // Context bound list of known hooks
-    const hooksRegistry = createActionsRegistry(constants);
+    // Context bound list of known Actions
+    const actionsRegistry = createActionsRegistry(constants);
 
     // create getter and setter for the configuration
     const getConfig = objectGetter(internalSettings);
@@ -226,7 +224,7 @@ const createApp =
     // create the context with getters / setters /
     const internalContext = {
       ...context,
-      ...hooksRegistry,
+      ...actionsRegistry,
       registerAction: (...args) => {
         console.warn(
           '[DEPRECATED] use "app.registerExtension" instead of "app.registerAction". It will be removed in v.5.0.0.',
@@ -246,40 +244,39 @@ const createApp =
     internalContext.getContext = objectGetter(internalContext);
     internalContext.setContext = objectSetter(internalContext);
 
-    // createAction scoped to the ForrestJS App context
-    const _createAction = (name, options) =>
-      createAction(name, { ...options, context: internalContext });
-    _createAction.sync = (name, args) => _createAction(name, { args });
-    _createAction.serie = (name, args) =>
-      _createAction(name, { args, mode: 'serie' });
-    _createAction.parallel = (name, args) =>
-      _createAction(name, { args, mode: 'parallel' });
-    _createAction.waterfall = (name, args) =>
-      _createAction(name, { args, mode: 'waterfall' });
-    internalContext.createAction = _createAction;
+    // createAction scoped to the App context
+    const _cs = (name, args) =>
+      createAction(name, { ...args, context: internalContext });
+    _cs.sync = (name, args) => _cs(name, { args, mode: 'sync' });
+    _cs.serie = (name, args) => _cs(name, { args, mode: 'serie' });
+    _cs.parallel = (name, args) => _cs(name, { args, mode: 'parallel' });
+    _cs.waterfall = (name, args) => _cs(name, { args, mode: 'waterfall' });
+    // Inject into the App context
+    internalContext.createAction = _cs;
 
     // DEPRECATED: remove in v5.0.0
     internalContext.createHook = (...args) => {
       console.warn('[DEPRECATED] createHook');
-      return _createAction(...args);
+      return _cs(...args);
     };
     internalContext.createHook.sync = (...args) => {
       console.warn('[DEPRECATED] createHook');
-      return _createAction.sync(...args);
+      return _cs.sync(...args);
     };
     internalContext.createHook.serie = (...args) => {
       console.warn('[DEPRECATED] createHook');
-      return _createAction.serie(...args);
+      return _cs.serie(...args);
     };
     internalContext.createHook.parallel = (...args) => {
       console.warn('[DEPRECATED] createHook');
-      return _createAction.parallel(...args);
+      return _cs.parallel(...args);
     };
     internalContext.createHook.waterfall = (...args) => {
       console.warn('[DEPRECATED] createHook');
-      return _createAction.waterfall(...args);
+      return _cs.waterfall(...args);
     };
 
+    // LOt OF WORK TO DO HERE!
     if (trace) {
       registerExtension({
         name: `${constants.BOOT} app/trace`,
@@ -306,18 +303,18 @@ const createApp =
 
     // run lifecycle
     await runIntegrations(services, internalContext, `${constants.SERVICE} `);
-    await _createAction.serie(constants.START, internalContext);
-    await _createAction.serie(constants.SETTINGS, internalContext);
+    await _cs.serie(constants.START, internalContext);
+    await _cs.serie(constants.SETTINGS, internalContext);
     await runIntegrations(features, internalContext, `${constants.FEATURE} `);
-    await _createAction.parallel(constants.INIT_SERVICES, internalContext);
-    await _createAction.serie(constants.INIT_SERVICE, internalContext);
-    await _createAction.parallel(constants.INIT_FEATURES, internalContext);
-    await _createAction.serie(constants.INIT_FEATURE, internalContext);
-    await _createAction.parallel(constants.START_SERVICES, internalContext);
-    await _createAction.serie(constants.START_SERVICE, internalContext);
-    await _createAction.parallel(constants.START_FEATURES, internalContext);
-    await _createAction.serie(constants.START_FEATURE, internalContext);
-    await _createAction.serie(constants.FINISH, internalContext);
+    await _cs.parallel(constants.INIT_SERVICES, internalContext);
+    await _cs.serie(constants.INIT_SERVICE, internalContext);
+    await _cs.parallel(constants.INIT_FEATURES, internalContext);
+    await _cs.serie(constants.INIT_FEATURE, internalContext);
+    await _cs.parallel(constants.START_SERVICES, internalContext);
+    await _cs.serie(constants.START_SERVICE, internalContext);
+    await _cs.parallel(constants.START_FEATURES, internalContext);
+    await _cs.serie(constants.START_FEATURE, internalContext);
+    await _cs.serie(constants.FINISH, internalContext);
 
     return {
       settings: internalSettings,
