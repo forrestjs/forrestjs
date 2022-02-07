@@ -1,13 +1,13 @@
 const { resetState } = require('../src/state');
 const { createExtension } = require('../src/create-extension');
-const { registerExtension } = require('../src/register-extension');
+const { registerAction } = require('../src/register-extension');
 
 describe('hooks/sync', () => {
   beforeEach(resetState);
 
   it('should run hooks', () => {
     const handler = jest.fn();
-    registerExtension({
+    registerAction({
       action: 'foo',
       handler,
     });
@@ -24,8 +24,8 @@ describe('hooks/sync', () => {
       },
     };
 
-    registerExtension(ac1);
-    registerExtension(ac2);
+    registerAction(ac1);
+    registerAction(ac2);
 
     const results = createExtension('foo');
 
@@ -37,7 +37,7 @@ describe('hooks/sync', () => {
 
   it('should run sync hooks with helper function', () => {
     const handler = jest.fn();
-    registerExtension({
+    registerAction({
       action: 'foo',
       handler,
     });

@@ -111,10 +111,16 @@ const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
 };
 
 const registerAction = (...args) => {
-  console.warn(
-    '[DEPRECATED] use "registerExtension" instead of "registerAction()". It will be removed in v5.0.0',
-  );
+  // console.warn(
+  //   '[DEPRECATED] use "registerExtension" instead of "registerAction()". It will be removed in v5.0.0',
+  // );
   return registerExtension(...args);
 };
 
-module.exports = { registerAction, registerExtension };
+module.exports = {
+  registerAction,
+  registerExtension: (...args) => {
+    console.warn('NOOOO');
+    registerAction(...args);
+  },
+};

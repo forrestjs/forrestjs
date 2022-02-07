@@ -1,6 +1,6 @@
 const dotted = require('@marcopeg/dotted').default;
 const { createExtension } = require('./create-extension');
-const { registerExtension } = require('./register-extension');
+const { registerAction } = require('./register-extension');
 const { traceHook } = require('./tracer');
 const { createRegistry } = require('./create-actions-registry');
 const constants = require('./constants');
@@ -47,6 +47,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
         ? await registerFn({
             ...context,
             registerExtension: (ag1, ag2, ag3 = {}) => {
+              console.warn('?????????????????????????');
               // Handle positional arguments:
               // registerAction('hook', () => {})
               // registerAction('hook', () => {}, 'name')
@@ -73,9 +74,6 @@ const runIntegrations = async (integrations, context, prefix = '') => {
             },
             // DEPRECATED: remove in v5.0.0
             registerAction: (ag1, ag2, ag3 = {}) => {
-              console.warn(
-                '[DEPRECATED] use "feature.registerExtension" instead of "feature.registerAction". It will be removed in v5.0.0',
-              );
               // Handle positional arguments:
               // registerAction('hook', () => {})
               // registerAction('hook', () => {}, 'name')
@@ -157,7 +155,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
   }
 
   // Register all the actions declared by the integrations that have been executed
-  registeredExtensions.forEach(context.registerExtension);
+  registeredExtensions.forEach(context.registerAction);
 };
 
 const objectSetter = (targetObject) => (path, value) => {
@@ -183,7 +181,7 @@ const objectGetter = (targetObject) => (path, defaultValue) => {
 };
 
 const registerSettingsExtension = (buildAppSettings) => {
-  registerExtension({
+  registerAction({
     name: `${constants.BOOT} app/settings`,
     action: constants.SETTINGS,
     handler: async (ctx) => {
@@ -225,13 +223,7 @@ const createApp =
     const internalContext = {
       ...context,
       ...actionsRegistry,
-      registerAction: (...args) => {
-        console.warn(
-          '[DEPRECATED] use "app.registerExtension" instead of "app.registerAction". It will be removed in v.5.0.0.',
-        );
-        return registerExtension(...args);
-      },
-      registerExtension,
+      registerAction,
       setConfig,
       getConfig,
       setContext: null,
@@ -278,7 +270,7 @@ const createApp =
 
     // LOt OF WORK TO DO HERE!
     if (trace) {
-      registerExtension({
+      registerAction({
         name: `${constants.BOOT} app/trace`,
         action: constants.FINISH,
         handler: () => {
