@@ -1,7 +1,12 @@
 const { traceHook, logTrace, logBoot } = require('./tracer');
 const { createHook, createAction } = require('./create-action');
 const { registerAction } = require('./register-extension');
-const { createHookApp, runHookApp } = require('./create-hook-app');
+const {
+  createApp,
+  startApp,
+  createHookApp,
+  runHookApp,
+} = require('./create-app');
 const { createHookContext } = require('./create-hook-context');
 const { getHook, getAction } = require('./create-actions-registry');
 const constants = require('./constants');
@@ -30,38 +35,28 @@ runHook.waterfall = (...args) => {
   return createHook.waterfall(...args);
 };
 
-// 4.1.0 renaming of the "runHookApp" API
-const run = runHookApp;
+// Export the global symbol as App runner:
+const run = startApp;
 run.run = run;
 
-// Export the old API
+// Export global API:
+run.createApp = createApp;
 run.traceHook = traceHook;
 run.logTrace = logTrace;
 run.logBoot = logBoot;
 run.createAction = createAction;
 run.registerAction = registerAction;
+
+// DEPRECATED APIs: remove in v5.0.0
 run.createHook = createHook; // DEPRECATED: to remove in v5.0.0
 run.runHook = runHook; // DEPRECATED: to remove in v5.0.0
 run.createHookContext = createHookContext; // DEPRECATED: to remove in v5.0.0
-
-// DEPRECATED: Remove in v5.0.0
-run.createHookApp = (...args) => {
-  console.warn(
-    '[DEPRECATED] `createHookApp()` is deprecated in favour of `forrestjs.create()` and will be remove in next major version 5.0.0',
-  );
-  return createHookApp(...args);
-};
+run.createHookApp = createHookApp; // DEPRECATED: remove in v5.0.0
 run.getHook = getHook; // DEPRECATED: remove in v5.0.0
 run.getAction = getAction;
-// DEPRECATED: Remove in v5.0.0
-run.runHookApp = (...args) => {
-  console.warn(
-    '[DEPRECATED] `runHookApp()` is deprecated in favour of `forrestjs.run()` and will be remove in next major version 5.0.0',
-  );
-  return runHookApp(...args);
-};
+run.runHookApp = runHookApp; // DEPRECATED: remove in v5.0.0
 
-// Export the internal constants
+// Export the internal constants:
 run.CORE = constants.CORE;
 run.BOOT = constants.BOOT;
 run.SERVICE = constants.SERVICE;

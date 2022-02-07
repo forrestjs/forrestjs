@@ -182,7 +182,7 @@ const objectGetter = (targetObject) => (path, defaultValue) => {
   throw new Error(`path "${path}" does not exists!`);
 };
 
-const createHookApp =
+const createApp =
   (appDefinition = {}) =>
   async () => {
     // accepts a single param as [] of features
@@ -325,12 +325,30 @@ const createHookApp =
     };
   };
 
-// Convenient method to skip the double function
-const runHookApp = (...args) => createHookApp(...args)();
+const startApp = ($) => {
+  const app = createApp($);
+  return app();
+};
+
+// DEPRECATED: remove in v5.0.0
+const createHookApp = ($) => {
+  console.warn(
+    '[DEPRECATED] use "createApp()" instead of "createHookApp()". It will be removed in v5.0.0',
+  );
+  return createApp($);
+};
+const runHookApp = ($) => {
+  console.warn(
+    '[DEPRECATED] use "createApp()" instead of "runHookApp()". It will be removed in v5.0.0',
+  );
+  return startApp($);
+};
 
 module.exports = {
-  createHookApp,
-  runHookApp,
+  createApp,
+  startApp,
   isDeclarativeAction,
   isListOfDeclarativeActions,
+  createHookApp, // DEPRECATED: remove in v5.0.0
+  runHookApp, // DEPRECATED: remove in v5.0.0
 };

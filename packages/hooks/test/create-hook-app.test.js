@@ -1,11 +1,11 @@
 const { resetState } = require('../src/state');
 const forrestjs = require('../src/index');
 const { registerExtension } = require('../src/register-extension');
+const constants = require('../src/constants');
 const {
   isDeclarativeAction,
   isListOfDeclarativeActions,
-} = require('../src/create-hook-app');
-const constants = require('../src/constants');
+} = require('../src/create-app');
 
 describe('hooks/create-hook-app', () => {
   beforeEach(resetState);
