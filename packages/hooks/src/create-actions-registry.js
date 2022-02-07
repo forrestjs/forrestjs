@@ -17,7 +17,7 @@ const createActionsRegistry = (initialActions = {}, { registryName } = {}) => {
 
   // '$FOO'  - required reference (trigger error if not exists)
   // '$FOO?' - optional reference (returns `null` if not exists)
-  const getHook = (name) => {
+  const getAction = (name) => {
     const isOptional = name.slice(-1) === '?';
     const hookName = isOptional ? name.substr(0, name.length - 1) : name;
 
@@ -30,6 +30,14 @@ const createActionsRegistry = (initialActions = {}, { registryName } = {}) => {
     }
 
     throw new Error(`Unknown hook "${name}"`);
+  };
+
+  // DEPRECATED: remove in v5.0.0
+  const getHook = (name) => {
+    console.warn(
+      '[DEPRECATED] use "getAction()" instead of "getHook()". It will be removed in v5.0.0',
+    );
+    return getAction(name);
   };
 
   const registerAction = (name, value) => {
@@ -68,18 +76,30 @@ const createActionsRegistry = (initialActions = {}, { registryName } = {}) => {
   registerActions(initialActions);
 
   // Save a global list of registries
-  const registry = { getHook, registerHook, registerActions };
+  const registry = {
+    getHook, // DEPRECATED: remove in v5.0.0
+    getAction,
+    registerHook, // DEPRECATED: remove in v5.0.0
+    registerActions,
+  };
   registries[registryName || `default${registries.length || ''}`] = registry;
 
   return registry;
 };
 
-const getHook = (hookName, registryName = 'default') => {
+const getAction = (hookName, registryName = 'default') => {
   const registry = registries[registryName];
   if (!registry) {
     throw new Error(`Registry not found "${registryName}"`);
   }
-  return registry.getHook(hookName);
+  return registry.getAction(hookName);
+};
+
+const getHook = (...args) => {
+  console.warn(
+    '[DEPRECATED] use "getAction()" instead of "getHook()". It will be removed in v5.0.0',
+  );
+  return getAction(...args);
 };
 
 // Test support
@@ -89,6 +109,7 @@ const resetState = () => {
 
 module.exports = {
   createActionsRegistry,
-  getHook,
+  getHook, // DEPRECATED: remove in v5.0.0
+  getAction,
   resetState,
 };

@@ -3,7 +3,7 @@ const { createHook, createAction } = require('./create-action');
 const { registerAction } = require('./register-extension');
 const { createHookApp, runHookApp } = require('./create-hook-app');
 const { createHookContext } = require('./create-hook-context');
-const { getHook } = require('./create-actions-registry');
+const { getHook, getAction } = require('./create-actions-registry');
 const constants = require('./constants');
 
 // DEPRECATED: to remove in v5.0.0
@@ -51,7 +51,8 @@ run.createHookApp = (...args) => {
   );
   return createHookApp(...args);
 };
-run.getHook = getHook;
+run.getHook = getHook; // DEPRECATED: remove in v5.0.0
+run.getAction = getAction;
 // DEPRECATED: Remove in v5.0.0
 run.runHookApp = (...args) => {
   console.warn(

@@ -1,5 +1,5 @@
 const {
-  resetState: resetHooksRegistriesState,
+  resetState: resetActionsRegistriesState,
 } = require('./create-actions-registry');
 
 const state = {
@@ -43,7 +43,7 @@ const getState = () => state;
 
 // this is for unit test
 const resetState = () => {
-  resetHooksRegistriesState();
+  resetActionsRegistriesState();
   state.hooks = {};
   state.trace = {};
   state.stack = [];
