@@ -40,7 +40,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
     return getAction(name);
   };
 
-  const registerAction = (name, value) => {
+  const registerTarget = (name, value) => {
     // handle key/value input
     if (knownExtensions[name]) {
       throw new Error(`Duplicate hook "${name}"`);
@@ -48,12 +48,12 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
     knownExtensions[name] = value;
   };
 
-  const registerActions = (name, value) => {
+  const registerTargets = (name, value) => {
     // handle a disctionary input
     if (typeof name === 'object') {
       Object.keys(name)
         .filter((key) => !SKIP_REGISTER_LIFECYCLE_EXTENSIONS.includes(key))
-        .forEach((key) => registerAction(key, name[key]));
+        .forEach((key) => registerTarget(key, name[key]));
       return;
     }
 
@@ -61,7 +61,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
       '[DEPRECATED] use "registerActions({ name: value })". The support for registering a single action is deprecated and will be remove in v5.0.0',
     );
 
-    registerAction(name, value);
+    registerTarget(name, value);
   };
 
   // DEPRECATED: remove in v5.0.0
@@ -69,15 +69,15 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
     console.warn(
       '[DEPRECATED] use "registerActions()" instead of "registerHook()". It will be removed in v5.0.0',
     );
-    registerActions(name, value);
+    registerTargets(name, value);
   };
 
   // Initialize the registry with the lifecycle Actions
-  registerActions(initialExtensions);
+  registerTargets(initialExtensions);
 
   // Save a global list of registries
   const registry = {
-    registerActions,
+    registerTargets,
     getAction,
     getHook, // DEPRECATED: remove in v5.0.0
     registerHook, // DEPRECATED: remove in v5.0.0
