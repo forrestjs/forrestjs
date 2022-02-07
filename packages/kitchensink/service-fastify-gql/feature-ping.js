@@ -19,8 +19,8 @@ const pingActionHandler = () => {
 
   const resolvers = {
     Query: {
-      ping: () => ({
-        message: '+ok',
+      ping: (_, __, { forrestjs: { getConfig } }) => ({
+        message: getConfig('ping.message'),
         emotion: '💩',
       }),
     },
@@ -30,9 +30,8 @@ const pingActionHandler = () => {
   return { typeDefs, resolvers };
 };
 
-module.exports = ({ registerAction }) =>
-  registerAction({
-    hook: '$FASTIFY_GQL_EXTEND_SCHEMA',
-    name: 'ping',
-    handler: pingActionHandler,
-  });
+module.exports = {
+  target: '$FASTIFY_GQL_EXTEND_SCHEMA',
+  name: 'ping',
+  handler: pingActionHandler,
+};

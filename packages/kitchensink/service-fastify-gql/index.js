@@ -8,6 +8,9 @@ const featurePing = require('./feature-ping');
 forrestjs({
   trace: 'compact',
   settings: {
+    ping: {
+      message: '+ok',
+    },
     fastify: {
       gql: {
         playground: true,
