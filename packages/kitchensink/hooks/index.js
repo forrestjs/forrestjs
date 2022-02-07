@@ -6,8 +6,8 @@ const forrestjs = require('@forrestjs/hooks');
  */
 const ft1 = ({ registerAction }) =>
   registerAction({
-    name: 'ft1',
-    hook: '$INIT_FEATURE',
+    name: 'ft1*',
+    target: '$INIT_FEATURE',
     handler: () => console.log('ft1'),
   });
 
@@ -17,7 +17,7 @@ const ft1 = ({ registerAction }) =>
  */
 const ft2 = ({ registerAction }) =>
   registerAction({
-    hook: '$INIT_FEATURE',
+    target: '$INIT_FEATURE',
     handler: () => console.log('ft2'),
   });
 
@@ -28,7 +28,7 @@ const ft2 = ({ registerAction }) =>
  * The feature's name can be derived by the function name.
  */
 const ft3 = () => ({
-  hook: '$INIT_FEATURE',
+  target: '$INIT_FEATURE',
   handler: () => console.log('ft3'),
 });
 
@@ -38,19 +38,30 @@ const ft3 = () => ({
  */
 const ft4 = {
   name: 'ft4',
-  hook: '$INIT_FEATURE',
+  target: '$INIT_FEATURE',
   handler: () => console.log('ft4'),
 };
 
 /**
- * This feature returns a single action defined in the array form
+ * This feature returns a single action defined in the object form
  */
-const ft5 = () => ['$INIT_FEATURE', () => console.log('ft5')];
+const ft5 = () => [
+  {
+    target: '$INIT_FEATURE',
+    handler: () => console.log('ft5'),
+  },
+];
 
 /**
- * This feature registers a single action in the array form
+ * This feature registers a single action in the object form
  */
-const ft6 = ['$INIT_FEATURE', () => console.log('ft6'), 'ft6'];
+const ft6 = [
+  {
+    target: '$INIT_FEATURE',
+    handler: () => console.log('ft6'),
+    name: 'ft6',
+  },
+];
 
 const ft7 = ({ registerAction }) => {
   registerAction('$INIT_FEATURE', () => console.log('ft7a'), 'ft7a');
