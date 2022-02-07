@@ -1,5 +1,5 @@
 const { createExtension } = require('../src/create-extension');
-const { registerAction } = require('../src/register-extension');
+const { registerAction } = require('../src/register-action');
 const { resetState } = require('../src/state');
 
 describe('hook waterfall', () => {

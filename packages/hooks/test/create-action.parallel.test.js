@@ -1,7 +1,7 @@
 const pause = require('@marcopeg/utils/lib/pause');
 const { resetState } = require('../src/state');
 const { createExtension } = require('../src/create-extension');
-const { registerAction } = require('../src/register-extension');
+const { registerAction } = require('../src/register-action');
 
 describe('hooks/serie', () => {
   beforeEach(resetState);
@@ -9,7 +9,7 @@ describe('hooks/serie', () => {
   it('should run parallel hooks', async () => {
     const handler = jest.fn();
     registerAction({
-      action: 'foo',
+      target: 'foo',
       handler: async () => {
         await pause();
         handler();
@@ -27,7 +27,7 @@ describe('hooks/serie', () => {
     };
 
     registerAction({
-      action: 'foo',
+      target: 'foo',
       handler,
     });
     registerAction(['foo', handler]);

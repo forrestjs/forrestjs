@@ -1,17 +1,18 @@
 const dotted = require('@marcopeg/dotted').default;
 const { createExtension } = require('./create-extension');
-const { registerAction } = require('./register-extension');
+const { registerAction } = require('./register-action');
 const { traceHook } = require('./tracer');
 const { createRegistry } = require('./create-actions-registry');
 const constants = require('./constants');
 
 // DEPRECATED: property "hook" is deprecated and will be removed in v5.0.0
-const isDeclarativeAction = ({ hook, action, handler }) =>
-  (typeof hook === 'string' || typeof action === 'string') &&
+const isDeclarativeAction = ({ hook, target, handler }) =>
+  (typeof hook === 'string' || typeof target === 'string') &&
   (typeof handler === 'object' || typeof handler === 'function');
 
 const isListOfDeclarativeActions = (list) =>
   Array.isArray(list) && list.every(isDeclarativeAction);
+
 /**
  * All the utilization of "registerAction" by an integration's
  * manifest will be queued into an in-memory store and applied only
@@ -41,38 +42,10 @@ const runIntegrations = async (integrations, context, prefix = '') => {
     // That will reduce the need for using the property "name" during
     // the registration of the features
     // const registerExtension = ;
-
     const computed =
       typeof registerFn === 'function'
         ? await registerFn({
             ...context,
-            registerExtension: (ag1, ag2, ag3 = {}) => {
-              console.warn('?????????????????????????');
-              // Handle positional arguments:
-              // registerAction('hook', () => {})
-              // registerAction('hook', () => {}, 'name')
-              // registerAction('hook', () => {}, { name: 'name' })
-              if (typeof ag1 === 'string') {
-                return registeredExtensions.push([
-                  ag1,
-                  ag2,
-                  {
-                    ...(typeof ag3 === 'string' ? { name: ag3 } : ag3),
-                    name: `${prefix}${
-                      (typeof ag3 === 'string' ? ag3 : ag3.name) ||
-                      integrationName
-                    }`,
-                  },
-                ]);
-              }
-
-              // Handle definition as an object
-              return registeredExtensions.push({
-                ...ag1,
-                name: `${prefix}${ag1.name || integrationName}`,
-              });
-            },
-            // DEPRECATED: remove in v5.0.0
             registerAction: (ag1, ag2, ag3 = {}) => {
               // Handle positional arguments:
               // registerAction('hook', () => {})
@@ -141,10 +114,10 @@ const runIntegrations = async (integrations, context, prefix = '') => {
 
     // register a single action give an a configuration object
     // { hook, handler, ... }
-    // DEPRECATED: "hook" in favor for "action" - remove in v5.0.0
+    // DEPRECATED: "hook" in favor for "target" - remove in v5.0.0
     else if (
       computed &&
-      (computed.hook || computed.action) &&
+      (computed.hook || computed.target) &&
       computed.handler
     ) {
       registeredExtensions.push({
@@ -183,7 +156,7 @@ const objectGetter = (targetObject) => (path, defaultValue) => {
 const registerSettingsExtension = (buildAppSettings) => {
   registerAction({
     name: `${constants.BOOT} app/settings`,
-    action: constants.SETTINGS,
+    target: constants.SETTINGS,
     handler: async (ctx) => {
       const values = await buildAppSettings(ctx, ctx);
       values &&
@@ -272,7 +245,7 @@ const createApp =
     if (trace) {
       registerAction({
         name: `${constants.BOOT} app/trace`,
-        action: constants.FINISH,
+        target: constants.FINISH,
         handler: () => {
           console.log('');
           console.log('=================');

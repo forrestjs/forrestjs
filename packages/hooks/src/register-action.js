@@ -1,10 +1,10 @@
 /**
  * // Array form
- * registerAction([ hook, handler, { name: 'xxx', ...} ])
+ * registerAction([ target, handler, { name: 'xxx', ...} ])
  *
  * // Object form
  * registerAction({
- *   hook: SETTINGS,
+ *   target: SETTINGS,
  *   handler: () => {},
  *   name: ...
  * })
@@ -19,7 +19,7 @@ const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   if (typeof __arg1 === 'string') {
     return registerExtension({
       ...__arg3,
-      action: __arg1,
+      target: __arg1,
       handler: __arg2,
     });
   }
@@ -28,7 +28,7 @@ const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   if (Array.isArray(__arg1)) {
     return registerExtension({
       ...(__arg1[2] || {}),
-      action: __arg1[0],
+      target: __arg1[0],
       handler: __arg1[1],
     });
   }
@@ -37,7 +37,8 @@ const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   // "handler" can also be a scalar value and is going to be replaces into a function.
   const {
     hook: deprecatedReceivedHook, // DEPRECATER: will be removed in v5.0.0
-    action: receivedTarget,
+    target: receivedTarget,
+    action: foobar,
     name,
     trace,
     handler: receivedHandler,
@@ -49,9 +50,7 @@ const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   const targetAction = receivedTarget || deprecatedReceivedHook;
 
   if (!targetAction) {
-    throw new Error(
-      '[ForrestJS] extensions must declare an "action" property!',
-    );
+    throw new Error('[ForrestJS] extensions must declare a "target" property!');
   }
 
   if (!receivedHandler) {
@@ -62,7 +61,7 @@ const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
 
   if (deprecatedReceivedHook) {
     console.warn(
-      '[DEPRECATED] The "hook" property is deprecated and will be removed in v5.0.0\nUse "to" instead.',
+      '[DEPRECATED] The "hook" property is deprecated and will be removed in v5.0.0\nUse "target" instead.',
     );
   }
 

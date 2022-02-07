@@ -1,4 +1,4 @@
-const { registerAction } = require('../src/register-extension');
+const { registerAction } = require('../src/register-action');
 const { createExtension } = require('../src/create-extension');
 const { resetState } = require('../src/state');
 

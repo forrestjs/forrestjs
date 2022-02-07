@@ -1,6 +1,6 @@
 const { resetState } = require('../src/state');
 const forrestjs = require('../src/index');
-const { registerAction } = require('../src/register-extension');
+const { registerAction } = require('../src/register-action');
 const constants = require('../src/constants');
 const {
   isDeclarativeAction,
@@ -13,15 +13,15 @@ describe('hooks/create-hook-app', () => {
   describe('utils', () => {
     const featureA = [
       {
-        action: 'foo',
+        target: 'foo',
         handler: () => {},
       },
       {
-        action: 'foo',
+        target: 'foo',
         handler: [],
       },
       {
-        action: 'foo',
+        target: 'foo',
         handler: {},
       },
     ];
@@ -94,7 +94,7 @@ describe('hooks/create-hook-app', () => {
       },
       features: [
         {
-          action: '$START_FEATURE',
+          target: '$START_FEATURE',
           handler: ({ getConfig }) => f1(getConfig('foo.faa')),
         },
       ],
@@ -113,7 +113,7 @@ describe('hooks/create-hook-app', () => {
         // register a programmatic feature
         ({ registerAction }) =>
           registerAction({
-            action: '$INIT_SERVICE',
+            target: '$INIT_SERVICE',
             handler: ({ getConfig, setConfig }) =>
               setConfig('foo', getConfig('foo.faa') * 2),
           }),
@@ -121,7 +121,7 @@ describe('hooks/create-hook-app', () => {
       features: [
         // register a declarative feature
         {
-          action: '$START_FEATURE',
+          target: '$START_FEATURE',
           handler: ({ getConfig }) => f1(getConfig('foo')),
         },
       ],
@@ -143,7 +143,7 @@ describe('hooks/create-hook-app', () => {
       },
       services: [
         {
-          action: '$START_SERVICE',
+          target: '$START_SERVICE',
           handler: async ({ createExtension }) => {
             const r1 = createExtension.sync('aaa', { value: 1 });
             f1(r1[0][0]);
@@ -157,9 +157,9 @@ describe('hooks/create-hook-app', () => {
         },
       ],
       features: [
-        { action: 'aaa', handler: (args, ctx) => ctx.foo(args, ctx) },
-        { action: 'bbb', handler: (args, ctx) => ctx.foo(args, ctx) },
-        { action: 'ccc', handler: (args, ctx) => ctx.foo(args, ctx) },
+        { target: 'aaa', handler: (args, ctx) => ctx.foo(args, ctx) },
+        { target: 'bbb', handler: (args, ctx) => ctx.foo(args, ctx) },
+        { target: 'ccc', handler: (args, ctx) => ctx.foo(args, ctx) },
       ],
     });
 
@@ -197,14 +197,14 @@ describe('hooks/create-hook-app', () => {
     const s1 = ({ registerActions, registerAction, createExtension }) => {
       registerActions({ S1: 's1' });
       registerAction({
-        action: '$START_SERVICE',
+        target: '$START_SERVICE',
         handler: () => createExtension.sync('s1'),
       });
     };
 
     it('should run a required service by reference', async () => {
       const handler = jest.fn();
-      const f1 = { action: '$S1', handler };
+      const f1 = { target: '$S1', handler };
 
       await forrestjs.run({
         services: [s1],
@@ -216,7 +216,7 @@ describe('hooks/create-hook-app', () => {
 
     it('should fail to run a required service by reference', async () => {
       const handler = jest.fn();
-      const f1 = { action: '$S1', handler };
+      const f1 = { target: '$S1', handler };
 
       let error = null;
       try {
@@ -233,7 +233,7 @@ describe('hooks/create-hook-app', () => {
 
     it('should ignore an optional service by reference', async () => {
       const handler = jest.fn();
-      const f1 = { action: '$S1?', handler };
+      const f1 = { target: '$S1?', handler };
 
       await forrestjs.run({
         // services: [s1],
@@ -274,7 +274,7 @@ describe('hooks/create-hook-app', () => {
 
       await forrestjs.run([
         {
-          action: '$INIT_SERVICE',
+          target: '$INIT_SERVICE',
           handler: handler1,
         },
       ]);
@@ -289,11 +289,11 @@ describe('hooks/create-hook-app', () => {
       await forrestjs.run([
         [
           {
-            action: '$INIT_SERVICE',
+            target: '$INIT_SERVICE',
             handler: handler1,
           },
           {
-            action: '$INIT_SERVICE',
+            target: '$INIT_SERVICE',
             handler: handler2,
           },
         ],
