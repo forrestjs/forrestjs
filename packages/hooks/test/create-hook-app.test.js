@@ -144,14 +144,14 @@ describe('hooks/create-hook-app', () => {
       services: [
         {
           action: '$START_SERVICE',
-          handler: async ({ createAction }) => {
-            const r1 = createAction.sync('aaa', { value: 1 });
+          handler: async ({ createExtension }) => {
+            const r1 = createExtension.sync('aaa', { value: 1 });
             f1(r1[0][0]);
 
-            const r2 = await createAction.serie('bbb', { value: 2 });
+            const r2 = await createExtension.serie('bbb', { value: 2 });
             f2(r2[0][0]);
 
-            const r3 = await createAction.parallel('ccc', { value: 3 });
+            const r3 = await createExtension.parallel('ccc', { value: 3 });
             f3(r3[0][0]);
           },
         },
@@ -194,11 +194,11 @@ describe('hooks/create-hook-app', () => {
   });
 
   describe('createHookApp / registerHook', () => {
-    const s1 = ({ registerActions, registerExtension, createAction }) => {
+    const s1 = ({ registerActions, registerExtension, createExtension }) => {
       registerActions({ S1: 's1' });
       registerExtension({
         action: '$START_SERVICE',
-        handler: () => createAction.sync('s1'),
+        handler: () => createExtension.sync('s1'),
       });
     };
 
@@ -249,15 +249,15 @@ describe('hooks/create-hook-app', () => {
       const s1Handler = jest.fn();
       const s2Handler = jest.fn();
 
-      const s1 = ({ registerActions, registerExtension, createAction }) => {
+      const s1 = ({ registerActions, registerExtension, createExtension }) => {
         registerActions({ s1: 's1' });
-        registerExtension('$INIT_SERVICE', () => createAction.sync('s1'));
+        registerExtension('$INIT_SERVICE', () => createExtension.sync('s1'));
         registerExtension('$s2', s2Handler);
       };
 
-      const s2 = ({ registerActions, registerExtension, createAction }) => {
+      const s2 = ({ registerActions, registerExtension, createExtension }) => {
         registerActions({ s2: 's2' });
-        registerExtension('$INIT_SERVICE', () => createAction.sync('s2'));
+        registerExtension('$INIT_SERVICE', () => createExtension.sync('s2'));
         registerExtension('$s1', s1Handler);
       };
 

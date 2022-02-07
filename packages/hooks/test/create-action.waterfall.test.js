@@ -1,4 +1,4 @@
-const { createAction } = require('../src/create-action');
+const { createExtension } = require('../src/create-extension');
 const { registerExtension } = require('../src/register-extension');
 const { resetState } = require('../src/state');
 
@@ -6,7 +6,7 @@ describe('hook waterfall', () => {
   beforeEach(resetState);
 
   test('waterfall should return its own arguments', () => {
-    const res = createAction('foo', {
+    const res = createExtension('foo', {
       mode: 'waterfall',
       args: { port: 8080 },
     });
@@ -19,7 +19,7 @@ describe('hook waterfall', () => {
     registerExtension('foo', ext);
     registerExtension('foo', ext);
 
-    const res = createAction.waterfall('foo', 1);
+    const res = createExtension.waterfall('foo', 1);
     expect(res.value).toBe(3);
   });
 
@@ -28,7 +28,7 @@ describe('hook waterfall', () => {
     registerExtension('foo', ext);
     registerExtension('foo', ext);
 
-    const res = createAction.waterfall('foo', { num: 1 });
+    const res = createExtension.waterfall('foo', { num: 1 });
     expect(res.value.num).toBe(3);
   });
 });

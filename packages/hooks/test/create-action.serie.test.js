@@ -1,6 +1,6 @@
 const pause = require('@marcopeg/utils/lib/pause');
 const { resetState } = require('../src/state');
-const { createAction } = require('../src/create-action');
+const { createExtension } = require('../src/create-extension');
 const { registerExtension } = require('../src/register-extension');
 
 describe('hooks/serie', () => {
@@ -15,7 +15,7 @@ describe('hooks/serie', () => {
         handler();
       },
     });
-    await createAction('foo', { mode: 'serie' });
+    await createExtension('foo', { mode: 'serie' });
     expect(handler.mock.calls.length).toBe(1);
   });
 
@@ -28,7 +28,7 @@ describe('hooks/serie', () => {
         handler();
       },
     });
-    await createAction.serie('foo');
+    await createExtension.serie('foo');
     expect(handler.mock.calls.length).toBe(1);
   });
 });

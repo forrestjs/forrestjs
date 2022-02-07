@@ -14,7 +14,7 @@ const defaultOptions = {
   onItemError,
 };
 
-const createAction = (name, receivedOptions = {}) => {
+const createExtension = (name, receivedOptions = {}) => {
   const { hooks, stack } = getState();
 
   stack.push(name);
@@ -112,17 +112,17 @@ const createAction = (name, receivedOptions = {}) => {
  * Helpers Shortcuts
  */
 
-createAction.sync = (name, args, context) =>
-  createAction(name, { args, context, mode: 'sync' });
+createExtension.sync = (name, args, context) =>
+  createExtension(name, { args, context, mode: 'sync' });
 
-createAction.serie = (name, args, context) =>
-  createAction(name, { args, context, mode: 'serie' });
+createExtension.serie = (name, args, context) =>
+  createExtension(name, { args, context, mode: 'serie' });
 
-createAction.parallel = (name, args, context) =>
-  createAction(name, { args, context, mode: 'parallel' });
+createExtension.parallel = (name, args, context) =>
+  createExtension(name, { args, context, mode: 'parallel' });
 
-createAction.waterfall = (name, args, context) =>
-  createAction(name, { args, context, mode: 'waterfall' });
+createExtension.waterfall = (name, args, context) =>
+  createExtension(name, { args, context, mode: 'waterfall' });
 
 /**
  * DEPRECATED API
@@ -132,12 +132,12 @@ const createHookDeprecate =
 
 const createHook = (...args) => {
   console.warn(createHookDeprecate);
-  return createAction(...args);
+  return createExtension(...args);
 };
 
-createHook.sync = createAction.sync;
-createHook.serie = createAction.serie;
-createHook.parallel = createAction.parallel;
-createHook.waterfall = createAction.waterfall;
+createHook.sync = createExtension.sync;
+createHook.serie = createExtension.serie;
+createHook.parallel = createExtension.parallel;
+createHook.waterfall = createExtension.waterfall;
 
-module.exports = { createHook, createAction };
+module.exports = { createHook, createExtension };

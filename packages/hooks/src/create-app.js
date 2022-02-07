@@ -1,5 +1,5 @@
 const dotted = require('@marcopeg/dotted').default;
-const { createAction } = require('./create-action');
+const { createExtension } = require('./create-extension');
 const { registerExtension } = require('./register-extension');
 const { traceHook } = require('./tracer');
 const { createActionsRegistry } = require('./create-actions-registry');
@@ -236,7 +236,7 @@ const createApp =
       getConfig,
       setContext: null,
       getContext: null,
-      createAction: null,
+      createExtension: null,
       createHook: null, // DEPRECATED: remove in v5.0.0
     };
 
@@ -244,15 +244,15 @@ const createApp =
     internalContext.getContext = objectGetter(internalContext);
     internalContext.setContext = objectSetter(internalContext);
 
-    // createAction scoped to the App context
+    // createExtension scoped to the App context
     const _cs = (name, args) =>
-      createAction(name, { ...args, context: internalContext });
+      createExtension(name, { ...args, context: internalContext });
     _cs.sync = (name, args) => _cs(name, { args, mode: 'sync' });
     _cs.serie = (name, args) => _cs(name, { args, mode: 'serie' });
     _cs.parallel = (name, args) => _cs(name, { args, mode: 'parallel' });
     _cs.waterfall = (name, args) => _cs(name, { args, mode: 'waterfall' });
     // Inject into the App context
-    internalContext.createAction = _cs;
+    internalContext.createExtension = _cs;
 
     // DEPRECATED: remove in v5.0.0
     internalContext.createHook = (...args) => {
