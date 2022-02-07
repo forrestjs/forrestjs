@@ -2,7 +2,7 @@ const dotted = require('@marcopeg/dotted').default;
 const { createAction } = require('./create-action');
 const { registerExtension } = require('./register-extension');
 const { traceHook } = require('./tracer');
-const { createHooksRegistry } = require('./create-hooks-registry');
+const { createActionsRegistry } = require('./create-actions-registry');
 const constants = require('./constants');
 
 // DEPRECATED: property "hook" is deprecated and will be removed in v5.0.0
@@ -217,7 +217,7 @@ const createHookApp =
         : settings;
 
     // Context bound list of known hooks
-    const hooksRegistry = createHooksRegistry(constants);
+    const hooksRegistry = createActionsRegistry(constants);
 
     // create getter and setter for the configuration
     const getConfig = objectGetter(internalSettings);

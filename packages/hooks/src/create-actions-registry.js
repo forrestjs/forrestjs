@@ -1,4 +1,4 @@
-const SKIP_REGISTER_HOOKS = [
+const SKIP_REGISTER_LIFECYCLE_ACTIONS = [
   '__esModule',
   'SERVICE_NAME',
   'FEATURE_NAME',
@@ -12,8 +12,8 @@ const SKIP_REGISTER_HOOKS = [
 
 const registries = {};
 
-const createHooksRegistry = (initialHooks = {}, { registryName } = {}) => {
-  const knownHooks = {};
+const createActionsRegistry = (initialActions = {}, { registryName } = {}) => {
+  const knownActions = {};
 
   // '$FOO'  - required reference (trigger error if not exists)
   // '$FOO?' - optional reference (returns `null` if not exists)
@@ -21,8 +21,8 @@ const createHooksRegistry = (initialHooks = {}, { registryName } = {}) => {
     const isOptional = name.slice(-1) === '?';
     const hookName = isOptional ? name.substr(0, name.length - 1) : name;
 
-    if (knownHooks[hookName]) {
-      return knownHooks[hookName];
+    if (knownActions[hookName]) {
+      return knownActions[hookName];
     }
 
     if (isOptional) {
@@ -34,17 +34,17 @@ const createHooksRegistry = (initialHooks = {}, { registryName } = {}) => {
 
   const registerAction = (name, value) => {
     // handle key/value input
-    if (knownHooks[name]) {
+    if (knownActions[name]) {
       throw new Error(`Duplicate hook "${name}"`);
     }
-    knownHooks[name] = value;
+    knownActions[name] = value;
   };
 
   const registerActions = (name, value) => {
     // handle a disctionary input
     if (typeof name === 'object') {
       Object.keys(name)
-        .filter((key) => !SKIP_REGISTER_HOOKS.includes(key))
+        .filter((key) => !SKIP_REGISTER_LIFECYCLE_ACTIONS.includes(key))
         .forEach((key) => registerAction(key, name[key]));
       return;
     }
@@ -65,7 +65,7 @@ const createHooksRegistry = (initialHooks = {}, { registryName } = {}) => {
   };
 
   // Initialize the registry with the lifecycle Actions
-  registerActions(initialHooks);
+  registerActions(initialActions);
 
   // Save a global list of registries
   const registry = { getHook, registerHook, registerActions };
@@ -88,7 +88,7 @@ const resetState = () => {
 };
 
 module.exports = {
-  createHooksRegistry,
+  createActionsRegistry,
   getHook,
   resetState,
 };

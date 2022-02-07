@@ -12,7 +12,7 @@
 
 const { appendAction } = require('./state');
 const { logAction } = require('./logger');
-const { getHook } = require('./create-hooks-registry');
+const { getHook } = require('./create-actions-registry');
 
 const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   // (name, handler, options)
