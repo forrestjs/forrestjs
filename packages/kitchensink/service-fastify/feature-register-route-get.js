@@ -8,12 +8,12 @@
  * - $FASTIFY_DELETE
  *
  */
-module.exports = ({ registerExtension }) => {
+module.exports = ({ registerAction }) => {
   /**
    * Using the `registerRoute` API with positional arguments
    */
-  registerExtension({
-    action: '$FASTIFY_GET',
+  registerAction({
+    target: '$FASTIFY_GET',
     name: 'registerRouteGet',
     handler: ({ registerRoute }) => {
       registerRoute('/info1', async () => 'Info1');
@@ -25,8 +25,8 @@ module.exports = ({ registerExtension }) => {
    * (single value)
    */
 
-  registerExtension({
-    action: '$FASTIFY_GET',
+  registerAction({
+    target: '$FASTIFY_GET',
     name: 'registerRouteGet_returningSingle',
     handler: () => ({
       url: '/info3',
@@ -38,8 +38,8 @@ module.exports = ({ registerExtension }) => {
    * (multiple values)
    */
 
-  registerExtension({
-    action: '$FASTIFY_GET',
+  registerAction({
+    target: '$FASTIFY_GET',
     name: 'registerRouteGet_returningMulti',
     handler: () => [
       {
@@ -57,8 +57,8 @@ module.exports = ({ registerExtension }) => {
    * (single value)
    */
 
-  registerExtension({
-    action: '$FASTIFY_GET',
+  registerAction({
+    target: '$FASTIFY_GET',
     name: 'registerRouteGet_declarativeSingle',
     handler: {
       url: '/info6',
@@ -70,8 +70,8 @@ module.exports = ({ registerExtension }) => {
    * (multiple values)
    */
 
-  registerExtension({
-    action: '$FASTIFY_GET',
+  registerAction({
+    target: '$FASTIFY_GET',
     name: 'registerRouteGet_declarativeMulti',
     handler: [
       {

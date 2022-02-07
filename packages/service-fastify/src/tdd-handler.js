@@ -14,7 +14,7 @@ const healthzCheckTypeErrorMessage =
 const resetHandlerTypeErrorMessage =
   '[fastify/tdd] Reset handlers must be function';
 
-const collectRoutes = (createAction, tddScope) => {
+const collectRoutes = (createExtension, tddScope) => {
   const routes = [];
 
   const registerTddRoute = (routeDef = {}) =>
@@ -26,27 +26,29 @@ const collectRoutes = (createAction, tddScope) => {
   // Also collects definition in the form of hook's results
   // Integrations can return either a single route definition
   // or a list of routes.
-  createAction.sync(FASTIFY_TDD_ROUTE, { registerTddRoute }).map((result) => {
-    // Skip null or undefined returns from hooks
-    if (!result[0]) {
-      return;
-    }
+  createExtension
+    .sync(FASTIFY_TDD_ROUTE, { registerTddRoute })
+    .map((result) => {
+      // Skip null or undefined returns from hooks
+      if (!result[0]) {
+        return;
+      }
 
-    // Handle return in array form
-    if (Array.isArray(result[0])) {
-      result[0].map(registerTddRoute);
-    }
+      // Handle return in array form
+      if (Array.isArray(result[0])) {
+        result[0].map(registerTddRoute);
+      }
 
-    // Handle return in object form
-    else {
-      registerTddRoute(result[0]);
-    }
-  });
+      // Handle return in object form
+      else {
+        registerTddRoute(result[0]);
+      }
+    });
 
   return routes;
 };
 
-const collectChecks = (createAction) => {
+const collectChecks = (createExtension) => {
   const checksList = [];
   const registerTddCheck = (check) => {
     // Validate the input to the register check function
@@ -57,7 +59,7 @@ const collectChecks = (createAction) => {
     checksList.push(check);
   };
 
-  createAction
+  createExtension
     .sync(FASTIFY_TDD_CHECK, { registerTddCheck })
     .map((result) => result[0])
     .filter((check) => check !== undefined) // skip empty values
@@ -66,7 +68,7 @@ const collectChecks = (createAction) => {
   return checksList;
 };
 
-const collectResetHandlers = (createAction) => {
+const collectResetHandlers = (createExtension) => {
   const handlers = [];
   const registerResetHandler = (handler, name = null) => {
     // Validate the input to the register handler function
@@ -80,7 +82,7 @@ const collectResetHandlers = (createAction) => {
     });
   };
 
-  createAction
+  createExtension
     .sync(FASTIFY_TDD_RESET, { registerResetHandler })
     .map((result) => result[0])
     .filter((check) => check !== undefined) // skip empty values
@@ -91,15 +93,15 @@ const collectResetHandlers = (createAction) => {
 
 module.exports = (
   { registerRoute },
-  { getConfig, setConfig, createAction },
+  { getConfig, setConfig, createExtension },
 ) => {
   const tddScope = getConfig('fastify.tdd.scope', '/test');
 
   // Collect integrations from other services and features
-  const routes = collectRoutes(createAction, tddScope);
-  const rootChecks = collectChecks(createAction);
-  const rootHandler = createAction.sync(FASTIFY_TDD_ROOT);
-  const resetHandlers = collectResetHandlers(createAction);
+  const routes = collectRoutes(createExtension, tddScope);
+  const rootChecks = collectChecks(createExtension);
+  const rootHandler = createExtension.sync(FASTIFY_TDD_ROOT);
+  const resetHandlers = collectResetHandlers(createExtension);
 
   // Root endpoint definition
   registerRoute({

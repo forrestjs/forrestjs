@@ -22,7 +22,7 @@ const makeRoute = (method) => (route) => {
   return null;
 };
 
-module.exports = ({ getContext, getConfig, createAction }) => {
+module.exports = ({ getContext, getConfig, createExtension }) => {
   const server = getContext('fastify');
 
   // Register route utilities
@@ -39,31 +39,31 @@ module.exports = ({ getContext, getConfig, createAction }) => {
 
   // Colle
   const collectedRoutes = [
-    ...createAction
+    ...createExtension
       .sync(actions.FASTIFY_GET, {
         registerRoute: registerRoute.get,
         fastify: server,
       })
       .map(makeRoute('GET')),
-    ...createAction
+    ...createExtension
       .sync(actions.FASTIFY_POST, {
         registerRoute: registerRoute.post,
         fastify: server,
       })
       .map(makeRoute('POST')),
-    ...createAction
+    ...createExtension
       .sync(actions.FASTIFY_PUT, {
         registerRoute: registerRoute.put,
         fastify: server,
       })
       .map(makeRoute('PUT')),
-    ...createAction
+    ...createExtension
       .sync(actions.FASTIFY_DELETE, {
         registerRoute: registerRoute.delete,
         fastify: server,
       })
       .map(makeRoute('DELETE')),
-    ...createAction
+    ...createExtension
       .sync(actions.FASTIFY_ROUTE, { registerRoute, fastify: server })
       .map(makeRoute(null)),
   ];
@@ -98,7 +98,7 @@ module.exports = ({ getContext, getConfig, createAction }) => {
     });
 
     // Keep this hook for backward compatibility:
-    createAction.sync(actions.FASTIFY_HACKS_AFTER, { fastify: server });
+    createExtension.sync(actions.FASTIFY_HACKS_AFTER, { fastify: server });
   });
 
   const serverPort = getConfig(

@@ -6,7 +6,7 @@ const registerRouteGET = require('./feature-register-route-get');
 const registerTddRoute = require('./feature-register-tdd-route');
 
 const addStuffIntoReset = () => ({
-  action: '$FASTIFY_TDD_RESET',
+  target: '$FASTIFY_TDD_RESET',
   handler: ({ registerResetHandler }) => {
     // You can just provide an anonymous handler:
     registerResetHandler(() => 'unknownHandler');

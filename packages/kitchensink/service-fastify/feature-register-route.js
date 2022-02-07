@@ -8,12 +8,12 @@
  * NOTE: You can register as many routes as you may want within a
  * single feature.
  */
-module.exports = ({ registerExtension }) => {
+module.exports = ({ registerAction }) => {
   /**
    * Using the full `registerRoute` API
    */
-  registerExtension({
-    action: '$FASTIFY_ROUTE',
+  registerAction({
+    target: '$FASTIFY_ROUTE',
     name: 'registerRoute',
     handler: ({ registerRoute }) => {
       registerRoute({
@@ -51,8 +51,8 @@ module.exports = ({ registerExtension }) => {
    * Using the returning API
    * (single value)
    */
-  registerExtension({
-    action: '$FASTIFY_ROUTE',
+  registerAction({
+    target: '$FASTIFY_ROUTE',
     name: 'registerRoute_returningSingle',
     handler: () => ({
       method: 'GET',
@@ -65,8 +65,8 @@ module.exports = ({ registerExtension }) => {
    * Using the returning API
    * (with multiple declarations)
    */
-  registerExtension({
-    action: '$FASTIFY_ROUTE',
+  registerAction({
+    target: '$FASTIFY_ROUTE',
     name: 'registerRoute_returningMulti',
     handler: () => [
       {
@@ -86,8 +86,8 @@ module.exports = ({ registerExtension }) => {
    * Using the declarative API
    * (single value)
    */
-  registerExtension({
-    action: '$FASTIFY_ROUTE',
+  registerAction({
+    target: '$FASTIFY_ROUTE',
     name: 'registerRoute_declarativeSingle',
     handler: {
       method: 'GET',
@@ -100,8 +100,8 @@ module.exports = ({ registerExtension }) => {
    * Using the declarative API
    * (multiple value)
    */
-  registerExtension({
-    action: '$FASTIFY_ROUTE',
+  registerAction({
+    target: '$FASTIFY_ROUTE',
     name: 'registerRoute_declarativeMulti',
     handler: [
       {

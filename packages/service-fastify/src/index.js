@@ -8,31 +8,31 @@ const service = {
   trace: __filename,
 };
 
-module.exports = ({ registerExtension, registerActions }) => {
-  registerActions(actions);
+module.exports = ({ registerAction, registerTargets }) => {
+  registerTargets(actions);
 
   // The TDD support is strictly scoped to the development
   // and test environment, even the module is conditionally
   // loaded to minimize the memory footprint in production
   if (['development', 'test'].includes(process.env.NODE_ENV)) {
     const tddHandler = require('./tdd-handler');
-    registerExtension({
+    registerAction({
       ...service,
-      action: '$FASTIFY_ROUTE',
+      target: '$FASTIFY_ROUTE',
       name: 'fastify-tdd',
       handler: tddHandler,
     });
   }
 
-  registerExtension({
+  registerAction({
     ...service,
-    action: INIT_SERVICE,
+    target: INIT_SERVICE,
     handler: initServiceHandler,
   });
 
-  registerExtension({
+  registerAction({
     ...service,
-    action: START_SERVICE,
+    target: START_SERVICE,
     handler: startServiceHandler,
   });
 };
