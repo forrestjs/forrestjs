@@ -1,6 +1,6 @@
 module.exports = {
   name: 'custom-routes',
-  hook: '$FASTIFY_ROUTE',
+  target: '$FASTIFY_ROUTE',
   handler: [
     {
       method: 'GET',

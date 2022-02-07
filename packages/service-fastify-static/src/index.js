@@ -1,5 +1,5 @@
 const staticPlugin = require('fastify-static');
-const hooks = require('./hooks');
+const targets = require('./targets');
 
 const onFastifyHacksBefore = ({ registerPlugin }, { getConfig }) => {
   const options = getConfig('fastify.static', {});
@@ -8,8 +8,8 @@ const onFastifyHacksBefore = ({ registerPlugin }, { getConfig }) => {
 
 module.exports = ({ registerAction }) => {
   registerAction({
-    hook: '$FASTIFY_PLUGIN',
-    name: hooks.SERVICE_NAME,
+    target: '$FASTIFY_PLUGIN',
+    name: targets.SERVICE_NAME,
     trace: __filename,
     handler: onFastifyHacksBefore,
   });
