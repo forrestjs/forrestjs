@@ -35,7 +35,7 @@ forrestjs({
   features: [
     {
       name: 'test-cookie',
-      action: '$FASTIFY_GET',
+      target: '$FASTIFY_GET',
       handler: [
         {
           url: '/',

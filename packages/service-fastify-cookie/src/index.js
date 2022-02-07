@@ -1,15 +1,16 @@
 const cookiePlugin = require('fastify-cookie');
-const actions = require('./actions');
+const { SERVICE_NAME, ...targets } = require('./targets');
 
 const onFastifyHacksBefore = ({ registerPlugin }, { getConfig }) => {
   const options = getConfig('fastify.cookie', {});
   registerPlugin(cookiePlugin, options);
 };
 
-module.exports = ({ registerExtension }) => {
-  registerExtension({
-    action: '$FASTIFY_PLUGIN',
-    name: actions.SERVICE_NAME,
+module.exports = ({ registerTargets, registerAction }) => {
+  registerTargets(targets);
+  registerAction({
+    name: SERVICE_NAME,
+    target: '$FASTIFY_PLUGIN',
     trace: __filename,
     handler: onFastifyHacksBefore,
   });
