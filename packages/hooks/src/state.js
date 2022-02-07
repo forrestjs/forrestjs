@@ -1,6 +1,6 @@
 const {
   resetState: resetActionsRegistriesState,
-} = require('./create-actions-registry');
+} = require('./create-extensions-registry');
 
 const state = {
   hooks: {},

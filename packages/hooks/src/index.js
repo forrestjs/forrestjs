@@ -8,7 +8,7 @@ const {
   runHookApp,
 } = require('./create-app');
 const { createHookContext } = require('./create-hook-context');
-const { getHook, getAction } = require('./create-actions-registry');
+const { getHook, getAction } = require('./create-extensions-registry');
 const constants = require('./constants');
 
 // DEPRECATED: to remove in v5.0.0

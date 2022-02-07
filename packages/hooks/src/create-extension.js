@@ -128,7 +128,7 @@ createExtension.waterfall = (name, args, context) =>
  * DEPRECATED API
  */
 const createHookDeprecate =
-  '[DEPRECATED] `createHook()` is deprecated and will be removed in next major version (v5.0.0)';
+  '[DEPRECATED] use `createExtension()` instead of `createHook()`.It will be removed in v5.0.0';
 
 const createHook = (...args) => {
   console.warn(createHookDeprecate);
