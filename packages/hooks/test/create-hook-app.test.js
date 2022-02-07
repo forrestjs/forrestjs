@@ -1,9 +1,6 @@
 const { resetState } = require('../src/state');
 const forrestjs = require('../src/index');
-const {
-  registerAction,
-  registerExtension,
-} = require('../src/register-extension');
+const { registerExtension } = require('../src/register-extension');
 const {
   isDeclarativeAction,
   isListOfDeclarativeActions,
@@ -197,8 +194,8 @@ describe('hooks/create-hook-app', () => {
   });
 
   describe('createHookApp / registerHook', () => {
-    const s1 = ({ registerHook, registerExtension, createAction }) => {
-      registerHook({ S1: 's1' });
+    const s1 = ({ registerActions, registerExtension, createAction }) => {
+      registerActions({ S1: 's1' });
       registerExtension({
         action: '$START_SERVICE',
         handler: () => createAction.sync('s1'),
@@ -252,14 +249,14 @@ describe('hooks/create-hook-app', () => {
       const s1Handler = jest.fn();
       const s2Handler = jest.fn();
 
-      const s1 = ({ registerHook, registerExtension, createAction }) => {
-        registerHook('s1', 's1');
+      const s1 = ({ registerActions, registerExtension, createAction }) => {
+        registerActions({ s1: 's1' });
         registerExtension('$INIT_SERVICE', () => createAction.sync('s1'));
         registerExtension('$s2', s2Handler);
       };
 
-      const s2 = ({ registerHook, registerExtension, createAction }) => {
-        registerHook('s2', 's2');
+      const s2 = ({ registerActions, registerExtension, createAction }) => {
+        registerActions({ s2: 's2' });
         registerExtension('$INIT_SERVICE', () => createAction.sync('s2'));
         registerExtension('$s1', s1Handler);
       };
