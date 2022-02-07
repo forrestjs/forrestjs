@@ -280,7 +280,7 @@ const createApp =
     if (trace) {
       registerExtension({
         name: `${constants.BOOT} app/trace`,
-        hook: constants.FINISH,
+        action: constants.FINISH,
         handler: () => {
           console.log('');
           console.log('=================');

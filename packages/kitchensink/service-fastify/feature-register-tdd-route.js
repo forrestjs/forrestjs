@@ -11,7 +11,7 @@
  * - inject custom test healthz checks
  *
  */
-module.exports = ({ registerAction }) => {
+module.exports = ({ registerExtension }) => {
   /**
    * The test root should be used as Healthcheck for running the
    * tests. The checks are middlewars added as "preHandlers" to
@@ -23,8 +23,8 @@ module.exports = ({ registerAction }) => {
    * Tests suites should use this endpoint as precondition to
    * be running the tests.
    */
-  registerAction({
-    hook: '$FASTIFY_TDD_CHECK',
+  registerExtension({
+    action: '$FASTIFY_TDD_CHECK',
     name: 'registerTddCheck',
     handler: ({ registerTddCheck }) => {
       // Simple void check
@@ -55,8 +55,8 @@ module.exports = ({ registerAction }) => {
    * NOTE: only the LAST REGISTERED HOOK will be used for
    *       this purpose.
    */
-  registerAction({
-    hook: '$FASTIFY_TDD_ROOT',
+  registerExtension({
+    action: '$FASTIFY_TDD_ROOT',
     name: 'registerTddRoute',
     handler: () => async (request) => request.customData,
   });
@@ -68,8 +68,8 @@ module.exports = ({ registerAction }) => {
    *
    * NOTE: Only the explicit register function is provided.
    */
-  registerAction({
-    hook: '$FASTIFY_TDD_ROUTE',
+  registerExtension({
+    action: '$FASTIFY_TDD_ROUTE',
     name: 'registerTddRoute',
     handler: ({ registerTddRoute }) => {
       registerTddRoute({

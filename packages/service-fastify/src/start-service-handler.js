@@ -1,4 +1,4 @@
-const hooks = require('./hooks');
+const actions = require('./actions');
 const { MissingPropertyError } = require('./errors');
 
 // Receives in "route" the return data structure from a "registerHook.sync" call.
@@ -22,7 +22,7 @@ const makeRoute = (method) => (route) => {
   return null;
 };
 
-module.exports = ({ getContext, getConfig, createHook }) => {
+module.exports = ({ getContext, getConfig, createAction }) => {
   const server = getContext('fastify');
 
   // Register route utilities
@@ -39,39 +39,39 @@ module.exports = ({ getContext, getConfig, createHook }) => {
 
   // Colle
   const collectedRoutes = [
-    ...createHook
-      .sync(hooks.FASTIFY_GET, {
+    ...createAction
+      .sync(actions.FASTIFY_GET, {
         registerRoute: registerRoute.get,
         fastify: server,
       })
       .map(makeRoute('GET')),
-    ...createHook
-      .sync(hooks.FASTIFY_POST, {
+    ...createAction
+      .sync(actions.FASTIFY_POST, {
         registerRoute: registerRoute.post,
         fastify: server,
       })
       .map(makeRoute('POST')),
-    ...createHook
-      .sync(hooks.FASTIFY_PUT, {
+    ...createAction
+      .sync(actions.FASTIFY_PUT, {
         registerRoute: registerRoute.put,
         fastify: server,
       })
       .map(makeRoute('PUT')),
-    ...createHook
-      .sync(hooks.FASTIFY_DELETE, {
+    ...createAction
+      .sync(actions.FASTIFY_DELETE, {
         registerRoute: registerRoute.delete,
         fastify: server,
       })
       .map(makeRoute('DELETE')),
-    ...createHook
-      .sync(hooks.FASTIFY_ROUTE, { registerRoute, fastify: server })
+    ...createAction
+      .sync(actions.FASTIFY_ROUTE, { registerRoute, fastify: server })
       .map(makeRoute(null)),
   ];
 
   // Register the routes in the "after" hook as suggested by new docs:
   server.after(() => {
     // Register the routes collected out of the returning value of
-    // the routing hooks
+    // the routing actions
     collectedRoutes
       .filter(($) => $ !== null)
       .filter(($) => $[0] !== undefined)
@@ -98,7 +98,7 @@ module.exports = ({ getContext, getConfig, createHook }) => {
     });
 
     // Keep this hook for backward compatibility:
-    createHook.sync(hooks.FASTIFY_HACKS_AFTER, { fastify: server });
+    createAction.sync(actions.FASTIFY_HACKS_AFTER, { fastify: server });
   });
 
   const serverPort = getConfig(

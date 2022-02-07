@@ -234,6 +234,6 @@ describe('service-fastify-standalone', () => {
   it('should run the reset endpoint', async () => {
     const res = await global.reset();
     expect(res.success).toBe(true);
-    console.log(res.data.results);
+    // console.log(res.data.results);
   });
 });

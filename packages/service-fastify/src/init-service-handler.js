@@ -1,11 +1,11 @@
 const fastify = require('fastify');
 const axios = require('axios');
-const hooks = require('./hooks');
+const actions = require('./actions');
 
-module.exports = ({ getConfig, setContext, createHook, getContext }) => {
+module.exports = ({ getConfig, setContext, createAction, getContext }) => {
   // Get overridable options from the app's context
-  const { value: options } = createHook.waterfall(
-    hooks.FASTIFY_OPTIONS,
+  const { value: options } = createAction.waterfall(
+    actions.FASTIFY_OPTIONS,
     getConfig('fastify.instance.options', {}),
   );
   const server = fastify(options);
@@ -44,8 +44,8 @@ module.exports = ({ getConfig, setContext, createHook, getContext }) => {
   decorateReply('getContext', getContext);
   decorateReply('axios', axios);
 
-  createHook.sync(hooks.FASTIFY_HACKS_BEFORE, { fastify: server });
-  createHook.sync(hooks.FASTIFY_PLUGIN, {
+  createAction.sync(actions.FASTIFY_HACKS_BEFORE, { fastify: server });
+  createAction.sync(actions.FASTIFY_PLUGIN, {
     registerPlugin,
     decorate,
     decorateRequest,
