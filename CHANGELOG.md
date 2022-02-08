@@ -15,8 +15,9 @@
 - [x] Deprecate `registerHook` for `registerTargets` who always get a map of hooks to add
 - [x] Deprecate `getHook()` for `getAction()`
 - [ ] Fix kitchensink/mock-axios-e2e
-- [ ] Fix service order dependency in `service-fetchq` - it should work seamlessly before/after `service-fastify`
+- [x] Fix service order dependency in `service-fetchq` - it should work seamlessly before/after `service-fastify`
 - [ ] Should be able to `exports.name = 'featureName'; exports.actions = [{ hook, handler }, ...]`
+- [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 
 ## 4.1.0
 

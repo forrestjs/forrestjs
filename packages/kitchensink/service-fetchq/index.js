@@ -24,7 +24,7 @@ forrestjs({
   services: [
     serviceLogger,
     serviceJwt,
-    serviceFetchq,
+    serviceFetchq, // The order is not important
     serviceFastify,
     serviceFastifyHealthz,
   ],

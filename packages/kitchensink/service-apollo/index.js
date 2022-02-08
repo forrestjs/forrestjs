@@ -13,7 +13,7 @@ const GET_COUNTRIES = gql`
 `;
 
 const homePage = () => ({
-  hook: '$FASTIFY_GET',
+  target: '$FASTIFY_GET',
   handler: {
     url: '/',
     handler: (request) =>
@@ -39,6 +39,6 @@ forrestjs({
       },
     },
   },
-  services: [serviceApollo, serviceFastify],
+  services: [serviceFastify, serviceApollo],
   features: [homePage],
 }).catch((err) => console.error(err));

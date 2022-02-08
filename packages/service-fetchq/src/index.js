@@ -77,6 +77,7 @@ module.exports = ({ registerAction, registerTargets }) => {
     target: '$INIT_SERVICE',
     name: SERVICE_NAME,
     trace: __filename,
+    priority: 100,
     handler: onInitService,
   });
 
@@ -84,6 +85,7 @@ module.exports = ({ registerAction, registerTargets }) => {
     target: '$START_SERVICE',
     name: SERVICE_NAME,
     trace: __filename,
+    priority: 100,
     handler: onStartService,
   });
 

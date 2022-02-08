@@ -1,15 +1,21 @@
 const ApolloClient = require('apollo-boost').default;
 require('cross-fetch/polyfill');
 
-const { SERVICE_NAME, ...hooks } = require('./hooks');
+const { SERVICE_NAME, ...targets } = require('./targets');
 
-module.exports = ({ registerAction, setContext, getConfig, registerHook }) => {
-  registerHook(hooks);
+module.exports = ({
+  registerAction,
+  setContext,
+  getConfig,
+  registerTargets,
+}) => {
+  registerTargets(targets);
 
   registerAction({
-    hook: '$INIT_SERVICE',
+    target: '$INIT_SERVICE',
     name: SERVICE_NAME,
     trace: __filename,
+    priority: 100,
     handler: () => {
       const apollo = new ApolloClient(getConfig('apollo.client.config', {}));
       setContext('apollo', apollo);
@@ -17,7 +23,7 @@ module.exports = ({ registerAction, setContext, getConfig, registerHook }) => {
   });
 
   registerAction({
-    hook: '$FASTIFY_PLUGIN?',
+    target: '$FASTIFY_PLUGIN?',
     name: SERVICE_NAME,
     trace: __filename,
     handler: ({ decorate, decorateRequest }, { getContext }) => {
