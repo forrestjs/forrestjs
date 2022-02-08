@@ -1,5 +1,5 @@
 const path = require('path');
-const forrestjs = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/core');
 const serviceFastify = require('@forrestjs/service-fastify');
 const serviceFastifyStatic = require('@forrestjs/service-fastify-static');
 

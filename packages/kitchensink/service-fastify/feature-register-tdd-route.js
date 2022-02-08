@@ -24,7 +24,7 @@ module.exports = ({ registerAction }) => {
    * be running the tests.
    */
   registerAction({
-    hook: '$FASTIFY_TDD_CHECK',
+    target: '$FASTIFY_TDD_CHECK',
     name: 'registerTddCheck',
     handler: ({ registerTddCheck }) => {
       // Simple void check
@@ -56,7 +56,7 @@ module.exports = ({ registerAction }) => {
    *       this purpose.
    */
   registerAction({
-    hook: '$FASTIFY_TDD_ROOT',
+    target: '$FASTIFY_TDD_ROOT',
     name: 'registerTddRoute',
     handler: () => async (request) => request.customData,
   });
@@ -69,7 +69,7 @@ module.exports = ({ registerAction }) => {
    * NOTE: Only the explicit register function is provided.
    */
   registerAction({
-    hook: '$FASTIFY_TDD_ROUTE',
+    target: '$FASTIFY_TDD_ROUTE',
     name: 'registerTddRoute',
     handler: ({ registerTddRoute }) => {
       registerTddRoute({

@@ -80,7 +80,7 @@ Now that our Feature is complete it is time to refactor the App's manifest `/src
 
 ```js
 // Import Libraries:
-import forrestjs from '@forrestjs/hooks';
+import forrestjs from '@forrestjs/core';
 
 // Import Services:
 import reactRoot from '@forrestjs/react-root';

@@ -14,7 +14,7 @@ const defaultOptions = {
   onItemError,
 };
 
-const createHook = (name, receivedOptions = {}) => {
+const createExtension = (name, receivedOptions = {}) => {
   const { hooks, stack } = getState();
 
   stack.push(name);
@@ -112,15 +112,32 @@ const createHook = (name, receivedOptions = {}) => {
  * Helpers Shortcuts
  */
 
-createHook.sync = (name, args, context) => createHook(name, { args, context });
+createExtension.sync = (name, args, context) =>
+  createExtension(name, { args, context, mode: 'sync' });
 
-createHook.serie = (name, args, context) =>
-  createHook(name, { args, context, mode: 'serie' });
+createExtension.serie = (name, args, context) =>
+  createExtension(name, { args, context, mode: 'serie' });
 
-createHook.parallel = (name, args, context) =>
-  createHook(name, { args, context, mode: 'parallel' });
+createExtension.parallel = (name, args, context) =>
+  createExtension(name, { args, context, mode: 'parallel' });
 
-createHook.waterfall = (name, args, context) =>
-  createHook(name, { args, context, mode: 'waterfall' });
+createExtension.waterfall = (name, args, context) =>
+  createExtension(name, { args, context, mode: 'waterfall' });
 
-module.exports = { createHook };
+/**
+ * DEPRECATED API
+ */
+const createHookDeprecate =
+  '[DEPRECATED] use `createExtension()` instead of `createHook()`.It will be removed in v5.0.0';
+
+const createHook = (...args) => {
+  console.warn(createHookDeprecate);
+  return createExtension(...args);
+};
+
+createHook.sync = createExtension.sync;
+createHook.serie = createExtension.serie;
+createHook.parallel = createExtension.parallel;
+createHook.waterfall = createExtension.waterfall;
+
+module.exports = { createHook, createExtension };

@@ -1,5 +1,5 @@
 const { resetState } = require('../src/state');
-const { createHook } = require('../src/create-hook');
+const { createExtension } = require('../src/create-extension');
 const { registerAction } = require('../src/register-action');
 
 describe('hooks/sync', () => {
@@ -8,17 +8,17 @@ describe('hooks/sync', () => {
   it('should run hooks', () => {
     const handler = jest.fn();
     registerAction({
-      hook: 'foo',
+      target: 'foo',
       handler,
     });
-    createHook('foo');
+    createExtension('foo');
     expect(handler.mock.calls.length).toBe(1);
   });
 
   it('should log action names', () => {
-    const ac1 = { hook: 'foo', name: 'ac1', handler: () => 22 };
+    const ac1 = { target: 'foo', name: 'ac1', handler: () => 22 };
     const ac2 = {
-      hook: 'foo',
+      target: 'foo',
       handler: function ac2() {
         return 23;
       },
@@ -27,7 +27,7 @@ describe('hooks/sync', () => {
     registerAction(ac1);
     registerAction(ac2);
 
-    const results = createHook('foo');
+    const results = createExtension('foo');
 
     expect(results[0][0]).toBe(22);
     expect(results[0][1].name).toBe('ac1');
@@ -38,10 +38,10 @@ describe('hooks/sync', () => {
   it('should run sync hooks with helper function', () => {
     const handler = jest.fn();
     registerAction({
-      hook: 'foo',
+      target: 'foo',
       handler,
     });
-    createHook.sync('foo');
+    createExtension.sync('foo');
     expect(handler.mock.calls.length).toBe(1);
   });
 });

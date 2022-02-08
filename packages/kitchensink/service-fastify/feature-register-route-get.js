@@ -13,7 +13,7 @@ module.exports = ({ registerAction }) => {
    * Using the `registerRoute` API with positional arguments
    */
   registerAction({
-    hook: '$FASTIFY_GET',
+    target: '$FASTIFY_GET',
     name: 'registerRouteGet',
     handler: ({ registerRoute }) => {
       registerRoute('/info1', async () => 'Info1');
@@ -26,7 +26,7 @@ module.exports = ({ registerAction }) => {
    */
 
   registerAction({
-    hook: '$FASTIFY_GET',
+    target: '$FASTIFY_GET',
     name: 'registerRouteGet_returningSingle',
     handler: () => ({
       url: '/info3',
@@ -39,7 +39,7 @@ module.exports = ({ registerAction }) => {
    */
 
   registerAction({
-    hook: '$FASTIFY_GET',
+    target: '$FASTIFY_GET',
     name: 'registerRouteGet_returningMulti',
     handler: () => [
       {
@@ -58,7 +58,7 @@ module.exports = ({ registerAction }) => {
    */
 
   registerAction({
-    hook: '$FASTIFY_GET',
+    target: '$FASTIFY_GET',
     name: 'registerRouteGet_declarativeSingle',
     handler: {
       url: '/info6',
@@ -71,7 +71,7 @@ module.exports = ({ registerAction }) => {
    */
 
   registerAction({
-    hook: '$FASTIFY_GET',
+    target: '$FASTIFY_GET',
     name: 'registerRouteGet_declarativeMulti',
     handler: [
       {

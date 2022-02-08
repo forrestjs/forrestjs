@@ -15,7 +15,7 @@ const homeRouteHandler = async (request, response) =>
     .catch((err) => response.status(500).send(err.message));
 
 module.exports = {
-  hook: '$FASTIFY_GET',
+  target: '$FASTIFY_GET',
   name: 'home',
   handler: {
     url: '/',

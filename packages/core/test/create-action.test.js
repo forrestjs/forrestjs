@@ -1,8 +1,8 @@
 const { registerAction } = require('../src/register-action');
-const { createHook } = require('../src/create-hook');
+const { createExtension } = require('../src/create-extension');
 const { resetState } = require('../src/state');
 
-describe('createHook()', () => {
+describe('createExtension()', () => {
   beforeEach(resetState);
 
   test('hooks should carry on a context', () => {
@@ -10,7 +10,7 @@ describe('createHook()', () => {
       expect(args.foo).toBe(1);
       expect(ctx.foo).toBe(2);
     });
-    createHook('foo', {
+    createExtension('foo', {
       args: { foo: 1 },
       context: { foo: 2 },
     });

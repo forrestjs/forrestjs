@@ -4,7 +4,7 @@ const verifyHandler = async (request) =>
 
 module.exports = {
   name: 'home',
-  hook: '$FASTIFY_ROUTE',
+  target: '$FASTIFY_ROUTE',
   handler: [
     {
       method: 'POST',

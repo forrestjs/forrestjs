@@ -1,4 +1,4 @@
-const forrestjs = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/core');
 const serviceFastify = require('@forrestjs/service-fastify');
 const serviceHash = require('@forrestjs/service-hash');
 
@@ -11,6 +11,6 @@ forrestjs({
       rounds: 1,
     },
   },
-  services: [serviceHash, serviceFastify],
+  services: [serviceFastify, serviceHash],
   features: [featureHome],
 }).catch((err) => console.error(err));

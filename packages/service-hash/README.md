@@ -7,7 +7,7 @@ ForrestJS service which helps hashing stuff with bcrypt.
 `service-hash` decorates the _Hooks App Context_ with a `hash.encode()` and `hash.compare()` helpers:
 
 ```js
-const hooks = require('@forrestjs/hooks');
+const hooks = require('@forrestjs/core');
 hooks.registerAction({
   hook: hooks.FINISH,
   handler: async (args, ctx) => {

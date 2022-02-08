@@ -1,5 +1,5 @@
-const { INIT_SERVICE, START_SERVICE } = require('@forrestjs/hooks');
-const hooks = require('./hooks');
+const { INIT_SERVICE, START_SERVICE } = require('@forrestjs/core');
+const actions = require('./actions');
 const initServiceHandler = require('./init-service-handler');
 const startServiceHandler = require('./start-service-handler');
 
@@ -8,8 +8,8 @@ const service = {
   trace: __filename,
 };
 
-module.exports = ({ registerAction, registerHook }) => {
-  registerHook(hooks);
+module.exports = ({ registerAction, registerTargets }) => {
+  registerTargets(actions);
 
   // The TDD support is strictly scoped to the development
   // and test environment, even the module is conditionally
@@ -18,7 +18,7 @@ module.exports = ({ registerAction, registerHook }) => {
     const tddHandler = require('./tdd-handler');
     registerAction({
       ...service,
-      hook: '$FASTIFY_ROUTE',
+      target: '$FASTIFY_ROUTE',
       name: 'fastify-tdd',
       handler: tddHandler,
     });
@@ -26,13 +26,13 @@ module.exports = ({ registerAction, registerHook }) => {
 
   registerAction({
     ...service,
-    hook: INIT_SERVICE,
+    target: INIT_SERVICE,
     handler: initServiceHandler,
   });
 
   registerAction({
     ...service,
-    hook: START_SERVICE,
+    target: START_SERVICE,
     handler: startServiceHandler,
   });
 };

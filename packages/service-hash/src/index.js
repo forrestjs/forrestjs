@@ -7,7 +7,7 @@
  */
 
 const bcrypt = require('bcrypt-nodejs');
-const hooks = require('./hooks');
+const { SERVICE_NAME, ...targets } = require('./targets');
 
 let rounds = null;
 let salt = null;
@@ -46,12 +46,13 @@ const genSalt = (rounds) =>
     });
   });
 
-const serviceBcrypt = ({ registerAction }) => {
+const serviceBcrypt = ({ registerTargets, registerAction }) => {
+  registerTargets(targets);
   registerAction({
-    hook: '$INIT_SERVICES',
-    name: hooks.SERVICE_NAME,
+    target: '$INIT_SERVICES',
+    name: SERVICE_NAME,
     trace: __filename,
-    // handler: ({ hash }) => init(hash),
+    priority: 100,
     handler: async ({ getConfig }, ctx) => {
       const logInfo = ctx.logInfo || console.log;
 
@@ -81,8 +82,8 @@ const serviceBcrypt = ({ registerAction }) => {
 
   // Fastify Integration (optional hook)
   registerAction({
-    hook: '$FASTIFY_PLUGIN?',
-    name: hooks.SERVICE_NAME,
+    target: '$FASTIFY_PLUGIN?',
+    name: SERVICE_NAME,
     trace: __filename,
     handler: ({ decorate, decorateRequest }, { getContext }) => {
       const hash = getContext('hash');
@@ -96,8 +97,8 @@ const serviceBcrypt = ({ registerAction }) => {
    */
 
   registerAction({
-    hook: '$FASTIFY_TDD_ROUTE?',
-    name: hooks.SERVICE_NAME,
+    target: '$FASTIFY_TDD_ROUTE?',
+    name: SERVICE_NAME,
     trace: __filename,
     handler: ({ registerTddRoute }) => {
       registerTddRoute({

@@ -12,9 +12,14 @@ const { traceHook, logTrace } = require('./tracer');
 
 let traceIndex = 0;
 
-const createHookContext =
-  (settings = {}) =>
-  (req, res, next) => {
+const createHookContext = (settings = {}) => {
+  console.warn(
+    '[DEPRECATED] `createHookContext()` is deprecated in favour of `forrestjs.create()` and will be remove in next major version 5.0.0',
+  );
+  return (req, res, next) => {
+    console.warn(
+      '[DEPRECATED] `createHookContext()` is deprecated in favour of `forrestjs.create()` and will be remove in next major version 5.0.0',
+    );
     const namespace = settings.namespace || 'hooks';
     const expiry = settings.expiry || 5000;
     const log = settings.logging || console.log;
@@ -37,5 +42,6 @@ const createHookContext =
     req[namespace] = hooks;
     next();
   };
+};
 
 module.exports = { createHookContext };

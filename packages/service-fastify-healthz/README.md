@@ -1,6 +1,6 @@
 # @forrestjs/service-fastify-healthz
 
-ForrestJS service which helps setting up an Fastify healthcheck route.  
+ForrestJS service which helps setting up an Fastify healthcheck route.
 
 DEMO:  
 https://codesandbox.io/s/service-fastify-healthz-4g3my
@@ -8,14 +8,14 @@ https://codesandbox.io/s/service-fastify-healthz-4g3my
 ## Install & Setup
 
 ```bash
-npm install --save @forrestjs/hooks @forrestjs/service-fastify @forrestjs/service-fastify-healthz
+npm install --save @forrestjs/core @forrestjs/service-fastify @forrestjs/service-fastify-healthz
 ```
 
 set it up in your FastifyJS App:
 
 ```js
 // index.js
-const { runHookApp } = require('@forrestjs/hooks');
+const { runHookApp } = require('@forrestjs/core');
 const fastifyService = require('@forrestjs/service-fastify');
 const fastifyHealthzService = require('@forrestjs/service-fastify-healthz');
 

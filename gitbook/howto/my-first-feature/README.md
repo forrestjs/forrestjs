@@ -7,7 +7,7 @@ A ForrestJS feature is an isolated module that implements existing hooks, creati
 In this toutorial we will use the hooks library in order to describe a modular application:
 
 ```bash
-npm add @forrestjs/hooks
+npm add @forrestjs/core
 ```
 
 ## Step By Step
@@ -15,4 +15,3 @@ npm add @forrestjs/hooks
 - [The App Scaffold](./010-forrestjs-app-scaffold/README.md)
 - [A Feature Anathomy](./020-forrestjs-feature-anathomy/README.md)
 - [The Boot Order & App's Lifecycle](./030-forrestjs-app-lifecycle/README.md)
-

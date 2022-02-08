@@ -13,7 +13,7 @@ module.exports = ({ registerAction }) => {
    * Using the full `registerRoute` API
    */
   registerAction({
-    hook: '$FASTIFY_ROUTE',
+    target: '$FASTIFY_ROUTE',
     name: 'registerRoute',
     handler: ({ registerRoute }) => {
       registerRoute({
@@ -52,7 +52,7 @@ module.exports = ({ registerAction }) => {
    * (single value)
    */
   registerAction({
-    hook: '$FASTIFY_ROUTE',
+    target: '$FASTIFY_ROUTE',
     name: 'registerRoute_returningSingle',
     handler: () => ({
       method: 'GET',
@@ -66,7 +66,7 @@ module.exports = ({ registerAction }) => {
    * (with multiple declarations)
    */
   registerAction({
-    hook: '$FASTIFY_ROUTE',
+    target: '$FASTIFY_ROUTE',
     name: 'registerRoute_returningMulti',
     handler: () => [
       {
@@ -87,7 +87,7 @@ module.exports = ({ registerAction }) => {
    * (single value)
    */
   registerAction({
-    hook: '$FASTIFY_ROUTE',
+    target: '$FASTIFY_ROUTE',
     name: 'registerRoute_declarativeSingle',
     handler: {
       method: 'GET',
@@ -101,7 +101,7 @@ module.exports = ({ registerAction }) => {
    * (multiple value)
    */
   registerAction({
-    hook: '$FASTIFY_ROUTE',
+    target: '$FASTIFY_ROUTE',
     name: 'registerRoute_declarativeMulti',
     handler: [
       {

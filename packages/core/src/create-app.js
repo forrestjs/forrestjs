@@ -1,16 +1,18 @@
 const dotted = require('@marcopeg/dotted').default;
-const { createHook } = require('./create-hook');
+const { createExtension } = require('./create-extension');
 const { registerAction } = require('./register-action');
 const { traceHook } = require('./tracer');
-const { createHooksRegistry } = require('./create-hooks-registry');
+const { createRegistry } = require('./create-actions-registry');
 const constants = require('./constants');
 
-const isDeclarativeAction = ({ hook, handler }) =>
-  typeof hook === 'string' &&
+// DEPRECATED: property "hook" is deprecated and will be removed in v5.0.0
+const isDeclarativeAction = ({ hook, target, handler }) =>
+  (typeof hook === 'string' || typeof target === 'string') &&
   (typeof handler === 'object' || typeof handler === 'function');
 
 const isListOfDeclarativeActions = (list) =>
   Array.isArray(list) && list.every(isDeclarativeAction);
+
 /**
  * All the utilization of "registerAction" by an integration's
  * manifest will be queued into an in-memory store and applied only
@@ -27,7 +29,7 @@ const isListOfDeclarativeActions = (list) =>
  * @param {*} prefix
  */
 const runIntegrations = async (integrations, context, prefix = '') => {
-  const registeredActions = [];
+  const registeredExtensions = [];
 
   // Execute the integration functions
   for (const service of integrations) {
@@ -39,6 +41,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
     // function that is able to use the function's name as feature name
     // That will reduce the need for using the property "name" during
     // the registration of the features
+    // const registerExtension = ;
     const computed =
       typeof registerFn === 'function'
         ? await registerFn({
@@ -49,7 +52,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
               // registerAction('hook', () => {}, 'name')
               // registerAction('hook', () => {}, { name: 'name' })
               if (typeof ag1 === 'string') {
-                return registeredActions.push([
+                return registeredExtensions.push([
                   ag1,
                   ag2,
                   {
@@ -63,7 +66,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
               }
 
               // Handle definition as an object
-              return registeredActions.push({
+              return registeredExtensions.push({
                 ...ag1,
                 name: `${prefix}${ag1.name || integrationName}`,
               });
@@ -75,7 +78,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
     // [ { hook, handler, ... }, { ... }]
     if (isListOfDeclarativeActions(computed)) {
       computed.forEach((item) =>
-        registeredActions.push({
+        registeredExtensions.push({
           ...item,
           name: `${prefix}${item.name || integrationName}`,
         }),
@@ -96,7 +99,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
         '[DEPRECATED] please use the object base declarative pattern { hook, handler, ... } - this API will be removed in v5.0.0',
       );
       const [hook, handler, options = {}] = computed;
-      registeredActions.push({
+      registeredExtensions.push({
         ...(typeof options === 'string'
           ? { name: `${prefix}${options}` }
           : {
@@ -111,8 +114,13 @@ const runIntegrations = async (integrations, context, prefix = '') => {
 
     // register a single action give an a configuration object
     // { hook, handler, ... }
-    else if (computed && computed.hook && computed.handler) {
-      registeredActions.push({
+    // DEPRECATED: "hook" in favor for "target" - remove in v5.0.0
+    else if (
+      computed &&
+      (computed.hook || computed.target) &&
+      computed.handler
+    ) {
+      registeredExtensions.push({
         ...computed,
         name: `${prefix}${computed.name || integrationName}`,
       });
@@ -120,7 +128,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
   }
 
   // Register all the actions declared by the integrations that have been executed
-  registeredActions.forEach((actionDef) => context.registerAction(actionDef));
+  registeredExtensions.forEach(context.registerAction);
 };
 
 const objectSetter = (targetObject) => (path, value) => {
@@ -145,8 +153,21 @@ const objectGetter = (targetObject) => (path, defaultValue) => {
   throw new Error(`path "${path}" does not exists!`);
 };
 
-const createHookApp =
-  (appDefinition = {}) =>
+const registerSettingsExtension = (buildAppSettings) => {
+  registerAction({
+    name: `${constants.BOOT} app/settings`,
+    target: constants.SETTINGS,
+    handler: async (ctx) => {
+      const values = await buildAppSettings(ctx, ctx);
+      values &&
+        Object.keys(values).forEach((key) => ctx.setConfig(key, values[key]));
+    },
+  });
+  return {};
+};
+
+const createApp =
+  (appManifest = {}) =>
   async () => {
     // accepts a single param as [] of features
     const {
@@ -155,32 +176,17 @@ const createHookApp =
       settings = {},
       context = {},
       trace = null,
-    } = Array.isArray(appDefinition)
-      ? { features: appDefinition }
-      : appDefinition;
+    } = Array.isArray(appManifest) ? { features: appManifest } : appManifest;
 
     // creates initial internal settings from an object
     // or automatically register the provided settings callback
     const internalSettings =
       typeof settings === 'function'
-        ? (() => {
-            registerAction({
-              name: `${constants.BOOT} app/settings`,
-              hook: constants.SETTINGS,
-              handler: async () => {
-                const values = await settings(internalContext, internalContext);
-                values &&
-                  Object.keys(values).forEach((key) => {
-                    internalSettings[key] = values[key];
-                  });
-              },
-            });
-            return {};
-          })()
+        ? registerSettingsExtension(settings)
         : settings;
 
-    // Context bound list of known hooks
-    const hooksRegistry = createHooksRegistry(constants);
+    // Context bound list of known Actions
+    const actionsRegistry = createRegistry(constants);
 
     // create getter and setter for the configuration
     const getConfig = objectGetter(internalSettings);
@@ -189,34 +195,57 @@ const createHookApp =
     // create the context with getters / setters /
     const internalContext = {
       ...context,
-      ...hooksRegistry,
+      ...actionsRegistry,
       registerAction,
       setConfig,
       getConfig,
       setContext: null,
       getContext: null,
+      createExtension: null,
+      createHook: null, // DEPRECATED: remove in v5.0.0
     };
 
     // provide an api to deal with the internal context
     internalContext.getContext = objectGetter(internalContext);
     internalContext.setContext = objectSetter(internalContext);
 
-    // createHook scoped to the Hook App context
-    const scopedCreateHook = (name, options) =>
-      createHook(name, { ...options, context: internalContext });
-    scopedCreateHook.sync = (name, args) => scopedCreateHook(name, { args });
-    scopedCreateHook.serie = (name, args) =>
-      scopedCreateHook(name, { args, mode: 'serie' });
-    scopedCreateHook.parallel = (name, args) =>
-      scopedCreateHook(name, { args, mode: 'parallel' });
-    scopedCreateHook.waterfall = (name, args) =>
-      scopedCreateHook(name, { args, mode: 'waterfall' });
-    internalContext.createHook = scopedCreateHook;
+    // createExtension scoped to the App context
+    const _cs = (name, args) =>
+      createExtension(name, { ...args, context: internalContext });
+    _cs.sync = (name, args) => _cs(name, { args, mode: 'sync' });
+    _cs.serie = (name, args) => _cs(name, { args, mode: 'serie' });
+    _cs.parallel = (name, args) => _cs(name, { args, mode: 'parallel' });
+    _cs.waterfall = (name, args) => _cs(name, { args, mode: 'waterfall' });
+    // Inject into the App context
+    internalContext.createExtension = _cs;
 
+    // DEPRECATED: remove in v5.0.0
+    internalContext.createHook = (...args) => {
+      console.warn('[DEPRECATED] createHook');
+      return _cs(...args);
+    };
+    internalContext.createHook.sync = (...args) => {
+      console.warn('[DEPRECATED] createHook');
+      return _cs.sync(...args);
+    };
+    internalContext.createHook.serie = (...args) => {
+      console.warn('[DEPRECATED] createHook');
+      return _cs.serie(...args);
+    };
+    internalContext.createHook.parallel = (...args) => {
+      console.warn('[DEPRECATED] createHook');
+      return _cs.parallel(...args);
+    };
+    internalContext.createHook.waterfall = (...args) => {
+      console.warn('[DEPRECATED] createHook');
+      return _cs.waterfall(...args);
+    };
+
+    // LOt OF WORK TO DO HERE!
     if (trace) {
       registerAction({
         name: `${constants.BOOT} app/trace`,
-        hook: constants.FINISH,
+        target: constants.FINISH,
         handler: () => {
           console.log('');
           console.log('=================');
@@ -239,18 +268,18 @@ const createHookApp =
 
     // run lifecycle
     await runIntegrations(services, internalContext, `${constants.SERVICE} `);
-    await scopedCreateHook.serie(constants.START, internalContext);
-    await scopedCreateHook.serie(constants.SETTINGS, internalContext);
+    await _cs.serie(constants.START, internalContext);
+    await _cs.serie(constants.SETTINGS, internalContext);
     await runIntegrations(features, internalContext, `${constants.FEATURE} `);
-    await scopedCreateHook.parallel(constants.INIT_SERVICES, internalContext);
-    await scopedCreateHook.serie(constants.INIT_SERVICE, internalContext);
-    await scopedCreateHook.parallel(constants.INIT_FEATURES, internalContext);
-    await scopedCreateHook.serie(constants.INIT_FEATURE, internalContext);
-    await scopedCreateHook.parallel(constants.START_SERVICES, internalContext);
-    await scopedCreateHook.serie(constants.START_SERVICE, internalContext);
-    await scopedCreateHook.parallel(constants.START_FEATURES, internalContext);
-    await scopedCreateHook.serie(constants.START_FEATURE, internalContext);
-    await scopedCreateHook.serie(constants.FINISH, internalContext);
+    await _cs.parallel(constants.INIT_SERVICES, internalContext);
+    await _cs.serie(constants.INIT_SERVICE, internalContext);
+    await _cs.parallel(constants.INIT_FEATURES, internalContext);
+    await _cs.serie(constants.INIT_FEATURE, internalContext);
+    await _cs.parallel(constants.START_SERVICES, internalContext);
+    await _cs.serie(constants.START_SERVICE, internalContext);
+    await _cs.parallel(constants.START_FEATURES, internalContext);
+    await _cs.serie(constants.START_FEATURE, internalContext);
+    await _cs.serie(constants.FINISH, internalContext);
 
     return {
       settings: internalSettings,
@@ -258,12 +287,30 @@ const createHookApp =
     };
   };
 
-// Convenient method to skip the double function
-const runHookApp = (...args) => createHookApp(...args)();
+const startApp = ($) => {
+  const app = createApp($);
+  return app();
+};
+
+// DEPRECATED: remove in v5.0.0
+const createHookApp = ($) => {
+  console.warn(
+    '[DEPRECATED] use "createApp()" instead of "createHookApp()". It will be removed in v5.0.0',
+  );
+  return createApp($);
+};
+const runHookApp = ($) => {
+  console.warn(
+    '[DEPRECATED] use "createApp()" instead of "runHookApp()". It will be removed in v5.0.0',
+  );
+  return startApp($);
+};
 
 module.exports = {
-  createHookApp,
-  runHookApp,
+  createApp,
+  startApp,
   isDeclarativeAction,
   isListOfDeclarativeActions,
+  createHookApp, // DEPRECATED: remove in v5.0.0
+  runHookApp, // DEPRECATED: remove in v5.0.0
 };

@@ -1,32 +1,33 @@
 {
   "name": "@forrestjs/hooks",
-  "description": "ForrestJS library which helps to decouple your application into small and reusable modules.",
-  "version": "4.1.2",
+  "description": "DEPRECATED: see @forrestjs/core",
+  "version": "4.2.0",
   "main": "src/index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@marcopeg/dotted": "^1.12.0"
+    "@forrestjs/core": "^4.2.0"
   },
-  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/hooks#readme",
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/core#readme",
   "keywords": [
     "forrestjs",
-    "hooks",
-    "dependencies",
-    "injection",
+    "plugin",
+    "extendibility",
+    "features",
+    "services",
+    "extensions",
+    "actions",
     "modularity"
   ],
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/hooks",
+  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/core",
   "scripts": {
-    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json",
-    "test": "jest",
-    "tdd": "jest --watchAll"
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
   },
   "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578"
 }

@@ -1,15 +1,11 @@
 const stubSettings = {
-  url: 'https://official-joke-api.appspot.com/jokes/ten',
+  url: 'https://api.github.com/users/marcopeg',
   response: {
     status: 200,
-    response: [
-      {
-        id: 279,
-        type: 'general',
-        setup: 'aaa',
-        punchline: 'bbb',
-      },
-    ],
+    response: {
+      login: 'fakeUname',
+      name: 'Fake Surname',
+    },
   },
 };
 
@@ -18,12 +14,12 @@ describe('mock-axios-e2e', () => {
   afterEach(global.mockAxios.reset);
 
   it('should run without mocks', async () => {
-    // A joke should have 2 lines
+    // The name should contain "aka"
     const r1 = await global.get('/');
-    expect(r1.split('\n').length >= 2).toBe(true);
+    expect(r1.split('aka').length >= 2).toBe(true);
 
-    // Jokes should be randomic
-    const r2 = await global.get('/');
+    // It should be possible to pull different usernames
+    const r2 = await global.get('/?uname=defunkt');
     expect(r1 !== r2).toBe(true);
   });
 
@@ -32,8 +28,7 @@ describe('mock-axios-e2e', () => {
 
     // Run the test with the stubbed response
     const r1 = await global.get('/');
-    const r1Tokens = r1.split('\n');
-    expect(r1Tokens).toMatchObject(['aaa', 'bbb']);
+    expect(r1).toBe('fakeUname, aka: Fake Surname');
 
     // Reset the stubs and try again with the normal behavior
     await global.testDelete.debug('/axios/stubs');

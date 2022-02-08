@@ -1,4 +1,4 @@
-const forrestjs = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/core');
 const serviceFastify = require('@forrestjs/service-fastify');
 const serviceFastifyCors = require('@forrestjs/service-fastify-cors');
 const featureCustomRoutes = require('./feature-custom-routes');

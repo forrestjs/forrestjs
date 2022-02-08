@@ -1,11 +1,11 @@
 const { resetState } = require('../src/state');
 const forrestjs = require('../src/index');
 const { registerAction } = require('../src/register-action');
+const constants = require('../src/constants');
 const {
   isDeclarativeAction,
   isListOfDeclarativeActions,
-} = require('../src/create-hook-app');
-const constants = require('../src/constants');
+} = require('../src/create-app');
 
 describe('hooks/create-hook-app', () => {
   beforeEach(resetState);
@@ -13,15 +13,15 @@ describe('hooks/create-hook-app', () => {
   describe('utils', () => {
     const featureA = [
       {
-        hook: 'foo',
+        target: 'foo',
         handler: () => {},
       },
       {
-        hook: 'foo',
+        target: 'foo',
         handler: [],
       },
       {
-        hook: 'foo',
+        target: 'foo',
         handler: {},
       },
     ];
@@ -72,11 +72,11 @@ describe('hooks/create-hook-app', () => {
     expect(handler.mock.calls.length).toBe(2);
   });
 
-  // DEPRECATED
+  // DEPRECATED: remove in v5.0.0
   it.skip('should register a service as single hook setup', async () => {
     const handler = jest.fn();
     const s1 = ['foo', handler];
-    const f1 = ({ createHook }) => createHook('foo');
+    const f1 = ({ createAction }) => createAction('foo');
 
     await forrestjs.run({
       services: [s1],
@@ -94,7 +94,7 @@ describe('hooks/create-hook-app', () => {
       },
       features: [
         {
-          hook: '$START_FEATURE',
+          target: '$START_FEATURE',
           handler: ({ getConfig }) => f1(getConfig('foo.faa')),
         },
       ],
@@ -113,7 +113,7 @@ describe('hooks/create-hook-app', () => {
         // register a programmatic feature
         ({ registerAction }) =>
           registerAction({
-            hook: '$INIT_SERVICE',
+            target: '$INIT_SERVICE',
             handler: ({ getConfig, setConfig }) =>
               setConfig('foo', getConfig('foo.faa') * 2),
           }),
@@ -121,7 +121,7 @@ describe('hooks/create-hook-app', () => {
       features: [
         // register a declarative feature
         {
-          hook: '$START_FEATURE',
+          target: '$START_FEATURE',
           handler: ({ getConfig }) => f1(getConfig('foo')),
         },
       ],
@@ -143,23 +143,23 @@ describe('hooks/create-hook-app', () => {
       },
       services: [
         {
-          hook: '$START_SERVICE',
-          handler: async ({ createHook }) => {
-            const r1 = createHook.sync('aaa', { value: 1 });
+          target: '$START_SERVICE',
+          handler: async ({ createExtension }) => {
+            const r1 = createExtension.sync('aaa', { value: 1 });
             f1(r1[0][0]);
 
-            const r2 = await createHook.serie('bbb', { value: 2 });
+            const r2 = await createExtension.serie('bbb', { value: 2 });
             f2(r2[0][0]);
 
-            const r3 = await createHook.parallel('ccc', { value: 3 });
+            const r3 = await createExtension.parallel('ccc', { value: 3 });
             f3(r3[0][0]);
           },
         },
       ],
       features: [
-        { hook: 'aaa', handler: (args, ctx) => ctx.foo(args, ctx) },
-        { hook: 'bbb', handler: (args, ctx) => ctx.foo(args, ctx) },
-        { hook: 'ccc', handler: (args, ctx) => ctx.foo(args, ctx) },
+        { target: 'aaa', handler: (args, ctx) => ctx.foo(args, ctx) },
+        { target: 'bbb', handler: (args, ctx) => ctx.foo(args, ctx) },
+        { target: 'ccc', handler: (args, ctx) => ctx.foo(args, ctx) },
       ],
     });
 
@@ -194,17 +194,17 @@ describe('hooks/create-hook-app', () => {
   });
 
   describe('createHookApp / registerHook', () => {
-    const s1 = ({ registerHook, registerAction, createHook }) => {
-      registerHook({ S1: 's1' });
+    const s1 = ({ registerTargets, registerAction, createExtension }) => {
+      registerTargets({ S1: 's1' });
       registerAction({
-        hook: '$START_SERVICE',
-        handler: () => createHook.sync('s1'),
+        target: '$START_SERVICE',
+        handler: () => createExtension.sync('s1'),
       });
     };
 
     it('should run a required service by reference', async () => {
       const handler = jest.fn();
-      const f1 = { hook: '$S1', handler };
+      const f1 = { target: '$S1', handler };
 
       await forrestjs.run({
         services: [s1],
@@ -216,7 +216,7 @@ describe('hooks/create-hook-app', () => {
 
     it('should fail to run a required service by reference', async () => {
       const handler = jest.fn();
-      const f1 = { hook: '$S1', handler };
+      const f1 = { target: '$S1', handler };
 
       let error = null;
       try {
@@ -233,7 +233,7 @@ describe('hooks/create-hook-app', () => {
 
     it('should ignore an optional service by reference', async () => {
       const handler = jest.fn();
-      const f1 = { hook: '$S1?', handler };
+      const f1 = { target: '$S1?', handler };
 
       await forrestjs.run({
         // services: [s1],
@@ -249,15 +249,15 @@ describe('hooks/create-hook-app', () => {
       const s1Handler = jest.fn();
       const s2Handler = jest.fn();
 
-      const s1 = ({ registerHook, registerAction, createHook }) => {
-        registerHook('s1', 's1');
-        registerAction('$INIT_SERVICE', () => createHook.sync('s1'));
+      const s1 = ({ registerTargets, registerAction, createExtension }) => {
+        registerTargets({ s1: 's1' });
+        registerAction('$INIT_SERVICE', () => createExtension.sync('s1'));
         registerAction('$s2', s2Handler);
       };
 
-      const s2 = ({ registerHook, registerAction, createHook }) => {
-        registerHook('s2', 's2');
-        registerAction('$INIT_SERVICE', () => createHook.sync('s2'));
+      const s2 = ({ registerTargets, registerAction, createExtension }) => {
+        registerTargets({ s2: 's2' });
+        registerAction('$INIT_SERVICE', () => createExtension.sync('s2'));
         registerAction('$s1', s1Handler);
       };
 
@@ -274,7 +274,7 @@ describe('hooks/create-hook-app', () => {
 
       await forrestjs.run([
         {
-          hook: '$INIT_SERVICE',
+          target: '$INIT_SERVICE',
           handler: handler1,
         },
       ]);
@@ -289,11 +289,11 @@ describe('hooks/create-hook-app', () => {
       await forrestjs.run([
         [
           {
-            hook: '$INIT_SERVICE',
+            target: '$INIT_SERVICE',
             handler: handler1,
           },
           {
-            hook: '$INIT_SERVICE',
+            target: '$INIT_SERVICE',
             handler: handler2,
           },
         ],

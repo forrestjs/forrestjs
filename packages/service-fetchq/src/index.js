@@ -1,13 +1,18 @@
 const fetchq = require('fetchq');
-const { SERVICE_NAME, ...hooks } = require('./hooks');
+const { SERVICE_NAME, ...targets } = require('./targets');
 
-const onInitService = ({ getConfig, getContext, setContext, createHook }) => {
-  // Decorate the Fetchq context with a reference to the getters in the hooks app:
+const onInitService = ({
+  getConfig,
+  getContext,
+  setContext,
+  createExtension,
+}) => {
+  // Decorate the Fetchq context with a reference to the getters in the targets app:
   const receivedConfig = getConfig('fetchq', {});
 
   // Let other services/features to inject APIs into Fetchq's workers' context.
-  const { value: extendedContext } = createHook.waterfall(
-    hooks.FETCHQ_DECORATE_CONTEXT,
+  const { value: extendedContext } = createExtension.waterfall(
+    targets.FETCHQ_DECORATE_CONTEXT,
     {},
   );
 
@@ -25,11 +30,11 @@ const onInitService = ({ getConfig, getContext, setContext, createHook }) => {
   setContext('fetchq', client);
 };
 
-const onStartService = async ({ getConfig, getContext, createHook }) => {
+const onStartService = async ({ getConfig, getContext, createExtension }) => {
   const client = getContext('fetchq');
 
   // register feature's queues
-  const queues = createHook.sync(hooks.FETCHQ_REGISTER_QUEUE, {
+  const queues = createExtension.sync(targets.FETCHQ_REGISTER_QUEUE, {
     fetchq: client,
   });
   queues.forEach((def) => {
@@ -44,7 +49,7 @@ const onStartService = async ({ getConfig, getContext, createHook }) => {
   });
 
   // register feature's workers
-  const workers = createHook.sync(hooks.FETCHQ_REGISTER_WORKER, {
+  const workers = createExtension.sync(targets.FETCHQ_REGISTER_WORKER, {
     fetchq: client,
   });
   workers.forEach((def) => {
@@ -58,27 +63,29 @@ const onStartService = async ({ getConfig, getContext, createHook }) => {
 
   await client.init();
 
-  await createHook.serie(hooks.FETCHQ_BEFORE_START, { fetchq: client });
+  await createExtension.serie(targets.FETCHQ_BEFORE_START, { fetchq: client });
 
   await client.start();
 
-  await createHook.serie(hooks.FETCHQ_READY, { fetchq: client });
+  await createExtension.serie(targets.FETCHQ_READY, { fetchq: client });
 };
 
-module.exports = ({ registerAction, registerHook }) => {
-  registerHook(hooks);
+module.exports = ({ registerAction, registerTargets }) => {
+  registerTargets(targets);
 
   registerAction({
-    hook: '$INIT_SERVICE',
+    target: '$INIT_SERVICE',
     name: SERVICE_NAME,
     trace: __filename,
+    priority: 100,
     handler: onInitService,
   });
 
   registerAction({
-    hook: '$START_SERVICE',
+    target: '$START_SERVICE',
     name: SERVICE_NAME,
     trace: __filename,
+    priority: 100,
     handler: onStartService,
   });
 
@@ -87,7 +94,7 @@ module.exports = ({ registerAction, registerHook }) => {
    */
 
   registerAction({
-    hook: '$FASTIFY_PLUGIN?',
+    target: '$FASTIFY_PLUGIN?',
     name: SERVICE_NAME,
     trace: __filename,
     handler: ({ decorate, decorateRequest }, { getContext }) => {
@@ -113,14 +120,14 @@ module.exports = ({ registerAction, registerHook }) => {
   };
 
   registerAction({
-    hook: '$FASTIFY_TDD_CHECK?',
+    target: '$FASTIFY_TDD_CHECK?',
     name: SERVICE_NAME,
     trace: __filename,
     handler: () => healthcheckHandler,
   });
 
   registerAction({
-    hook: '$FASTIFY_HEALTHZ_CHECK?',
+    target: '$FASTIFY_HEALTHZ_CHECK?',
     name: SERVICE_NAME,
     trace: __filename,
     handler: () => healthcheckHandler,
@@ -131,10 +138,10 @@ module.exports = ({ registerAction, registerHook }) => {
    * Integrate with the Fastify TDD API
    */
   registerAction({
-    hook: '$FASTIFY_TDD_ROUTE?',
+    target: '$FASTIFY_TDD_ROUTE?',
     name: SERVICE_NAME,
     trace: __filename,
-    handler: ({ registerTddRoute }, { createHook }) => {
+    handler: ({ registerTddRoute }, { createExtension }) => {
       const schemaFields = {
         type: 'object',
         properties: {
@@ -270,7 +277,9 @@ module.exports = ({ registerAction, registerHook }) => {
           );
           await fetchq.boot();
 
-          await createHook.serie(hooks.FETCHQ_TDD_STATE_RESET, { query });
+          await createExtension.serie(targets.FETCHQ_TDD_STATE_RESET, {
+            query,
+          });
           return '+ok';
         },
       });

@@ -1,4 +1,4 @@
-const forrestjs = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/core');
 const serviceFastify = require('@forrestjs/service-fastify');
 const serviceFastifyGQL = require('@forrestjs/service-fastify-gql');
 
@@ -8,6 +8,9 @@ const featurePing = require('./feature-ping');
 forrestjs({
   trace: 'compact',
   settings: {
+    ping: {
+      message: '+ok',
+    },
     fastify: {
       gql: {
         playground: true,

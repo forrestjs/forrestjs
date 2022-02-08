@@ -1,4 +1,4 @@
-import forrestjs from '@forrestjs/hooks';
+import forrestjs from '@forrestjs/core';
 
 // Services
 import { reactRoot } from './services/react-root';
