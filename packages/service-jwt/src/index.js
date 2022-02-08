@@ -37,7 +37,7 @@ const decode = (token, options) => jwt.decode(token, options);
 const serviceJwt = ({ registerTargets, registerAction }) => {
   registerTargets(targets);
   registerAction({
-    target: '$INIT_SERVICE',
+    target: '$INIT_SERVICES',
     name: SERVICE_NAME,
     trace: __filename,
     priority: 100,
