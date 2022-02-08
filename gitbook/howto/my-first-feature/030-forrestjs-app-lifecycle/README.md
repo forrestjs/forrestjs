@@ -8,18 +8,18 @@
 
 Features and Services manifest are **executed synchronously and in the same order as they are declared** in the App's manifest.
 
-> The **single responsibility** of the Feature manifest's function is to **register actions into existing hooks**, extending the App's capabilities with custom logic.
+> The **Single Responsibility** of the Feature Manifest's function is to **register Actions into existing Extensions**, extending the App's capabilities with custom logic.
 
-A ForrestJS App ships [a list of **lifecycle hooks**](https://github.com/forrestjs/forrestjs/blob/master/packages/hooks/docs/create-hook-app.md) that can be used to manage an orchestated the booting sequence of your application:
+A ForrestJS App ships [a list of **Lifecycle Extensions**](https://github.com/forrestjs/forrestjs/blob/master/packages/core/docs/create-hook-app.md) that can be used to manage an orchestated the booting sequence of your application:
 
 ```js
 const feature1 = {
-  hook: '$INIT_FEATURE',
+  target: '$INIT_FEATURE',
   handler: () => console.log('> feature 1'),
 };
 
 const feature2 = {
-  hook: '$INIT_FEATURE',
+  target: '$INIT_FEATURE',
   handler: () => console.log('> feature 2'),
 };
 ```
@@ -44,12 +44,12 @@ But the order of the features doesn't affect the execution order of different li
 
 ```js
 const feature1 = {
-  hook: '$START_FEATURE',
+  target: '$START_FEATURE',
   handler: () => console.log('> feature 1'),
 };
 
 const feature2 = {
-  hook: '$INIT_FEATURE',
+  target: '$INIT_FEATURE',
   handler: () => console.log('> feature 2'),
 };
 
@@ -59,9 +59,9 @@ forrestjs.run([feature1, feature2]);
 // > feature 1
 ```
 
-This happens because the `$INIT_FEATURE` hooks is always fired _before_ the `$START_FEATURE` one.
+This happens because the `$INIT_FEATURE` Lifecycle Extension is always fired _before_ the `$START_FEATURE` one.
 
-> Use the lifecycle hooks if you want to guarantee a proper timing in the execution of your logic.
+> Use the Lifecycle Extensions if you want to guarantee proper timing in the execution of your logic.
 
 ---
 
@@ -70,9 +70,9 @@ https://codesandbox.io/s/forrestjs-app-lifecycle-qkxep?file=/src/index.js
 
 ---
 
-## ForrestJS Lifecyle Hooks
+## ForrestJS Lifecyle Extensions
 
-Here is a comprehensive list of the existing lifecycle hooks.
+Here is a comprehensive list of the existing Lifecyle Extensions:
 
 ### $START
 

@@ -23,7 +23,7 @@ In this toutorial we will use the following ForrestJS libraries:
 
 ```bash
 npm add axios
-npm add @forrestjs/hooks
+npm add @forrestjs/core
 npm add @forrestjs/react-root
 npm add @forrestjs/react-mui
 npm add @forrestjs/react-router

@@ -7,7 +7,7 @@ In this tutorial you will learn how to expose a simple RESTfull API using [Fasti
 In this toutorial we will use the following ForrestJS libraries:
 
 ```bash
-npm add @forrestjs/hooks
+npm add @forrestjs/core
 npm add @forrestjs/service-fastify
 npm add @forrestjs/service-fastify-healthz
 ```

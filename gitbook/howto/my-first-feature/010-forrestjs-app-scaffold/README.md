@@ -9,7 +9,7 @@
 Create a new `app.js` file and use the following scaffold to kick off a new ForrestJS App:
 
 ```js
-const forrestjs = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/core');
 
 forrestjs
   .run({

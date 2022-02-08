@@ -14,7 +14,7 @@ In a ForrestJS App things are a bit different, as we use the `/index.js` as the 
 
 ```js
 // Import Libraries:
-import forrestjs from '@forrestjs/hooks';
+import forrestjs from '@forrestjs/core';
 
 // Import Services:
 import reactRoot from '@forrestjs/react-root';
