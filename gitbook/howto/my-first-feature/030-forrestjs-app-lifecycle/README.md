@@ -1,6 +1,6 @@
 <h1 class="tutorial-step"><span>My First Feature &raquo;</span> The Boot Order & App's Lifecycle</h1>
 
-[My First Feature](../README.md) &raquo; [A Feature Anathomy](./README.md)
+[My First Feature](../README.md) &raquo; [The Boot Order & App's Lifecycle](./README.md)
 
 ---
 

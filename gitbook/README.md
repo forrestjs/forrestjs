@@ -1,8 +1,8 @@
-# @ForrestJS - Modular NodeJS Apps
+# @ForrestJS - The JavaScript Plugin Library
 
 Hey mate, thank you for landing here!
 
-> ForrestJS helps you build a **Modular JavaScript** application where you can (almost) forget about the infrastructure and **focus on your business value**.
+> ForrestJS helps you build a **Modular JavaScript** application where you can (almost) forget about the infrastructure and **FOCUS ON YOUR BUSINESS VALUE**.
 
 ## Try It Out:
 
@@ -25,7 +25,7 @@ The easiest way to start with ForrestJS is to see it in action on CodeSandbox:
 ## What You Get
 
 - Modular and interoperable architecture perfectly suited for micro-services and micro-frontends
-- App lifecycle hooks to coordinate booting procedures
+- App's Lifecycle Extensions help coordinate the booting procedures
 - Modules composition traceability and reporting
 - Configuration API
 - Context API
@@ -58,6 +58,16 @@ for their business-related projects.
 it up-to-date with new versions of the few dependencies that we use.
 
 WANNA HELP ME?
+
+## Old Documentation
+
+All the documentation is part of the [main repository](https://github.com/forrestjs/forrestjs).
+
+You can go back in time and navigate the repo and the documentation for each release:
+
+- [v4.1.2 docs](https://github.com/forrestjs/forrestjs/tree/2cc6e1933d1379c41393faeb6c180f9390653642/gitbook)
+- [v4.1.1 docs](https://github.com/forrestjs/forrestjs/blob/f13e2a3c6225adb11776667d571685bd8a0b5997/gitbook/README.md)
+- [v4.1.0 docs](https://github.com/forrestjs/forrestjs/blob/4b359a42f4154f0681d9d0955ade08957534c767/gitbook/README.md)
 
 ## You should know...
 
