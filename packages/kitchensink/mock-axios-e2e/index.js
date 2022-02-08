@@ -1,7 +1,7 @@
 const forrestjs = require('@forrestjs/core');
 const serviceFastify = require('@forrestjs/service-fastify');
 
-const featureJokes = require('./feature-jokes');
+const githubUser = require('./github-user');
 
 forrestjs({
   trace: 'compact',
@@ -11,5 +11,5 @@ forrestjs({
     },
   },
   services: [serviceFastify],
-  features: [featureJokes],
+  features: [githubUser],
 }).catch((err) => console.error(err));
