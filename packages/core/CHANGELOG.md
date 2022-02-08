@@ -1,5 +1,13 @@
 # Change Log
 
+## v4.2.0
+
+- Deprecate `createHook` for `runActions`
+- Deprecate `registerAction({ hook: 'xxx' })` for `registerAction({ target: 'xxx', name: 'yyy' })`
+- Deprecate `registerAction` for `registerExtension`
+- Deprecate `registerHook` for `registerTargets` who always get a map of hooks to add
+- Deprecate `getHook()` for `getAction()`
+
 ## v4.1.0
 
 - Deprecate array based declarative features [ hook, handler, ... ]

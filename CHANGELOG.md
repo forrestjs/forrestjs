@@ -7,17 +7,20 @@
 - [ ] remove `registerHook` support
 - [ ] action's parameter will be reversed (ctx, action's data)
 
-## 4.2.0 (roadmap)
+## 4.3.0 (roadmap)
 
-- [x] Deprecate `createHook` for `runActions`
-- [x] Deprecate `registerAction({ hook: 'xxx' })` for `registerAction({ target: 'xxx', name: 'yyy' })`
-- [x] Deprecate `registerAction` for `registerExtension`
-- [x] Deprecate `registerHook` for `registerTargets` who always get a map of hooks to add
-- [x] Deprecate `getHook()` for `getAction()`
-- [ ] Fix kitchensink/mock-axios-e2e
-- [x] Fix service order dependency in `service-fetchq` - it should work seamlessly before/after `service-fastify`
 - [ ] Should be able to `exports.name = 'featureName'; exports.actions = [{ hook, handler }, ...]`
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
+
+## 4.2.0
+
+- Deprecate `createHook` for `runActions`
+- Deprecate `registerAction({ hook: 'xxx' })` for `registerAction({ target: 'xxx', name: 'yyy' })`
+- Deprecate `registerAction` for `registerExtension`
+- Deprecate `registerHook` for `registerTargets` who always get a map of hooks to add
+- Deprecate `getHook()` for `getAction()`
+- Fix kitchensink/mock-axios-e2e
+- Fix service order dependency in `service-fetchq` - it should work seamlessly before/after `service-fastify`
 
 ## 4.1.0
 
