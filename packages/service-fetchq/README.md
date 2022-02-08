@@ -6,7 +6,7 @@ Minimalist FetchQ wrapper that sets up a FetchQ client and injects it into
 the app's context.
 
 ```js
-const { runHookApp } = require('@forrestjs/hooks');
+const { runHookApp } = require('@forrestjs/core');
 const serviceEnv = require('@forrestjs/service-env');
 const serviceLogger = require('@forrestjs/service-logger');
 const serviceFetchq = require('./service/service-fetchq');
@@ -16,21 +16,18 @@ const settingsHandler = ({ setConfig, getEnv }) =>
     logLevel: 'info',
     connectionString: 'postgres://user:pass@host:port/db',
     skipExtension: true,
-    queues: [{
-      name: 'queue_name',
-      isActive: true,
-      enableNotifications: true,
-    }]
+    queues: [
+      {
+        name: 'queue_name',
+        isActive: true,
+        enableNotifications: true,
+      },
+    ],
   });
 
 runHookApp({
   trace: 'compact',
   settings: settingsHandler,
-  services: [
-    serviceEnv,
-    serviceLogger,
-    serviceFetchq,
-  ],
+  services: [serviceEnv, serviceLogger, serviceFetchq],
 });
 ```
-

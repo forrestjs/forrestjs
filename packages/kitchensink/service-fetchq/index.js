@@ -1,4 +1,4 @@
-const forrestjs = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/core');
 const serviceLogger = require('@forrestjs/service-logger');
 const serviceJwt = require('@forrestjs/service-jwt');
 const serviceFetchq = require('@forrestjs/service-fetchq');

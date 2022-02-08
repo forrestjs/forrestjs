@@ -1,4 +1,4 @@
-const forrestjs = require('@forrestjs/hooks');
+const forrestjs = require('@forrestjs/core');
 
 /**
  * This feature uses the `registerAction()` pattern and provides

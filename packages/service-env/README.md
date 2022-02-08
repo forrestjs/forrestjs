@@ -19,22 +19,18 @@ that are bound to the execution context (your laptop, a production server).
 This service injects a `getEnv()` method into the Hooks App execution context:
 
 ```js
-const { runHookApp, FINISH } = require('@forrestjs/hooks')
+const { runHookApp, FINISH } = require('@forrestjs/core');
 
 runHookApp({
-    services: [
-        require('@forrestjs/service-env'),
-    ],
-    features: [
-        [FINISH, (args, ctx) => console.log(getEnv('FOO'), 'default for "foo"')]
-    ]
-})
+  services: [require('@forrestjs/service-env')],
+  features: [
+    [FINISH, (args, ctx) => console.log(getEnv('FOO'), 'default for "foo"')],
+  ],
+});
 ```
 
 After the Hooks App gets initialized, you can also directly import `getEnv()`:
 
 ```js
-const { getEnv } = require('@forrestjs/service-env')
+const { getEnv } = require('@forrestjs/service-env');
 ```
-
-

@@ -1,6 +1,6 @@
 # @forrestjs/service-logger
 
-ForrestJS service which helps logging stuff in the server. 
+ForrestJS service which helps logging stuff in the server.
 It uses [winston](https://www.npmjs.com/package/winston) under the hood.
 
 ## Usage
@@ -9,21 +9,21 @@ It uses [winston](https://www.npmjs.com/package/winston) under the hood.
 to access it from any action:
 
 ```js
-const hooks = require('@forrestjs/hooks')
+const hooks = require('@forrestjs/core');
 hooks.registerAction({
-    hook: hooks.FINISH,
-    handler: (args, ctx) => {
-        ctx.logger.info('Test')
-    },
-})
+  hook: hooks.FINISH,
+  handler: (args, ctx) => {
+    ctx.logger.info('Test');
+  },
+});
 ```
 
 After the Hooks App gets initialized, you can also access some direct logging methods
 by importing them directly:
 
 ```js
-const logger = require('@forrestjs/service-logger')
-logger.logInfo('test...')
+const logger = require('@forrestjs/service-logger');
+logger.logInfo('test...');
 ```
 
 ## Configuration
@@ -48,13 +48,11 @@ hook before running `createHookApp`, as Service Logger hooks into `START` with t
 the rest of the app with a viable logging mechanism.
 
 ```js
-const serviceLogger = require('@forrestjs/service-logger')
+const serviceLogger = require('@forrestjs/service-logger');
 
 registerAction({
-    hook: serviceLogger.LOGGER_TRANSPORTS,
-    handler: ({ registerTransport, winston }) =>
-        registerTransport(new winston.transports.Console())
-})
+  hook: serviceLogger.LOGGER_TRANSPORTS,
+  handler: ({ registerTransport, winston }) =>
+    registerTransport(new winston.transports.Console()),
+});
 ```
-
-

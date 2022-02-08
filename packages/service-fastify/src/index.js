@@ -1,4 +1,4 @@
-const { INIT_SERVICE, START_SERVICE } = require('@forrestjs/hooks');
+const { INIT_SERVICE, START_SERVICE } = require('@forrestjs/core');
 const actions = require('./actions');
 const initServiceHandler = require('./init-service-handler');
 const startServiceHandler = require('./start-service-handler');

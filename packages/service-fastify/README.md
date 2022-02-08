@@ -15,7 +15,7 @@ set it up in your FastifyJS App:
 
 ```js
 // index.js
-const { runHookApp } = require('@forrestjs/hooks');
+const { runHookApp } = require('@forrestjs/core');
 const fastifyService = require('@forrestjs/service-fastify');
 
 // Create an Home Page for the Web App

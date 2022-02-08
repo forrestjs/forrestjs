@@ -77,7 +77,7 @@ App **open for extensions** that come from modules you haven't yet thought of:
 ```js
 // server.js
 import express from 'express';
-import { createHook } from '@forrestjs/hooks';
+import { createHook } from '@forrestjs/core';
 
 // Setup a basic Express app:
 const app = express();
@@ -108,7 +108,7 @@ your app:
 
 ```js
 // mighty-offer.js
-import { registerAction } from '@forrestjs/hooks';
+import { registerAction } from '@forrestjs/core';
 
 registerAction({
   name: 'mightyOffer',
@@ -136,7 +136,7 @@ something like that in `index.js`:
 
 ```js
 const customPort = () => 5050;
-require('@forrestjs/hooks').registerAction('express/port', customPort);
+require('@forrestjs/core').registerAction('express/port', customPort);
 
 // rest of the code...
 ```
@@ -157,7 +157,7 @@ Don't you worry, we have this covered. Add this to your `index.js`:
 ```js
 // rest of the code...
 
-const { traceHook } = require('@forrestjs/hooks');
+const { traceHook } = require('@forrestjs/core');
 console.log('Boot Trace:');
 console.log('=================');
 console.log(traceHook()('compact')('cli').join('\n'));
@@ -227,8 +227,8 @@ developing a generic backend application. Long story short it helps you
 Here is the examples we saw so far, packaged as a `runHookApp()`:
 
 ```js
-const { runHookApp } = require('@forrestjs/hooks');
-const { INIT_SERVICES, START_SERVICES } = require('@forrestjs/hooks');
+const { runHookApp } = require('@forrestjs/core');
+const { INIT_SERVICES, START_SERVICES } = require('@forrestjs/core');
 
 // This service runs a simple Express server that can be extended
 // by other services or features.

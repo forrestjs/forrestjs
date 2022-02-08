@@ -1,4 +1,4 @@
-const { runHookApp } = require('@forrestjs/hooks');
+const { runHookApp } = require('@forrestjs/core');
 
 forrestjs({
   trace: 'compact',
