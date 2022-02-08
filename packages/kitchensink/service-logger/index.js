@@ -3,7 +3,7 @@ const serviceFastify = require('@forrestjs/service-fastify');
 const serviceLogger = require('@forrestjs/service-logger');
 
 const logSomething = () => ({
-  hook: '$INIT_FEATURE',
+  target: '$INIT_FEATURE',
   handler: ({ log }) => {
     log.error('This is an ERROR log');
     log.warn('This is an WARN log');
@@ -15,7 +15,7 @@ const logSomething = () => ({
 });
 
 const homePage = () => ({
-  hook: '$FASTIFY_GET',
+  target: '$FASTIFY_GET',
   handler: {
     url: '/',
     handler: (request, reply) => {

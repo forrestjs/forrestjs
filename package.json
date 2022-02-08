@@ -9,7 +9,7 @@
     "ci-bootstrap": "lerna bootstrap --hoist",
     "ci-test": "lerna run test",
     "build": "lerna run build",
-    "link": "lerna run link",
+    "link": "lerna link",
     "deploy": "lerna run build && lerna publish",
     "deploy:all": "lerna run build && lerna publish --force-publish"
   },

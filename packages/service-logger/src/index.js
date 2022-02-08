@@ -1,18 +1,18 @@
 const winston = require('winston');
-const { SERVICE_NAME, ...hooks } = require('./hooks');
+const { SERVICE_NAME, ...targets } = require('./targets');
 
-const serviceLogger = ({ registerAction, registerHook }) => {
-  registerHook(hooks);
+const serviceLogger = ({ registerAction, registerTargets }) => {
+  registerTargets(targets);
 
   registerAction({
-    hook: '$START',
+    target: '$START',
     name: SERVICE_NAME,
     trace: __filename,
     handler: ({ getConfig, setContext, createHook }) => {
       // Let other extensions configure the transports
       const transports = [];
       const registerTransport = ($) => transports.push($);
-      createHook.serie(hooks.LOGGER_TRANSPORTS, {
+      createHook.serie(targets.LOGGER_TRANSPORTS, {
         winston,
         registerTransport,
       });
@@ -44,7 +44,7 @@ const serviceLogger = ({ registerAction, registerHook }) => {
   // Fastify Integration (optional hook)
   // nullify any custom setting for the default logger
   registerAction({
-    hook: '$FASTIFY_OPTIONS?',
+    target: '$FASTIFY_OPTIONS?',
     name: SERVICE_NAME,
     trace: __filename,
     handler: (options) => ({
@@ -63,8 +63,8 @@ const serviceLogger = ({ registerAction, registerHook }) => {
   // Here we are truly messing around with it and overriding
   // the standard logger with Winston.
   registerAction({
-    hook: '$FASTIFY_HACKS_BEFORE?',
-    name: hooks.SERVICE_NAME,
+    target: '$FASTIFY_HACKS_BEFORE?',
+    name: targets.SERVICE_NAME,
     trace: __filename,
     handler: ({ fastify }, { getContext }) => {
       const logger = getContext('log');
@@ -81,8 +81,8 @@ const serviceLogger = ({ registerAction, registerHook }) => {
   // Fetchq Integration (optional hook)
   // Injects the `log` API into the registered workers.
   registerAction({
-    hook: '$FETCHQ_DECORATE_CONTEXT?',
-    name: hooks.SERVICE_NAME,
+    target: '$FETCHQ_DECORATE_CONTEXT?',
+    name: targets.SERVICE_NAME,
     trace: __filename,
     handler: (context, { getContext }) => ({
       ...context,

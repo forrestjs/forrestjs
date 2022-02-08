@@ -1,4 +1,4 @@
-const { SERVICE_NAME, ...hooks } = require('./hooks');
+const { SERVICE_NAME, ...targets } = require('./targets.js');
 
 const healthzCheckTypeErrorMessage =
   '[fastify-healthz] The healthz check must be a Fastify compatible preHandler function';
@@ -9,21 +9,29 @@ const healthzRouteHandler = async () => ({
   emotion: '💩',
 });
 
-module.exports = ({ registerAction, createHook, getConfig, registerHook }) => {
-  registerHook(hooks);
+module.exports = ({
+  registerAction,
+  createExtension,
+  getConfig,
+  registerTargets,
+}) => {
+  registerTargets(targets);
 
   registerAction({
-    hook: '$FASTIFY_ROUTE',
+    target: '$FASTIFY_ROUTE',
     name: SERVICE_NAME,
     handler: ({ registerRoute }) => {
       // Let a custom handler logic being injected
       let customHandler = null;
       const registerHandler = (handler) => (customHandler = handler);
-      const returnedHandlers = createHook.sync(hooks.FASTIFY_HEALTHZ_HANDLER, {
-        registerHandler,
-      });
+      const returnedHandlers = createExtension.sync(
+        targets.FASTIFY_HEALTHZ_HANDLER,
+        {
+          registerHandler,
+        },
+      );
 
-      // Allows to return the route handler from the hooks' hander
+      // Allows to return the route handler from the targets' hander
       if (!customHandler && returnedHandlers.length) {
         const lastReturnedHandler =
           returnedHandlers[returnedHandlers.length - 1][0];
@@ -45,8 +53,8 @@ module.exports = ({ registerAction, createHook, getConfig, registerHook }) => {
         }
         checkList.push(check);
       };
-      createHook
-        .sync(hooks.FASTIFY_HEALTHZ_CHECK, {
+      createExtension
+        .sync(targets.FASTIFY_HEALTHZ_CHECK, {
           registerHealthzCheck,
         })
         .forEach((result) => registerHealthzCheck(result[0]));
