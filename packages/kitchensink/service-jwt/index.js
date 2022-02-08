@@ -7,6 +7,6 @@ const featureHome = require('./feature-home');
 forrestjs({
   trace: 'compact',
   settings: {},
-  services: [serviceJwt, serviceFastify],
+  services: [serviceFastify, serviceJwt], // The order doesn't matter
   features: [featureHome],
 }).catch((err) => console.error(err));
