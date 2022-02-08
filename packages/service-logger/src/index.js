@@ -8,11 +8,11 @@ const serviceLogger = ({ registerAction, registerTargets }) => {
     target: '$START',
     name: SERVICE_NAME,
     trace: __filename,
-    handler: ({ getConfig, setContext, createHook }) => {
+    handler: ({ getConfig, setContext, createExtension }) => {
       // Let other extensions configure the transports
       const transports = [];
       const registerTransport = ($) => transports.push($);
-      createHook.serie(targets.LOGGER_TRANSPORTS, {
+      createExtension.serie(targets.LOGGER_TRANSPORTS, {
         winston,
         registerTransport,
       });

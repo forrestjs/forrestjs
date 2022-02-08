@@ -53,7 +53,7 @@ const featureQ1 = ({ registerAction }) => {
   // Here we upsert a few queues:
   // https://github.com/fetchq/node-client#queues-configuration
   registerAction({
-    hook: '$FETCHQ_REGISTER_QUEUE',
+    target: '$FETCHQ_REGISTER_QUEUE',
     handler: [
       {
         name: 'q1',
@@ -70,7 +70,7 @@ const featureQ1 = ({ registerAction }) => {
   // Here we associate our workers:
   // https://github.com/fetchq/node-client#workers-configuration
   registerAction({
-    hook: '$FETCHQ_REGISTER_WORKER',
+    target: '$FETCHQ_REGISTER_WORKER',
     handler: [
       {
         queue: 'q1',
@@ -90,14 +90,14 @@ const featureQ1 = ({ registerAction }) => {
   // Here we just await for the Fetchq client to be ready, so that
   // we can use its API so push a document into a queue.
   registerAction({
-    hook: '$FETCHQ_READY',
+    target: '$FETCHQ_READY',
     handler: async ({ fetchq }) => fetchq.doc.append('q1', { name: 'foo' }),
   });
 
   // Here we integrate Fastify and Fetchq so that a REST request can
   // end up pushing documents into a queue for further processing.
   registerAction({
-    hook: '$FASTIFY_GET',
+    target: '$FASTIFY_GET',
     handler: [
       {
         url: '/fetchq/append/:queue/:name',
