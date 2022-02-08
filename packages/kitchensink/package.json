@@ -51,7 +51,7 @@
     "tdd:mock-axios-e2e": "jest -t mock-axios-e2e --runInBand  --watchAll"
   },
   "dependencies": {
-    "@forrestjs/hooks": "^4.2.0-alpha.1",
+    "@forrestjs/core": "^4.2.0-alpha.1",
     "@forrestjs/service-apollo": "^4.2.0-alpha.1",
     "@forrestjs/service-env": "^4.2.0-alpha.1",
     "@forrestjs/service-fastify": "^4.2.0-alpha.1",

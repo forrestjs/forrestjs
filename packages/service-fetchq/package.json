@@ -8,7 +8,7 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/hooks": "^4.2.0-alpha.1",
+    "@forrestjs/core": "^4.2.0-alpha.1",
     "fetchq": "4.1.1"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fetchq#readme",

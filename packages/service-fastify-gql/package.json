@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@apollo/federation": "^0.34.0",
-    "@forrestjs/hooks": "^4.2.0-alpha.1",
+    "@forrestjs/core": "^4.2.0-alpha.1",
     "apollo-server-core": "3.6.2",
     "apollo-server-fastify": "3.6.2",
     "graphql": "16.3.0"

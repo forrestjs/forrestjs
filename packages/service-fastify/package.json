@@ -8,7 +8,7 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/hooks": "^4.2.0-alpha.1",
+    "@forrestjs/core": "^4.2.0-alpha.1",
     "axios": "^0.25.0",
     "fastify": "^3.27.0",
     "moxios": "^0.4.0",

@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.16.7",
-    "@forrestjs/hooks": "^4.2.0-alpha.1",
+    "@forrestjs/core": "^4.2.0-alpha.1",
     "@forrestjs/service-apollo": "^4.2.0-alpha.1",
     "@forrestjs/service-env": "^4.2.0-alpha.1",
     "@forrestjs/service-fastify": "^4.2.0-alpha.1",

@@ -9,7 +9,7 @@
   "dependencies": {
     "@babel/runtime": "^7.16.7",
     "@fetchq/pg-pubsub": "^0.8.0",
-    "@forrestjs/hooks": "^4.2.0-alpha.1"
+    "@forrestjs/core": "^4.2.0-alpha.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.8",

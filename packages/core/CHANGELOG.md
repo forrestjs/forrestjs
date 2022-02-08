@@ -1,9 +1,5 @@
 # Change Log
 
-## v4.2.0
-
-- DEPRECATED and moved to @forrestjs/core
-
 ## v4.1.0
 
 - Deprecate array based declarative features [ hook, handler, ... ]
