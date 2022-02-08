@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-hash",
   "description": "ForrestJS service which helps hashing stuff with bcrypt.",
-  "version": "4.2.0-y.0",
+  "version": "4.2.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^4.2.0-y.0",
+    "@forrestjs/core": "^4.2.0",
     "bcrypt-nodejs": "^0.0.3"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-hash#readme",
