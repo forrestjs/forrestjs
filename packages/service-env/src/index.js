@@ -8,20 +8,22 @@
  *
  */
 
-const { SERVICE_NAME } = require('./hooks');
+const { SERVICE_NAME, ...targets } = require('./targets');
 const { initEnv } = require('./init-env');
 
-module.exports = ({ registerAction }) => {
+module.exports = ({ registerTargets, registerAction }) => {
+  registerTargets(targets);
+
   registerAction({
-    hook: '$START',
+    target: '$START',
     name: SERVICE_NAME,
     trace: __filename,
     handler: initEnv,
   });
 
-  // Fastify Integration (optional hook)
+  // Fastify Integration (optional action)
   registerAction({
-    hook: '$FASTIFY_PLUGIN?',
+    target: '$FASTIFY_PLUGIN?',
     name: SERVICE_NAME,
     trace: __filename,
     handler: ({ decorate, decorateRequest }, { getContext }) => {

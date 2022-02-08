@@ -13,6 +13,6 @@ forrestjs({
       rounds: 1,
     },
   },
-  services: [serviceEnv, serviceHash, serviceFastify],
+  services: [serviceHash, serviceFastify, serviceEnv],
   features: [featureHome, featureHash],
 }).catch((err) => console.error(err));

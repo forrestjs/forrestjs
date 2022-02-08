@@ -15,7 +15,7 @@ const envVarDefaults = async (request) =>
 
 module.exports = {
   name: 'home',
-  hook: '$FASTIFY_GET',
+  target: '$FASTIFY_GET',
   handler: [
     { url: '/', handler: async () => 'Home' },
     { url: '/env-var-exists', handler: envVarExists },
