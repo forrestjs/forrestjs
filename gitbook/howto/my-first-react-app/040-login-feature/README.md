@@ -115,7 +115,7 @@ We are ready to move into connect-the-dots time. We need to add out _login Featu
 ```js
 export default {
   priority: -1, // Make sure it runs LAST
-  hook: '$REACT_ROOT_COMPONENT',
+  target: '$REACT_ROOT_COMPONENT',
   handler: (App) => ({ component: () => <LoginRoot rootComponent={App} /> }),
 };
 ```
@@ -194,7 +194,7 @@ To put in place our `LoginContextProvider` we are going to register a new action
 
 ```js
 registerAction({
-  hook: '$REACT_ROOT_WRAPPER',
+  target: '$REACT_ROOT_WRAPPER',
   handler: { component: LoginContextProvider },
 });
 ```

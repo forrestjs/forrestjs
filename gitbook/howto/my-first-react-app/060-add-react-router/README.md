@@ -104,7 +104,7 @@ But this is nothing new to you. You did before, right?
 import { AppRoutes } from './AppRoutes';
 
 export default {
-  hook: '$REACT_ROOT_COMPONENT',
+  target: '$REACT_ROOT_COMPONENT',
   handler: { component: AppRoutes },
 };
 ```

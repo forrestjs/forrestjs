@@ -67,7 +67,7 @@ import { CustomRoot } from './CustomRoot';
 // Explain how to integrate our custom logic
 // with the rest of the App:
 export default {
-  hook: '$REACT_ROOT_COMPONENT',
+  target: '$REACT_ROOT_COMPONENT',
   handler: { component: CustomRoot },
 };
 ```

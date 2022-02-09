@@ -18,7 +18,7 @@ The first step is to create a new Feature `/src/mui-theme/index.js`:
 
 ```js
 export default {
-  hook: "$MUI_SET_THEME",
+  target: "$MUI_SET_THEME",
   handler: (theme) => ({
     ...theme,
     palette: {
@@ -39,11 +39,11 @@ Once you add this Feature to your App's manifest you will see the background col
 
 It is possible, if not likely, that your application will need multiple themes (eg. Light / Dark mode) and a way to switch between them.
 
-Normally, it would be a matter of creating context and custom hooks to manage all the logic. But thanks to ForrestJS it's just a matter to extend another hook:
+Normally, it would be a matter of creating context and custom hooks to manage all the logic. But thanks to ForrestJS it's just a matter to extend another target:
 
 ```js
 registerAction({
-  hook: '$MUI_ADD_THEME',
+  target: '$MUI_ADD_THEME',
   handler: () => ({
     name: 'orange', // <-- This is very important!
     palette: {
@@ -65,7 +65,7 @@ Once you add a few themes, you may want to set a particular one as the theme tha
 
 ```js
 registerAction({
-  hook: '$MUI_USE_THEME',
+  target: '$MUI_USE_THEME',
   handler: 'orange',
 });
 ```

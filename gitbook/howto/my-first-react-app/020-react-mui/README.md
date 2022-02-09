@@ -60,7 +60,7 @@ const MyComponent = () => (
 );
 
 const customRoot = {
-  hook: '$REACT_ROOT_COMPONENT',
+  target: '$REACT_ROOT_COMPONENT',
   handler: { component: MyComponent },
 };
 ```

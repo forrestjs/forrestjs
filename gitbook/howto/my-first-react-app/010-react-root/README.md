@@ -36,13 +36,13 @@ This source code will render a React App with a default component. The result wi
 
 👉 From now on, it is just a matter of adding Features to our ForrestJS App, much like we do in the backend!
 
-## Implement the REACT_ROOT_COMPONENT Hook
+## Implement the REACT_ROOT_COMPONENT Extension
 
 In order to customize the _root Component_ of the App, we can write the simplest possible Feature ever:
 
 ```js
 const customRoot = {
-  hook: '$REACT_ROOT_COMPONENT',
+  target: '$REACT_ROOT_COMPONENT',
   handler: { component: () => <div>My Custom Root Component</div> },
 };
 ```
