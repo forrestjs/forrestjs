@@ -36,7 +36,7 @@
 
 - [Register Action](./api/register-action/README.md)
 - [Create Extension](./api/create-extension/README.md)
-- [The Hook App](./api/hook-app/README.md)
+- [The ForrestJS App](./api/forrestjs-app/README.md)
 - [The App Context](./api/app-context/README.md)
 - [The App Config](./api/app-config/README.md)
 

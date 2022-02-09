@@ -1,33 +1,44 @@
-# Hook App
+<h1 class="tutorial-step"><span>ForrestJS API &raquo;</span> The ForrestJS App</h1>
+
+[ForrestJS API](../README.md) &raquo; [The ForrestJS App](./README.md)
+
+---
+
+# The ForrestJS App
 
 ## The Philosopy
 
-You can organize your business logic into a _Hook App_ in order to maximize the [Single Responsibility](https://en.wikipedia.org/wiki/Single-responsibility_principle) and [Open/Close](https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle) principle.
+You can organize your business logic into a _ForrestJS App_ in order to maximize the [Single Responsibility](https://en.wikipedia.org/wiki/Single-responsibility_principle) and [Open/Close](https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle) principle.
 
-You divide your codebase in 2 categories:
+You divide your codebase in two categories:
 
 - Features
 - Services
 
 ### Features
 
-A **Feature** is what your customer gives you money to build. It's custom made and should not be shared among different Apps. It most certainly contains business secrets.
+> A **Feature** is what your customer is willing to pay.
+
+It's custom made and SHOULD NOT BE SHARED among different Apps.  
+It most certainly contains business secrets.
 
 ✅ Some examples of _Features_ are:
 
 - A home page
-- An endpoint that list your App's users
-- An authentication service that builds JWT tokens
+- An endpoint that list your users
+- An authentication service that build JWT tokens
 
 ### Services
 
-A **Service** is everything that is irrelevant to your customer, but needed in order to run an App. They are generic and should be reusable across different Apps.
+A **Service** is everything that is irrelevant to your customer, but needed in order to run an App.
+
+SERVICES are generic and SHOULD BE REUSABLE across different Apps.
 
 ✅ Some examples of _Services_ are:
 
 - A function that performs an SQL query towards a DBMS
 - An ApolloClient instance that let you fetch from a GraphQL server
-- A components library for React (like [MUI](https://mui.com))
+- A component library for React (like [MUI](https://mui.com))
 - A routing library for React (like [react-router](https://reactrouter.com/))
 
 ## Quick Start for NodeJS
@@ -54,18 +65,31 @@ You can render a React App and use the ForrestJS compositional approach in your 
 
 ## Intro
 
-The _Hook App_ is heavily inspired to a React app:
+A _ForrestJS App_ is heavily inspired to a React app:
 
 - it receives some properties
 - it has an internal context
 - it has a lifecycle
+- it produces a predictable result
+
+[[TO BE CONTINUED]]
 
 ## Lifecycle Hooks
 
+[[TO BE CONTINUED]]
+
 ### $INIT_SERVICE(S)
+
+[[TO BE CONTINUED]]
 
 ### $INIT_FEATURE(S)
 
+[[TO BE CONTINUED]]
+
 ### $START_SERVICE(S)
 
+[[TO BE CONTINUED]]
+
 ### $START_FEATURE(S)
+
+[[TO BE CONTINUED]]
