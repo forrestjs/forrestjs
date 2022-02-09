@@ -182,6 +182,15 @@ registerAction({
 
 ### handler [Object, Array, Function]
 
+The Action Handler is often a regular Javascript function that takes 2 arguments:
+
+```js
+const actionHandler = (extensionData = {}, appContext = {}) => {};
+```
+
+- the Extension's Data is an object with custom data provided by the logic that creates the Extension. Is the way to pass data into the handlers.
+- the App Context is the full set of ForrestJS APIs, plus application data or additional APIs that are shared between Features.
+
 ### name [String]
 
 ### priority [Int]

@@ -11,6 +11,7 @@
 
 - [ ] Should be able to `exports.name = 'featureName'; exports.actions = [{ hook, handler }, ...]`
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
+- [ ] `createExtension.sync(myServiceHooks.MY_SERVICE_INIT);` should use the dictionary `createExtension.sync('$MY_SERVICE_INIT')`
 
 ## 4.2.1
 
