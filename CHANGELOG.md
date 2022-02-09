@@ -12,6 +12,10 @@
 - [ ] Should be able to `exports.name = 'featureName'; exports.actions = [{ hook, handler }, ...]`
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 
+## 4.2.1
+
+- [ ] Fix Apollo Client service
+
 ## 4.2.0
 
 - Deprecate `createHook` for `runActions`
