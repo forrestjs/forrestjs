@@ -11,7 +11,7 @@
 
 - [x] [core] `createExtension` accepts referenced Target names as in `$TARGET_NAME`
 - [x] [core] deprecate `getAction` for `getTarget`
-- [ ] Should be able to `exports.name = 'featureName'; exports.actions = [{ hook, handler }, ...]`
+- [x] [core] allows to register a plain Action or list of Actions
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [ ] Fix Apollo Client service
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
