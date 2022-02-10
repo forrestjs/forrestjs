@@ -2,7 +2,7 @@ const { runAction, runActionSync } = require('./actions');
 const { getState } = require('./state');
 const { logTrace } = require('./tracer');
 const { onItemError } = require('./errors');
-const { getAction } = require('./create-actions-registry');
+const { getTarget } = require('./create-targets-registry');
 
 const defaultOptions = {
   mode: 'sync',
@@ -20,7 +20,7 @@ const createExtension = (receivedName, receivedOptions = {}) => {
 
   const name =
     receivedName.substr(0, 1) === '$'
-      ? getAction(receivedName.substr(1))
+      ? getTarget(receivedName.substr(1))
       : receivedName;
 
   stack.push(name);

@@ -17,7 +17,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
 
   // '$FOO'  - required reference (trigger error if not exists)
   // '$FOO?' - optional reference (returns `null` if not exists)
-  const getAction = (name) => {
+  const getTarget = (name) => {
     const isOptional = name.slice(-1) === '?';
     const hookName = isOptional ? name.substr(0, name.length - 1) : name;
 
@@ -33,9 +33,17 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
   };
 
   // DEPRECATED: remove in v5.0.0
+  const getAction = (name) => {
+    console.warn(
+      '[DEPRECATED] use "getTarget()" instead of "getTarget()". It will be removed in v5.0.0',
+    );
+    return getTarget(name);
+  };
+
+  // DEPRECATED: remove in v5.0.0
   const getHook = (name) => {
     console.warn(
-      '[DEPRECATED] use "getAction()" instead of "getHook()". It will be removed in v5.0.0',
+      '[DEPRECATED] use "getTarget()" instead of "getHook()". It will be removed in v5.0.0',
     );
     return getAction(name);
   };
@@ -78,7 +86,8 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
   // Save a global list of registries
   const registry = {
     registerTargets,
-    getAction,
+    getTarget,
+    getAction, // DEPRECATED: remove in v5.0.0
     getHook, // DEPRECATED: remove in v5.0.0
     registerHook, // DEPRECATED: remove in v5.0.0
   };
@@ -87,17 +96,24 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
   return registry;
 };
 
-const getAction = (hookName, registryName = 'default') => {
+const getTarget = (hookName, registryName = 'default') => {
   const registry = registries[registryName];
   if (!registry) {
     throw new Error(`Registry not found "${registryName}"`);
   }
-  return registry.getAction(hookName);
+  return registry.getTarget(hookName);
+};
+
+const getAction = (...args) => {
+  console.warn(
+    '[DEPRECATED] use "getTarget()" instead of "getHook()". It will be removed in v5.0.0',
+  );
+  return getTarget(...args);
 };
 
 const getHook = (...args) => {
   console.warn(
-    '[DEPRECATED] use "getAction()" instead of "getHook()". It will be removed in v5.0.0',
+    '[DEPRECATED] use "getTarget()" instead of "getHook()". It will be removed in v5.0.0',
   );
   return getAction(...args);
 };
@@ -109,7 +125,8 @@ const resetState = () => {
 
 module.exports = {
   createRegistry,
-  getAction,
+  getTarget,
+  getAction, // DEPRECATED: remove in v5.0.0
   resetState,
   getHook, // DEPRECATED: remove in v5.0.0
 };
