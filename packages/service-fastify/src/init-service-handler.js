@@ -1,11 +1,10 @@
 const fastify = require('fastify');
 const axios = require('axios');
-const actions = require('./actions');
 
 module.exports = ({ getConfig, setContext, createExtension, getContext }) => {
   // Get overridable options from the app's context
   const { value: options } = createExtension.waterfall(
-    actions.FASTIFY_OPTIONS,
+    '$FASTIFY_OPTIONS',
     getConfig('fastify.instance.options', {}),
   );
   const server = fastify(options);
@@ -44,8 +43,8 @@ module.exports = ({ getConfig, setContext, createExtension, getContext }) => {
   decorateReply('getContext', getContext);
   decorateReply('axios', axios);
 
-  createExtension.sync(actions.FASTIFY_HACKS_BEFORE, { fastify: server });
-  createExtension.sync(actions.FASTIFY_PLUGIN, {
+  createExtension.sync('$FASTIFY_HACKS_BEFORE', { fastify: server });
+  createExtension.sync('$FASTIFY_PLUGIN', {
     registerPlugin,
     decorate,
     decorateRequest,

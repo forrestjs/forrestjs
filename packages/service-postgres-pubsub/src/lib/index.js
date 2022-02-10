@@ -1,6 +1,5 @@
-import { INIT_FEATURES } from '@forrestjs/core';
-import PGPubsub from 'pg-pubsub';
-import * as hooks from './hooks';
+import PGPubsub from '@fetchq/pg-pubsub';
+import * as targets from './hooks';
 
 const connections = {};
 
@@ -21,12 +20,12 @@ export const publish = (channelName, data, connectionName = 'default') => {
   connections[connectionName].publish(channelName, data);
 };
 
-export default ({ registerHook, registerAction, createHook }) => {
-  registerHook(hooks);
+export default ({ registerTargets, registerAction, createExtension }) => {
+  registerTargets(targets);
 
   registerAction({
-    hook: INIT_FEATURES,
-    name: hooks.SERVICE_NAME,
+    target: '$INIT_FEATURES',
+    name: targets.SERVICE_NAME,
     trace: __filename,
     handler: async ({ getConfig }) => {
       const postgresPubsub = getConfig('postgresPubSub');
@@ -46,7 +45,7 @@ export default ({ registerHook, registerAction, createHook }) => {
         connections[connectionName].publish('ping', Date.now());
       });
 
-      createHook.sync(hooks.POSTGRES_PUBSUB_START, {
+      createExtension.sync('$POSTGRES_PUBSUB_START', {
         addChannel,
         once,
         publish,

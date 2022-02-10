@@ -4,6 +4,7 @@ const FETCHQ_REGISTER_QUEUE = `${SERVICE_NAME}/register/queue`;
 const FETCHQ_REGISTER_WORKER = `${SERVICE_NAME}/register/worker`;
 const FETCHQ_READY = `${SERVICE_NAME}/ready`;
 const FETCHQ_BEFORE_START = `${SERVICE_NAME}/before-start`;
+const FETCHQ_TDD_STATE_RESET = `${SERVICE_NAME}/tdd/state/reset`;
 
 module.exports = {
   SERVICE_NAME,
@@ -12,4 +13,5 @@ module.exports = {
   FETCHQ_REGISTER_WORKER,
   FETCHQ_READY,
   FETCHQ_BEFORE_START,
+  FETCHQ_TDD_STATE_RESET,
 };

@@ -43,6 +43,12 @@
     "start:service-logger": "cross-env NODE_ENV=development npx nodemon service-logger",
     "test:service-logger": "jest -t service-logger --runInBand ",
     "tdd:service-logger": "jest -t service-logger --runInBand  --watchAll",
+    "start:service-postgres": "cross-env NODE_ENV=development npx nodemon service-postgres",
+    "test:service-postgres": "jest -t service-postgres-standalone --runInBand ",
+    "tdd:service-postgres": "jest -t service-postgres-standalone --runInBand  --watchAll",
+    "start:service-postgres-pubsub": "cross-env NODE_ENV=development npx nodemon service-postgres-pubsub",
+    "test:service-postgres-pubsub": "jest -t service-postgres-pubsub --runInBand ",
+    "tdd:service-postgres-pubsub": "jest -t service-postgres-pubsub --runInBand  --watchAll",
     "start:app01": "cross-env NODE_ENV=development npx nodemon app01",
     "test:app01": "jest -t app01 --runInBand ",
     "tdd:app01": "jest -t app01 --runInBand  --watchAll",
@@ -63,7 +69,9 @@
     "@forrestjs/service-fetchq": "^4.3.0-alpha.1",
     "@forrestjs/service-hash": "^4.3.0-alpha.1",
     "@forrestjs/service-jwt": "^4.3.0-alpha.1",
-    "@forrestjs/service-logger": "^4.3.0-alpha.1"
+    "@forrestjs/service-logger": "^4.3.0-alpha.1",
+    "@forrestjs/service-postgres": "^4.3.0-alpha.1",
+    "@forrestjs/service-postgres-pubsub": "^4.3.0-alpha.1"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify#readme",
   "keywords": [

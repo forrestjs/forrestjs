@@ -1,12 +1,5 @@
 const moxios = require('moxios');
-const axios = require('axios');
-
-const {
-  FASTIFY_TDD_ROUTE,
-  FASTIFY_TDD_ROOT,
-  FASTIFY_TDD_CHECK,
-  FASTIFY_TDD_RESET,
-} = require('./actions');
+// const axios = require('axios');
 
 const healthzCheckTypeErrorMessage =
   '[fastify/tdd] The healthz check must be a Fastify compatible preHandler function';
@@ -27,7 +20,7 @@ const collectRoutes = (createExtension, tddScope) => {
   // Integrations can return either a single route definition
   // or a list of routes.
   createExtension
-    .sync(FASTIFY_TDD_ROUTE, { registerTddRoute })
+    .sync('$FASTIFY_TDD_ROUTE', { registerTddRoute })
     .map((result) => {
       // Skip null or undefined returns from hooks
       if (!result[0]) {
@@ -60,7 +53,7 @@ const collectChecks = (createExtension) => {
   };
 
   createExtension
-    .sync(FASTIFY_TDD_CHECK, { registerTddCheck })
+    .sync('$FASTIFY_TDD_CHECK', { registerTddCheck })
     .map((result) => result[0])
     .filter((check) => check !== undefined) // skip empty values
     .forEach(registerTddCheck);
@@ -83,7 +76,7 @@ const collectResetHandlers = (createExtension) => {
   };
 
   createExtension
-    .sync(FASTIFY_TDD_RESET, { registerResetHandler })
+    .sync('$FASTIFY_TDD_RESET', { registerResetHandler })
     .map((result) => result[0])
     .filter((check) => check !== undefined) // skip empty values
     .forEach(registerResetHandler);
@@ -100,7 +93,7 @@ module.exports = (
   // Collect integrations from other services and features
   const routes = collectRoutes(createExtension, tddScope);
   const rootChecks = collectChecks(createExtension);
-  const rootHandler = createExtension.sync(FASTIFY_TDD_ROOT);
+  const rootHandler = createExtension.sync('$FASTIFY_TDD_ROOT');
   const resetHandlers = collectResetHandlers(createExtension);
 
   // Root endpoint definition

@@ -6,14 +6,16 @@
 - [ ] remove `registerAction` support
 - [ ] remove `registerHook` support
 - [ ] action's parameter will be reversed (ctx, action's data)
+- [ ] deprecate `service-postgres` and write `service-pg` accepting `PGSTRING`
+- [ ] deprecate `service-postgres-pubsub` and write `service-pg-pubsub` accepting `PGSTRING`
 
 ## 4.3.0 (roadmap)
 
 - [x] [core] `createExtension` accepts referenced Target names as in `$TARGET_NAME`
 - [x] [core] deprecate `getAction` for `getTarget`
 - [x] [core] allows to register a plain Action or list of Actions
+- [x] Fix Apollo Client service
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
-- [ ] Fix Apollo Client service
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
 
 ## 4.2.0
