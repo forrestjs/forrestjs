@@ -63,9 +63,7 @@
     "@forrestjs/service-fetchq": "^4.3.0-alpha.0",
     "@forrestjs/service-hash": "^4.3.0-alpha.0",
     "@forrestjs/service-jwt": "^4.3.0-alpha.0",
-    "@forrestjs/service-logger": "^4.3.0-alpha.0",
-    "axios": "^0.25.0",
-    "graphql-tag": "^2.12.6"
+    "@forrestjs/service-logger": "^4.3.0-alpha.0"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify#readme",
   "keywords": [
