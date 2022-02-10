@@ -2,6 +2,7 @@ const { runAction, runActionSync } = require('./actions');
 const { getState } = require('./state');
 const { logTrace } = require('./tracer');
 const { onItemError } = require('./errors');
+const { getAction } = require('./create-actions-registry');
 
 const defaultOptions = {
   mode: 'sync',
@@ -14,8 +15,13 @@ const defaultOptions = {
   onItemError,
 };
 
-const createExtension = (name, receivedOptions = {}) => {
+const createExtension = (receivedName, receivedOptions = {}) => {
   const { hooks, stack } = getState();
+
+  const name =
+    receivedName.substr(0, 1) === '$'
+      ? getAction(receivedName.substr(1))
+      : receivedName;
 
   stack.push(name);
   const pullStack = (args) => {

@@ -9,13 +9,11 @@
 
 ## 4.3.0 (roadmap)
 
+- [x] `createExtension` accepts referenced Target names as in `$TARGET_NAME`
 - [ ] Should be able to `exports.name = 'featureName'; exports.actions = [{ hook, handler }, ...]`
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
-- [ ] `createExtension.sync(myServiceHooks.MY_SERVICE_INIT);` should use the dictionary `createExtension.sync('$MY_SERVICE_INIT')`
-
-## 4.2.1
-
 - [ ] Fix Apollo Client service
+- [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
 
 ## 4.2.0
 

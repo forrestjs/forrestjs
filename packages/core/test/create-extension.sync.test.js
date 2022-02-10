@@ -2,7 +2,7 @@ const { resetState } = require('../src/state');
 const { createExtension } = require('../src/create-extension');
 const { registerAction } = require('../src/register-action');
 
-describe('hooks/sync', () => {
+describe('core/create-extension/sync', () => {
   beforeEach(resetState);
 
   it('should run hooks', () => {

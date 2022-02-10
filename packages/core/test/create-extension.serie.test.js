@@ -3,7 +3,7 @@ const { resetState } = require('../src/state');
 const { createExtension } = require('../src/create-extension');
 const { registerAction } = require('../src/register-action');
 
-describe('hooks/serie', () => {
+describe('core/create-extension/serie', () => {
   beforeEach(resetState);
 
   it('should run serie hooks', async () => {

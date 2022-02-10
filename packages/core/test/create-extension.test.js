@@ -2,7 +2,7 @@ const { registerAction } = require('../src/register-action');
 const { createExtension } = require('../src/create-extension');
 const { resetState } = require('../src/state');
 
-describe('createExtension()', () => {
+describe('core/create-extension', () => {
   beforeEach(resetState);
 
   test('hooks should carry on a context', () => {
