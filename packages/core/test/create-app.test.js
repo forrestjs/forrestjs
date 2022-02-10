@@ -7,7 +7,7 @@ const {
   isListOfDeclarativeActions,
 } = require('../src/create-app');
 
-describe('hooks/create-hook-app', () => {
+describe('core/create-app', () => {
   beforeEach(resetState);
 
   describe('utils', () => {

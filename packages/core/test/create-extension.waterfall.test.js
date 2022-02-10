@@ -2,7 +2,7 @@ const { createExtension } = require('../src/create-extension');
 const { registerAction } = require('../src/register-action');
 const { resetState } = require('../src/state');
 
-describe('hook waterfall', () => {
+describe('core/create-extension/', () => {
   beforeEach(resetState);
 
   test('waterfall should return its own arguments', () => {

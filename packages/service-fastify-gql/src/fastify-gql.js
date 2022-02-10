@@ -1,10 +1,6 @@
 const fp = require('fastify-plugin');
 const { ApolloServer } = require('apollo-server-fastify');
 const { buildSubgraphSchema } = require('@apollo/federation');
-const {
-  FASTIFY_GQL_EXTEND_SCHEMA,
-  FASTIFY_GQL_EXTEND_CONTEXT,
-} = require('./targets');
 const defaultSchema = require('./schema');
 
 const fastifyGql = (forrestjs) => async (fastify, opts, next) => {
@@ -12,7 +8,7 @@ const fastifyGql = (forrestjs) => async (fastify, opts, next) => {
 
   // Collect schema extensions from other features/services
   const schemaExtensions = createExtension
-    .sync(FASTIFY_GQL_EXTEND_SCHEMA)
+    .sync('$FASTIFY_GQL_EXTEND_SCHEMA')
     .map((ext) => ext[0]);
 
   // Create the full schema
@@ -31,7 +27,7 @@ const fastifyGql = (forrestjs) => async (fastify, opts, next) => {
 
     // Collect context extensions from other features/services
     const contextExtensions = createExtension
-      .sync(FASTIFY_GQL_EXTEND_CONTEXT, params)
+      .sync('$FASTIFY_GQL_EXTEND_CONTEXT', params)
       .reduce((acc, curr) => ({ ...acc, ...curr[0] }), {});
 
     return {

@@ -1,5 +1,10 @@
 # Change Log
 
+## v4.3.0
+
+- `createExtension` accepts referenced Target names as in `$TARGET_NAME`
+- deprecate `getAction` for `getTarget`
+
 ## v4.2.0
 
 - Deprecate `createHook` for `runActions`

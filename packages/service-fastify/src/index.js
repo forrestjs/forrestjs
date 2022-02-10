@@ -1,5 +1,5 @@
 const { INIT_SERVICE, START_SERVICE } = require('@forrestjs/core');
-const actions = require('./actions');
+const targets = require('./targets');
 const initServiceHandler = require('./init-service-handler');
 const startServiceHandler = require('./start-service-handler');
 
@@ -9,7 +9,7 @@ const service = {
 };
 
 module.exports = ({ registerAction, registerTargets }) => {
-  registerTargets(actions);
+  registerTargets(targets);
 
   // The TDD support is strictly scoped to the development
   // and test environment, even the module is conditionally

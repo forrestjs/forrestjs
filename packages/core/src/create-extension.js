@@ -2,6 +2,7 @@ const { runAction, runActionSync } = require('./actions');
 const { getState } = require('./state');
 const { logTrace } = require('./tracer');
 const { onItemError } = require('./errors');
+const { getTarget } = require('./create-targets-registry');
 
 const defaultOptions = {
   mode: 'sync',
@@ -14,8 +15,17 @@ const defaultOptions = {
   onItemError,
 };
 
-const createExtension = (name, receivedOptions = {}) => {
+const createExtension = (receivedName, receivedOptions = {}) => {
   const { hooks, stack } = getState();
+
+  if (!receivedName) {
+    throw new Error(`createExtension() missing Extension name!`);
+  }
+
+  const name =
+    receivedName.substr(0, 1) === '$'
+      ? getTarget(receivedName.substr(1))
+      : receivedName;
 
   stack.push(name);
   const pullStack = (args) => {
@@ -27,6 +37,8 @@ const createExtension = (name, receivedOptions = {}) => {
     ...defaultOptions,
     ...receivedOptions,
   };
+
+  // console.log('@@@@', name);
 
   const actions = (hooks[name] || []).filter((h) => h.enabled === true);
 
@@ -40,6 +52,7 @@ const createExtension = (name, receivedOptions = {}) => {
 
   if (options.mode === 'parallel') {
     return new Promise(async (resolve, reject) => {
+      // console.log('@@@@ PARALLEL', name);
       try {
         const promises = actions.map((action) => runAction(action, options));
         const results = await Promise.all(promises);
@@ -60,9 +73,11 @@ const createExtension = (name, receivedOptions = {}) => {
 
   if (options.mode === 'serie') {
     return new Promise(async (resolve, reject) => {
+      // console.log('@@@@ SERIE', name);
       try {
         const results = [];
         for (const action of actions) {
+          // console.log('>>>', action);
           results.push(await runAction(action, options));
         }
         writeLog();
@@ -82,6 +97,7 @@ const createExtension = (name, receivedOptions = {}) => {
 
   // Edit the value of the args and return it for further iteration
   if (options.mode === 'waterfall') {
+    // console.log('@@@@ WATERFALL', name);
     const results = [];
     let args = options.args;
 
@@ -99,6 +115,7 @@ const createExtension = (name, receivedOptions = {}) => {
 
   // synchronous execution with arguments
   try {
+    // console.log('@@@@ SYNC', name);
     const results = actions.map((action) => runActionSync(action, options));
     writeLog();
     pullStack();

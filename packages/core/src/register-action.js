@@ -12,7 +12,7 @@
 
 const { appendAction } = require('./state');
 const { logAction } = require('./logger');
-const { getAction } = require('./create-actions-registry');
+const { getTarget } = require('./create-targets-registry');
 
 const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   // (name, handler, options)
@@ -76,7 +76,7 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   try {
     const hook =
       targetAction.substr(0, 1) === '$'
-        ? getAction(targetAction.substr(1))
+        ? getTarget(targetAction.substr(1))
         : targetAction;
 
     // the hook could be null in case of an optional reference was required

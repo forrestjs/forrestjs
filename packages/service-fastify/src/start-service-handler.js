@@ -1,4 +1,3 @@
-const actions = require('./actions');
 const { MissingPropertyError } = require('./errors');
 
 // Receives in "route" the return data structure from a "registerHook.sync" call.
@@ -40,38 +39,38 @@ module.exports = ({ getContext, getConfig, createExtension }) => {
   // Colle
   const collectedRoutes = [
     ...createExtension
-      .sync(actions.FASTIFY_GET, {
+      .sync('$FASTIFY_GET', {
         registerRoute: registerRoute.get,
         fastify: server,
       })
       .map(makeRoute('GET')),
     ...createExtension
-      .sync(actions.FASTIFY_POST, {
+      .sync('$FASTIFY_POST', {
         registerRoute: registerRoute.post,
         fastify: server,
       })
       .map(makeRoute('POST')),
     ...createExtension
-      .sync(actions.FASTIFY_PUT, {
+      .sync('$FASTIFY_PUT', {
         registerRoute: registerRoute.put,
         fastify: server,
       })
       .map(makeRoute('PUT')),
     ...createExtension
-      .sync(actions.FASTIFY_DELETE, {
+      .sync('$FASTIFY_DELETE', {
         registerRoute: registerRoute.delete,
         fastify: server,
       })
       .map(makeRoute('DELETE')),
     ...createExtension
-      .sync(actions.FASTIFY_ROUTE, { registerRoute, fastify: server })
+      .sync('$FASTIFY_ROUTE', { registerRoute, fastify: server })
       .map(makeRoute(null)),
   ];
 
   // Register the routes in the "after" hook as suggested by new docs:
   server.after(() => {
     // Register the routes collected out of the returning value of
-    // the routing actions
+    // the routing targets
     collectedRoutes
       .filter(($) => $ !== null)
       .filter(($) => $[0] !== undefined)
@@ -98,7 +97,7 @@ module.exports = ({ getContext, getConfig, createExtension }) => {
     });
 
     // Keep this hook for backward compatibility:
-    createExtension.sync(actions.FASTIFY_HACKS_AFTER, { fastify: server });
+    createExtension.sync('$FASTIFY_HACKS_AFTER', { fastify: server });
   });
 
   const serverPort = getConfig(

@@ -1,6 +1,9 @@
 const fetchq = require('fetchq');
 const { SERVICE_NAME, ...targets } = require('./targets');
 
+const QUERY_DROP =
+  'DROP SCHEMA "fetchq_data" CASCADE; DROP SCHEMA "fetchq" CASCADE;';
+
 const onInitService = ({
   getConfig,
   getContext,
@@ -12,7 +15,7 @@ const onInitService = ({
 
   // Let other services/features to inject APIs into Fetchq's workers' context.
   const { value: extendedContext } = createExtension.waterfall(
-    targets.FETCHQ_DECORATE_CONTEXT,
+    '$FETCHQ_DECORATE_CONTEXT',
     {},
   );
 
@@ -34,7 +37,7 @@ const onStartService = async ({ getConfig, getContext, createExtension }) => {
   const client = getContext('fetchq');
 
   // register feature's queues
-  const queues = createExtension.sync(targets.FETCHQ_REGISTER_QUEUE, {
+  const queues = createExtension.sync('$FETCHQ_REGISTER_QUEUE', {
     fetchq: client,
   });
   queues.forEach((def) => {
@@ -49,7 +52,7 @@ const onStartService = async ({ getConfig, getContext, createExtension }) => {
   });
 
   // register feature's workers
-  const workers = createExtension.sync(targets.FETCHQ_REGISTER_WORKER, {
+  const workers = createExtension.sync('$FETCHQ_REGISTER_WORKER', {
     fetchq: client,
   });
   workers.forEach((def) => {
@@ -63,11 +66,11 @@ const onStartService = async ({ getConfig, getContext, createExtension }) => {
 
   await client.init();
 
-  await createExtension.serie(targets.FETCHQ_BEFORE_START, { fetchq: client });
+  await createExtension.serie('$FETCHQ_BEFORE_START', { fetchq: client });
 
   await client.start();
 
-  await createExtension.serie(targets.FETCHQ_READY, { fetchq: client });
+  await createExtension.serie('$FETCHQ_READY', { fetchq: client });
 };
 
 module.exports = ({ registerAction, registerTargets }) => {
@@ -272,14 +275,14 @@ module.exports = ({ registerAction, registerTargets }) => {
           // Destroy and recreate Fetchq's schema and related
           // data structure and workers
           await fetchq.stop();
-          await query(
-            'DROP SCHEMA "fetchq_data" CASCADE; DROP SCHEMA "fetchq" CASCADE;',
-          );
+          await query(QUERY_DROP);
           await fetchq.boot();
 
-          await createExtension.serie(targets.FETCHQ_TDD_STATE_RESET, {
+          // Run reset state integrations
+          await createExtension.serie('$FETCHQ_TDD_STATE_RESET', {
             query,
           });
+
           return '+ok';
         },
       });

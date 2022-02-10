@@ -2,7 +2,7 @@ describe('service-fetchq', () => {
   beforeEach(fetchq.resetState);
 
   it('should queue a document into Q1', async () => {
-    const res = await get('/fetchq/append/q1/foobar');
+    const res = await get.debug('/fetchq/append/q1/foobar');
     expect(res).toMatchObject({ subject: expect.any(String) });
   });
 

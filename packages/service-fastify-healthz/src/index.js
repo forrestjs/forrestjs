@@ -25,7 +25,7 @@ module.exports = ({
       let customHandler = null;
       const registerHandler = (handler) => (customHandler = handler);
       const returnedHandlers = createExtension.sync(
-        targets.FASTIFY_HEALTHZ_HANDLER,
+        '$FASTIFY_HEALTHZ_HANDLER',
         {
           registerHandler,
         },
@@ -54,7 +54,7 @@ module.exports = ({
         checkList.push(check);
       };
       createExtension
-        .sync(targets.FASTIFY_HEALTHZ_CHECK, {
+        .sync('$FASTIFY_HEALTHZ_CHECK', {
           registerHealthzCheck,
         })
         .forEach((result) => registerHealthzCheck(result[0]));

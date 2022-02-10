@@ -8,7 +8,7 @@ const {
   runHookApp,
 } = require('./create-app');
 const { createHookContext } = require('./create-hook-context');
-const { getHook, getAction } = require('./create-actions-registry');
+const { getHook, getAction, getTarget } = require('./create-targets-registry');
 const constants = require('./constants');
 
 // DEPRECATED: to remove in v5.0.0
@@ -46,6 +46,7 @@ run.logTrace = logTrace;
 run.logBoot = logBoot;
 run.createAction = createAction;
 run.registerAction = registerAction;
+run.getTarget = getTarget;
 
 // DEPRECATED APIs: remove in v5.0.0
 run.createHook = createHook; // DEPRECATED: to remove in v5.0.0
@@ -53,7 +54,7 @@ run.runHook = runHook; // DEPRECATED: to remove in v5.0.0
 run.createHookContext = createHookContext; // DEPRECATED: to remove in v5.0.0
 run.createHookApp = createHookApp; // DEPRECATED: remove in v5.0.0
 run.getHook = getHook; // DEPRECATED: remove in v5.0.0
-run.getAction = getAction;
+run.getAction = getAction; // DEPRECATED: remove in v5.0.0
 run.runHookApp = runHookApp; // DEPRECATED: remove in v5.0.0
 
 // Export the internal constants:
