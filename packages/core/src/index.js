@@ -1,5 +1,9 @@
 const { traceHook, logTrace, logBoot } = require('./tracer');
-const { createHook, createAction } = require('./create-extension');
+const {
+  createHook,
+  createAction,
+  createExtension,
+} = require('./create-extension');
 const { registerAction } = require('./register-action');
 const {
   createApp,
@@ -47,6 +51,7 @@ run.logBoot = logBoot;
 run.createAction = createAction;
 run.registerAction = registerAction;
 run.getTarget = getTarget;
+run.createExtension = createExtension;
 
 // DEPRECATED APIs: remove in v5.0.0
 run.createHook = createHook; // DEPRECATED: to remove in v5.0.0

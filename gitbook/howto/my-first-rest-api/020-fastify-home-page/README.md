@@ -19,20 +19,20 @@ const fastifyRouteHandler = (request, reply) => {
 
 // Export our logic as a ForrestJS Feature that integrates
 // with the Fastify Service:
-exports.name = 'homePage';
-exports.register = () => ({
-  hook: '$FASTIFY_GET',
+module.exports = {
+  name: 'homePage',
+  target: '$FASTIFY_GET',
   handler: {
     url: '/',
     handler: fastifyRouteHandler,
   },
-});
+};
 ```
 
 Once you've created the feature, simply add it to your App's manifest:
 
 ```js
-forrestjs.run({
+forrest.run({
   ...
   features: [
     require('./home-page')
@@ -70,9 +70,9 @@ With that said, we can create `/home-page/routes/home-page.js` and implement thi
 
 ```js
 const HOME_PAGE_CONTENT = `
-  <h2>Home Page</h2>
-  <p>Welcome to yet a new amazing website!</p>
-`;
+      <h2>Home Page</h2>
+      <p>Welcome to yet a new amazing website!</p>
+    `;
 
 module.exports = (request, reply) => {
   reply.type('text/html').send(HOME_PAGE_CONTENT);
@@ -89,19 +89,19 @@ We do so in the Feature's manifest file: `/home-page/index.js`:
 ```js
 const homePageRoute = require('./routes/home-page');
 
-exports.name = 'homePage';
-exports.register = () => ({
-  hook: '$FASTIFY_GET',
+module.exports = {
+  name: 'homePage',
+  target: '$FASTIFY_GET',
   handler: {
     url: '/',
     handler: homePageRoute,
   },
-});
+};
 ```
 
 The Feature's manifest file "explains" to the rest of the ForrestJS App **how to connect the dots**, so to speak.
 
-Here you can try out a slightly refactored example:
+Here you can try out a slightly refactored example, in which we also create 2 different pages and pack them within the same Feature folder:
 
 ---
 

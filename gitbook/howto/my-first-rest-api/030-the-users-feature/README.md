@@ -16,28 +16,28 @@ We are going to build a CRUD API over a list of users. To keep things simple, we
 
 The first goal to achive is to allocate a piece of memory where to store our list of users. Here are some requirements for this goal:
 
-- this memory should be scoped to the App's and not leaking to the rest of the process
-- this memory should be accessible to the REST endpoints that we will implement later on
-- we should use reliable API, and do not play with weird Javascript black magic tricks
+- this memory should be **scoped to the App**'s and not leaking to the rest of the NodeJS process
+- this memory should be **accessible to the REST handlers** that we will implement later on
+- we should **use reliable API**, and do not play with weird Javascript black magic tricks
 
 With that in mind, let's create the feature's manifest and register the first action in `/users/index.js`:
 
 ```js
 module.exports = {
   name: 'usersFeature',
-  hook: '$INIT_FEATURES',
+  target: '$INIT_FEATURES',
   handler: ({ setContext }) => {
     setContext('users.list', ['Luke Skywalker', 'Ian Solo']);
   },
 };
 ```
 
-> The `$INIT_FEATURES` hook is part of a ForrestJS App lifecycle.  
-> It allows to inject custom logic during the booting of our App.
+> The `$INIT_FEATURES` extension is part of a ForrestJS App lifecycle.  
+> It allows to inject custom logic during the booting sequence of our App.
 
 In our specific case, we use it to inizialize the _Users Database_ with some dummy data from Star Wars.
 
-The [`setContext()`](../../../api/set-context/README.md) utility facilitates the definition of an App scoped piece of memory. Later on, we will be able to read from this memory using the `getContext()` function.
+The [`setContext()`](../../../api/app-context/README.md#writing-to-the-context) utility facilitates the definition of an App scoped piece of memory. Later on, we will be able to read from this memory using the `getContext()` function.
 
 ## List Users Route
 

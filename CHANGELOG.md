@@ -13,6 +13,7 @@
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
 - [ ] deprecate `service-postgres` and write `service-pg` accepting `PGSTRING`
 - [ ] deprecate `service-postgres-pubsub` and write `service-pg-pubsub` accepting `PGSTRING`
+- [ ] [bug] `createExtension("$SUM", 5)` the payload is not forwarded to the handlers
 
 ## 4.3.0
 

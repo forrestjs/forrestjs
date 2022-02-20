@@ -10,11 +10,11 @@ Create a new `app.js` file and use the following scaffold to kick off a new Forr
 
 ```js
 // Import dependencies, mostly services that wrap famous Open Source libraries:
-const forrestjs = require('@forrestjs/core');
+const forrest = require('@forrestjs/core');
 const fastify = require('@forrestjs/service-fastify');
 const fastifyHealthz = require('@forrestjs/service-fastify-healthz');
 
-forrestjs
+forrest
   .run({
     // It shows boot trace in the console
     // (very useful while developing)
