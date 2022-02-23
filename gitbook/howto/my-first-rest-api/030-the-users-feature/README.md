@@ -73,7 +73,7 @@ exports.register = () => [
 
   // Add routes definitions into the Fastify App:
   {
-    hook: '$FASTIFY_ROUTE',
+    target: '$FASTIFY_ROUTE',
     // This could be one single object, or an array of routes:
     handler: {
       method: 'GET',
