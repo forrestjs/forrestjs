@@ -7,13 +7,17 @@
 - [ ] remove `registerHook` support
 - [ ] action's parameter will be reversed (ctx, action's data)
 
-## 4.4.0 (roadmap)
+## 4.5.0 (roadmap)
 
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
-- [ ] deprecate `service-postgres` and write `service-pg` accepting `PGSTRING`
 - [ ] deprecate `service-postgres-pubsub` and write `service-pg-pubsub` accepting `PGSTRING`
 - [ ] [bug] `createExtension("$SUM", 5)` the payload is not forwarded to the handlers
+
+## 4.4.0
+
+- deprecate `service-postgres` and write `service-pg` accepting `PGSTRING`
+- add `service-pg`
 
 ## 4.3.0
 

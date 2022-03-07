@@ -25,7 +25,7 @@ const pg = ({ registerAction, registerTargets }) => {
       // Get configuration
       const maxConnections = getConfig(
         'pg.maxConnections',
-        process.env.SERVICE_PG_MAX_CONNECTIONS || 1,
+        process.env.SERVICE_PG_MAX_CONNECTIONS || 10,
       );
       const poolConfig = getConfig('pg.poolConfig', {});
 

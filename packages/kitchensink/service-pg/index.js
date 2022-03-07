@@ -1,3 +1,9 @@
+/**
+ * You must provide a running PostgreSQL db to connect to:
+ * PGSTRING=postgres://username:password@hostname:port/db
+ * PGSTRING=postgres://postgres:postgres@localhost:5432/postgres
+ */
+
 const forrestjs = require('@forrestjs/core');
 const serviceFastify = require('@forrestjs/service-fastify');
 const servicePg = require('@forrestjs/service-pg');
