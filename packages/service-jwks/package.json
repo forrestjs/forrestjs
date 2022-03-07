@@ -1,0 +1,35 @@
+{
+  "name": "@forrestjs/service-jwks",
+  "description": "ForrestJS service which helps handling JWKS activities.",
+  "version": "4.4.0-alpha.0",
+  "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
+  "main": "src/index",
+  "bugs": {
+    "url": "https://github.com/forrestjs/forrestjs/issues"
+  },
+  "dependencies": {
+    "@forrestjs/core": "^4.4.0-alpha.0",
+    "jsonwebtoken": "^8.5.1",
+    "node-jose": "^2.1.0",
+    "jwk-to-pem": "^2.0.5",
+    "ms": "^2.1.3"
+  },
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-jwks#readme",
+  "keywords": [
+    "forrestjs",
+    "service",
+    "jwt",
+    "jwks",
+    "sign",
+    "pem"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-jwks",
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
+  },
+  "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578"
+}
