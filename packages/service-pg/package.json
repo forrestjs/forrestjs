@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@forrestjs/core": "^4.3.0",
-    "jsonwebtoken": "^8.5.1"
+    "pg": "^8.7.3"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-pg#readme",
   "keywords": [
