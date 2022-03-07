@@ -2,24 +2,42 @@ const forrestjs = require('@forrestjs/core');
 const serviceFastify = require('@forrestjs/service-fastify');
 const servicePg = require('@forrestjs/service-pg');
 
+// Keep an idempotent definition of the feature's schema
+// and data seed in SQL format:
+const QUERY_DOWN = `DROP SCHEMA IF EXISTS "service_pg" CASCADE`;
+const QUERY_UP = `
+  -- Idempotend schema definition:
+  CREATE SCHEMA IF NOT EXISTS "service_pg";
+  CREATE TABLE IF NOT EXISTS "service_pg"."names" (
+    "uname" TEXT NOT NULL PRIMARY KEY
+  );
+
+  -- Idempotent seeding:
+  INSERT INTO "service_pg"."names" VALUES ('luke')
+  ON CONFLICT ON CONSTRAINT "names_pkey"
+  DO NOTHING;
+`;
+
 const f1 = () => [
+  // Auto migrations at boot time
+  // (good for really small services)
   {
     target: '$PG_READY',
-    handler: async ({ query }) => {
-      await query(`
-        -- Idempotend schema definition:
-        CREATE SCHEMA IF NOT EXISTS "service_pg";
-        CREATE TABLE IF NOT EXISTS "service_pg"."names" (
-          "uname" TEXT NOT NULL PRIMARY KEY
-        );
-
-        -- Idempotent seeding:
-        INSERT INTO "service_pg"."names" VALUES ('luke')
-        ON CONFLICT ON CONSTRAINT "names_pkey"
-        DO NOTHING;
-      `);
-    },
+    handler: ({ query }) => query(QUERY_UP),
   },
+  // Resets the feature's schema in between tests
+  {
+    target: '$FASTIFY_TDD_RESET',
+    handler:
+      (_, { getContext }) =>
+      async () => {
+        const query = getContext('pg.query');
+        await query(QUERY_DOWN);
+        await query(QUERY_UP);
+      },
+  },
+
+  // Exposes the seeded data via Fastify endpoint
   {
     target: '$FASTIFY_GET',
     handler: {
@@ -30,12 +48,6 @@ const f1 = () => [
         );
         return res.rows;
       },
-    },
-  },
-  {
-    target: '$TDD_RESET',
-    handler: async () => {
-      console.log('@reset');
     },
   },
 ];
