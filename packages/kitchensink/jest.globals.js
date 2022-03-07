@@ -1,6 +1,7 @@
 const fastifyTestUtils = require('@forrestjs/service-fastify/test/globals');
 const fetchqTestUtils = require('@forrestjs/service-fetchq/test/globals');
 const jwtTestUtils = require('@forrestjs/service-jwt/test/globals');
+const pgTestUtils = require('@forrestjs/service-pg/test/globals');
 const hashTestUtils = require('@forrestjs/service-hash/test/globals');
 
 // Fastify provides the basic global functions that make
@@ -20,5 +21,6 @@ module.exports = () => ({
   ...fastifyGlobals,
   ...fetchqTestUtils(fastifyGlobals),
   ...jwtTestUtils(fastifyGlobals),
+  ...pgTestUtils(fastifyGlobals),
   ...hashTestUtils(fastifyGlobals),
 });

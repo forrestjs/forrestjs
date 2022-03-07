@@ -78,7 +78,7 @@ const pg = ({ registerAction, registerTargets }) => {
   });
 
   registerAction({
-    target: '$FASTIFY_PLUGIN',
+    target: '$FASTIFY_PLUGIN?',
     handler: ({ decorateRequest }, { getContext }) => {
       const query = getContext('pg.query');
       decorateRequest('pg', { query });
