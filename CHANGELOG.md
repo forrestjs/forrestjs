@@ -18,7 +18,9 @@
 
 - deprecate `service-postgres` and write `service-pg` accepting `PGSTRING`
 - add `service-pg`
+- add `service-pg-schema`
 - add `service-jwks`
+- add `service-meta`
 
 ## 4.3.0
 
