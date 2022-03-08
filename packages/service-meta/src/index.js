@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 /**
  * Tries to source a configuration file using:
@@ -10,12 +10,12 @@ const path = require("path");
  * @param {String} basePath
  * @returns
  */
-const loadConfigAsJSON = (configName, basePath, localeSuffix) =>
+const loadConfigAsJSON = (configName, basePath, localSuffix) =>
   new Promise((resolve, reject) => {
-    const envName = process.env.NODE_ENV || "production";
+    const envName = process.env.NODE_ENV || 'production';
     const configFileEnv = `${basePath}/${configName}.${envName}.json`;
 
-    fs.readFile(configFileEnv, "utf-8", (err, data) => {
+    fs.readFile(configFileEnv, 'utf-8', (err, data) => {
       if (data) {
         try {
           resolve(JSON.parse(data));
@@ -27,10 +27,10 @@ const loadConfigAsJSON = (configName, basePath, localeSuffix) =>
         }
       }
 
-      if (err && err.code === "ENOENT") {
+      if (err && err.code === 'ENOENT') {
         // console.log(`Config file not found: ${configFileEnv}`);
-        const configFileLocale = `${basePath}/${configName}.${localeSuffix}.json`;
-        return fs.readFile(configFileLocale, "utf-8", (err, data) => {
+        const configFileLocale = `${basePath}/${configName}.${localSuffix}.json`;
+        return fs.readFile(configFileLocale, 'utf-8', (err, data) => {
           if (data) {
             try {
               resolve(JSON.parse(data));
@@ -42,10 +42,10 @@ const loadConfigAsJSON = (configName, basePath, localeSuffix) =>
             }
           }
 
-          if (err && err.code === "ENOENT") {
+          if (err && err.code === 'ENOENT') {
             // console.log(`Config file not found: ${configFileLocale}`);
             const configFile = `${basePath}/${configName}.json`;
-            return fs.readFile(configFile, "utf-8", (err, data) => {
+            return fs.readFile(configFile, 'utf-8', (err, data) => {
               if (data) {
                 try {
                   resolve(JSON.parse(data));
@@ -58,7 +58,7 @@ const loadConfigAsJSON = (configName, basePath, localeSuffix) =>
                 return;
               }
 
-              if (err && err.code === "ENOENT") {
+              if (err && err.code === 'ENOENT') {
                 // console.log(`Config file not found: ${configFile}`);
                 resolve(null);
                 return;
@@ -78,20 +78,20 @@ const loadConfigAsJSON = (configName, basePath, localeSuffix) =>
 
 const serviceMeta = ({ registerTargets }) => {
   registerTargets({
-    META_SOURCE: "meta/source"
+    META_SOURCE: 'meta/source',
   });
 
   return [
     {
-      target: "$INIT_SERVICE",
+      target: '$INIT_SERVICE',
       handler: async ({ createExtension, getConfig, setContext }) => {
-        const configPath = getConfig("meta.path", "/var/lib/meta");
-        const localeSuffix = getConfig("meta.locale", "locale");
+        const configPath = getConfig('meta.path', '/var/lib/meta');
+        const localSuffix = getConfig('meta.local', 'local');
 
         // Source files from config and hooks:
-        const jsonFiles1 = getConfig("meta.source", []);
+        const jsonFiles1 = getConfig('meta.source', []);
         const jsonFiles2 = createExtension
-          .sync("$META_SOURCE")
+          .sync('$META_SOURCE')
           .map(($) => $[0]);
 
         // Source each meta file and add it to the context:
@@ -101,11 +101,11 @@ const serviceMeta = ({ registerTargets }) => {
           const keyName = fileName.substr(0, fileName.length - extName.length);
 
           switch (extName) {
-            case ".json":
+            case '.json':
               const data = await loadConfigAsJSON(
                 keyName,
                 configPath,
-                localeSuffix
+                localSuffix,
               );
               setContext(`meta.${keyName}`, data);
               break;
@@ -113,8 +113,8 @@ const serviceMeta = ({ registerTargets }) => {
               console.warn(`Meta format not (yet) supported: ${fileName}`);
           }
         }
-      }
-    }
+      },
+    },
   ];
 };
 

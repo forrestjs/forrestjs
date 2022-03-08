@@ -10,7 +10,7 @@ Loads configuration from text files in _JSON_ format.
 The sourced content will be available in the App's context in a key that reflects the file name without the extension:
 
 ```js
-getContext("meta.{fileName}.key.key");
+getContext('meta.{fileName}.key.key');
 ```
 
 ## Config
@@ -25,7 +25,7 @@ Default: `/var/lib/meta`
 
 Change the local suffix to look for when sourcing the file.
 
-Default: `locale`
+Default: `local`
 
 ### meta.source
 
@@ -39,7 +39,7 @@ Default: `[]`
 
 ```js
 const f1 = {
-  target: "$META_SOURCE",
-  handler: () => "file_name.json"
+  target: '$META_SOURCE',
+  handler: () => 'file_name.json',
 };
 ```
