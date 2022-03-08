@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-fastify-cookie",
   "description": "ForrestJS service which adds cookie management capabilities to a Fastify server.",
-  "version": "4.4.0-alpha.7",
+  "version": "4.4.0-8.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^4.4.0-alpha.7",
+    "@forrestjs/core": "^4.4.0-8.0",
     "fastify-cookie": "^5.5.0"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-cookie#readme",
