@@ -1,3 +1,7 @@
+/**
+ * Keeps a pooled connection to PostgreSQL
+ */
+
 const { Pool } = require('pg');
 const targets = require('./targets');
 
