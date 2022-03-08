@@ -1,5 +1,5 @@
 {
-  "name": "@forrestjs/service-pg",
+  "name": "@forrestjs/service-pg-schema",
   "description": "ForrestJS service which keeps a pooled connection to a PostgreSQL database",
   "version": "4.4.0-8.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
