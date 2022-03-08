@@ -1,6 +1,6 @@
 {
-  "name": "@forrestjs/service-pg-schema",
-  "description": "ForrestJS service helps building a small PostgreSQL Schema",
+  "name": "@forrestjs/service-pg",
+  "description": "ForrestJS service which keeps a pooled connection to a PostgreSQL database",
   "version": "4.4.0-alpha.1",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
@@ -8,25 +8,25 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^4.4.0-alpha.1"
+    "@forrestjs/core": "^4.4.0-alpha.1",
+    "pg": "^8.7.3"
   },
-  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-pg-schema#readme",
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-pg#readme",
   "keywords": [
     "forrestjs",
     "service",
     "database",
+    "pool",
+    "query",
     "postgres",
     "postgresql",
-    "pg",
-    "schema",
-    "seed",
-    "migration"
+    "pg"
   ],
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-pg-schema",
+  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-pg",
   "scripts": {
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
   },
