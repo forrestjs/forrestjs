@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-fetchq",
   "description": "ForrestJS service which helps setting up a Fetchq node.",
-  "version": "4.4.0-8.0",
+  "version": "4.4.0-alpha.9",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^4.4.0-8.0",
+    "@forrestjs/core": "^4.4.0-alpha.9",
     "fetchq": "4.1.1"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fetchq#readme",

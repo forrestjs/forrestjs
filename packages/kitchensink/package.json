@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/kitchensink",
   "description": "ForrestJS demonstrational tool",
-  "version": "4.4.0-8.0",
+  "version": "4.4.0-alpha.9",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
@@ -60,22 +60,22 @@
     "tdd:mock-axios-e2e": "jest -t mock-axios-e2e --runInBand  --watchAll"
   },
   "dependencies": {
-    "@forrestjs/core": "^4.4.0-8.0",
-    "@forrestjs/service-apollo": "^4.4.0-8.0",
-    "@forrestjs/service-env": "^4.4.0-8.0",
-    "@forrestjs/service-fastify": "^4.4.0-8.0",
-    "@forrestjs/service-fastify-cookie": "^4.4.0-8.0",
-    "@forrestjs/service-fastify-cors": "^4.4.0-8.0",
-    "@forrestjs/service-fastify-gql": "^4.4.0-8.0",
-    "@forrestjs/service-fastify-healthz": "^4.4.0-8.0",
-    "@forrestjs/service-fastify-static": "^4.4.0-8.0",
-    "@forrestjs/service-fetchq": "^4.4.0-8.0",
-    "@forrestjs/service-hash": "^4.4.0-8.0",
-    "@forrestjs/service-jwt": "^4.4.0-8.0",
-    "@forrestjs/service-logger": "^4.4.0-8.0",
-    "@forrestjs/service-pg": "^4.4.0-8.0",
-    "@forrestjs/service-postgres": "^4.4.0-8.0",
-    "@forrestjs/service-postgres-pubsub": "^4.4.0-8.0"
+    "@forrestjs/core": "^4.4.0-alpha.9",
+    "@forrestjs/service-apollo": "^4.4.0-alpha.9",
+    "@forrestjs/service-env": "^4.4.0-alpha.9",
+    "@forrestjs/service-fastify": "^4.4.0-alpha.9",
+    "@forrestjs/service-fastify-cookie": "^4.4.0-alpha.9",
+    "@forrestjs/service-fastify-cors": "^4.4.0-alpha.9",
+    "@forrestjs/service-fastify-gql": "^4.4.0-alpha.9",
+    "@forrestjs/service-fastify-healthz": "^4.4.0-alpha.9",
+    "@forrestjs/service-fastify-static": "^4.4.0-alpha.9",
+    "@forrestjs/service-fetchq": "^4.4.0-alpha.9",
+    "@forrestjs/service-hash": "^4.4.0-alpha.9",
+    "@forrestjs/service-jwt": "^4.4.0-alpha.9",
+    "@forrestjs/service-logger": "^4.4.0-alpha.9",
+    "@forrestjs/service-pg": "^4.4.0-alpha.9",
+    "@forrestjs/service-postgres": "^4.4.0-alpha.9",
+    "@forrestjs/service-postgres-pubsub": "^4.4.0-alpha.9"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify#readme",
   "keywords": [
