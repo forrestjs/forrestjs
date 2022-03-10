@@ -22,16 +22,21 @@ const random = (min = 0, max = 10) =>
 const randomItem = (items = []) => items[random(0, items.length - 1)];
 
 // Awaits the availability of a generic uri inside the running app
-const awaitAppUri = ({ uri = '/', baseUrl, delay = 250 } = {}) =>
+const awaitAppUri = ({ uri = '/', baseUrl, delay = 250, log = false } = {}) =>
   Promise.resolve()
     .then(() => pause(delay))
     .then(() =>
-      promiseRetry((retry) => axios.get(url(uri, baseUrl)).catch(retry)),
+      promiseRetry((retry) =>
+        axios.get(url(uri, baseUrl)).catch((err) => {
+          log && console.log(`Not ready yet: ${err.request.res.responseUrl}`);
+          return retry();
+        }),
+      ),
     );
 
 // Awaits the availability of the test's healthz endpoint
 const awaitTestReady = ({ uri = `/${TEST_SCOPE}`, baseUrl, delay } = {}) =>
-  awaitAppUri({ uri, baseUrl, delay });
+  awaitAppUri({ uri, baseUrl, delay, log: true });
 
 /**
  * =================
