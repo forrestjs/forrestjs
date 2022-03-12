@@ -28,7 +28,11 @@ const awaitAppUri = ({ uri = '/', baseUrl, delay = 250, log = false } = {}) =>
     .then(() =>
       promiseRetry((retry) =>
         axios.get(url(uri, baseUrl)).catch((err) => {
-          log && console.log(`Not ready yet: ${err.request.res.responseUrl}`);
+          try {
+            log && console.log(`Not ready yet: ${err.request.res.responseUrl}`);
+          } catch (_) {
+            log && console.log(`Not ready yet: ${err.message}`);
+          }
           return retry();
         }),
       ),
