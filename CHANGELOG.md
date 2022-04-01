@@ -21,6 +21,7 @@
 - add `service-pg-schema`
 - add `service-jwks`
 - add `service-meta`
+- add `service-hasura-auth`
 
 ## 4.3.0
 
