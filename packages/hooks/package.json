@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/hooks",
   "description": "DEPRECATED: see @forrestjs/core",
-  "version": "4.4.0-alpha.19",
+  "version": "4.4.0-alpha.20",
   "main": "src/index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^4.4.0-alpha.19"
+    "@forrestjs/core": "^4.4.0-alpha.20"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/core#readme",
   "keywords": [
