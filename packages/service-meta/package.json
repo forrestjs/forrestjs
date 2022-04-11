@@ -1,0 +1,29 @@
+{
+  "name": "@forrestjs/service-meta",
+  "description": "Loads configuration from text files in _JSON_ format",
+  "version": "4.4.0",
+  "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
+  "main": "src/index",
+  "bugs": {
+    "url": "https://github.com/forrestjs/forrestjs/issues"
+  },
+  "dependencies": {
+    "@forrestjs/core": "^4.4.0"
+  },
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-meta#readme",
+  "keywords": [
+    "forrestjs",
+    "meta",
+    "config",
+    "json"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-meta",
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
+  },
+  "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578"
+}

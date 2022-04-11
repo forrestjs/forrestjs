@@ -11,6 +11,9 @@ export { default as query } from './query';
 export { getHandler, getModel, registerModel, resetModels } from './conn';
 
 export default ({ registerTargets, registerAction, createExtension }) => {
+  console.warn(
+    'DEPRECTED: "service-postgres" is deprecated and will be removed in v5.0.0 - use "service-pg" instead.',
+  );
   registerTargets(targets);
 
   registerAction({

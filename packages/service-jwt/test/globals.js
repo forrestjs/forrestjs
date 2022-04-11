@@ -1,7 +1,7 @@
 module.exports = (global) => {
-  const sign = (payload) => global.post('/test/jwt/sign', { payload });
-  const verify = (jwt) => global.post('/test/jwt/verify', { jwt });
-  const decode = (jwt) => global.post('/test/jwt/decode', { jwt });
+  const sign = (payload) => global.testPost('/jwt/sign', { payload });
+  const verify = (jwt) => global.testPost('/jwt/verify', { jwt });
+  const decode = (jwt) => global.testPost('/jwt/decode', { jwt });
 
   return {
     jwt: {

@@ -5,7 +5,7 @@ const serviceLogger = ({ registerAction, registerTargets }) => {
   registerTargets(targets);
 
   registerAction({
-    hook: '$START',
+    target: '$START',
     name: SERVICE_NAME,
     trace: __filename,
     handler: ({ getConfig, setContext, createExtension }) => {
@@ -44,7 +44,7 @@ const serviceLogger = ({ registerAction, registerTargets }) => {
   // Fastify Integration (optional hook)
   // nullify any custom setting for the default logger
   registerAction({
-    hook: '$FASTIFY_OPTIONS?',
+    target: '$FASTIFY_OPTIONS?',
     name: SERVICE_NAME,
     trace: __filename,
     handler: (options) => ({
@@ -63,7 +63,7 @@ const serviceLogger = ({ registerAction, registerTargets }) => {
   // Here we are truly messing around with it and overriding
   // the standard logger with Winston.
   registerAction({
-    hook: '$FASTIFY_HACKS_BEFORE?',
+    target: '$FASTIFY_HACKS_BEFORE?',
     name: SERVICE_NAME,
     trace: __filename,
     handler: ({ fastify }, { getContext }) => {
@@ -81,7 +81,7 @@ const serviceLogger = ({ registerAction, registerTargets }) => {
   // Fetchq Integration (optional hook)
   // Injects the `log` API into the registered workers.
   registerAction({
-    hook: '$FETCHQ_DECORATE_CONTEXT?',
+    target: '$FETCHQ_DECORATE_CONTEXT?',
     name: SERVICE_NAME,
     trace: __filename,
     handler: (context, { getContext }) => ({
