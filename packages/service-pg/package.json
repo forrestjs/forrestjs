@@ -8,7 +8,8 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^4.4.0"
+    "@forrestjs/core": "^4.4.0",
+    "pg": "^8.7.3"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-pg#readme",
   "keywords": [

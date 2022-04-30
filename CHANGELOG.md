@@ -14,6 +14,10 @@
 - [ ] deprecate `service-postgres-pubsub` and write `service-pg-pubsub` accepting `PGSTRING`
 - [ ] [bug] `createExtension("$SUM", 5)` the payload is not forwarded to the handlers
 
+## 4.4.1
+
+- [x] Add `pg` dependency to the service-pg
+
 ## 4.4.0
 
 - deprecate `service-postgres` and write `service-pg` accepting `PGSTRING`
