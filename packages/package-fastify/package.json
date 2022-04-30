@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/package-fastify",
-  "version": "4.4.1-alpha.0",
+  "version": "4.4.1-alpha.1",
   "description": "ForrestJS Dependencies package for a Fastify app.",
   "main": "index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
@@ -26,7 +26,7 @@
     "@forrestjs/core": "^4.4.1-alpha.0",
     "@forrestjs/service-apollo": "^4.4.1-alpha.0",
     "@forrestjs/service-env": "^4.4.1-alpha.0",
-    "@forrestjs/service-fastify": "^4.4.1-alpha.0",
+    "@forrestjs/service-fastify": "^4.4.1-alpha.1",
     "@forrestjs/service-fastify-cookie": "^4.4.1-alpha.0",
     "@forrestjs/service-fastify-cors": "^4.4.1-alpha.0",
     "@forrestjs/service-fastify-gql": "^4.4.1-alpha.0",
