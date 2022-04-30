@@ -118,9 +118,13 @@ By default there is no logic to this healthcheck, but you can interact with by i
 
 Runs the `$FASTIFY_TDD_RESET` handlers to reset the App's state.
 
-`get://test/config`
+`get://test/config?key=foobar&value=123`
 
-`post://test/config`
+Reads a configuration value from the App
+
+`post://test/config { key: 'foobar', value: 555 }`
+
+Writes a configuration value into the App
 
 `post://test/axios/stubs`
 
@@ -247,6 +251,10 @@ registerAction({
 ```
 
 ### 🧩 FASTIFY_TDD_RESET
+
+Let you inject state reset logic from any Service or Feature.
+
+Tests will then call `/test/reset` in order to trigger an App's state reset.
 
 ```js
 registerAction({

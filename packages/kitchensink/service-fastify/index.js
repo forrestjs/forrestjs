@@ -7,15 +7,15 @@ const registerTddRoute = require('./feature-register-tdd-route');
 
 const addStuffIntoReset = () => ({
   target: '$FASTIFY_TDD_RESET',
-  handler: ({ registerResetHandler }) => {
+  handler: ({ registerTddReset }) => {
     // You can just provide an anonymous handler:
-    registerResetHandler(() => 'unknownHandler');
+    registerTddReset(() => 'unknownHandler');
 
     // Or you can give it a name:
-    registerResetHandler(() => 'first', 'firstHandler');
+    registerTddReset(() => 'first', 'firstHandler');
 
     // Handlers can be asynchronous:
-    registerResetHandler(
+    registerTddReset(
       () => new Promise((r) => setTimeout(() => r('asyncHandler'), 100)),
       'asyncHandler',
     );
