@@ -13,10 +13,13 @@
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
 - [ ] deprecate `service-postgres-pubsub` and write `service-pg-pubsub` accepting `PGSTRING`
 - [ ] [bug] `createExtension("$SUM", 5)` the payload is not forwarded to the handlers
+- [ ] [service-fastify] Deprecate custom routes (FASTIFY_GET, FASTIFY_POST...)
 
 ## 4.4.1
 
-- [x] Add `pg` dependency to the service-pg
+- [pg] Add `pg` dependency to the service-pg
+- [service-fastify] Add `setConfig` to the server and request instances
+- [service-fastify] Add `setContext` to the server and request instances
 
 ## 4.4.0
 

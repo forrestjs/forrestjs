@@ -1,5 +1,15 @@
 # Change Log
 
+## v5.0.0 (Roadmap)
+
+- [ ] Remove `reply` object decorations
+
+## v4.4.1
+
+- Update libraries
+- Add `setConfig` to the server and request instances
+- Add `setContext` to the server and request instances
+
 ## v4.0.0
 
 - Refactored to remove babel and the build step
