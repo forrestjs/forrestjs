@@ -8,24 +8,19 @@ https://codesandbox.io/s/service-fastify-healthz-4g3my
 ## Install & Setup
 
 ```bash
-npm install --save @forrestjs/core @forrestjs/service-fastify @forrestjs/service-fastify-healthz
+npm add @forrestjs/core @forrestjs/service-fastify @forrestjs/service-fastify-healthz
 ```
 
 set it up in your FastifyJS App:
 
 ```js
 // index.js
-const { runHookApp } = require('@forrestjs/core');
+const forrestjs = require('@forrestjs/core');
 const fastifyService = require('@forrestjs/service-fastify');
 const fastifyHealthzService = require('@forrestjs/service-fastify-healthz');
 
-// Create a custom healthcheck response
-const HEALTHZ_MSG = 'This is a custom healthcheck response';
-const customHealthz = ({ registerHandler }) =>
-  registerHandler(async () => HEALTHZ_MSG);
-
 // Run the app:
-runHookApp({
+forrestjs.run({
   services: [fastifyService, fastifyHealthzService],
 });
 ```
@@ -40,9 +35,9 @@ default: `GET`
 
 default: `/healthz`
 
-## Hooks
+## Extensions
 
-### FASTIFY_HEALTHZ_HANDLER
+### 🧩 $FASTIFY_HEALTHZ_HANDLER
 
 This hooks allows to override the default healthcheck route.  
 It is useful in case you want to perform rich logic during a healthcheck.
@@ -53,8 +48,12 @@ const HEALTHZ_MSG = 'This is a custom healthcheck response';
 const customHealthz = ({ registerHandler }) =>
   registerHandler(async () => HEALTHZ_MSG);
 
-runHookApp({
-  /* other stuff... */
-  features: [['$FASTIFY_HEALTHZ_HANDLER', customHealthz]],
+forrestjs.run({
+  features: [
+    {
+      target: '$FASTIFY_HEALTHZ_HANDLER',
+      handler: customHealthz,
+    },
+  ],
 });
 ```

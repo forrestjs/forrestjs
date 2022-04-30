@@ -1,6 +1,6 @@
 describe('service-fastify-standalone', () => {
   // This is how to use the reset utility
-  // beforeEach(global.reset);
+  beforeEach(global.reset);
 
   describe('routing', () => {
     [

@@ -1,5 +1,7 @@
 # @forrestjs/service-hash
 
+**🚧 DEPRECATED 🚧**
+
 ForrestJS service which helps hashing stuff with bcrypt.
 
 ## Usage

@@ -19,12 +19,15 @@ that are bound to the execution context (your laptop, a production server).
 This service injects a `getEnv()` method into the Hooks App execution context:
 
 ```js
-const { runHookApp, FINISH } = require('@forrestjs/core');
+const forrestjs = require('@forrestjs/core');
 
-runHookApp({
+forrestjs.run({
   services: [require('@forrestjs/service-env')],
   features: [
-    [FINISH, (args, ctx) => console.log(getEnv('FOO'), 'default for "foo"')],
+    {
+      target: '$FINISH',
+      handler: (args, ctx) => console.log(getEnv('FOO'), 'default for "foo"'),
+    },
   ],
 });
 ```

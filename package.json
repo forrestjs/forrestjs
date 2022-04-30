@@ -10,8 +10,8 @@
     "ci-test": "lerna run test",
     "build": "lerna run build",
     "link": "lerna link",
-    "deploy": "lerna run build && lerna publish",
-    "deploy:all": "lerna run build && lerna publish --force-publish"
+    "deploy": "rm -rf ./packages/kitchensink/package-lock.json && lerna run build && lerna publish",
+    "deploy:all": "rm -rf ./packages/kitchensink/package-lock.json &&lerna run build && lerna publish --force-publish"
   },
   "author": "Marco Pegoraro",
   "license": "MIT",
@@ -34,9 +34,9 @@
   ],
   "devDependencies": {
     "@marcopeg/utils": "^2.0.1",
-    "concurrently": "^7.0.0",
+    "concurrently": "^7.1.0",
     "cross-env": "^7.0.3",
-    "jest": "27.4.7",
+    "jest": "28.0.3",
     "lerna": "^4.0.0"
   }
 }

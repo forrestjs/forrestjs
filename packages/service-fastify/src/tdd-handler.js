@@ -63,7 +63,8 @@ const collectChecks = (createExtension) => {
 
 const collectResetHandlers = (createExtension) => {
   const handlers = [];
-  const registerResetHandler = (handler, name = null) => {
+
+  const registerTddReset = (handler, name = null) => {
     // Validate the input to the register handler function
     if (typeof handler !== 'function') {
       throw new Error(resetHandlerTypeErrorMessage);
@@ -75,19 +76,24 @@ const collectResetHandlers = (createExtension) => {
     });
   };
 
+  const registerResetHandler = (...args) => {
+    console.warn(
+      '[service-fastify] "registerResetHandler()" is deprecated. Please use "registerTddReset()" instead',
+    );
+    return registerTddReset(...args);
+  };
+
   createExtension
-    .sync('$FASTIFY_TDD_RESET', { registerResetHandler })
+    .sync('$FASTIFY_TDD_RESET', { registerTddReset, registerResetHandler })
     .map((result) => result[0])
     .filter((check) => check !== undefined) // skip empty values
-    .forEach(registerResetHandler);
+    .forEach(registerTddReset);
 
   return handlers;
 };
 
-module.exports = (
-  { registerRoute },
-  { getConfig, setConfig, createExtension },
-) => {
+module.exports = ({ registerRoute }, ctx) => {
+  const { getConfig, setConfig, createExtension } = ctx;
   const tddScope = getConfig('fastify.tdd.scope', '/test');
 
   // Collect integrations from other services and features
@@ -206,7 +212,7 @@ module.exports = (
   });
 
   // Let the test handle a full state reset for the app
-  // GET://reset
+  // GET://test/reset
   registerRoute({
     method: 'GET',
     url: `${tddScope}/reset`,
@@ -215,7 +221,7 @@ module.exports = (
       const results = [];
 
       for (const handler of resetHandlers) {
-        const result = await handler.fn();
+        const result = await handler.fn(ctx);
         results.push({
           name: handler.name,
           result,
@@ -229,6 +235,7 @@ module.exports = (
     },
   });
 
+  // POST://test/axios/stubs
   registerRoute({
     method: 'POST',
     url: `${tddScope}/axios/stubs`,
@@ -351,6 +358,7 @@ module.exports = (
     },
   });
 
+  // DELETE://test/axios/stubs
   registerRoute({
     method: 'DELETE',
     url: `${tddScope}/axios/stubs`,
