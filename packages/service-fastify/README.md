@@ -60,6 +60,12 @@ It falls back to environment variables:
 
 Let you pass arbitrary configuration to the [Fastify instance](https://www.fastify.io/docs/latest/Guides/Getting-Started/#your-first-server).
 
+### 📝 fastify.tdd.scope
+
+Let you setup the root of the testing APIs.
+
+Default: `/test`
+
 ---
 
 ## Context
@@ -82,6 +88,43 @@ A reference to the static instance of Axios.
 const axios = getContext('axios');
 await axios.get('/');
 ```
+
+---
+
+## Testing Support
+
+Service Fastify ships testing facilities with the goal of making end-2-end testing easy for you.
+
+The idea is to let the testing enviornment interact with the Fastify instance using REST APIs that are available exclusively whith
+`process.env.NODE_ENV` set to:
+
+- development
+- test
+
+Those test-specific APIs are exposed under a `/test/...` root that you can change by setting `fastify.tdd.root`.
+
+### Test Healthcheck
+
+The root Route `/test` acts as healthcheck for running tests. Any test client should await for a `200` reply from this endpoint before attempting to run any call.
+
+By default there is no logic to this healthcheck, but you can interact with by implementing two extensions:
+
+- `$FASTIFY_TDD_CHECK`
+- `$FASTIFY_TDD_ROOT`
+
+### Test APIs
+
+`get://test/reset`
+
+Runs the `$FASTIFY_TDD_RESET` handlers to reset the App's state.
+
+`get://test/config`
+
+`post://test/config`
+
+`post://test/axios/stubs`
+
+`delete://test/axios/stubs`
 
 ---
 
@@ -202,3 +245,59 @@ registerAction({
   ],
 });
 ```
+
+### 🧩 FASTIFY_TDD_RESET
+
+```js
+registerAction({
+  target: '$FASTIFY_TDD_CHECK',
+  handler: ({ registerTddReset }) => {
+    registerTddCheck(async ({ getContext }) => {
+      const pg = getContext('pg');
+      return pg.query('DROP SCHEMA "public" CASCADE');
+    });
+  },
+});
+```
+
+### 🧩 FASTIFY_TDD_CHECK
+
+Let you inject [`preHandlers`](https://www.fastify.io/docs/latest/Reference/Hooks/#prehandler) to the `/test` route.
+
+Use this to await for database connections or other preconditions.
+
+```js
+registerAction({
+  target: '$FASTIFY_TDD_CHECK',
+  handler: ({ registerTddCheck }) => {
+    // Middleware style
+    registerTddCheck((request, reply, next) => {
+      console.log('Healthcheck with callback');
+      next();
+    });
+
+    // Async style
+    registerTddCheck(async (request, reply) => {
+      console.log('Asynchronous healthcheck');
+    });
+  },
+});
+```
+
+### 🧩 FASTIFY_TDD_ROOT
+
+Let you implement the returning body of the `/test` route.
+
+```js
+registerAction({
+  target: '$FASTIFY_TDD_ROOT',
+  name: 'registerTddRoute',
+  handler: () => (request, reply) => reply.send('ok'),
+});
+```
+
+### 🧩 FASTIFY_TDD_ROOT
+
+Let you extend the `/test` API with custom sub-routes.
+
+It works exactly as `$FASTIFY_ROUTE`, but all the routes you define are scoped with the testing prefix.

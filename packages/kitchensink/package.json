@@ -90,7 +90,7 @@
   "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578",
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "jest": "^27.4.7",
-    "nodemon": "^2.0.15"
+    "jest": "^28.0.3",
+    "nodemon": "^2.0.16"
   }
 }
