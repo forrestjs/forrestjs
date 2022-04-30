@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-fastify-cors",
   "description": "ForrestJS service which adds CORS management capabilities to a Fastify server.",
-  "version": "4.4.1-alpha.2",
+  "version": "4.4.1",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^4.4.1-alpha.0",
+    "@forrestjs/core": "^4.4.1",
     "fastify-cors": "6.1.0"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-cors#readme",
