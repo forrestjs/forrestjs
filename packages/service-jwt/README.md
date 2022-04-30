@@ -5,11 +5,11 @@ a _Promise_ wrapped `jsonwebtoken` module.
 
 ## Usage
 
-`service-jwt` decorates the _Hooks App Context_ with a `jwt.sign()` and `jwt.verify()` helpers:
+`service-jwt` decorates the _App's Context_ with a `jwt.sign()` and `jwt.verify()` helpers:
 
 ```js
 registerAction({
-  hook: 'myHook',
+  target: 'myHook',
   handler: async (args, ctx) => {
     const token = await ctx.jwt.sign({ foo: 123 });
     console.log(token);
@@ -20,7 +20,7 @@ registerAction({
 });
 ```
 
-After the _Hooks App_ initializes, you can simply import the helpers and use it straight:
+After the App initializes, you can simply import the helpers and use it straight:
 
 ```js
 const { sign, verify } = require('@forrestjs/service-jwt');
@@ -45,7 +45,7 @@ JWT_DURATION=1y
 
 ```js
 registerAction({
-  hook: SETTINGS,
+  target: '$SETTINGS',
   handler: ({ setConfig }) => {
     setConfig('jwt.secret', 'your-safe-secret');
     setConfig('jwt.duration', '1y');

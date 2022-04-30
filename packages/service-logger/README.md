@@ -5,13 +5,12 @@ It uses [winston](https://www.npmjs.com/package/winston) under the hood.
 
 ## Usage
 
-`service-logger` injects a Winston logger instance into the Hooks App context, so you will be able
+`service-logger` injects a Winston logger instance into the App context, so you will be able
 to access it from any action:
 
 ```js
-const hooks = require('@forrestjs/core');
-hooks.registerAction({
-  hook: hooks.FINISH,
+registerAction({
+  target: '$FINISH',
   handler: (args, ctx) => {
     ctx.logger.info('Test');
   },
@@ -51,7 +50,7 @@ the rest of the app with a viable logging mechanism.
 const serviceLogger = require('@forrestjs/service-logger');
 
 registerAction({
-  hook: serviceLogger.LOGGER_TRANSPORTS,
+  target: '$LOGGER_TRANSPORTS',
   handler: ({ registerTransport, winston }) =>
     registerTransport(new winston.transports.Console()),
 });

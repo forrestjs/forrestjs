@@ -136,7 +136,7 @@ Writes a configuration value into the App
 
 > All the extensions exposed by `service-fastify` are _synchronous_ and executes in _serie_.
 
-### 🧩 FASTIFY_OPTIONS
+### 🧩 $FASTIFY_OPTIONS
 
 It allows to programmatically modify the options that are given to the Fastify's instance, it works in **waterfall**.
 
@@ -150,7 +150,7 @@ registerAction({
 });
 ```
 
-### 🧩 FASTIFY_HACKS_BEFORE
+### 🧩 $FASTIFY_HACKS_BEFORE
 
 This hook fires before any other step.  
 It receives a direct reference to the `fastify` instance.
@@ -165,7 +165,7 @@ registerAction({
 });
 ```
 
-### 🧩 FASTIFY_HACKS_AFTER
+### 🧩 $FASTIFY_HACKS_AFTER
 
 This hook fires after any other step.  
 It receives a direct reference to the `fastify` instance.
@@ -180,7 +180,7 @@ registerAction({
 });
 ```
 
-### 🧩 FASTIFY_PLUGIN
+### 🧩 $FASTIFY_PLUGIN
 
 Let register Fastify plugins or decorate the instance.
 
@@ -206,7 +206,7 @@ registerAction({
 });
 ```
 
-### 🧩 FASTIFY_ROUTE
+### 🧩 $FASTIFY_ROUTE
 
 Lets implement first level routes in your Fastify instance:
 
@@ -250,7 +250,7 @@ registerAction({
 });
 ```
 
-### 🧩 FASTIFY_TDD_RESET
+### 🧩 $FASTIFY_TDD_RESET
 
 Let you inject state reset logic from any Service or Feature.
 
@@ -268,7 +268,7 @@ registerAction({
 });
 ```
 
-### 🧩 FASTIFY_TDD_CHECK
+### 🧩 $FASTIFY_TDD_CHECK
 
 Let you inject [`preHandlers`](https://www.fastify.io/docs/latest/Reference/Hooks/#prehandler) to the `/test` route.
 
@@ -292,7 +292,7 @@ registerAction({
 });
 ```
 
-### 🧩 FASTIFY_TDD_ROOT
+### 🧩 $FASTIFY_TDD_ROOT
 
 Let you implement the returning body of the `/test` route.
 
@@ -304,7 +304,7 @@ registerAction({
 });
 ```
 
-### 🧩 FASTIFY_TDD_ROOT
+### 🧩 $FASTIFY_TDD_ROOT
 
 Let you extend the `/test` API with custom sub-routes.
 

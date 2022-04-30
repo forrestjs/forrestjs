@@ -1,5 +1,7 @@
 # @forrestjs/service-postgres-pubsub
 
+**🚧 DEPRECATED 🚧**
+
 This service leverages a _Postgres_ database to implement a pub/sub mechanism
 that can scale across multiple instances of a web service.
 
@@ -34,17 +36,19 @@ a `connectionName` property. If omitted it's going to be `default`.
 
 ```js
 registerAction({
-    hook: SETTINGS,
-    name: '♦ boot',
-    handler: async ({ settings }) => {
-        settings.postgresPubsub = [{
-            connectionName: 'default',
-            host: config.get('PG_HOST'),
-            port: config.get('PG_PORT'),
-            database: config.get('PG_DATABASE'),
-            username: config.get('PG_USERNAME'),
-            password: config.get('PG_PASSWORD'),
-        }]
-    }
-})
+  hook: SETTINGS,
+  name: '♦ boot',
+  handler: async ({ settings }) => {
+    settings.postgresPubsub = [
+      {
+        connectionName: 'default',
+        host: config.get('PG_HOST'),
+        port: config.get('PG_PORT'),
+        database: config.get('PG_DATABASE'),
+        username: config.get('PG_USERNAME'),
+        password: config.get('PG_PASSWORD'),
+      },
+    ];
+  },
+});
 ```

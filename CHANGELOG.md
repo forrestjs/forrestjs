@@ -14,12 +14,17 @@
 - [ ] deprecate `service-postgres-pubsub` and write `service-pg-pubsub` accepting `PGSTRING`
 - [ ] [bug] `createExtension("$SUM", 5)` the payload is not forwarded to the handlers
 - [ ] [service-fastify] Deprecate custom routes (FASTIFY_GET, FASTIFY_POST...)
+- [ ] [service-fastify-static] update the deprecated dependency
+- [ ] [service-fastify-cors] update the deprecated dependency
+- [ ] [service-fastify-cookie] update the deprecated dependency
 
 ## 4.4.1
 
 - [pg] Add `pg` dependency to the service-pg
 - [service-fastify] Add `setConfig` to the server and request instances
 - [service-fastify] Add `setContext` to the server and request instances
+- [service-fastify] Deprecate `registerResetHandler()` in favor of `registerTddReset()`
+- [service-fastify] Improve documentation
 
 ## 4.4.0
 

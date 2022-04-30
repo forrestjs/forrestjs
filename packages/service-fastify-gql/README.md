@@ -17,7 +17,7 @@ Add a new custom scalar type:
 
 ```js
 registerAction({
-  hook: '$FASTIFY_GQL_EXTEND_SCHEMA',
+  target: '$FASTIFY_GQL_EXTEND_SCHEMA',
   handler: () => ({
     typeDefs: gql`
       scalar Age
@@ -48,7 +48,7 @@ Add new fields to queries or mutations:
 
 ```js
 registerAction({
-  hook: '$FASTIFY_GQL_EXTEND_SCHEMA',
+  target: '$FASTIFY_GQL_EXTEND_SCHEMA',
   handler: () => ({
     typeDefs: gql`
       type Foo {
