@@ -9,8 +9,9 @@ You can run the `$PG_READY` extension to execute SQL logic at boot time:
 ```js
 const myFeature = {
   target: '$PG_READY',
-  handler: async (query) => {
-    await query('CREATE TABLE IF NOT EXISTS...');
+  handler: async ({ query }) => {
+    const res = await query('SELECT NOW()');
+    console.log(res.rows);
   },
 };
 ```
