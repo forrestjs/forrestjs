@@ -25,6 +25,7 @@ const serviceFastifyStatic = require('@forrestjs/service-fastify-static');
 
 // Run the app:
 forrestjs.run({
+  services: [serviceFastify, serviceFastifyStatic],
   settings: {
     fastify: {
       static: {
@@ -32,7 +33,6 @@ forrestjs.run({
       },
     },
   },
-  services: [serviceFastify, serviceFastifyStatic],
 });
 ```
 
