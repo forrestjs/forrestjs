@@ -57,7 +57,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
   };
 
   const registerTargets = (name, value) => {
-    // handle a disctionary input
+    // handle a dictionary input
     if (typeof name === 'object') {
       Object.keys(name)
         .filter((key) => !SKIP_REGISTER_LIFECYCLE_EXTENSIONS.includes(key))
@@ -75,7 +75,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
   // DEPRECATED: remove in v5.0.0
   const registerHook = (name, value) => {
     console.warn(
-      '[DEPRECATED] use "registerActions()" instead of "registerHook()". It will be removed in v5.0.0',
+      '[DEPRECATED] use "registerTargets()" instead of "registerHook()". It will be removed in v5.0.0',
     );
     registerTargets(name, value);
   };
