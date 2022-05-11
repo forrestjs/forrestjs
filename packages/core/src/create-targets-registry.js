@@ -57,7 +57,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
   };
 
   const registerTargets = (name, value) => {
-    // handle a disctionary input
+    // handle a dictionary input
     if (typeof name === 'object') {
       Object.keys(name)
         .filter((key) => !SKIP_REGISTER_LIFECYCLE_EXTENSIONS.includes(key))
