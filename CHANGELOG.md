@@ -18,6 +18,10 @@
 - [ ] [service-fastify-cors] update the deprecated dependency
 - [ ] [service-fastify-cookie] update the deprecated dependency
 
+## 4.4.2
+
+- [core] Expose all registered targets
+
 ## 4.4.1
 
 - [pg] Add `pg` dependency to the service-pg

@@ -32,6 +32,9 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
     throw new Error(`Unknown hook "${name}"`);
   };
 
+  // Expose all the registered extensions
+  const getTargets = () => ({ ...knownExtensions });
+
   // DEPRECATED: remove in v5.0.0
   const getAction = (name) => {
     console.warn(
@@ -87,6 +90,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
   const registry = {
     registerTargets,
     getTarget,
+    getTargets,
     getAction, // DEPRECATED: remove in v5.0.0
     getHook, // DEPRECATED: remove in v5.0.0
     registerHook, // DEPRECATED: remove in v5.0.0
