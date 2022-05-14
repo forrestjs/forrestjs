@@ -11,6 +11,7 @@
 - Improve `getConfig()` error trace
 - Improve `getContext()` error trace
 - Improve `registerAction()` error trace
+- Improve `createExtension()` error trace
 
 ## 4.4.2
 

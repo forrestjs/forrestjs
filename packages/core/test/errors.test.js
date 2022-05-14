@@ -24,10 +24,11 @@ describe('Errors', () => {
         fn(err);
       }
 
+      // console.log(fn.mock.calls[0][0]);
       expect(fn).toHaveBeenCalled();
       expect(fn.mock.calls[0][0].name).toBe('ForrestJSGetConfigError');
       expect(fn.mock.calls[0][0].message).toContain('getConfig()');
-      expect(fn.mock.calls[0][0].target).toContain('start');
+      expect(fn.mock.calls[0][0].target).toContain(forrest.START);
       expect(fn.mock.calls[0][0].action).toContain('foobar');
       expect(fn.mock.calls[0][0].trace).toContain('abcde');
     });
@@ -56,7 +57,7 @@ describe('Errors', () => {
       expect(fn).toHaveBeenCalled();
       expect(fn.mock.calls[0][0].name).toBe('ForrestJSGetContextError');
       expect(fn.mock.calls[0][0].message).toContain('getContext()');
-      expect(fn.mock.calls[0][0].target).toContain('start');
+      expect(fn.mock.calls[0][0].target).toContain(forrest.START);
       expect(fn.mock.calls[0][0].action).toContain('foobar');
       expect(fn.mock.calls[0][0].trace).toContain('abcde');
     });
@@ -83,9 +84,9 @@ describe('Errors', () => {
       }
 
       expect(fn).toHaveBeenCalled();
-      expect(fn.mock.calls[0][0].name).toBe('ForrestJSUnknownTargetError');
+      expect(fn.mock.calls[0][0].name).toBe('ForrestJSCreateExtensionError');
       expect(fn.mock.calls[0][0].message).toContain('Unknown target');
-      expect(fn.mock.calls[0][0].target).toContain('start');
+      expect(fn.mock.calls[0][0].target).toContain(forrest.START);
       expect(fn.mock.calls[0][0].action).toContain('foobar');
       expect(fn.mock.calls[0][0].trace).toContain('abcde');
     });
@@ -113,7 +114,7 @@ describe('Errors', () => {
       expect(fn).toHaveBeenCalled();
       expect(fn.mock.calls[0][0].name).toBe('ForrestJSRegisterActionError');
       expect(fn.mock.calls[0][0].message).toContain('Unknown target');
-      expect(fn.mock.calls[0][0].target).toContain('DOES_NOT_EXISTS');
+      expect(fn.mock.calls[0][0].target).toContain('$DOES_NOT_EXISTS');
       expect(fn.mock.calls[0][0].action).toContain('foobar');
       expect(fn.mock.calls[0][0].trace).toContain('abcde');
     });

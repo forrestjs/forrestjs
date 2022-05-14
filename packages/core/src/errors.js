@@ -19,6 +19,16 @@ class ForrestJSUnknownTargetError extends Error {
   }
 }
 
+class ForrestJSCreateExtensionError extends Error {
+  constructor(message, props) {
+    super(message);
+    this.name = 'ForrestJSCreateExtensionError';
+    // this.target = props.target;
+    // this.action = props.name;
+    // this.trace = props.trace;
+  }
+}
+
 class ForrestJSRegisterActionError extends Error {
   constructor(message, props) {
     super(message);
@@ -29,7 +39,7 @@ class ForrestJSRegisterActionError extends Error {
   }
 }
 
-class ForrestJSActionError extends Error {
+class ForrestJSRunActionError extends Error {
   constructor(action, error) {
     const message =
       error && error.message
@@ -56,13 +66,14 @@ class ForrestJSActionError extends Error {
 // wrap a single hook error and creates a rich error type
 // that contains info regarding it's logical origin
 const onItemError = (error, action) => {
-  throw new ForrestJSActionError(action, error);
+  throw new ForrestJSRunActionError(action, error);
 };
 
 module.exports = {
   ForrestJSGetConfigError,
   ForrestJSGetContextError,
   ForrestJSUnknownTargetError,
+  ForrestJSCreateExtensionError,
   ForrestJSRegisterActionError,
   onItemError,
 };
