@@ -73,10 +73,10 @@ const onStartService = async ({ getConfig, getContext, createExtension }) => {
   await createExtension.serie('$FETCHQ_READY', { fetchq: client });
 };
 
-module.exports = ({ registerAction, registerTargets }) => {
+module.exports = ({ registerExtension, registerTargets }) => {
   registerTargets(targets);
 
-  registerAction({
+  registerExtension({
     target: '$INIT_SERVICE',
     name: SERVICE_NAME,
     trace: __filename,
@@ -84,7 +84,7 @@ module.exports = ({ registerAction, registerTargets }) => {
     handler: onInitService,
   });
 
-  registerAction({
+  registerExtension({
     target: '$START_SERVICE',
     name: SERVICE_NAME,
     trace: __filename,
@@ -96,7 +96,7 @@ module.exports = ({ registerAction, registerTargets }) => {
    * Provide the Fetchq client reference into Fastify's context
    */
 
-  registerAction({
+  registerExtension({
     target: '$FASTIFY_PLUGIN?',
     name: SERVICE_NAME,
     trace: __filename,
@@ -122,14 +122,14 @@ module.exports = ({ registerAction, registerTargets }) => {
     }
   };
 
-  registerAction({
+  registerExtension({
     target: '$FASTIFY_TDD_CHECK?',
     name: SERVICE_NAME,
     trace: __filename,
     handler: () => healthcheckHandler,
   });
 
-  registerAction({
+  registerExtension({
     target: '$FASTIFY_HEALTHZ_CHECK?',
     name: SERVICE_NAME,
     trace: __filename,
@@ -140,7 +140,7 @@ module.exports = ({ registerAction, registerTargets }) => {
    * TDD
    * Integrate with the Fastify TDD API
    */
-  registerAction({
+  registerExtension({
     target: '$FASTIFY_TDD_ROUTE?',
     name: SERVICE_NAME,
     trace: __filename,

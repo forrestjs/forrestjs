@@ -83,6 +83,7 @@ const serviceMeta = ({ registerTargets }) => {
 
   return [
     {
+      trace: __filename,
       target: '$INIT_SERVICE',
       handler: async ({ createExtension, getConfig, setContext }) => {
         const configPath = getConfig('meta.path', '/var/lib/meta');

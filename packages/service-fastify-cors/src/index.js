@@ -6,12 +6,15 @@ const onFastifyHacksBefore = ({ registerPlugin }, { getConfig }) => {
   registerPlugin(corsPlugin, options);
 };
 
-module.exports = ({ registerTargets, registerAction }) => {
+module.exports = ({ registerTargets }) => {
   registerTargets(targets);
-  registerAction({
-    target: '$FASTIFY_PLUGIN',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: onFastifyHacksBefore,
-  });
+
+  return [
+    {
+      target: '$FASTIFY_PLUGIN',
+      trace: __filename,
+      name: SERVICE_NAME,
+      handler: onFastifyHacksBefore,
+    },
+  ];
 };

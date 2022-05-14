@@ -1,50 +1,52 @@
-const targets = require("./targets");
+const targets = require('./targets');
 
 const pgSchema = ({ registerTargets }) => {
   registerTargets(targets);
 
   return [
     {
-      target: "$PG_READY",
+      trace: __filename,
+      target: '$PG_READY',
       handler: async ({ query }, { createExtension, getConfig }) => {
-        const buildConfig = getConfig("pgSchema.build", {});
-        const seedConfig = getConfig("pgSchema.seed", {});
+        const buildConfig = getConfig('pgSchema.build', {});
+        const seedConfig = getConfig('pgSchema.seed', {});
 
-        await createExtension.serie("$PG_SCHEMA_BUILD", {
+        await createExtension.serie('$PG_SCHEMA_BUILD', {
           query,
-          config: buildConfig
+          config: buildConfig,
         });
-        await createExtension.serie("$PG_SCHEMA_SEED", {
+        await createExtension.serie('$PG_SCHEMA_SEED', {
           query,
-          config: seedConfig
+          config: seedConfig,
         });
-      }
+      },
     },
     {
-      target: "$FASTIFY_TDD_RESET?",
+      trace: __filename,
+      target: '$FASTIFY_TDD_RESET?',
       handler:
         (_, { createExtension, getConfig, getContext }) =>
         async () => {
-          const query = getContext("pg.query");
+          const query = getContext('pg.query');
 
-          const buildConfig = getConfig("pgSchema.build", {});
-          const seedConfig = getConfig("pgSchema.seed", {});
-          const resetConfig = getConfig("pgSchema.reset", {});
+          const buildConfig = getConfig('pgSchema.build', {});
+          const seedConfig = getConfig('pgSchema.seed', {});
+          const resetConfig = getConfig('pgSchema.reset', {});
 
-          await createExtension.serie("$PG_SCHEMA_RESET", {
+          await createExtension.serie('$PG_SCHEMA_RESET', {
             query,
-            config: resetConfig
+            config: resetConfig,
           });
-          await createExtension.serie("$PG_SCHEMA_BUILD", {
+          await createExtension.serie('$PG_SCHEMA_BUILD', {
             query,
-            config: buildConfig
+            config: buildConfig,
           });
-          await createExtension.serie("$PG_SCHEMA_SEED", {
+          await createExtension.serie('$PG_SCHEMA_SEED', {
             query,
-            config: seedConfig
+            config: seedConfig,
           });
-        }
-    }
+        },
+    },
   ];
 };
 

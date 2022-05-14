@@ -9,6 +9,7 @@
   "main": "src/index",
   "scripts": {
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json",
+    "reset": "npm run clean && npm install",
     "start:hooks": "cross-env NODE_ENV=development npx nodemon hooks",
     "start:service-fastify": "cross-env NODE_ENV=development npx nodemon service-fastify",
     "test:service-fastify": "jest -t service-fastify-standalone --runInBand ",

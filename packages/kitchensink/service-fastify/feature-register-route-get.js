@@ -8,11 +8,11 @@
  * - $FASTIFY_DELETE
  *
  */
-module.exports = ({ registerAction }) => {
+module.exports = ({ registerExtension }) => {
   /**
    * Using the `registerRoute` API with positional arguments
    */
-  registerAction({
+  registerExtension({
     target: '$FASTIFY_GET',
     name: 'registerRouteGet',
     handler: ({ registerRoute }) => {
@@ -25,7 +25,7 @@ module.exports = ({ registerAction }) => {
    * (single value)
    */
 
-  registerAction({
+  registerExtension({
     target: '$FASTIFY_GET',
     name: 'registerRouteGet_returningSingle',
     handler: () => ({
@@ -38,7 +38,7 @@ module.exports = ({ registerAction }) => {
    * (multiple values)
    */
 
-  registerAction({
+  registerExtension({
     target: '$FASTIFY_GET',
     name: 'registerRouteGet_returningMulti',
     handler: () => [
@@ -57,7 +57,7 @@ module.exports = ({ registerAction }) => {
    * (single value)
    */
 
-  registerAction({
+  registerExtension({
     target: '$FASTIFY_GET',
     name: 'registerRouteGet_declarativeSingle',
     handler: {
@@ -70,7 +70,7 @@ module.exports = ({ registerAction }) => {
    * (multiple values)
    */
 
-  registerAction({
+  registerExtension({
     target: '$FASTIFY_GET',
     name: 'registerRouteGet_declarativeMulti',
     handler: [

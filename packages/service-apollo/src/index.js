@@ -4,14 +4,14 @@ require('cross-fetch/polyfill');
 const { SERVICE_NAME, ...targets } = require('./targets');
 
 module.exports = ({
-  registerAction,
+  registerExtension,
   setContext,
   getConfig,
   registerTargets,
 }) => {
   registerTargets(targets);
 
-  registerAction({
+  registerExtension({
     target: '$INIT_SERVICE',
     name: SERVICE_NAME,
     trace: __filename,
@@ -22,7 +22,7 @@ module.exports = ({
     },
   });
 
-  registerAction({
+  registerExtension({
     target: '$FASTIFY_PLUGIN?',
     name: SERVICE_NAME,
     trace: __filename,

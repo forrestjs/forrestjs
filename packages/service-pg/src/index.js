@@ -5,12 +5,13 @@
 const { Pool } = require('pg');
 const targets = require('./targets');
 
-const pg = ({ registerAction, registerTargets }) => {
+const pg = ({ registerExtension, registerTargets }) => {
   // Register pg's extension points into ForrestJS hooks dictionary:
   registerTargets(targets);
 
-  registerAction({
+  registerExtension({
     // run before Fastify init - needed to provide `request.query`
+    trace: __filename,
     priority: 10,
     target: '$INIT_SERVICE',
     handler: ({ getConfig, setContext }) => {
@@ -56,7 +57,8 @@ const pg = ({ registerAction, registerTargets }) => {
     },
   });
 
-  registerAction({
+  registerExtension({
+    trace: __filename,
     target: '$START_SERVICE',
     handler: async ({ getContext, createExtension }) => {
       // Get a reqference to the PG pool instance:
@@ -81,7 +83,8 @@ const pg = ({ registerAction, registerTargets }) => {
     },
   });
 
-  registerAction({
+  registerExtension({
+    trace: __filename,
     target: '$FASTIFY_PLUGIN?',
     handler: ({ decorateRequest }, { getContext }) => {
       const query = getContext('pg.query');
@@ -105,12 +108,14 @@ const pg = ({ registerAction, registerTargets }) => {
     }
   };
 
-  registerAction({
+  registerExtension({
+    trace: __filename,
     target: '$FASTIFY_TDD_CHECK?',
     handler: () => healthcheckHandler,
   });
 
-  registerAction({
+  registerExtension({
+    trace: __filename,
     target: '$FASTIFY_HEALTHZ_CHECK?',
     handler: () => healthcheckHandler,
   });
@@ -119,7 +124,8 @@ const pg = ({ registerAction, registerTargets }) => {
    * TDD
    * Integrate with the Fastify TDD API
    */
-  registerAction({
+  registerExtension({
+    trace: __filename,
     target: '$FASTIFY_TDD_ROUTE?',
     handler: ({ registerTddRoute }) => {
       const schemaFields = {

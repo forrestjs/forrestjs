@@ -11,10 +11,10 @@
 const { SERVICE_NAME, ...targets } = require('./targets');
 const { initEnv } = require('./init-env');
 
-module.exports = ({ registerTargets, registerAction }) => {
+module.exports = ({ registerTargets, registerExtension }) => {
   registerTargets(targets);
 
-  registerAction({
+  registerExtension({
     target: '$START',
     name: SERVICE_NAME,
     trace: __filename,
@@ -22,7 +22,7 @@ module.exports = ({ registerTargets, registerAction }) => {
   });
 
   // Fastify Integration (optional action)
-  registerAction({
+  registerExtension({
     target: '$FASTIFY_PLUGIN?',
     name: SERVICE_NAME,
     trace: __filename,

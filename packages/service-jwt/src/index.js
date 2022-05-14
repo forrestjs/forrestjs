@@ -34,115 +34,122 @@ const verify = (token, customSecret = secret) =>
 
 const decode = (token, options) => jwt.decode(token, options);
 
-const serviceJwt = ({ registerTargets, registerAction }) => {
+const serviceJwt = ({ registerTargets }) => {
   registerTargets(targets);
-  registerAction({
-    target: '$INIT_SERVICES',
-    name: SERVICE_NAME,
-    trace: __filename,
-    priority: 100,
-    handler: ({ getConfig }, { setContext }) => {
-      secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---');
-      duration = getConfig('jwt.duration', process.env.JWT_DURATION || '---');
-      settings = getConfig('jwt.settings', {});
 
-      // Automagically setup the secret in "development" or "test"
-      if (
-        secret === '---' &&
-        ['development', 'test'].includes(process.env.NODE_ENV)
-      ) {
-        secret = 'forrestjs';
-        console.warn(
-          `[service-jwt] secret automagically configured because you are in "${process.env.NODE_ENV}" environment.`,
-        );
-        console.warn(`[service-jwt] value: "${secret}"`);
-      }
+  return [
+    {
+      target: '$INIT_SERVICES',
+      trace: __filename,
+      name: SERVICE_NAME,
+      priority: 100,
+      handler: ({ getConfig }, { setContext }) => {
+        secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---');
+        duration = getConfig('jwt.duration', process.env.JWT_DURATION || '---');
+        settings = getConfig('jwt.settings', {});
 
-      // Automagically setup the duration in "development" or "test"
-      if (
-        duration === '---' &&
-        ['development', 'test'].includes(process.env.NODE_ENV)
-      ) {
-        duration = '30d';
-        console.warn(
-          `[service-jwt] duration automagically configured because you are in "${process.env.NODE_ENV}" environment.`,
-        );
-        console.warn(`[service-jwt] value: "${duration}"`);
-      }
+        // Automagically setup the secret in "development" or "test"
+        if (
+          secret === '---' &&
+          ['development', 'test'].includes(process.env.NODE_ENV)
+        ) {
+          secret = 'forrestjs';
+          console.warn(
+            `[service-jwt] secret automagically configured because you are in "${process.env.NODE_ENV}" environment.`,
+          );
+          console.warn(`[service-jwt] value: "${secret}"`);
+        }
 
-      // Validate configuration
-      if (secret === '---')
-        throw new Error(
-          '[service-jwt] Please configure "jwt.secret" or "process.env.JWT_SECRET"',
-        );
-      if (duration === '---')
-        throw new Error(
-          '[service-jwt] Please configure "jwt.duration" or "process.env.JWT_DURATION"',
-        );
+        // Automagically setup the duration in "development" or "test"
+        if (
+          duration === '---' &&
+          ['development', 'test'].includes(process.env.NODE_ENV)
+        ) {
+          duration = '30d';
+          console.warn(
+            `[service-jwt] duration automagically configured because you are in "${process.env.NODE_ENV}" environment.`,
+          );
+          console.warn(`[service-jwt] value: "${duration}"`);
+        }
 
-      // Decorate the context
-      setContext('jwt', { sign, verify, decode });
+        // Validate configuration
+        if (secret === '---')
+          throw new Error(
+            '[service-jwt] Please configure "jwt.secret" or "process.env.JWT_SECRET"',
+          );
+        if (duration === '---')
+          throw new Error(
+            '[service-jwt] Please configure "jwt.duration" or "process.env.JWT_DURATION"',
+          );
+
+        // Decorate the context
+        setContext('jwt', { sign, verify, decode });
+      },
     },
-  });
 
-  // Fastify Integration (optional hook)
-  registerAction({
-    target: '$FASTIFY_PLUGIN?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: ({ decorate, decorateRequest }, { getContext }) => {
-      const jwt = getContext('jwt');
-      decorate('jwt', jwt);
-      decorateRequest('jwt', jwt);
+    /**
+     * Fastify Integration (optional hook)
+     */
+    {
+      target: '$FASTIFY_PLUGIN?',
+      trace: __filename,
+      name: SERVICE_NAME,
+      handler: ({ decorate, decorateRequest }, { getContext }) => {
+        const jwt = getContext('jwt');
+        decorate('jwt', jwt);
+        decorateRequest('jwt', jwt);
+      },
     },
-  });
 
-  // Fetchq Integration (optional hook)
-  // Injects the `log` API into the registered workers.
-  registerAction({
-    target: '$FETCHQ_DECORATE_CONTEXT?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: (context, { getContext }) => ({
-      ...context,
-      jwt: getContext('jwt'),
-    }),
-  });
-
-  /**
-   * Integrate with the Fastify TDD API
-   */
-  registerAction({
-    target: '$FASTIFY_TDD_ROUTE?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: ({ registerTddRoute }) => {
-      registerTddRoute({
-        method: 'POST',
-        url: '/jwt/sign',
-        handler: (request) => {
-          const { jwt } = request;
-          return jwt.sign(request.body.payload);
-        },
-      });
-      registerTddRoute({
-        method: 'POST',
-        url: '/jwt/verify',
-        handler: (request) => {
-          const { jwt } = request;
-          return jwt.verify(request.body.jwt);
-        },
-      });
-      registerTddRoute({
-        method: 'POST',
-        url: '/jwt/decode',
-        handler: (request) => {
-          const { jwt } = request;
-          return jwt.decode(request.body.jwt);
-        },
-      });
+    /**
+     * Fetchq Integration (optional hook)
+     * Injects the `log` API into the registered workers.
+     */
+    {
+      target: '$FETCHQ_DECORATE_CONTEXT?',
+      trace: __filename,
+      name: SERVICE_NAME,
+      handler: (context, { getContext }) => ({
+        ...context,
+        jwt: getContext('jwt'),
+      }),
     },
-  });
+
+    /**
+     * Integrate with the Fastify TDD API
+     */
+    {
+      target: '$FASTIFY_TDD_ROUTE?',
+      trace: __filename,
+      name: SERVICE_NAME,
+      handler: ({ registerTddRoute }) => {
+        registerTddRoute({
+          method: 'POST',
+          url: '/jwt/sign',
+          handler: (request) => {
+            const { jwt } = request;
+            return jwt.sign(request.body.payload);
+          },
+        });
+        registerTddRoute({
+          method: 'POST',
+          url: '/jwt/verify',
+          handler: (request) => {
+            const { jwt } = request;
+            return jwt.verify(request.body.jwt);
+          },
+        });
+        registerTddRoute({
+          method: 'POST',
+          url: '/jwt/decode',
+          handler: (request) => {
+            const { jwt } = request;
+            return jwt.decode(request.body.jwt);
+          },
+        });
+      },
+    },
+  ];
 };
 
 serviceJwt.sign = sign;

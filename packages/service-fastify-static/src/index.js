@@ -6,12 +6,13 @@ const onFastifyHacksBefore = ({ registerPlugin }, { getConfig }) => {
   registerPlugin(staticPlugin, options);
 };
 
-module.exports = ({ registerTargets, registerAction }) => {
+module.exports = ({ registerTargets }) => {
   registerTargets(targets);
-  registerAction({
+
+  return {
     target: '$FASTIFY_PLUGIN',
-    name: SERVICE_NAME,
     trace: __filename,
+    name: SERVICE_NAME,
     handler: onFastifyHacksBefore,
-  });
+  };
 };
