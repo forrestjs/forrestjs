@@ -3,8 +3,8 @@ const CORE = '◇';
 const BOOT = '♦';
 const SERVICE = '→';
 const FEATURE = '▶';
-const SYMBOLS = [CORE, BOOT, SERVICE, FEATURE];
 const SEPARATOR = ' » ';
+const SYMBOLS = [CORE, BOOT, SERVICE, FEATURE];
 
 // createHookApp lifecycle
 const START = `${CORE} start`;
