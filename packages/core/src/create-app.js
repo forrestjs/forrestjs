@@ -4,6 +4,10 @@ const { registerAction } = require('./register-action');
 const { traceHook } = require('./tracer');
 const { createRegistry } = require('./create-targets-registry');
 const constants = require('./constants');
+const {
+  ForrestJSGetConfigError,
+  ForrestJSGetContextError,
+} = require('./errors');
 
 // DEPRECATED: property "hook" is deprecated and will be removed in v5.0.0
 const isDeclarativeAction = ({ hook, target, handler }) =>
@@ -195,7 +199,13 @@ const createApp =
     const targetsRegistry = createRegistry(constants);
 
     // create getter and setter for the configuration
-    const getConfig = objectGetter(internalSettings);
+    const getConfig = (...args) => {
+      try {
+        return objectGetter(internalSettings)(...args);
+      } catch (err) {
+        throw new ForrestJSGetConfigError(err);
+      }
+    };
     const setConfig = objectSetter(internalSettings);
 
     // create the context with getters / setters /
@@ -212,7 +222,13 @@ const createApp =
     };
 
     // provide an api to deal with the internal context
-    internalContext.getContext = objectGetter(internalContext);
+    internalContext.getContext = (...args) => {
+      try {
+        return objectGetter(internalContext)(...args);
+      } catch (err) {
+        throw new ForrestJSGetContextError(err);
+      }
+    };
     internalContext.setContext = objectSetter(internalContext);
 
     // createExtension scoped to the App context

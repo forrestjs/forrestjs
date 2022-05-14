@@ -8,6 +8,8 @@
 - Deprecate `registerAction(name, handler, option)`
 - Moved the App tracing log out of the `$FINISH` extension
 - Deprecate the `forrest.run([ feature, feature ])`
+- Improve `getConfig()` error trace
+- Improve `getContext()` error trace
 
 ## 4.4.2
 

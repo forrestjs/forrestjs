@@ -84,6 +84,7 @@ const createExtension = (receivedName, receivedOptions = {}) => {
         pullStack();
         resolve(results);
       } catch (err) {
+        // console.log('*****', err.name, err.message);
         try {
           resolve(options.onError(err, name, options));
         } catch (err) {
