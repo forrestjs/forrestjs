@@ -56,6 +56,10 @@ const runIntegrations = async (integrations, context, prefix = '') => {
               // registerAction('hook', () => {}, 'name')
               // registerAction('hook', () => {}, { name: 'name' })
               if (typeof ag1 === 'string') {
+                console.warn(
+                  `[DEPRECATED] "registerAction(name, handler, option)" is deprecated and will be remove in version 5.x.`,
+                );
+
                 return registeredExtensions.push([
                   ag1,
                   ag2,
@@ -99,7 +103,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
       typeof computed[0] === 'string' &&
       (typeof computed[1] === 'function' || typeof computed[1] === 'object')
     ) {
-      console.log(
+      console.warn(
         '[DEPRECATED] please use the object base declarative pattern { hook, handler, ... } - this API will be removed in v5.0.0',
       );
       const [hook, handler, options = {}] = computed;
@@ -124,6 +128,12 @@ const runIntegrations = async (integrations, context, prefix = '') => {
       (computed.hook || computed.target) &&
       computed.handler
     ) {
+      if (computed.hook) {
+        console.warn(
+          `[DEPRECATED] the key "hook" is deprecated and will be removed from v5.0.0.\nPlease use "target" instead.`,
+        );
+      }
+
       registeredExtensions.push({
         ...computed,
         name: `${prefix}${computed.name || integrationName}`,
@@ -203,7 +213,7 @@ const createApp =
       try {
         return objectGetter(internalSettings)(...args);
       } catch (err) {
-        throw new ForrestJSGetConfigError(err);
+        throw new ForrestJSGetConfigError(err.message);
       }
     };
     const setConfig = objectSetter(internalSettings);
@@ -226,7 +236,7 @@ const createApp =
       try {
         return objectGetter(internalContext)(...args);
       } catch (err) {
-        throw new ForrestJSGetContextError(err);
+        throw new ForrestJSGetContextError(err.message);
       }
     };
     internalContext.setContext = objectSetter(internalContext);

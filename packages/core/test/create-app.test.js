@@ -237,7 +237,7 @@ describe('core/create-app', () => {
         error = e;
       }
 
-      expect(error.message).toBe('Unknown hook "S1"');
+      expect(error.message).toBe('Unknown target "S1"');
     });
 
     it('should ignore an optional service by reference', async () => {

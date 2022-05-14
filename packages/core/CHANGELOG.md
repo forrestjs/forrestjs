@@ -10,6 +10,7 @@
 - Deprecate the `forrest.run([ feature, feature ])`
 - Improve `getConfig()` error trace
 - Improve `getContext()` error trace
+- Improve `registerAction()` error trace
 
 ## 4.4.2
 

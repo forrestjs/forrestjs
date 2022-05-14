@@ -1,3 +1,5 @@
+const { ForrestJSUnknownTargetError } = require('./errors');
+
 const SKIP_REGISTER_LIFECYCLE_EXTENSIONS = [
   '__esModule',
   'SERVICE_NAME',
@@ -29,7 +31,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
       return null;
     }
 
-    throw new Error(`Unknown hook "${name}"`);
+    throw new ForrestJSUnknownTargetError(`Unknown target "${name}"`);
   };
 
   // Expose all the registered extensions

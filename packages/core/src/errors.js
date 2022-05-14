@@ -1,16 +1,31 @@
 class ForrestJSGetConfigError extends Error {
-  constructor(originalError) {
-    super(`getConfig(): ${originalError.message}`);
+  constructor(message) {
+    super(`getConfig(): ${message}`);
     this.name = 'ForrestJSGetConfigError';
-    this.originalError = originalError;
   }
 }
 
 class ForrestJSGetContextError extends Error {
-  constructor(originalError) {
-    super(`getContext(): ${originalError.message}`);
+  constructor(message) {
+    super(`getContext(): ${message}`);
     this.name = 'ForrestJSGetContextError';
-    this.originalError = originalError;
+  }
+}
+
+class ForrestJSUnknownTargetError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'ForrestJSUnknownTargetError';
+  }
+}
+
+class ForrestJSRegisterActionError extends Error {
+  constructor(message, props) {
+    super(message);
+    this.name = 'ForrestJSRegisterActionError';
+    this.target = props.target;
+    this.action = props.name;
+    this.trace = props.trace;
   }
 }
 
@@ -47,5 +62,7 @@ const onItemError = (error, action) => {
 module.exports = {
   ForrestJSGetConfigError,
   ForrestJSGetContextError,
+  ForrestJSUnknownTargetError,
+  ForrestJSRegisterActionError,
   onItemError,
 };
