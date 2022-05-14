@@ -43,7 +43,7 @@ const serviceJwt = ({ registerTargets }) => {
       trace: __filename,
       name: SERVICE_NAME,
       priority: 100,
-      handler: ({ getConfig }, { setContext }) => {
+      handler: (_, { getConfig, setContext }) => {
         secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---');
         duration = getConfig('jwt.duration', process.env.JWT_DURATION || '---');
         settings = getConfig('jwt.settings', {});
