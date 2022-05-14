@@ -1,6 +1,6 @@
 const { resetState } = require('../src/state');
 const forrestjs = require('../src/index');
-const { registerExtension } = require('../src/register-action');
+const { registerAction } = require('../src/register-action');
 const constants = require('../src/constants');
 const {
   isDeclarativeAction,
@@ -111,8 +111,8 @@ describe('core/create-app', () => {
       },
       services: [
         // register a programmatic feature
-        ({ registerExtension }) =>
-          registerExtension({
+        ({ registerAction }) =>
+          registerAction({
             target: '$INIT_SERVICE',
             handler: ({ getConfig, setConfig }) =>
               setConfig('foo', getConfig('foo.faa') * 2),
@@ -170,7 +170,7 @@ describe('core/create-app', () => {
 
   describe('createHookApp getters / setters', () => {
     it('SETTINGS should not pass reference to the internal object', async () => {
-      registerExtension({
+      registerAction({
         target: constants.SETTINGS,
         handler: ({ settings }) => {
           expect(settings).toBe(undefined);
@@ -180,7 +180,7 @@ describe('core/create-app', () => {
     });
 
     it('should handle settings with getters/setters', async () => {
-      registerExtension({
+      registerAction({
         target: constants.SETTINGS,
         handler: ({ getConfig, setConfig }) => {
           setConfig('foo', getConfig('foo') + 1);
@@ -191,7 +191,7 @@ describe('core/create-app', () => {
     });
 
     it('should handle settings with nested paths', async () => {
-      registerExtension({
+      registerAction({
         target: constants.SETTINGS,
         handler: ({ getConfig, setConfig }) => {
           setConfig('new.faa.foo', getConfig('foo') + 1);
@@ -203,9 +203,9 @@ describe('core/create-app', () => {
   });
 
   describe('createHookApp / registerHook', () => {
-    const s1 = ({ registerTargets, registerExtension, createExtension }) => {
+    const s1 = ({ registerTargets, registerAction, createExtension }) => {
       registerTargets({ S1: 's1' });
-      registerExtension({
+      registerAction({
         target: '$START_SERVICE',
         handler: () => createExtension.sync('s1'),
       });
@@ -253,27 +253,27 @@ describe('core/create-app', () => {
     });
   });
 
-  describe('run all "registerTargets()" before "registerExtension()"', () => {
+  describe('run all "registerTargets()" before "registerAction()"', () => {
     it('Services and Features should be able to use nominal hooks to extend each other', async () => {
       const s1Handler = jest.fn();
       const s2Handler = jest.fn();
 
-      const s1 = ({ registerTargets, registerExtension, createExtension }) => {
+      const s1 = ({ registerTargets, registerAction, createExtension }) => {
         registerTargets({ s1: 's1' });
-        registerExtension({
+        registerAction({
           target: '$INIT_SERVICE',
           handler: () => createExtension.sync('s1'),
         });
-        registerExtension({ target: '$s2', handler: s2Handler });
+        registerAction({ target: '$s2', handler: s2Handler });
       };
 
-      const s2 = ({ registerTargets, registerExtension, createExtension }) => {
+      const s2 = ({ registerTargets, registerAction, createExtension }) => {
         registerTargets({ s2: 's2' });
-        registerExtension({
+        registerAction({
           target: '$INIT_SERVICE',
           handler: () => createExtension.sync('s2'),
         });
-        registerExtension({ target: '$s1', handler: s1Handler });
+        registerAction({ target: '$s1', handler: s1Handler });
       };
 
       await forrestjs.run({ services: [s1, s2] });

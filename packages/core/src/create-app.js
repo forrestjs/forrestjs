@@ -1,6 +1,6 @@
 const dotted = require('@marcopeg/dotted').default;
 const { createExtension } = require('./create-extension');
-const { registerExtension } = require('./register-action');
+const { registerAction, registerExtension } = require('./register-action');
 const { traceHook } = require('./tracer');
 const { createRegistry } = require('./create-targets-registry');
 const constants = require('./constants');
@@ -51,10 +51,6 @@ const runIntegrations = async (integrations, context, prefix = '') => {
         ? await registerFn({
             ...context,
             registerAction: (ag1, ag2, ag3 = {}) => {
-              console.warn(
-                `[DEPRECATED] "registerAction()" is deprecated and will be remove in version 5.0.0.\nPlease use "registerExtension()" instead."`,
-              );
-
               // Handle positional arguments:
               // registerAction('hook', () => {})
               // registerAction('hook', () => {}, 'name')
@@ -84,6 +80,10 @@ const runIntegrations = async (integrations, context, prefix = '') => {
               });
             },
             registerExtension: (extension) => {
+              console.warn(
+                `[DEPRECATED] "registerExtension()" is deprecated and will be remove in version 5.0.0.\nPlease use "registerAction()" instead."`,
+              );
+
               return registeredExtensions.push({
                 ...extension,
                 name: `${prefix}${extension.name || integrationName}`,
@@ -152,7 +152,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
   }
 
   // Register all the actions declared by the integrations that have been executed
-  registeredExtensions.forEach(context.registerExtension);
+  registeredExtensions.forEach(context.registerAction);
 };
 
 const objectSetter = (targetObject) => (path, value) => {
@@ -178,7 +178,7 @@ const objectGetter = (targetObject) => (path, defaultValue) => {
 };
 
 const registerSettingsExtension = (buildAppSettings) => {
-  registerExtension({
+  registerAction({
     name: `${constants.BOOT} app/settings`,
     target: constants.SETTINGS,
     handler: async (ctx) => {
@@ -232,7 +232,7 @@ const createApp =
     const internalContext = {
       ...context,
       ...targetsRegistry,
-      registerAction: (...args) => registerExtension(...args),
+      registerAction,
       registerExtension,
       setConfig,
       getConfig,
