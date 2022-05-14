@@ -7,7 +7,7 @@
 - [ ] remove `registerHook` support
 - [ ] action's parameter will be reversed (ctx, action's data)
 
-## 4.5.0 (roadmap)
+## 4.X.X (roadmap)
 
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
@@ -17,6 +17,20 @@
 - [ ] [service-fastify-static] update the deprecated dependency
 - [ ] [service-fastify-cors] update the deprecated dependency
 - [ ] [service-fastify-cookie] update the deprecated dependency
+
+## 4.5.0
+
+- [core] Deprecate `registerAction([name, handler, option])`
+- [core] Deprecate `registerAction(name, handler, option)`
+- [core] Deprecate `registerAction()` in favor of `registerExtension()`
+- [core] Deprecate the `forrest.run([ feature, feature ])`
+- [core] Changed lifecycle order, single endpoints go first
+- [core] The appTrace integration goes last in `$FINISH`
+- [core] Moved the App tracing log out of the `$FINISH` extension
+- [core] Improve `getConfig()` error trace
+- [core] Improve `getContext()` error trace
+- [core] Improve `registerAction()` error trace
+- [core] Improve `createExtension()` error trace
 
 ## 4.4.2
 

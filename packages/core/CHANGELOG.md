@@ -1,6 +1,6 @@
 # Change Log
 
-## 4.4.3
+## 4.5.0
 
 - Deprecate `registerAction([name, handler, option])`
 - Deprecate `registerAction(name, handler, option)`
