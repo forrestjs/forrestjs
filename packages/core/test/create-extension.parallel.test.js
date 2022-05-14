@@ -1,14 +1,14 @@
 const pause = require('@marcopeg/utils/lib/pause');
 const { resetState } = require('../src/state');
 const { createExtension } = require('../src/create-extension');
-const { registerAction } = require('../src/register-action');
+const { registerExtension } = require('../src/register-action');
 
 describe('core/create-extension/serie', () => {
   beforeEach(resetState);
 
   it('should run parallel hooks', async () => {
     const handler = jest.fn();
-    registerAction({
+    registerExtension({
       target: 'foo',
       handler: async () => {
         await pause();
@@ -26,15 +26,15 @@ describe('core/create-extension/serie', () => {
       spy();
     };
 
-    registerAction({
+    registerExtension({
       target: 'foo',
       handler,
     });
 
     // DEPRECATED METHODS:
     // to be removed in v5.0.0
-    // registerAction(['foo', handler]);
-    // registerAction('foo', handler);
+    // registerExtension(['foo', handler]);
+    // registerExtension('foo', handler);
 
     await createExtension.parallel('foo');
     expect(spy.mock.calls.length).toBe(1);

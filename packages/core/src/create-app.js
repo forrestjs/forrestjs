@@ -1,6 +1,6 @@
 const dotted = require('@marcopeg/dotted').default;
 const { createExtension } = require('./create-extension');
-const { registerAction } = require('./register-action');
+const { registerExtension } = require('./register-action');
 const { traceHook } = require('./tracer');
 const { createRegistry } = require('./create-targets-registry');
 const constants = require('./constants');
@@ -51,13 +51,17 @@ const runIntegrations = async (integrations, context, prefix = '') => {
         ? await registerFn({
             ...context,
             registerAction: (ag1, ag2, ag3 = {}) => {
+              console.warn(
+                `[DEPRECATED] "registerAction()" is deprecated and will be remove in version 5.0.0.\nPlease use "registerExtension()" instead."`,
+              );
+
               // Handle positional arguments:
               // registerAction('hook', () => {})
               // registerAction('hook', () => {}, 'name')
               // registerAction('hook', () => {}, { name: 'name' })
               if (typeof ag1 === 'string') {
                 console.warn(
-                  `[DEPRECATED] "registerAction(name, handler, option)" is deprecated and will be remove in version 5.x.`,
+                  `[DEPRECATED] "registerAction(name, handler, option)" is deprecated and will be remove in version 5.0.0.`,
                 );
 
                 return registeredExtensions.push([
@@ -77,6 +81,12 @@ const runIntegrations = async (integrations, context, prefix = '') => {
               return registeredExtensions.push({
                 ...ag1,
                 name: `${prefix}${ag1.name || integrationName}`,
+              });
+            },
+            registerExtension: (extension) => {
+              return registeredExtensions.push({
+                ...extension,
+                name: `${prefix}${extension.name || integrationName}`,
               });
             },
           })
@@ -142,7 +152,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
   }
 
   // Register all the actions declared by the integrations that have been executed
-  registeredExtensions.forEach(context.registerAction);
+  registeredExtensions.forEach(context.registerExtension);
 };
 
 const objectSetter = (targetObject) => (path, value) => {
@@ -168,7 +178,7 @@ const objectGetter = (targetObject) => (path, defaultValue) => {
 };
 
 const registerSettingsExtension = (buildAppSettings) => {
-  registerAction({
+  registerExtension({
     name: `${constants.BOOT} app/settings`,
     target: constants.SETTINGS,
     handler: async (ctx) => {
@@ -222,7 +232,8 @@ const createApp =
     const internalContext = {
       ...context,
       ...targetsRegistry,
-      registerAction,
+      registerAction: (...args) => registerExtension(...args),
+      registerExtension,
       setConfig,
       getConfig,
       setContext: null,

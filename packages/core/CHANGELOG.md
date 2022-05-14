@@ -2,12 +2,13 @@
 
 ## 4.4.3
 
-- Changed lifecycle order, single endpoints go first
-- The appTrace integration goes last in `$FINISH`
 - Deprecate `registerAction([name, handler, option])`
 - Deprecate `registerAction(name, handler, option)`
-- Moved the App tracing log out of the `$FINISH` extension
+- Deprecate `registerAction()` in favor of `registerExtension()`
 - Deprecate the `forrest.run([ feature, feature ])`
+- Changed lifecycle order, single endpoints go first
+- The appTrace integration goes last in `$FINISH`
+- Moved the App tracing log out of the `$FINISH` extension
 - Improve `getConfig()` error trace
 - Improve `getContext()` error trace
 - Improve `registerAction()` error trace

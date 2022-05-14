@@ -15,14 +15,14 @@ const { logAction } = require('./logger');
 const { getTarget } = require('./create-targets-registry');
 const { ForrestJSRegisterActionError } = require('./errors');
 
-const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
+const registerExtension = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   // (name, handler, options)
   if (typeof __arg1 === 'string') {
     console.warn(
-      `[DEPRECATED] "registerAction(name, handler, option)" is deprecated and will be remove in version 5.x.`,
+      `[DEPRECATED] "registerExtension(name, handler, option)" is deprecated and will be remove in version 5.x.`,
     );
 
-    return registerAction({
+    return registerExtension({
       ...__arg3,
       target: __arg1,
       handler: __arg2,
@@ -32,9 +32,9 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   // ([ name, handler, options ])
   if (Array.isArray(__arg1)) {
     console.warn(
-      `[DEPRECATED] "registerAction([name, handler, option])" is deprecated and will be remove in version 5.x.`,
+      `[DEPRECATED] "registerExtension([name, handler, option])" is deprecated and will be remove in version 5.x.`,
     );
-    return registerAction({
+    return registerExtension({
       ...(__arg1[2] || {}),
       target: __arg1[0],
       handler: __arg1[1],
@@ -119,6 +119,14 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   }
 };
 
+const registerAction = (...args) => {
+  console.warn(
+    `[DEPRECATED] "registerAction()" will be removed from v5.0.0.\nUse "registerExtension()" instead.`,
+  );
+  return registerExtension(...args);
+};
+
 module.exports = {
   registerAction,
+  registerExtension,
 };

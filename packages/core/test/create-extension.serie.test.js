@@ -1,14 +1,14 @@
 const pause = require('@marcopeg/utils/lib/pause');
 const { resetState } = require('../src/state');
 const { createExtension } = require('../src/create-extension');
-const { registerAction } = require('../src/register-action');
+const { registerExtension } = require('../src/register-action');
 
 describe('core/create-extension/serie', () => {
   beforeEach(resetState);
 
   it('should run serie hooks', async () => {
     const handler = jest.fn();
-    registerAction({
+    registerExtension({
       target: 'foo',
       handler: async () => {
         await pause();
@@ -21,7 +21,7 @@ describe('core/create-extension/serie', () => {
 
   it('should run serie hooks - with helper', async () => {
     const handler = jest.fn();
-    registerAction({
+    registerExtension({
       target: 'foo',
       handler: async () => {
         await pause();
