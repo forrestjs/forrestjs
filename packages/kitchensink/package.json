@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/kitchensink",
   "description": "ForrestJS demonstrational tool",
-  "version": "4.5.0-alpha.3",
+  "version": "4.5.0-alpha.4",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
@@ -72,7 +72,7 @@
     "@forrestjs/service-fastify-static": "^4.5.0-alpha.1",
     "@forrestjs/service-fetchq": "^4.5.0-alpha.1",
     "@forrestjs/service-hash": "^4.5.0-alpha.1",
-    "@forrestjs/service-jwt": "^4.5.0-alpha.1",
+    "@forrestjs/service-jwt": "^4.5.0-alpha.4",
     "@forrestjs/service-logger": "^4.5.0-alpha.1",
     "@forrestjs/service-pg": "^4.5.0-alpha.1",
     "@forrestjs/service-postgres": "^4.5.0-alpha.1",

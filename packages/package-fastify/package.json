@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/package-fastify",
-  "version": "4.5.0-alpha.3",
+  "version": "4.5.0-alpha.4",
   "description": "ForrestJS Dependencies package for a Fastify app.",
   "main": "index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
@@ -34,7 +34,7 @@
     "@forrestjs/service-fastify-static": "^4.5.0-alpha.1",
     "@forrestjs/service-fetchq": "^4.5.0-alpha.1",
     "@forrestjs/service-hash": "^4.5.0-alpha.1",
-    "@forrestjs/service-jwt": "^4.5.0-alpha.1",
+    "@forrestjs/service-jwt": "^4.5.0-alpha.4",
     "@forrestjs/service-logger": "^4.5.0-alpha.1",
     "@forrestjs/service-postgres": "^4.5.0-alpha.1",
     "@forrestjs/service-postgres-pubsub": "^4.5.0-alpha.0"
