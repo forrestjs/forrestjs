@@ -54,6 +54,7 @@ describe('Errors', () => {
         fn(err);
       }
 
+      // console.log(fn.mock.calls[0][0]);
       expect(fn).toHaveBeenCalled();
       expect(fn.mock.calls[0][0].name).toBe('ForrestJSGetContextError');
       expect(fn.mock.calls[0][0].message).toContain('getContext()');
