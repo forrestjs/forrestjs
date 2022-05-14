@@ -6,9 +6,12 @@ describe('core/create-extension', () => {
   beforeEach(resetState);
 
   test('hooks should carry on a context', () => {
-    registerAction('foo', (args, ctx) => {
-      expect(args.foo).toBe(1);
-      expect(ctx.foo).toBe(2);
+    registerAction({
+      target: 'foo',
+      handler: (args, ctx) => {
+        expect(args.foo).toBe(1);
+        expect(ctx.foo).toBe(2);
+      },
     });
     createExtension('foo', {
       args: { foo: 1 },

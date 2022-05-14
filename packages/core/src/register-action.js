@@ -17,6 +17,10 @@ const { getTarget } = require('./create-targets-registry');
 const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   // (name, handler, options)
   if (typeof __arg1 === 'string') {
+    console.warn(
+      `[DEPRECATED] registerAction(name, handler, option) is deprecated and will be remove in version 5.x.`,
+    );
+
     return registerAction({
       ...__arg3,
       target: __arg1,
@@ -26,6 +30,9 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
 
   // ([ name, handler, options ])
   if (Array.isArray(__arg1)) {
+    console.warn(
+      `[DEPRECATED] registerAction([name, handler, option]) is deprecated and will be remove in version 5.x.`,
+    );
     return registerAction({
       ...(__arg1[2] || {}),
       target: __arg1[0],

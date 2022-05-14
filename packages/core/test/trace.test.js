@@ -1,9 +1,12 @@
 const forrestjs = require('../src/index');
+const { resetState } = require('../src/state');
 
 describe('Trace', () => {
   let originalLog = null;
   let fakeLog = null;
   let logMock = null;
+
+  beforeEach(resetState);
 
   beforeEach(() => {
     originalLog = console.log;
@@ -34,7 +37,7 @@ describe('Trace', () => {
       ],
     });
 
-    logMock();
+    // logMock();
     expect(fakeLog.mock.calls[0][0]).toBe('fooFinish');
   });
 });

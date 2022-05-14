@@ -185,8 +185,8 @@ const createApp =
         ? registerSettingsExtension(settings)
         : settings;
 
-    // Context bound list of known Actions
-    const actionsRegistry = createRegistry(constants);
+    // Context bound list of known Extensions
+    const targetsRegistry = createRegistry(constants);
 
     // create getter and setter for the configuration
     const getConfig = objectGetter(internalSettings);
@@ -195,7 +195,7 @@ const createApp =
     // create the context with getters / setters /
     const internalContext = {
       ...context,
-      ...actionsRegistry,
+      ...targetsRegistry,
       registerAction,
       setConfig,
       getConfig,

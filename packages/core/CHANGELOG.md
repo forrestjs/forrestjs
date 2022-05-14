@@ -1,5 +1,16 @@
 # Change Log
 
+## 4.4.3
+
+- Changed lifecycle order, single endpoints go first
+- The appTrace integration goes last in `$FINISH`
+- Deprecate `registerAction([name, handler, option])`
+- Deprecate `registerAction(name, handler, option)`
+
+## 4.4.2
+
+- Expose all registered targets
+
 ## v4.3.0
 
 - `createExtension` accepts referenced Target names as in `$TARGET_NAME`

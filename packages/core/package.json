@@ -14,11 +14,11 @@
   "keywords": [
     "forrestjs",
     "plugin",
-    "extendibility",
-    "features",
-    "services",
+    "extension",
     "extensions",
     "actions",
+    "features",
+    "services",
     "modularity"
   ],
   "license": "MIT",
@@ -31,5 +31,8 @@
     "test": "jest",
     "tdd": "jest --watchAll"
   },
-  "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578"
+  "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578",
+  "devDependencies": {
+    "jest": "^28.1.0"
+  }
 }

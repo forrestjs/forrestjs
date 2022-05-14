@@ -30,10 +30,13 @@ describe('core/create-extension/serie', () => {
       target: 'foo',
       handler,
     });
-    registerAction(['foo', handler]);
-    registerAction('foo', handler);
+
+    // DEPRECATED METHODS:
+    // to be removed in v5.0.0
+    // registerAction(['foo', handler]);
+    // registerAction('foo', handler);
 
     await createExtension.parallel('foo');
-    expect(spy.mock.calls.length).toBe(3);
+    expect(spy.mock.calls.length).toBe(1);
   });
 });
