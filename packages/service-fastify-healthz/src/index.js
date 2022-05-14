@@ -17,7 +17,7 @@ module.exports = ({ registerTargets }) => {
       name: SERVICE_NAME,
       trace: __filename,
       target: '$FASTIFY_ROUTE',
-      handler: ({ createExtension, registerRoute, getConfig }) => {
+      handler: ({ registerRoute, getConfig }, { createExtension }) => {
         // Let a custom handler logic being injected
         let customHandler = null;
         const registerHandler = (handler) => (customHandler = handler);
