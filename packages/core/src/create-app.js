@@ -297,14 +297,14 @@ const createApp =
     await _cs.serie(constants.START, internalContext);
     await _cs.serie(constants.SETTINGS, internalContext);
     await runIntegrations(features, internalContext, `${constants.FEATURE} `);
-    await _cs.serie(constants.INIT_SERVICE, internalContext);
     await _cs.parallel(constants.INIT_SERVICES, internalContext);
-    await _cs.serie(constants.INIT_FEATURE, internalContext);
+    await _cs.serie(constants.INIT_SERVICE, internalContext);
     await _cs.parallel(constants.INIT_FEATURES, internalContext);
-    await _cs.serie(constants.START_SERVICE, internalContext);
+    await _cs.serie(constants.INIT_FEATURE, internalContext);
     await _cs.parallel(constants.START_SERVICES, internalContext);
-    await _cs.serie(constants.START_FEATURE, internalContext);
+    await _cs.serie(constants.START_SERVICE, internalContext);
     await _cs.parallel(constants.START_FEATURES, internalContext);
+    await _cs.serie(constants.START_FEATURE, internalContext);
     await _cs.serie(constants.FINISH, internalContext);
 
     // Implement trace without a Hook
