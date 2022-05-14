@@ -287,12 +287,14 @@ describe('core/create-app', () => {
     it('Services and Features should be able to register a single service in a declarative way', async () => {
       const handler1 = jest.fn();
 
-      await forrestjs.run([
-        {
-          target: '$INIT_SERVICE',
-          handler: handler1,
-        },
-      ]);
+      await forrestjs.run({
+        services: [
+          {
+            target: '$INIT_SERVICE',
+            handler: handler1,
+          },
+        ],
+      });
 
       expect(handler1.mock.calls).toHaveLength(1);
     });
@@ -301,18 +303,20 @@ describe('core/create-app', () => {
       const handler1 = jest.fn();
       const handler2 = jest.fn();
 
-      await forrestjs.run([
-        [
-          {
-            target: '$INIT_SERVICE',
-            handler: handler1,
-          },
-          {
-            target: '$INIT_SERVICE',
-            handler: handler2,
-          },
+      await forrestjs.run({
+        services: [
+          [
+            {
+              target: '$INIT_SERVICE',
+              handler: handler1,
+            },
+            {
+              target: '$INIT_SERVICE',
+              handler: handler2,
+            },
+          ],
         ],
-      ]);
+      });
 
       expect(handler1.mock.calls).toHaveLength(1);
       expect(handler2.mock.calls).toHaveLength(1);

@@ -6,6 +6,8 @@
 - The appTrace integration goes last in `$FINISH`
 - Deprecate `registerAction([name, handler, option])`
 - Deprecate `registerAction(name, handler, option)`
+- Moved the App tracing log out of the `$FINISH` extension
+- Deprecate the `forrest.run([ feature, feature ])`
 
 ## 4.4.2
 

@@ -169,6 +169,12 @@ const registerSettingsExtension = (buildAppSettings) => {
 const createApp =
   (appManifest = {}) =>
   async () => {
+    if (Array.isArray(appManifest)) {
+      console.warn(
+        `[DEPRECATED] The array version is deprecated and will be removed in v5.0.0.\nUse the full App Manifest definition instead.`,
+      );
+    }
+
     // accepts a single param as [] of features
     const {
       services = [],
@@ -176,7 +182,7 @@ const createApp =
       settings = {},
       context = {},
       trace = null,
-    } = Array.isArray(appManifest) ? { features: appManifest } : appManifest;
+    } = Array.isArray(appManifest) ? { services: appManifest } : appManifest;
 
     // creates initial internal settings from an object
     // or automatically register the provided settings callback
@@ -221,51 +227,33 @@ const createApp =
 
     // DEPRECATED: remove in v5.0.0
     internalContext.createHook = (...args) => {
-      console.warn('[DEPRECATED] createHook');
+      console.warn(
+        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+      );
       return _cs(...args);
     };
     internalContext.createHook.sync = (...args) => {
-      console.warn('[DEPRECATED] createHook');
+      console.warn(
+        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+      );
       return _cs.sync(...args);
     };
     internalContext.createHook.serie = (...args) => {
-      console.warn('[DEPRECATED] createHook');
+      console.warn(
+        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+      );
       return _cs.serie(...args);
     };
     internalContext.createHook.parallel = (...args) => {
-      console.warn('[DEPRECATED] createHook');
+      console.warn(
+        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+      );
       return _cs.parallel(...args);
     };
     internalContext.createHook.waterfall = (...args) => {
       console.warn('[DEPRECATED] createHook');
       return _cs.waterfall(...args);
     };
-
-    // LOt OF WORK TO DO HERE!
-    if (trace) {
-      registerAction({
-        priority: -99999,
-        name: `${constants.BOOT} app/trace`,
-        target: constants.FINISH,
-        handler: () => {
-          console.log('');
-          console.log('=================');
-          console.log('Boot Trace:');
-          console.log('=================');
-          console.log('');
-          switch (trace) {
-            case 'full':
-              console.log(traceHook()('full')('json'));
-              break;
-            default:
-              console.log(traceHook()('compact')('cli').join('\n'));
-              break;
-          }
-          console.log('');
-          console.log('');
-        },
-      });
-    }
 
     // run lifecycle
     await runIntegrations(services, internalContext, `${constants.SERVICE} `);
@@ -281,6 +269,28 @@ const createApp =
     await _cs.serie(constants.START_FEATURE, internalContext);
     await _cs.parallel(constants.START_FEATURES, internalContext);
     await _cs.serie(constants.FINISH, internalContext);
+
+    // Implement trace without a Hook
+    if (trace) {
+      const lines = [];
+      lines.push('');
+      lines.push('=================');
+      lines.push('Boot Trace:');
+      lines.push('=================');
+      lines.push('');
+      switch (trace) {
+        case 'full':
+          lines.push(traceHook()('full')('json'));
+          break;
+        default:
+          lines.push(traceHook()('compact')('cli').join('\n'));
+          break;
+      }
+      lines.push('');
+      lines.push('');
+
+      console.log(lines.join('\n'));
+    }
 
     return {
       settings: internalSettings,
