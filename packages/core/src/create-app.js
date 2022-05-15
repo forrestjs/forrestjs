@@ -1,6 +1,6 @@
 const dotted = require('@marcopeg/dotted').default;
 const { createExtension } = require('./create-extension');
-const { registerAction, registerExtension } = require('./register-action');
+const { registerAction } = require('./register-action');
 const { traceHook } = require('./tracer');
 const { createRegistry } = require('./create-targets-registry');
 const constants = require('./constants');
@@ -77,16 +77,6 @@ const runIntegrations = async (integrations, context, prefix = '') => {
               return registeredExtensions.push({
                 ...ag1,
                 name: `${prefix}${ag1.name || integrationName}`,
-              });
-            },
-            registerExtension: (extension) => {
-              console.warn(
-                `[DEPRECATED] "registerExtension()" is deprecated and will be remove in version 5.0.0.\nPlease use "registerAction()" instead."`,
-              );
-
-              return registeredExtensions.push({
-                ...extension,
-                name: `${prefix}${extension.name || integrationName}`,
               });
             },
           })
@@ -233,7 +223,6 @@ const createApp =
       ...context,
       ...targetsRegistry,
       registerAction,
-      registerExtension,
       setConfig,
       getConfig,
       setContext: null,

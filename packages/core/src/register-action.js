@@ -119,14 +119,6 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   }
 };
 
-const registerExtension = (...args) => {
-  console.warn(
-    `[DEPRECATED] "registerExtension()" will be removed from v5.0.0.\nUse "registerAction()" instead.`,
-  );
-  return registerAction(...args);
-};
-
 module.exports = {
   registerAction,
-  registerExtension,
 };
