@@ -6,7 +6,7 @@
 
 # Create Extension
 
-Services and Features interact with the App's Lifecycle and with each others by creating new Extension.
+Services and Features interact with the App's Lifecycle and with each others by creating new Extensions.
 
 > CLASSIC EXAMPLE:
 >
@@ -15,7 +15,9 @@ Services and Features interact with the App's Lifecycle and with each others by 
 >
 > 👉 We solved this situation in the [My First REST API / Integrate Services and Features](howto/my-first-rest-api/060-integrate-services-and-features/) tutorial. Go check it out!
 
-## It's Just a Function
+---
+
+## It's Just a Regular Function
 
 It's important to understand that an Extension is just a **programmable function** that we call within a registered Action:
 
@@ -24,7 +26,10 @@ const myService = {
   target: '$INIT_SERVICE',
   handler: ({ createExtension }) => {
     console.log('myService::init()');
+
+    // Create an Extension:
     createExtension.sync('foobar');
+
     console.log('myService::afterInit');
   },
 };
@@ -34,7 +39,7 @@ const myFeature = {
   handler: () => console.log('myFeature, on myService::init'),
 };
 
-forrestjs.run({
+forrest.run({
   services: [myService],
   features: [myFeature],
 });
@@ -44,7 +49,7 @@ This simple App defines a custom Service that:
 
 1. registers an Action into the App's Lifecyle
 2. log something
-3. creates an Extension allowing other Features to inject some code
+3. creates an Extension allowing other Features to inject their logic
 4. log something else
 
 The custom Feature registers an Action into that Extension, injecting new logic into it.
@@ -56,21 +61,25 @@ https://codesandbox.io/s/create-hook-sync-04yy4?file=/src/index.js
 
 ---
 
-👉 The baseline is that creating an Extension is just like running a regular function, but **this function behaves like a black-box** as we can't know in advance who will register Actions into it.
+👉 The baseline is that creating an Extension is just like running a regular function, but **this function behaves like a black-box**, and we can't know in advance who will register Actions into it.
 
 As with functions:
 
-- an Extension has a **unique name** that is simply a string
+- an Extension has a **unique name**, that is simply a string
 - you can pass arguments into an Extension
 - you can collect the returning values from each registered Action
 
-## The Extension Targets Manifest
+---
 
-So far we used simple strings as Extensions' names. That makes it for a very fast development cycle, but it opens up the Gates of Hell for typos and any kind of nasty mistakes.
+## The Extension Targets Registry
+
+So far we used simple strings as Extensions' names.
+
+That makes it for a very fast development cycle, but it opens up the Gates of Hell for typos and any kind of nasty mistakes.
 
 > **Don't worry:** there is a way around this issue that solves most of the typos scenario, while preserving coding speed 😎.
 
-The first step is to **build an _Extensions Targets Manifest_** for your Service. It is just a key/value store where you will list all the extension points that your Service will use:
+The first step is to **build an \_Extensions Targets Registry** for your Service. It is just a key/value store where you will list all the extension points that your Service will use:
 
 ```js
 const myServiceExtensions = {
@@ -92,16 +101,16 @@ const myService = ({ registerAction, registerTargets }) => {
 
 > This will build an internal dictionary of all the Extensions available to the Application.
 
-From now on it's easy.
+😎 From now on, it's easy.
 
-First, you should now use the symbols when you run the Extension:
+First, you can formally refer to the Registry when you create your Extensions:
 
 ```js
-// Create your hooks using symbols from the manifest:
-createExtension.sync(myServiceHooks.MY_SERVICE_INIT);
+// Create your Extensions using symbols from the manifest:
+createExtension.sync('$MY_SERVICE_INIT');
 ```
 
-And then you can reference those symbols with the `$` when you register the actions:
+And then you can reference back when you register your Actions:
 
 ```js
 registerAction({
@@ -117,28 +126,13 @@ https://codesandbox.io/s/create-hook-reference-ewqkn?file=/src/index.js
 
 ---
 
-> By using the `$` sign at the beginning of your Target name you ask ForrestJS to formally validate its existance against the internal Action Targets manifest.
+> By using the `$` sign at the beginning of your Target's name you ask ForrestJS to formally validate its existance against the internal Extension Targets Registry.
 
-If the Extension does not exists, ForrestJS will throw an error and your App will fail to start. So you will be able to **catch on all those silly mistakes in real time** while building your Features.
+If the Extension does not exists,**ForrestJS will throw an error** and your App will fail to start. So you will be able to **catch on all those silly mistakes in real time** while building your Features.
 
-### Register Optional Actions
+---
 
-There are situations in which you want to register an Action, but you don't really know for sure whether the Extension will be available because it depends on the App's final composition.
-
-> This is a classic in Service-to-Service integration.
-
-You can append a `?` at the end of a formally checked Target to avoid the error in case the Extension is not registered:
-
-```js
-registerAction({
-  target: '$ONLY_IF_EXISTS?',
-  handler: () => console.log('firstFeature, on myService::init'),
-});
-```
-
-👉 With this option, you must be really sure that you are referencing the correct Extension, as typos are on you here! End-to-end tests will help a lot.
-
-## Passing Arguments
+## Passing Arguments to the Action Handlers
 
 When you create an Extension you can pass arguments to it as a single object:
 
@@ -149,7 +143,7 @@ createExtension.sync('extensionName', {
 
 registerAction({
   target: 'extensionName',
-  handler: ({ foo }) => console.log(`foo: ${foo}`),
+  handler: (params) => console.log(`foo: ${params.foo}`),
 });
 ```
 
@@ -168,8 +162,8 @@ It is also possible to collect and manipulate each registered Action's Handler r
 
 ```js
 // Register some Actions:
-registerAction('foobar', () => 5);
-registerAction('foobar', () => 10);
+registerAction({ target: 'foobar', handler: () => 5 });
+registerAction({ target: 'foobar', handler: () => 10 });
 
 // Run the Extension and collect the results:
 const data = createExtension.sync('foobar');
@@ -186,8 +180,8 @@ https://codesandbox.io/s/create-hook-returning-values-66xq3?file=/src/index.js
 Each Action Handler's returning value is represented by a _positional array_ with:
 
 - [0] raw returning value
-- [1] Action configuration
-- [2] Extension configuration
+- [1] Action's details
+- [2] Extension's details
 
 [[TO BE EXPANDED]]
 
@@ -218,7 +212,7 @@ https://codesandbox.io/s/create-hook-serie-e6670?file=/src/index.js
 
 Use the `parallel` method when you want **asynchronous** Action Handlers to **execute at the same time**, triggered by by the registration or priority order.
 
-> The returning values will reflect the trigger order.
+> The returning values order will reflect the trigger order.
 
 ```js
 const results = createExtension.parallel('extensionName', {
