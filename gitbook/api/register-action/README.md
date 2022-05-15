@@ -19,48 +19,35 @@ const myFirstFeature = ({ registerAction }) => {
 };
 ```
 
-The piece of code above just writes a `console.log` during the booting sequence of the App.
+🧐 The piece of code above just writes a `console.log` App's Boot Lifecycle. It's not much, but it is already a viable piece of _business logic_.
 
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/register-action-v64r4?file=/src/index.js:102-226
-
----
-
-## Signature Variant
-
-You can use the compact signature variant:  
-`registerAction(extensionName, handler)`:
-
-```js
-const actionHandler = () => console.log('Start First Feature');
-registerAction('$START_FEATURE', actionHandler);
-```
-
-> Althoug I don't use this version so much, a few users found it a necessary add-on to ForrestJS.
-
----
-
-**💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/register-action-v64r4?file=/src/index.js:230-367
+https://codesandbox.io/s/register-action-v64r4?file=/src/index.js:118-222
 
 ---
 
 ## Register Multiple Handlers
 
-A ForrestJS' Extension is just a pointer to a list of Action Handlers.  
-_Regular Javascript functions, really._
+A ForrestJS' Extension is just a **named pointer** to a list of Action handlers.  
+_They are just regular JavaScript functions, really._
 
-Every time you register an Action, you are simply adding yet another handler to the Extension's array.
+Every time you register an Action, you simply add yet another handler to the Extension's list.
 
 ```js
-registerAction('$START_FEATURE', () => console.log('#1 handler'));
-registerAction('$START_FEATURE', () => console.log('#2 handler'));
-registerAction('$START_FEATURE', () => console.log('#3 handler'));
+registerAction({
+  target: '$INIT_FEATURE',
+  handler: () => console.log('Handler #1'),
+});
+
+registerAction({
+  target: '$INIT_FEATURE',
+  handler: () => console.log('Handler #2'),
+});
 ```
 
-> You can register as many Action Handlers as you may need to the same Extension.  
+> You can register multiple Action Handlers to the same Extension.  
 > **👉 DON'T PUT EVERYTHING IN THE SAME FUNCTION**
 
 Modularity is gold!
@@ -68,7 +55,7 @@ Modularity is gold!
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/register-action-v64r4?file=/src/index.js:371-607
+https://codesandbox.io/s/register-action-v64r4?file=/src/index.js:226-400
 
 ---
 
@@ -93,7 +80,7 @@ const secondFeature = {
   handler: () => console.log('Init Second Feature'),
 };
 
-forrestjs.run([firstFeature, secondFeature]);
+forrestjs.run({ features: [firstFeature, secondFeature] });
 ```
 
 The result of this application would be:
@@ -118,7 +105,7 @@ const secondFeature = {
   priority: 1,
 };
 
-forrestjs.run([firstFeature, secondFeature]);
+forrestjs.run({ features: [firstFeature, secondFeature] });
 ```
 
 The result of this application is now:
@@ -141,7 +128,9 @@ https://codesandbox.io/s/register-action-with-priority-yuibn
 
 ## Action Meta Information
 
-You can pass other options along with your Action using the extended configuration. The info you pass may be used for debugging or tracing purpose by the Service or Feature that creates the Extension.
+You can pass other options along with your Action's `target` and `handler`.
+
+The info you pass may be used for debugging or tracing purpose by the Service or Feature that creates the Extension.
 
 > There is still a lot of work-in-progress in improving the App isolation and error tracing of Extensions using those Action Meta Information. For now, you can find some examples in this SandBox:
 
@@ -152,11 +141,15 @@ https://codesandbox.io/s/register-action-options-ey8h0
 
 ---
 
-### target [String]
+### target
 
-It is the name of the Extension that you want to integrate.
+```
+type:    String
+```
 
-It could be just a plain `string`, but more often than not you will use a formal dictionary of available Extension by simply using the `$` charater at the beginning:
+It is the name of the Extension that you want to integrate into.
+
+It could be just a plain `string`, but usually you will **use a formal dictionary** of available Extensions by simply using the `$` prefix:
 
 ```js
 registerAction({
@@ -164,7 +157,7 @@ registerAction({
 });
 ```
 
-In this case `$INIT_FEATURE` is not just a string, but it will be matched against a formal dictionary, verified and translated to the relative string.
+In this case `$INIT_FEATURE` is not just a string, but it will be matched against a formal dictionary, verified, and translated to the absolute Extension name string.
 
 👉 Try to misspell it, you will see that the App crashes at boot time.
 
@@ -180,17 +173,44 @@ registerAction({
 
 > **NOTE:** Formal targets are all uppercase... just because they look like constants (which they are under the hood). It is just a convention.
 
-### handler [Object, Array, Function]
+### handler
 
-The Action Handler is often a regular Javascript function that takes 2 arguments:
-
-```js
-const actionHandler = (extensionData = {}, appContext = {}) => {};
+```
+type:    Function | Array | Object
 ```
 
-- the Extension's Data is an object with custom data provided by the logic that creates the Extension. Is the way to pass data into the handlers.
-- the App Context is the full set of ForrestJS APIs, plus application data or additional APIs that are shared between Features.
+The Action Handler is often a regular JavaScript function that takes 2 arguments:
 
-### name [String]
+```js
+const actionHandler = (extensionContext = {}, appContext = {}) => {};
+```
 
-### priority [Int]
+- the Extension's Context is an object with custom data and API provided by the logic that creates the Extension. Is the Extension's way to pass parameters to the Action handlers.
+- the App Context is the full set of ForrestJS APIs, plus application data or additional APIs that are shared by Services and Features.
+
+### name
+
+```
+type:    String
+```
+
+The Action's Name gives a logical identification of the Action inside the App.
+
+When you pack Actions as Features or Services with a **functional Manifest**, the Action's name is defaulted to the Manifest's name.
+
+### priority
+
+```
+type:    Integer
+default: 0
+```
+
+It set the execution order of the Action handlers that are registered to an Extension.
+
+### trace
+
+```
+type:    Any
+```
+
+It's an arbitrary information that will be returned into any Error generated by the Action Handler. I ususally set it to `__filename` because errors in JavaScript suck.
