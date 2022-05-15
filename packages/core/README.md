@@ -48,5 +48,3 @@ forrest.run({
 - Concepts
   - [Vocabulary](./docs/vocabulary/README.md)
   - [App Lifecycle Extensions](./docs/lifecycle/README.md)
-- API
-  - [createExtension()](./docs/create-extension/README.md)

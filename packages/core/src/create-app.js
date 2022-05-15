@@ -180,6 +180,12 @@ const registerSettingsExtension = (buildAppSettings) => {
   return {};
 };
 
+/**
+ * TODO: In v5.0.0 we can destructure the appManifest as so to provide
+ *       code hints through VSCode
+ * @param {} appManifest
+ * @returns
+ */
 const createApp =
   (appManifest = {}) =>
   async () => {
