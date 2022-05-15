@@ -45,8 +45,12 @@ Then in `/users/index.js` we can simply add a new route's definition to the list
 }
 ```
 
-Check it out here:  
+---
+
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/040-add-a-new-user-g0h0h?file=/src/users/index.js:532-775
+
+---
 
 ### Modify the App's Context
 

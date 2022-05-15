@@ -6,25 +6,27 @@
 
 # ForrestJS App's Scaffold
 
-Create a new `app.js` file and use the following scaffold to kick off a new ForrestJS App:
+Create a new `index.js` file and use the following scaffold to kick off a new ForrestJS App:
 
 ```js
-const forrestjs = require('@forrestjs/core');
+const forrest = require('@forrestjs/core');
 
-forrestjs
+forrest
+  // Kick off the asynchronous Boot Lifecycle
   .run({
     trace: 'compact',
     settings: {},
     services: [],
     features: [],
   })
+  // Log any boot error
   .catch(console.error);
 ```
 
 Once ready, you can run it with:
 
 ```sh
-npx nodemon app
+npx nodemon index
 ```
 
 ---

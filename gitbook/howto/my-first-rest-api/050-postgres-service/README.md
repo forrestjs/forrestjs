@@ -6,7 +6,9 @@
 
 # Connect to Postgres as a Service
 
-Let's step up the game a little bit and try to use a real database. In this tutorial we will create a service that connects to a PostgreSQL database, and offers an interface towards the App's features to run custom queries.
+Let's step up the game a little bit and try to use a real database.
+
+In this tutorial we will create a service that connects to a PostgreSQL database, and offers an interface towards the App's features to run custom queries.
 
 > Why a service?
 
@@ -20,10 +22,10 @@ A service is the best match for this kind of stuff.
 You can get a free PostgreSQL database on [ElephantSQL](https://www.elephantsql.com/) by following [this tutorial](https://marcopeg.com/setup-a-free-postgresql-database/). Once you set it up, you need to get the full connection string that looks a lot like:
 
 ```bash
-postgres://ghstdny:jGTHd9Xf9KsGlfgg9fifSCjkdl4fw1G-g@tai.db.elephantsql.com/ghstdny
+postgres://ghsxxny:jGTHd9Xf9KsGgg9fifSCjdl4fw1G-g@tai.db.elephantsql.com/ghsxxny
 ```
 
-👉 Then you should add it in the Sandbox's **Environmental Variables** as `PGSTRING`.
+👉 Then you should add it in the [Sandbox's **Environmental Variables**](https://codesandbox.io/docs/secrets) as `PGSTRING`.
 
 ## Barebone Codebase
 
@@ -91,7 +93,7 @@ const env = envalid.cleanEnv(process.env, {
   PG_MAX: envalid.num({ default: 1 }),
 });
 
-forrestjs.run({
+forrest.run({
   settings: {
     pg: {
       connectionString: env.PGSTRING,
@@ -104,7 +106,7 @@ forrestjs.run({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/index.js:1253-1340
+https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/index.js:1251-1338
 
 ---
 
@@ -112,23 +114,23 @@ With the correct environment, and the settings correctly set up, we can finally 
 
 ## Service Initialization
 
-First thing, we hook into the `$INIT_SERVICE` where we create the pool and share it with the rest of the app via _Context API_:
+First thing, we register an Action into the `$INIT_SERVICE` Lifecycle Extension where we create the pool and share it with the rest of the app via _Context API_:
 
 ```js
 registerAction({
-  hook: '$INIT_SERVICE',
+  target: '$INIT_SERVICE',
   handler: ({ getConfig, setContext }) => {
-    // 1. Get the configuration
+    // 1. Get the configuration:
     const connectionString = getConfig('pg.connectionString');
     const max = getConfig('pg.maxConnections');
 
-    // 2. Create the pool
+    // 2. Create the pool:
     const pool = new Pool({
       connectionString,
       max,
     });
 
-    // 3. Share it
+    // 3. Share it:
     setContext('pg.pool', pool);
   },
 });
@@ -137,7 +139,7 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js:179-642
+https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js:179-644
 
 ---
 
@@ -147,11 +149,11 @@ When it comes to PG, creating the pool does NOT check out that your connection f
 
 But we don't want other Features to find out the hard way about an incorrect setup. We want to make sure they receive a fully working pool to use in their business logic.
 
-We can simply achieve this goal by hooking into `$SERVICE_START` and checking out the PostgreSQL local time:
+We can simply achieve this goal by extending `$SERVICE_START` and checking out the PostgreSQL local time:
 
 ```js
 registerAction({
-  hook: '$START_SERVICE',
+  target: '$START_SERVICE',
   handler: async ({ getContext }) => {
     const pool = getContext('pg.pool');
 
@@ -169,7 +171,7 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js:646-1200
+https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/pg/index.js:648-1204
 
 ---
 
@@ -186,7 +188,7 @@ Witht the code we wrote so far, any feature could run a query **after service in
 
 ```js
 registerAction({
-  hook: '$START_FEATURE',
+  target: '$START_FEATURE',
   handler: async ({ getContext }) => {
     const pool = getContext('pg.pool');
     await pool.query('SELECT ...');
@@ -197,6 +199,6 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/index.js:454-777
+https://codesandbox.io/s/050-postgres-service-pw36m?file=/src/index.js:452-777
 
 ---

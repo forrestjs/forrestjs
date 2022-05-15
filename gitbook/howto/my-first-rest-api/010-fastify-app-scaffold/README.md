@@ -6,7 +6,7 @@
 
 # Fastify App's Scaffold
 
-Create a new `app.js` file and use the following scaffold to kick off a new ForrestJS App:
+Create a new `index.js` file and use the following scaffold to kick off a new ForrestJS App:
 
 ```js
 // Import dependencies, mostly services that wrap famous Open Source libraries:
@@ -36,7 +36,7 @@ forrest
 Once ready, you can run it with:
 
 ```sh
-npx nodemon app
+npx nodemon index
 ```
 
 Once the app is running, you should test it at the following urls:
@@ -60,5 +60,7 @@ settings: {
   }
 }
 ```
+
+But if you run this tutorial on your local machine, this may cause troubles.
 
 ---

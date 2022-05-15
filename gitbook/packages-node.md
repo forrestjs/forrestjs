@@ -9,10 +9,9 @@ your application can **easily extend and customize their behaviour**.
 
 👉 [Get Started with NodeJS and ForrestJS](./howto/my-first-rest-api/README.md)
 
-## Core (Javascript Hooks Library)
+## ForrestJS Core
 
-This is the core of ForrestJS modularity. It allows you to implement extensible applications made of composable feature pretty much **like Wordpress does with their plugins**, but in a Node fashion and with
-traceable and debuggable support.
+This is the core of ForrestJS project. It allows you to implement extensible applications made of composable feature pretty much **like Wordpress does with their plugins**, but in a NodeJS fashion, and with traceable and debuggable support.
 
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/hooks)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/hooks/README.md#readme)  
@@ -57,6 +56,15 @@ Wrapper around [fastify-cookie](https://github.com/fastify/fastify-cookie) plugi
 👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify-cookie/README.md#readme)  
 👉 [**Open the CodeSandbox example**](https://codesandbox.io/s/service-fastify-cookie-pq2m0)
 
+### service-fastify-cors
+
+It integrates with Fastify and let you configure CORS access to your APIs.
+
+Wrapper around [fastify-cors](https://github.com/fastify/fastify-cors) plugin.
+
+👉 [Install it from NPM](https://www.npmjs.com/package/@forrestjs/service-fastify-cors)  
+👉 [Open the Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-fastify-cors/README.md#readme)
+
 ### service-fastify-gql
 
 Sets up an [Apollo Graphql Server](https://www.apollographql.com/docs/apollo-server/)
@@ -100,23 +108,13 @@ It provides some basic cryptographic helper methods to safely hash passwords.
 👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-hash)<br>
 👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-hash/README.md#readme)
 
-### service-postgres
+### service-pg
 
 It helps establishing a reliable connection with one or more _Postgres_ databases using the
-library `sequelize`. It also provide hooks for features to provide their own data models in
-isolation.
+library [`pg`](https://www.npmjs.com/package/pg).
 
-[[to be completed]]
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-postgres)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-postgres/README.md#readme)
-
-### service-env
-
-Reads environment configuration from different _dot-files_ into your `process.env` variable, and provides a safe interface to access environmental variables.
-
-👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-env)<br>
-👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-env/README.md#readme)
+👉 [Install from NPM](https://www.npmjs.com/package/@forrestjs/service-pg)<br>
+👉 [Documentation](https://github.com/forrestjs/forrestjs/blob/master/packages/service-pg/README.md#readme)
 
 ### service-logger
 

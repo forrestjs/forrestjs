@@ -40,9 +40,9 @@
 
 ### API Documentation
 
-- [Register Action](./api/register-action/README.md)
-- [Create Extension](./api/create-extension/README.md)
-- [The ForrestJS App](./api/forrestjs-app/README.md)
+- [ForrestJS.run()](./api/forrestjs-run/README.md)
+- [registerAction()](./api/register-action/README.md)
+- [createExtension()](./api/create-extension/README.md)
 - [The App Context](./api/app-context/README.md)
 - [The App Config](./api/app-config/README.md)
 
