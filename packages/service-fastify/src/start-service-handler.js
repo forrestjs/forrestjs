@@ -2,6 +2,12 @@ const { MissingPropertyError } = require('./errors');
 
 // Receives in "route" the return data structure from a "registerHook.sync" call.
 const makeRoute = (method) => (route) => {
+  if (method !== null) {
+    console.warn(
+      `[DEPRECATED] The extension "$FASTIFY_${method}" is deprecated and will be removed in v5.0.0. Use "$FASTIFY_ROUTE" instead.`,
+    );
+  }
+
   if (Array.isArray(route[0])) {
     return route[0].map((routeDef) => ({
       ...routeDef,
@@ -27,16 +33,32 @@ module.exports = ({ getContext, getConfig, createExtension }) => {
   // Register route utilities
   const registeredRoutes = [];
   const registerRoute = (...options) => registeredRoutes.push(options);
-  registerRoute.get = (url, handler) =>
-    registerRoute({ method: 'GET', url, handler });
-  registerRoute.post = (url, handler) =>
-    registerRoute({ method: 'POST', url, handler });
-  registerRoute.put = (url, handler) =>
-    registerRoute({ method: 'PUT', url, handler });
-  registerRoute.delete = (url, handler) =>
-    registerRoute({ method: 'DELETE', url, handler });
+  registerRoute.get = (url, handler) => {
+    console.warn(
+      `[DEPRECATED] The extension "$FASTIFY_GET" is deprecated and will be removed in v5.0.0. Use "$FASTIFY_ROUTE" instead.`,
+    );
+    return registerRoute({ method: 'GET', url, handler });
+  };
+  registerRoute.post = (url, handler) => {
+    console.warn(
+      `[DEPRECATED] The extension "$FASTIFY_POST" is deprecated and will be removed in v5.0.0. Use "$FASTIFY_ROUTE" instead.`,
+    );
+    return registerRoute({ method: 'POST', url, handler });
+  };
+  registerRoute.put = (url, handler) => {
+    console.warn(
+      `[DEPRECATED] The extension "$FASTIFY_PUT" is deprecated and will be removed in v5.0.0. Use "$FASTIFY_ROUTE" instead.`,
+    );
+    return registerRoute({ method: 'PUT', url, handler });
+  };
+  registerRoute.delete = (url, handler) => {
+    console.warn(
+      `[DEPRECATED] The extension "$FASTIFY_DELETE" is deprecated and will be removed in v5.0.0. Use "$FASTIFY_ROUTE" instead.`,
+    );
+    return registerRoute({ method: 'DELETE', url, handler });
+  };
 
-  // Colle
+  // DEPRECATE: must remove all the GET/POST/DELETE in v5.0.0
   const collectedRoutes = [
     ...createExtension
       .sync('$FASTIFY_GET', {

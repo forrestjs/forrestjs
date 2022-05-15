@@ -8,9 +8,11 @@
   },
   "main": "src/index",
   "scripts": {
+    "-- DEVELOPMENT ---": "",
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json",
-    "reset": "npm run clean && npm install",
+    "reset": "npm run clean && npm install && (cd ../../ && npm run link)",
     "start:hooks": "cross-env NODE_ENV=development npx nodemon hooks",
+    "-- RUN PROJECTS ---": "",
     "start:service-fastify": "cross-env NODE_ENV=development npx nodemon service-fastify",
     "test:service-fastify": "jest -t service-fastify-standalone --runInBand ",
     "tdd:service-fastify": "jest -t service-fastify-standalone --runInBand  --watchAll",

@@ -12,8 +12,6 @@
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
 - [ ] deprecate `service-postgres-pubsub` and write `service-pg-pubsub` accepting `PGSTRING`
-- [ ] [bug] `createExtension("$SUM", 5)` the payload is not forwarded to the handlers
-- [ ] [service-fastify] Deprecate custom routes (FASTIFY_GET, FASTIFY_POST...)
 - [ ] [service-fastify-static] update the deprecated dependency
 - [ ] [service-fastify-cors] update the deprecated dependency
 - [ ] [service-fastify-cookie] update the deprecated dependency
@@ -31,6 +29,10 @@
 - [core] Improve `getContext()` error trace
 - [core] Improve `registerAction()` error trace
 - [core] Improve `createExtension()` error trace
+- [service-fastify] Deprecate `$FASTIFY_GET`
+- [service-fastify] Deprecate `$FASTIFY_POST`
+- [service-fastify] Deprecate `$FASTIFY_PUT`
+- [service-fastify] Deprecate `$FASTIFY_DELETE`
 
 ## 4.4.2
 
