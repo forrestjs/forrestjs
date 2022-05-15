@@ -5,16 +5,14 @@
 - [ ] remove `createHook` support
 - [ ] remove `registerAction` support
 - [ ] remove `registerHook` support
+- [ ] remove `FASTIFY_GET` and other methods support
 - [ ] action's parameter will be reversed (ctx, action's data)
+- [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
 
 ## 4.X.X (roadmap)
 
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
-- [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
-- [ ] deprecate `service-postgres-pubsub` and write `service-pg-pubsub` accepting `PGSTRING`
-- [ ] [service-fastify-static] update the deprecated dependency
-- [ ] [service-fastify-cors] update the deprecated dependency
-- [ ] [service-fastify-cookie] update the deprecated dependency
+- [ ] write `service-pg-pubsub` accepting `PGSTRING`
 
 ## 4.5.0
 
@@ -23,21 +21,23 @@
 - [service-fastify-cookie] Update dependencies
 - [service-fastify-gql] Update dependencies
 - [service-fastify-apollo] Update dependencies
+- Deprecate `service-env`
+- Deprecate `service-postgres`
+- Deprecate `service-postgres-pubsub`
 - [core] Deprecate `registerAction([name, handler, option])`
 - [core] Deprecate `registerAction(name, handler, option)`
 - [core] Deprecate `registerAction()` in favor of `registerExtension()`
 - [core] Deprecate the `forrest.run([ feature, feature ])`
-- [core] Changed lifecycle order, single endpoints go first
+- [service-fastify] Deprecate `$FASTIFY_GET`
+- [service-fastify] Deprecate `$FASTIFY_POST`
+- [service-fastify] Deprecate `$FASTIFY_PUT`
+- [service-fastify] Deprecate `$FASTIFY_DELETE`
 - [core] The appTrace integration goes last in `$FINISH`
 - [core] Moved the App tracing log out of the `$FINISH` extension
 - [core] Improve `getConfig()` error trace
 - [core] Improve `getContext()` error trace
 - [core] Improve `registerAction()` error trace
 - [core] Improve `createExtension()` error trace
-- [service-fastify] Deprecate `$FASTIFY_GET`
-- [service-fastify] Deprecate `$FASTIFY_POST`
-- [service-fastify] Deprecate `$FASTIFY_PUT`
-- [service-fastify] Deprecate `$FASTIFY_DELETE`
 
 ## 4.4.2
 
