@@ -21,6 +21,8 @@
 - [service-fastify-static] Update dependencies
 - [service-fastify-cors] Update dependencies
 - [service-fastify-cookie] Update dependencies
+- [service-fastify-gql] Update dependencies
+- [service-fastify-apollo] Update dependencies
 - [core] Deprecate `registerAction([name, handler, option])`
 - [core] Deprecate `registerAction(name, handler, option)`
 - [core] Deprecate `registerAction()` in favor of `registerExtension()`

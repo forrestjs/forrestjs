@@ -1,6 +1,7 @@
 # @forrestjs/service-postgres
 
-**🚧 DEPRECATED 🚧**
+**🚧 DEPRECATED 🚧**  
+Please use [service-pg](../service-pg) instead.
 
 ForrestJS service which helps connecting to a Postgres server.
 

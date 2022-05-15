@@ -1,5 +1,8 @@
 # @forrestjs/service-env
 
+**🚧 DEPRECATED 🚧**  
+The environment should be managed explicitly from the App manifest.
+
 ForrestJS service which helps importing environment variables from `.env.*` files:
 
 - .env
