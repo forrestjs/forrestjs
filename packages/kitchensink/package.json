@@ -10,9 +10,10 @@
   "scripts": {
     "-- DEVELOPMENT ---": "",
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json",
-    "reset": "npm run clean && npm install && (cd ../../ && npm run link)",
-    "start:hooks": "cross-env NODE_ENV=development npx nodemon hooks",
+    "link": "(cd ../../ && npm run link)",
+    "boot": "npm run clean && npm install && npm run link",
     "-- RUN PROJECTS ---": "",
+    "start:hooks": "cross-env NODE_ENV=development npx nodemon hooks",
     "start:service-fastify": "cross-env NODE_ENV=development npx nodemon service-fastify",
     "test:service-fastify": "jest -t service-fastify-standalone --runInBand ",
     "tdd:service-fastify": "jest -t service-fastify-standalone --runInBand  --watchAll",
