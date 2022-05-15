@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@forrestjs/core": "^4.5.0-alpha.6",
-    "fastify-cookie": "^5.7.0"
+    "@fastify/cookie": "^6.0.0"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-cookie#readme",
   "keywords": [

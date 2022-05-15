@@ -1,4 +1,4 @@
-const staticPlugin = require('fastify-static');
+const staticPlugin = require('@fastify/static');
 const { SERVICE_NAME, ...targets } = require('./targets');
 
 const onFastifyHacksBefore = ({ registerPlugin }, { getConfig }) => {

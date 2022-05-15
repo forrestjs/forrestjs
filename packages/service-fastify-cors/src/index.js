@@ -1,4 +1,4 @@
-const corsPlugin = require('fastify-cors');
+const corsPlugin = require('@fastify/cors');
 const { SERVICE_NAME, ...targets } = require('./targets');
 
 const onFastifyHacksBefore = ({ registerPlugin }, { getConfig }) => {

@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@forrestjs/core": "^4.5.0-alpha.6",
-    "fastify-static": "^4.7.0"
+    "@fastify/static": "^5.0.2"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-static#readme",
   "keywords": [

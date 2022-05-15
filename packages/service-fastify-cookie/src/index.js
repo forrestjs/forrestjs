@@ -1,4 +1,4 @@
-const cookiePlugin = require('fastify-cookie');
+const cookiePlugin = require('@fastify/cookie');
 const { SERVICE_NAME, ...targets } = require('./targets');
 
 const onFastifyHacksBefore = ({ registerPlugin }, { getConfig }) => {
