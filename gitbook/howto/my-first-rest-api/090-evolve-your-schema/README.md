@@ -44,7 +44,9 @@ migrated to the state of the art.
 
 > Because **each statement must be idempotent**, we can safely launch as many concurrent instances of the app as we want. Nothing will break down.
 
-👉 Once again, this strategy **apply very well to small schemas for microservices**. I wouldn't really think to build a bigh monolithic schema this way. In such a case, I'd vouche for a migration service as we used to do in the good 'ol times.
+👉 Once again, this strategy **apply very well to small schemas for micro-services**.
+
+But I wouldn't build a bigh monolithic schema this way. In such a case, I'd vouch for a migration service as we used to do in the good 'ol times.
 
 ## Cleaning Up Old Data
 
@@ -66,7 +68,7 @@ https://codesandbox.io/s/090-evolve-your-schema-5dlm5?file=/src/users/seed.js:54
 
 Here we use a bit of PostgreSQL magic to dynamically drop expired data.
 
-> You may argue that we will waste some resources by dropping all the data and re-seeding right away...
+> 🧐 You may argue that we will waste some resources by dropping all the data and re-seeding right away...
 
 You are correct my friend, you are correct.  
-But allow me to remember you that this is just a simple tutorial 😉
+But allow me to remember you that this is just a simple tutorial 😉.

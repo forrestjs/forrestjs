@@ -6,7 +6,7 @@
 
 # Integrate Services And Services
 
-Our `pg` Service is in a good shape: it connects to PostgreSQL and it provides a mead for other Features to integrate into it.
+Our `pg` Service is in a good shape: it connects to PostgreSQL and it provides a mean for other Features to integrate into it.
 
 > Now it is time to consider how could this Service integrate with other Services and extend their functionalities.
 
@@ -16,8 +16,9 @@ Something like:
 
 ```js
 registerAction({
-  hook: '$FASTIFY_GET',
+  target: '$FASTIFY_ROUTE',
   handler: {
+    method: 'GET',
     url: '/',
     handler: async (request, reply) => {
       const data = request.pg.query('SELECT * FROM "public"."users"');
@@ -37,7 +38,7 @@ That is easily done in our Service's manifest `/pg/index.js`:
 
 ```js
 registerAction({
-  hook: '$FASTIFY_PLUGIN',
+  target: '$FASTIFY_PLUGIN',
   handler: ({ decorateRequest }, { getContext }) => {
     const query = getContext('pg.query');
     decorateRequest('pg', { query });
@@ -48,21 +49,21 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/080-integrate-services-and-services-6zc8x?file=/src/pg/index.js:1868-2065
+https://codesandbox.io/s/080-integrate-services-and-services-6zc8x?file=/src/pg/index.js:1893-2092
 
 ---
 
 This **Integration Action** uses API methods to fetch a reference from the App's context and pipe it into the Fastify's request object.
 
-> **INTEGRATIONS SIMPLY CONNECT THE DOTS**
+> **👉 INTEGRATIONS SIMPLY CONNECT THE DOTS 👈**
 
 ## Service Order Matter
 
 One cool thing about the [`getContext()` API](../../../api/app-context/README.md#reading-from-the-context) is that **it throws an error in case the desired path does not exits**.
 
-This is important beause it let us write data paths as strings, but it will validate their correctness, **majestically reducing runtime errors by typos**.
+This is important beause it let us write data paths as strings, but it will validate their correctness, **majestically reducing runtime errors due to typos**.
 
-In our small _integration action_ we want to access `pg.query` from the context, but that context gets created during `$INIT_SERVICE`. Interestingly enough, `$FASTIFY_PLUGIN` is also executed _during_ `$INIT_SERVICE`.
+In our small _Integration Action_ we want to access `pg.query` from the context, but that context gets created during `$INIT_SERVICE`. Interestingly enough, `$FASTIFY_PLUGIN` is also executed _during_ `$INIT_SERVICE`.
 
 > This is a classic **racing condition** where it is important that `pg` gets initialized **before `service-fastify`**.
 
@@ -78,13 +79,13 @@ But we don't really like the idea to rely on our developers to remember that. It
 
 ## Actions Priority
 
-A much better solution is to use the `priority` option when we register the `pg`'s `$INIT_SERVICE` action, so **to make sure it happens before** Fastify's initialization.
+A much better solution is to use the `priority` option when we register the `pg`'s `$INIT_SERVICE` Action, so **to make sure it happens before** Fastify's initialization.
 
 In our Service Manifest `/pg/index.js`:
 
 ```js
 registerAction({
-  hook: '$INIT_SERVICE',
+  target: '$INIT_SERVICE',
   handler: () => {},
 
   // Make sure this initialization happens before Fastify's
@@ -95,7 +96,7 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/080-integrate-services-and-services-6zc8x?file=/src/pg/index.js:948-1021
+https://codesandbox.io/s/080-integrate-services-and-services-6zc8x?file=/src/pg/index.js:964-1037
 
 ---
 
@@ -104,11 +105,11 @@ Simple, right?
 > Every Service or Feature has a **default priority** of `0`.  
 > By setting a custom priority we an easily ensure the correct execution order for our actions.
 
-👉 This is something that **should be user very carefully** and only in extreme conditions when you really know what you are doing.
+👉 This is something that **should be used carefully** and only in extreme conditions when you really know what you are doing.
 
 🔥 Setting execution priorities introduces interlaced knowledge between Services or Features, effectively **breaking the decoupled modules** assumption.
 
-**WITH GREAT POWER COMES GREAT RESPONSIBILITY**
+**🦸 WITH GREAT POWER COMES GREAT RESPONSIBILITY**
 
 ## Pull Users From the DB
 
@@ -158,7 +159,7 @@ const handler = async (request, reply) => {
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/080-integrate-services-and-services-6zc8x?file=/src/users/routes/add-users.js:0-301
+https://codesandbox.io/s/080-integrate-services-and-services-6zc8x?file=/src/users/routes/add-users.js
 
 ---
 

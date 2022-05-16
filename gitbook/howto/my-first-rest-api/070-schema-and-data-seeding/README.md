@@ -52,6 +52,22 @@ const usersFeature = ({ registerAction }) => {
 module.exports = usersFeature;
 ```
 
+Or you can always use the Declarative Style, which is often much more compact when you are writing features:
+
+```js
+const seedUsers = require('./seed');
+
+const usersFeature = () => [
+  // ... register other actions ...
+  {
+    hook: '$PG_READY',
+    handler: seedUsers,
+  },
+];
+
+module.exports = usersFeature;
+```
+
 ---
 
 **💻 Live on CodeSandbox:**  
@@ -61,7 +77,7 @@ https://codesandbox.io/s/070-schema-and-data-seeding-byqcy?file=/src/users/seed.
 
 ## Idempotent Queries for Microservices
 
-It is so cool to talk about **microservices** nowadays, everybody want to talk about it and offer a million different approaches.
+It is so cool to talk about **micro-services** nowadays, everybody want to talk about it and offer a million different approaches.
 
 I'm a big fan myself.
 
