@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-meta",
   "description": "Loads configuration from text files in _JSON_ format",
-  "version": "4.4.2",
+  "version": "4.5.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^4.4.2"
+    "@forrestjs/core": "^4.5.0"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-meta#readme",
   "keywords": [

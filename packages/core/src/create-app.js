@@ -4,6 +4,10 @@ const { registerAction } = require('./register-action');
 const { traceHook } = require('./tracer');
 const { createRegistry } = require('./create-targets-registry');
 const constants = require('./constants');
+const {
+  ForrestJSGetConfigError,
+  ForrestJSGetContextError,
+} = require('./errors');
 
 // DEPRECATED: property "hook" is deprecated and will be removed in v5.0.0
 const isDeclarativeAction = ({ hook, target, handler }) =>
@@ -52,6 +56,10 @@ const runIntegrations = async (integrations, context, prefix = '') => {
               // registerAction('hook', () => {}, 'name')
               // registerAction('hook', () => {}, { name: 'name' })
               if (typeof ag1 === 'string') {
+                console.warn(
+                  `[DEPRECATED] "registerAction(name, handler, option)" is deprecated and will be remove in version 5.0.0.`,
+                );
+
                 return registeredExtensions.push([
                   ag1,
                   ag2,
@@ -95,7 +103,7 @@ const runIntegrations = async (integrations, context, prefix = '') => {
       typeof computed[0] === 'string' &&
       (typeof computed[1] === 'function' || typeof computed[1] === 'object')
     ) {
-      console.log(
+      console.warn(
         '[DEPRECATED] please use the object base declarative pattern { hook, handler, ... } - this API will be removed in v5.0.0',
       );
       const [hook, handler, options = {}] = computed;
@@ -120,6 +128,12 @@ const runIntegrations = async (integrations, context, prefix = '') => {
       (computed.hook || computed.target) &&
       computed.handler
     ) {
+      if (computed.hook) {
+        console.warn(
+          `[DEPRECATED] the key "hook" is deprecated and will be removed from v5.0.0.\nPlease use "target" instead.`,
+        );
+      }
+
       registeredExtensions.push({
         ...computed,
         name: `${prefix}${computed.name || integrationName}`,
@@ -166,9 +180,21 @@ const registerSettingsExtension = (buildAppSettings) => {
   return {};
 };
 
+/**
+ * TODO: In v5.0.0 we can destructure the appManifest as so to provide
+ *       code hints through VSCode
+ * @param {} appManifest
+ * @returns
+ */
 const createApp =
   (appManifest = {}) =>
   async () => {
+    if (Array.isArray(appManifest)) {
+      console.warn(
+        `[DEPRECATED] The array version is deprecated and will be removed in v5.0.0.\nUse the full App Manifest definition instead.`,
+      );
+    }
+
     // accepts a single param as [] of features
     const {
       services = [],
@@ -176,7 +202,7 @@ const createApp =
       settings = {},
       context = {},
       trace = null,
-    } = Array.isArray(appManifest) ? { features: appManifest } : appManifest;
+    } = Array.isArray(appManifest) ? { services: appManifest } : appManifest;
 
     // creates initial internal settings from an object
     // or automatically register the provided settings callback
@@ -185,17 +211,23 @@ const createApp =
         ? registerSettingsExtension(settings)
         : settings;
 
-    // Context bound list of known Actions
-    const actionsRegistry = createRegistry(constants);
+    // Context bound list of known Extensions
+    const targetsRegistry = createRegistry(constants);
 
     // create getter and setter for the configuration
-    const getConfig = objectGetter(internalSettings);
+    const getConfig = (...args) => {
+      try {
+        return objectGetter(internalSettings)(...args);
+      } catch (err) {
+        throw new ForrestJSGetConfigError(err.message);
+      }
+    };
     const setConfig = objectSetter(internalSettings);
 
     // create the context with getters / setters /
     const internalContext = {
       ...context,
-      ...actionsRegistry,
+      ...targetsRegistry,
       registerAction,
       setConfig,
       getConfig,
@@ -206,7 +238,13 @@ const createApp =
     };
 
     // provide an api to deal with the internal context
-    internalContext.getContext = objectGetter(internalContext);
+    internalContext.getContext = (...args) => {
+      try {
+        return objectGetter(internalContext)(...args);
+      } catch (err) {
+        throw new ForrestJSGetContextError(err.message);
+      }
+    };
     internalContext.setContext = objectSetter(internalContext);
 
     // createExtension scoped to the App context
@@ -221,50 +259,33 @@ const createApp =
 
     // DEPRECATED: remove in v5.0.0
     internalContext.createHook = (...args) => {
-      console.warn('[DEPRECATED] createHook');
+      console.warn(
+        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+      );
       return _cs(...args);
     };
     internalContext.createHook.sync = (...args) => {
-      console.warn('[DEPRECATED] createHook');
+      console.warn(
+        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+      );
       return _cs.sync(...args);
     };
     internalContext.createHook.serie = (...args) => {
-      console.warn('[DEPRECATED] createHook');
+      console.warn(
+        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+      );
       return _cs.serie(...args);
     };
     internalContext.createHook.parallel = (...args) => {
-      console.warn('[DEPRECATED] createHook');
+      console.warn(
+        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+      );
       return _cs.parallel(...args);
     };
     internalContext.createHook.waterfall = (...args) => {
       console.warn('[DEPRECATED] createHook');
       return _cs.waterfall(...args);
     };
-
-    // LOt OF WORK TO DO HERE!
-    if (trace) {
-      registerAction({
-        name: `${constants.BOOT} app/trace`,
-        target: constants.FINISH,
-        handler: () => {
-          console.log('');
-          console.log('=================');
-          console.log('Boot Trace:');
-          console.log('=================');
-          console.log('');
-          switch (trace) {
-            case 'full':
-              console.log(traceHook()('full')('json'));
-              break;
-            default:
-              console.log(traceHook()('compact')('cli').join('\n'));
-              break;
-          }
-          console.log('');
-          console.log('');
-        },
-      });
-    }
 
     // run lifecycle
     await runIntegrations(services, internalContext, `${constants.SERVICE} `);
@@ -280,6 +301,28 @@ const createApp =
     await _cs.parallel(constants.START_FEATURES, internalContext);
     await _cs.serie(constants.START_FEATURE, internalContext);
     await _cs.serie(constants.FINISH, internalContext);
+
+    // Implement trace without a Hook
+    if (trace) {
+      const lines = [];
+      lines.push('');
+      lines.push('=================');
+      lines.push('Boot Trace:');
+      lines.push('=================');
+      lines.push('');
+      switch (trace) {
+        case 'full':
+          lines.push(traceHook()('full')('json'));
+          break;
+        default:
+          lines.push(traceHook()('compact')('cli').join('\n'));
+          break;
+      }
+      lines.push('');
+      lines.push('');
+
+      console.log(lines.join('\n'));
+    }
 
     return {
       settings: internalSettings,

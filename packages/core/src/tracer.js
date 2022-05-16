@@ -1,10 +1,10 @@
+const { SYMBOLS, SEPARATOR } = require('./constants');
 const {
   appendTrace,
   getCurrentStack,
   getTraceContext,
   getState,
 } = require('./state');
-const { SYMBOLS, SEPARATOR } = require('./constants');
 
 const traceAction = (action, options = {}) => {
   const { trace } = options;

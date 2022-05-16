@@ -21,13 +21,16 @@ const fastifyRouteHandler = (request, reply) => {
 // with the Fastify Service:
 module.exports = {
   name: 'homePage',
-  target: '$FASTIFY_GET',
+  target: '$FASTIFY_ROUTE',
   handler: {
+    method: 'GET',
     url: '/',
     handler: fastifyRouteHandler,
   },
 };
 ```
+
+> 👉 **NOTE:** `$FASTIFY_ROUTE` receives one or many [full routes declarations](https://www.fastify.io/docs/latest/Reference/Routes/#full-declaration) as documented in the Fastify documentation project.
 
 Once you've created the feature, simply add it to your App's manifest:
 
@@ -91,8 +94,9 @@ const homePageRoute = require('./routes/home-page');
 
 module.exports = {
   name: 'homePage',
-  target: '$FASTIFY_GET',
+  target: '$FASTIFY_ROUTE',
   handler: {
+    method: 'GET',
     url: '/',
     handler: homePageRoute,
   },

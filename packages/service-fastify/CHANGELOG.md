@@ -4,6 +4,13 @@
 
 - [ ] Remove `reply` object decorations
 
+## v4.5.0
+
+- Deprecate `$FASTIFY_GET`
+- Deprecate `$FASTIFY_POST`
+- Deprecate `$FASTIFY_PUT`
+- Deprecate `$FASTIFY_DELETE`
+
 ## v4.4.1
 
 - Update libraries

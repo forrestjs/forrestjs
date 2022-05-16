@@ -10,6 +10,12 @@ In this toutorial we will use the hooks library in order to describe a modular a
 npm add @forrestjs/core
 ```
 
+Also, we use [Nodemon](https://nodemon.io/) as development runner:
+
+```bash
+npm add -D nodemon
+```
+
 ## Step By Step
 
 - [The App Scaffold](./010-forrestjs-app-scaffold/README.md)

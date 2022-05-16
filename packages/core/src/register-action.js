@@ -13,10 +13,15 @@
 const { appendAction } = require('./state');
 const { logAction } = require('./logger');
 const { getTarget } = require('./create-targets-registry');
+const { ForrestJSRegisterActionError } = require('./errors');
 
 const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   // (name, handler, options)
   if (typeof __arg1 === 'string') {
+    console.warn(
+      `[DEPRECATED] "registerAction(name, handler, option)" is deprecated and will be remove in version 5.x.`,
+    );
+
     return registerAction({
       ...__arg3,
       target: __arg1,
@@ -26,6 +31,9 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
 
   // ([ name, handler, options ])
   if (Array.isArray(__arg1)) {
+    console.warn(
+      `[DEPRECATED] "registerAction([name, handler, option])" is deprecated and will be remove in version 5.x.`,
+    );
     return registerAction({
       ...(__arg1[2] || {}),
       target: __arg1[0],
@@ -38,7 +46,7 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   const {
     hook: deprecatedReceivedHook, // DEPRECATER: will be removed in v5.0.0
     target: receivedTarget,
-    action: foobar,
+    // action,
     name,
     trace,
     handler: receivedHandler,
@@ -50,13 +58,11 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   const targetAction = receivedTarget || deprecatedReceivedHook;
 
   if (!targetAction) {
-    throw new Error('[ForrestJS] extensions must declare a "target" property!');
+    throw new Error('Extensions must declare a "target" property!');
   }
 
   if (!receivedHandler) {
-    throw new Error(
-      '[ForrestJS] extensions must declare a "handler" property!',
-    );
+    throw new Error('Extensions must declare a "handler" property!');
   }
 
   if (deprecatedReceivedHook) {
@@ -104,7 +110,11 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
     // An optional hook fails silently
   } catch (err) {
     if (!__arg1.optional) {
-      throw err;
+      throw new ForrestJSRegisterActionError(err.message, {
+        name,
+        target: receivedTarget,
+        trace,
+      });
     }
   }
 };

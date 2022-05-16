@@ -1,6 +1,7 @@
 # @forrestjs/service-postgres-pubsub
 
 **🚧 DEPRECATED 🚧**
+service-pg-pubsub will come soon!
 
 This service leverages a _Postgres_ database to implement a pub/sub mechanism
 that can scale across multiple instances of a web service.

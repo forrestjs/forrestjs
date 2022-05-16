@@ -38,34 +38,50 @@ module.exports = async ({ query }) => {
 Then just use this module as handler for the `PG_READY` hook in `/users/index.js`:
 
 ```js
-const seedUsers = require("./seed");
+const seedUsers = require('./seed');
 
 const usersFeature = ({ registerAction }) => {
   // ... register other actions ...
 
   registerAction({
-    hook: "$PG_READY",
-    handler: seedUsers
+    hook: '$PG_READY',
+    handler: seedUsers,
   });
 };
 
 module.exports = usersFeature;
 ```
 
+Or you can always use the Declarative Style, which is often much more compact when you are writing features:
+
+```js
+const seedUsers = require('./seed');
+
+const usersFeature = () => [
+  // ... register other actions ...
+  {
+    hook: '$PG_READY',
+    handler: seedUsers,
+  },
+];
+
+module.exports = usersFeature;
+```
+
 ---
 
-**💻 Live on CodeSandbox:**   
+**💻 Live on CodeSandbox:**  
 https://codesandbox.io/s/070-schema-and-data-seeding-byqcy?file=/src/users/seed.js
 
 ---
 
 ## Idempotent Queries for Microservices
 
-It is so cool to talk about **microservices** nowadays, everybody want to talk about it and offer a million different approaches.
+It is so cool to talk about **micro-services** nowadays, everybody want to talk about it and offer a million different approaches.
 
 I'm a big fan myself.
 
-> But what does really make a microservice "micro"? 
+> But what does really make a microservice "micro"?
 
 My answer is: **a correct implementation of the Single Responsibility Principle**.  
 One service serves one purpose only, and it is unentangled by the rest of the system.

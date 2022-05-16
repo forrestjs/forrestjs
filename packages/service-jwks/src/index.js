@@ -56,129 +56,132 @@ const createNewKeyStore = async (dbPath, padding) => {
   return keyStore;
 };
 
-const serviceJWKS = ({ registerAction }) => {
-  registerAction({
-    priority: 10,
-    target: '$INIT_SERVICE',
-    handler: async ({ getConfig, setContext }) => {
-      const dbPath = getConfig('jwks.serializer.db.path', DB_PATH_DEFAULT);
-      const padding = getConfig(
-        'jwks.serializer.padding',
-        process.env.NODE_ENV === 'development' ? '  ' : '',
-      );
+const serviceJWKS = () => {
+  return [
+    {
+      priority: 10,
+      trace: __filename,
+      target: '$INIT_SERVICE',
+      handler: async ({ getConfig, setContext }) => {
+        const dbPath = getConfig('jwks.serializer.db.path', DB_PATH_DEFAULT);
+        const padding = getConfig(
+          'jwks.serializer.padding',
+          process.env.NODE_ENV === 'development' ? '  ' : '',
+        );
 
-      const keys = await loadPersistedKeys(dbPath);
-      const keyStore = keys
-        ? await jose.JWK.asKeyStore(keys)
-        : await createNewKeyStore(dbPath, padding);
+        const keys = await loadPersistedKeys(dbPath);
+        const keyStore = keys
+          ? await jose.JWK.asKeyStore(keys)
+          : await createNewKeyStore(dbPath, padding);
 
-      const getPublicList = () => keyStore.toJSON();
-      const getPublicPEMList = () => {
-        const data = keyStore.toJSON();
-        return {
-          ...data,
-          keys: data.keys.map((key) => ({
-            kid: key.kid,
-            pem: jwktopem(key),
-          })),
+        const getPublicList = () => keyStore.toJSON();
+        const getPublicPEMList = () => {
+          const data = keyStore.toJSON();
+          return {
+            ...data,
+            keys: data.keys.map((key) => ({
+              kid: key.kid,
+              pem: jwktopem(key),
+            })),
+          };
         };
-      };
 
-      const getPublicPEM = (kid) => {
-        const key = keyStore.all({ kid })[0].toJSON();
-        return jwktopem(key);
-      };
+        const getPublicPEM = (kid) => {
+          const key = keyStore.all({ kid })[0].toJSON();
+          return jwktopem(key);
+        };
 
-      const sign = (payload, useKey = null, options = {}) => {
-        const key = useKey || keyStore.all({ use: 'sig' })[0];
-        const opt = { compact: true, jwk: key, fields: { typ: 'jwt' } };
+        const sign = (payload, useKey = null, options = {}) => {
+          const key = useKey || keyStore.all({ use: 'sig' })[0];
+          const opt = { compact: true, jwk: key, fields: { typ: 'jwt' } };
 
-        return jose.JWS.createSign(opt, key)
-          .update(
-            JSON.stringify({
-              ...payload,
-              // iat
-              iat: options.issuedAt || Math.floor(Date.now() / 1000),
-              // exp
-              ...(options.expiresIn
-                ? {
-                    exp: Math.floor(
-                      (Date.now() + ms(options.expiresIn)) / 1000,
-                    ),
-                  }
-                : {}),
-              // nbf
-              ...(options.notBefore
-                ? {
-                    nbf: Math.floor(
-                      (Date.now() + ms(options.notBefore)) / 1000,
-                    ),
-                  }
-                : {}),
-            }),
-          )
-          .final();
-      };
+          return jose.JWS.createSign(opt, key)
+            .update(
+              JSON.stringify({
+                ...payload,
+                // iat
+                iat: options.issuedAt || Math.floor(Date.now() / 1000),
+                // exp
+                ...(options.expiresIn
+                  ? {
+                      exp: Math.floor(
+                        (Date.now() + ms(options.expiresIn)) / 1000,
+                      ),
+                    }
+                  : {}),
+                // nbf
+                ...(options.notBefore
+                  ? {
+                      nbf: Math.floor(
+                        (Date.now() + ms(options.notBefore)) / 1000,
+                      ),
+                    }
+                  : {}),
+              }),
+            )
+            .final();
+        };
 
-      const verify = (token) => {
-        const data = jwt.decode(token, { complete: true });
-        const key = keyStore.all({ kid: data.header.kid })[0].toJSON();
-        const publicKey = jwktopem(key);
-        return jwt.verify(token, publicKey);
-      };
+        const verify = (token) => {
+          const data = jwt.decode(token, { complete: true });
+          const key = keyStore.all({ kid: data.header.kid })[0].toJSON();
+          const publicKey = jwktopem(key);
+          return jwt.verify(token, publicKey);
+        };
 
-      setContext('jwks', {
-        keyStore,
-        sign,
-        verify,
-        getPublicList,
-        getPublicPEMList,
-        getPublicPEM,
-      });
-    },
-  });
-
-  registerAction({
-    target: '$START_SERVICE',
-    handler: async ({ getContext, getConfig }) => {
-      const dbPath = getConfig('jwks.serializer.db.path', DB_PATH_DEFAULT);
-      const keyStore = getContext('jwks.keyStore');
-      const padding = getConfig('jwks.serializer.padding', '');
-      const rotateInterval = getConfig('jwks.rotate.interval', null);
-
-      if (!rotateInterval) {
-        console.log('[jwks] keys rotation is disabled');
-        return;
-      }
-
-      const rotateKeys = async () => {
-        console.log('[jwks] rotate keys');
-        await keyStore.generate('RSA', 2048, {
-          alg: 'RS256',
-          use: 'sig',
+        setContext('jwks', {
+          keyStore,
+          sign,
+          verify,
+          getPublicList,
+          getPublicPEMList,
+          getPublicPEM,
         });
+      },
+    },
+    {
+      trace: __filename,
+      target: '$START_SERVICE',
+      handler: async ({ getContext, getConfig }) => {
+        const dbPath = getConfig('jwks.serializer.db.path', DB_PATH_DEFAULT);
+        const keyStore = getContext('jwks.keyStore');
+        const padding = getConfig('jwks.serializer.padding', '');
+        const rotateInterval = getConfig('jwks.rotate.interval', null);
 
-        const data = keyStore.toJSON();
-        if (data.keys.length > 2) {
-          const { kid } = data.keys[0];
-          const key = keyStore.get(kid);
-          keyStore.remove(key);
+        if (!rotateInterval) {
+          console.log('[jwks] keys rotation is disabled');
+          return;
         }
 
-        await persistKeys(dbPath, keyStore.toJSON(true), padding);
-      };
+        const rotateKeys = async () => {
+          console.log('[jwks] rotate keys');
+          await keyStore.generate('RSA', 2048, {
+            alg: 'RS256',
+            use: 'sig',
+          });
 
-      console.log(`[jwks] keys will rotate every ${rotateInterval}`);
-      setInterval(rotateKeys, ms(rotateInterval));
-    },
-  });
+          const data = keyStore.toJSON();
+          if (data.keys.length > 2) {
+            const { kid } = data.keys[0];
+            const key = keyStore.get(kid);
+            keyStore.remove(key);
+          }
 
-  registerAction({
-    target: '$FASTIFY_PLUGIN?',
-    handler: ({ decorateRequest }, { getContext }) => {
-      decorateRequest('jwks', getContext('jwks'));
+          await persistKeys(dbPath, keyStore.toJSON(true), padding);
+        };
+
+        console.log(`[jwks] keys will rotate every ${rotateInterval}`);
+        setInterval(rotateKeys, ms(rotateInterval));
+      },
     },
-  });
+    {
+      trace: __filename,
+      target: '$FASTIFY_PLUGIN?',
+      handler: ({ decorateRequest }, { getContext }) => {
+        decorateRequest('jwks', getContext('jwks'));
+      },
+    },
+  ];
 };
 
 module.exports = serviceJWKS;

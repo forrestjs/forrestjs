@@ -80,7 +80,7 @@ Now that our Feature is complete it is time to refactor the App's manifest `/src
 
 ```js
 // Import Libraries:
-import forrestjs from '@forrestjs/core';
+import forrest from '@forrestjs/core';
 
 // Import Services:
 import reactRoot from '@forrestjs/react-root';
@@ -89,7 +89,7 @@ import reactMUI from '@forrestjs/react-mui';
 // Import Features:
 import customRoot from './custom-root';
 
-forrestjs
+forrest
   .run({
     services: [reactRoot, reactMUI],
     features: [customRoot],

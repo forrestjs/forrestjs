@@ -15,9 +15,10 @@ const homeRouteHandler = async (request, response) =>
     .catch((err) => response.status(500).send(err.message));
 
 module.exports = {
-  target: '$FASTIFY_GET',
+  target: '$FASTIFY_ROUTE',
   name: 'home',
   handler: {
+    method: 'GET',
     url: '/',
     handler: homeRouteHandler,
   },

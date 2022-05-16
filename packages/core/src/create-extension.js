@@ -1,7 +1,7 @@
 const { runAction, runActionSync } = require('./actions');
 const { getState } = require('./state');
 const { logTrace } = require('./tracer');
-const { onItemError } = require('./errors');
+const { onItemError, ForrestJSCreateExtensionError } = require('./errors');
 const { getTarget } = require('./create-targets-registry');
 
 const defaultOptions = {
@@ -22,10 +22,16 @@ const createExtension = (receivedName, receivedOptions = {}) => {
     throw new Error(`createExtension() missing Extension name!`);
   }
 
-  const name =
-    receivedName.substr(0, 1) === '$'
-      ? getTarget(receivedName.substr(1))
-      : receivedName;
+  // Translate the received name into the final Extension Name
+  let name = '';
+  try {
+    name =
+      receivedName.substr(0, 1) === '$'
+        ? getTarget(receivedName.substr(1))
+        : receivedName;
+  } catch (err) {
+    throw new ForrestJSCreateExtensionError(err.message);
+  }
 
   stack.push(name);
   const pullStack = (args) => {
@@ -84,6 +90,7 @@ const createExtension = (receivedName, receivedOptions = {}) => {
         pullStack();
         resolve(results);
       } catch (err) {
+        // console.log('*****', err.name, err.message);
         try {
           resolve(options.onError(err, name, options));
         } catch (err) {

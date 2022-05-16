@@ -13,8 +13,9 @@ const GET_COUNTRIES = gql`
 `;
 
 const homePage = () => ({
-  target: '$FASTIFY_GET',
+  target: '$FASTIFY_ROUTE',
   handler: {
+    method: 'GET',
     url: '/',
     handler: (request) =>
       request.apollo.query(

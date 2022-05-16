@@ -14,13 +14,13 @@ In a ForrestJS App things are a bit different, as we use the `/index.js` as the 
 
 ```js
 // Import Libraries:
-import forrestjs from '@forrestjs/core';
+import forrest from '@forrestjs/core';
 
 // Import Services:
 import reactRoot from '@forrestjs/react-root';
 
 // Run the ForrestJS App:
-forrestjs
+forrest
   .run({
     trace: 'compact',
     services: [reactRoot],
@@ -50,7 +50,7 @@ const customRoot = {
 and then list it into the App's manifest:
 
 ```js
-forrestjs
+forrest
   .run({
     services: [reactRoot],
     features: [customRoot],

@@ -73,39 +73,8 @@ const onStartService = async ({ getConfig, getContext, createExtension }) => {
   await createExtension.serie('$FETCHQ_READY', { fetchq: client });
 };
 
-module.exports = ({ registerAction, registerTargets }) => {
+module.exports = ({ registerTargets }) => {
   registerTargets(targets);
-
-  registerAction({
-    target: '$INIT_SERVICE',
-    name: SERVICE_NAME,
-    trace: __filename,
-    priority: 100,
-    handler: onInitService,
-  });
-
-  registerAction({
-    target: '$START_SERVICE',
-    name: SERVICE_NAME,
-    trace: __filename,
-    priority: 100,
-    handler: onStartService,
-  });
-
-  /**
-   * Provide the Fetchq client reference into Fastify's context
-   */
-
-  registerAction({
-    target: '$FASTIFY_PLUGIN?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: ({ decorate, decorateRequest }, { getContext }) => {
-      const fetchq = getContext('fetchq');
-      decorate('fetchq', fetchq);
-      decorateRequest('fetchq', fetchq);
-    },
-  });
 
   /**
    * HEALTHCHECK
@@ -122,118 +91,104 @@ module.exports = ({ registerAction, registerTargets }) => {
     }
   };
 
-  registerAction({
-    target: '$FASTIFY_TDD_CHECK?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: () => healthcheckHandler,
-  });
+  return [
+    {
+      target: '$INIT_SERVICE',
+      name: SERVICE_NAME,
+      trace: __filename,
+      priority: 100,
+      handler: onInitService,
+    },
+    {
+      target: '$START_SERVICE',
+      name: SERVICE_NAME,
+      trace: __filename,
+      priority: 100,
+      handler: onStartService,
+    },
 
-  registerAction({
-    target: '$FASTIFY_HEALTHZ_CHECK?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: () => healthcheckHandler,
-  });
+    /**
+     * Provide the Fetchq client reference into Fastify's context
+     */
+    {
+      target: '$FASTIFY_PLUGIN?',
+      name: SERVICE_NAME,
+      trace: __filename,
+      handler: ({ decorate, decorateRequest }, { getContext }) => {
+        const fetchq = getContext('fetchq');
+        decorate('fetchq', fetchq);
+        decorateRequest('fetchq', fetchq);
+      },
+    },
 
-  /**
-   * TDD
-   * Integrate with the Fastify TDD API
-   */
-  registerAction({
-    target: '$FASTIFY_TDD_ROUTE?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: ({ registerTddRoute }, { createExtension }) => {
-      const schemaFields = {
-        type: 'object',
-        properties: {
-          q: { type: 'string' },
-        },
-        required: ['q'],
-      };
+    /**
+     * HEALTHZ
+     */
+    {
+      target: '$FASTIFY_TDD_CHECK?',
+      name: SERVICE_NAME,
+      trace: __filename,
+      handler: () => healthcheckHandler,
+    },
+    {
+      target: '$FASTIFY_HEALTHZ_CHECK?',
+      name: SERVICE_NAME,
+      trace: __filename,
+      handler: () => healthcheckHandler,
+    },
 
-      registerTddRoute({
-        method: 'GET',
-        url: '/fetchq/query',
-        schema: { query: schemaFields },
-        handler: (request) => {
-          const { q: sql } = request.query;
-          return request.fetchq.pool.query(sql);
-        },
-      });
-
-      registerTddRoute({
-        method: 'POST',
-        url: '/fetchq/query',
-        schema: { body: schemaFields },
-        handler: (request) => {
-          const { q: sql } = request.body;
-          return request.fetchq.pool.query(sql);
-        },
-      });
-
-      registerTddRoute({
-        method: 'GET',
-        url: '/fetchq/:queue/:subject',
-        schema: {
-          params: {
-            type: 'object',
-            properties: {
-              queue: { type: 'string' },
-              subject: { type: 'string' },
-            },
-            required: ['queue', 'subject'],
+    /**
+     * TDD
+     * Integrate with the Fastify TDD API
+     */
+    {
+      target: '$FASTIFY_TDD_ROUTE?',
+      name: SERVICE_NAME,
+      trace: __filename,
+      handler: ({ registerTddRoute }, { createExtension }) => {
+        const schemaFields = {
+          type: 'object',
+          properties: {
+            q: { type: 'string' },
           },
-        },
-        handler: async (request, reply) => {
-          const { queue, subject } = request.params;
-          const result = await request.fetchq.pool.query(
-            `
-            SELECT * FROM "fetchq_data"."${queue}__docs"
-            WHERE "subject" = '${subject}'
-            `,
-          );
+          required: ['q'],
+        };
 
-          if (!result.rowCount) {
-            reply.status(404).send('Document not found');
-            return;
-          }
-
-          return result.rows[0];
-        },
-      });
-
-      registerTddRoute({
-        method: 'POST',
-        url: '/fetchq/await/:queue/:subject',
-        schema: {
-          params: {
-            type: 'object',
-            properties: {
-              queue: { type: 'string' },
-              subject: { type: 'string' },
-            },
-            required: ['queue', 'subject'],
+        registerTddRoute({
+          method: 'GET',
+          url: '/fetchq/query',
+          schema: { query: schemaFields },
+          handler: (request) => {
+            const { q: sql } = request.query;
+            return request.fetchq.pool.query(sql);
           },
-          body: {
-            type: 'object',
-            properties: {
-              status: { type: 'number', default: 3 },
-              timeout: { type: 'number', default: 1000 },
-              interval: { type: 'number', default: 100 },
+        });
+
+        registerTddRoute({
+          method: 'POST',
+          url: '/fetchq/query',
+          schema: { body: schemaFields },
+          handler: (request) => {
+            const { q: sql } = request.body;
+            return request.fetchq.pool.query(sql);
+          },
+        });
+
+        registerTddRoute({
+          method: 'GET',
+          url: '/fetchq/:queue/:subject',
+          schema: {
+            params: {
+              type: 'object',
+              properties: {
+                queue: { type: 'string' },
+                subject: { type: 'string' },
+              },
+              required: ['queue', 'subject'],
             },
           },
-        },
-        handler: async (request, reply) => {
-          const { queue, subject } = request.params;
-          const { status, timeout, interval } = request.body;
-
-          let checkInterval = null;
-          let checkTimeout = null;
-          let doc = null;
-
-          checkInterval = setInterval(async () => {
+          handler: async (request, reply) => {
+            const { queue, subject } = request.params;
             const result = await request.fetchq.pool.query(
               `
               SELECT * FROM "fetchq_data"."${queue}__docs"
@@ -241,51 +196,98 @@ module.exports = ({ registerAction, registerTargets }) => {
               `,
             );
 
-            // Eagerly exit the processin in case there is no document at all
             if (!result.rowCount) {
+              reply.status(404).send('Document not found');
               return;
             }
 
-            // Persist last retrieved document version
-            doc = result.rows[0];
+            return result.rows[0];
+          },
+        });
 
-            // Verify that the condition is met and break the loop
-            if (Number(doc.status) === status) {
-              clearTimeout(checkTimeout);
+        registerTddRoute({
+          method: 'POST',
+          url: '/fetchq/await/:queue/:subject',
+          schema: {
+            params: {
+              type: 'object',
+              properties: {
+                queue: { type: 'string' },
+                subject: { type: 'string' },
+              },
+              required: ['queue', 'subject'],
+            },
+            body: {
+              type: 'object',
+              properties: {
+                status: { type: 'number', default: 3 },
+                timeout: { type: 'number', default: 1000 },
+                interval: { type: 'number', default: 100 },
+              },
+            },
+          },
+          handler: async (request, reply) => {
+            const { queue, subject } = request.params;
+            const { status, timeout, interval } = request.body;
+
+            let checkInterval = null;
+            let checkTimeout = null;
+            let doc = null;
+
+            checkInterval = setInterval(async () => {
+              const result = await request.fetchq.pool.query(
+                `
+                SELECT * FROM "fetchq_data"."${queue}__docs"
+                WHERE "subject" = '${subject}'
+                `,
+              );
+
+              // Eagerly exit the processin in case there is no document at all
+              if (!result.rowCount) {
+                return;
+              }
+
+              // Persist last retrieved document version
+              doc = result.rows[0];
+
+              // Verify that the condition is met and break the loop
+              if (Number(doc.status) === status) {
+                clearTimeout(checkTimeout);
+                clearInterval(checkInterval);
+                reply.status(200).send(doc);
+              }
+            }, interval);
+
+            // Interrupt the execution at the provided timeout
+            checkTimeout = setTimeout(() => {
               clearInterval(checkInterval);
-              reply.status(200).send(doc);
-            }
-          }, interval);
+              reply.status(412).send(doc);
+            }, timeout);
+          },
+        });
 
-          // Interrupt the execution at the provided timeout
-          checkTimeout = setTimeout(() => {
-            clearInterval(checkInterval);
-            reply.status(412).send(doc);
-          }, timeout);
-        },
-      });
+        registerTddRoute({
+          method: 'GET',
+          url: '/fetchq/state/reset',
+          handler: async (request) => {
+            const { fetchq } = request;
+            const query = fetchq.pool.query.bind(fetchq.pool);
 
-      registerTddRoute({
-        method: 'GET',
-        url: '/fetchq/state/reset',
-        handler: async (request) => {
-          const { fetchq } = request;
-          const query = fetchq.pool.query.bind(fetchq.pool);
+            // Destroy and recreate Fetchq's schema and related
+            // data structure and workers
+            await fetchq.stop();
+            await query(QUERY_DROP);
+            await fetchq.boot();
 
-          // Destroy and recreate Fetchq's schema and related
-          // data structure and workers
-          await fetchq.stop();
-          await query(QUERY_DROP);
-          await fetchq.boot();
+            // Run reset state integrations
+            await createExtension.serie('$FETCHQ_TDD_STATE_RESET', {
+              query,
+            });
 
-          // Run reset state integrations
-          await createExtension.serie('$FETCHQ_TDD_STATE_RESET', {
-            query,
-          });
-
-          return '+ok';
-        },
-      });
+            return '+ok';
+          },
+        });
+      },
     },
-  });
+  ];
 };

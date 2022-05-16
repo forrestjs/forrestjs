@@ -1,3 +1,5 @@
+const { ForrestJSUnknownTargetError } = require('./errors');
+
 const SKIP_REGISTER_LIFECYCLE_EXTENSIONS = [
   '__esModule',
   'SERVICE_NAME',
@@ -29,7 +31,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
       return null;
     }
 
-    throw new Error(`Unknown hook "${name}"`);
+    throw new ForrestJSUnknownTargetError(`Unknown target "${name}"`);
   };
 
   // Expose all the registered extensions
@@ -54,7 +56,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
   const registerTarget = (name, value) => {
     // handle key/value input
     if (knownExtensions[name]) {
-      throw new Error(`Duplicate hook "${name}"`);
+      throw new Error(`Duplicate target "${name}"`);
     }
     knownExtensions[name] = value;
   };
@@ -69,7 +71,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
     }
 
     console.warn(
-      '[DEPRECATED] use "registerActions({ name: value })". The support for registering a single action is deprecated and will be remove in v5.0.0',
+      '[DEPRECATED] use "registerTargets({ name: value })".\nThe support for registering a single action is deprecated and will be remove in v5.0.0',
     );
 
     registerTarget(name, value);
@@ -78,7 +80,7 @@ const createRegistry = (initialExtensions = {}, { registryName } = {}) => {
   // DEPRECATED: remove in v5.0.0
   const registerHook = (name, value) => {
     console.warn(
-      '[DEPRECATED] use "registerTargets()" instead of "registerHook()". It will be removed in v5.0.0',
+      '[DEPRECATED] use "registerTargets()" instead of "registerHook()".\nIt will be removed in v5.0.0',
     );
     registerTargets(name, value);
   };

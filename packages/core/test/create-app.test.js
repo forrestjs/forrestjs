@@ -73,18 +73,18 @@ describe('core/create-app', () => {
   });
 
   // DEPRECATED: remove in v5.0.0
-  it.skip('should register a service as single hook setup', async () => {
-    const handler = jest.fn();
-    const s1 = ['foo', handler];
-    const f1 = ({ createAction }) => createAction('foo');
+  // it.skip('should register a service as single hook setup', async () => {
+  //   const handler = jest.fn();
+  //   const s1 = ['foo', handler];
+  //   const f1 = ({ createAction }) => createAction('foo');
 
-    await forrestjs.run({
-      services: [s1],
-      features: [f1],
-    });
+  //   await forrestjs.run({
+  //     services: [s1],
+  //     features: [f1],
+  //   });
 
-    expect(handler.mock.calls.length).toBe(1);
-  });
+  //   expect(handler.mock.calls.length).toBe(1);
+  // });
 
   it('should run an app that provides settings as a function', async () => {
     const f1 = jest.fn();
@@ -170,23 +170,32 @@ describe('core/create-app', () => {
 
   describe('createHookApp getters / setters', () => {
     it('SETTINGS should not pass reference to the internal object', async () => {
-      registerAction(constants.SETTINGS, ({ settings }) => {
-        expect(settings).toBe(undefined);
+      registerAction({
+        target: constants.SETTINGS,
+        handler: ({ settings }) => {
+          expect(settings).toBe(undefined);
+        },
       });
       await forrestjs.run({ settings: { foo: 1 } });
     });
 
     it('should handle settings with getters/setters', async () => {
-      registerAction(constants.SETTINGS, ({ getConfig, setConfig }) => {
-        setConfig('foo', getConfig('foo') + 1);
+      registerAction({
+        target: constants.SETTINGS,
+        handler: ({ getConfig, setConfig }) => {
+          setConfig('foo', getConfig('foo') + 1);
+        },
       });
       const app = await forrestjs.run({ settings: { foo: 1 } });
       expect(app.settings.foo).toBe(2);
     });
 
     it('should handle settings with nested paths', async () => {
-      registerAction(constants.SETTINGS, ({ getConfig, setConfig }) => {
-        setConfig('new.faa.foo', getConfig('foo') + 1);
+      registerAction({
+        target: constants.SETTINGS,
+        handler: ({ getConfig, setConfig }) => {
+          setConfig('new.faa.foo', getConfig('foo') + 1);
+        },
       });
       const app = await forrestjs.run({ settings: { foo: 1 } });
       expect(app.settings.new.faa.foo).toBe(2);
@@ -228,7 +237,7 @@ describe('core/create-app', () => {
         error = e;
       }
 
-      expect(error.message).toBe('Unknown hook "S1"');
+      expect(error.message).toBe('Unknown target "S1"');
     });
 
     it('should ignore an optional service by reference', async () => {
@@ -244,21 +253,27 @@ describe('core/create-app', () => {
     });
   });
 
-  describe('run all registerHook before registerAction', () => {
+  describe('run all "registerTargets()" before "registerAction()"', () => {
     it('Services and Features should be able to use nominal hooks to extend each other', async () => {
       const s1Handler = jest.fn();
       const s2Handler = jest.fn();
 
       const s1 = ({ registerTargets, registerAction, createExtension }) => {
         registerTargets({ s1: 's1' });
-        registerAction('$INIT_SERVICE', () => createExtension.sync('s1'));
-        registerAction('$s2', s2Handler);
+        registerAction({
+          target: '$INIT_SERVICE',
+          handler: () => createExtension.sync('s1'),
+        });
+        registerAction({ target: '$s2', handler: s2Handler });
       };
 
       const s2 = ({ registerTargets, registerAction, createExtension }) => {
         registerTargets({ s2: 's2' });
-        registerAction('$INIT_SERVICE', () => createExtension.sync('s2'));
-        registerAction('$s1', s1Handler);
+        registerAction({
+          target: '$INIT_SERVICE',
+          handler: () => createExtension.sync('s2'),
+        });
+        registerAction({ target: '$s1', handler: s1Handler });
       };
 
       await forrestjs.run({ services: [s1, s2] });
@@ -272,12 +287,14 @@ describe('core/create-app', () => {
     it('Services and Features should be able to register a single service in a declarative way', async () => {
       const handler1 = jest.fn();
 
-      await forrestjs.run([
-        {
-          target: '$INIT_SERVICE',
-          handler: handler1,
-        },
-      ]);
+      await forrestjs.run({
+        services: [
+          {
+            target: '$INIT_SERVICE',
+            handler: handler1,
+          },
+        ],
+      });
 
       expect(handler1.mock.calls).toHaveLength(1);
     });
@@ -286,18 +303,20 @@ describe('core/create-app', () => {
       const handler1 = jest.fn();
       const handler2 = jest.fn();
 
-      await forrestjs.run([
-        [
-          {
-            target: '$INIT_SERVICE',
-            handler: handler1,
-          },
-          {
-            target: '$INIT_SERVICE',
-            handler: handler2,
-          },
+      await forrestjs.run({
+        services: [
+          [
+            {
+              target: '$INIT_SERVICE',
+              handler: handler1,
+            },
+            {
+              target: '$INIT_SERVICE',
+              handler: handler2,
+            },
+          ],
         ],
-      ]);
+      });
 
       expect(handler1.mock.calls).toHaveLength(1);
       expect(handler2.mock.calls).toHaveLength(1);

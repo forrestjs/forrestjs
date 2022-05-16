@@ -10,8 +10,7 @@
     "ci-test": "lerna run test",
     "build": "lerna run build",
     "link": "lerna link",
-    "deploy": "rm -rf ./packages/kitchensink/package-lock.json && lerna run build && lerna publish",
-    "deploy:all": "rm -rf ./packages/kitchensink/package-lock.json &&lerna run build && lerna publish --force-publish"
+    "deploy": "rm -rf ./packages/core/package-lock.json && rm -rf ./packages/kitchensink/package-lock.json &&lerna run build && lerna publish --force-publish"
   },
   "author": "Marco Pegoraro",
   "license": "MIT",

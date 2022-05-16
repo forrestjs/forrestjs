@@ -46,89 +46,93 @@ const genSalt = (rounds) =>
     });
   });
 
-const serviceBcrypt = ({ registerTargets, registerAction }) => {
+const serviceBcrypt = ({ registerTargets }) => {
   registerTargets(targets);
-  registerAction({
-    target: '$INIT_SERVICES',
-    name: SERVICE_NAME,
-    trace: __filename,
-    priority: 100,
-    handler: async ({ getConfig }, ctx) => {
-      const logInfo = ctx.logInfo || console.log;
 
-      salt = getConfig('hash.salt', process.env.HASH_SALT || '---');
-      rounds = getConfig('hash.rounds', process.env.HASH_ROUNDS || '---');
+  return [
+    {
+      target: '$INIT_SERVICES',
+      trace: __filename,
+      name: SERVICE_NAME,
+      priority: 100,
+      handler: async ({ getConfig }, ctx) => {
+        const logInfo = ctx.logInfo || console.log;
 
-      // Validate configuration
-      if (rounds === '---')
-        throw new Error(
-          '[service-hash] Please configure "hash.rounds" or "process.env.HASH_ROUNDS"',
-        );
+        salt = getConfig('hash.salt', process.env.HASH_SALT || '---');
+        rounds = getConfig('hash.rounds', process.env.HASH_ROUNDS || '---');
 
-      // Generate a random SALT if not provided by the configuration
-      if (salt === '---') {
-        salt = await genSalt(rounds);
-        logInfo(`[service-hash] A new salt was generated: ${salt}`);
-      }
+        // Validate configuration
+        if (rounds === '---')
+          throw new Error(
+            '[service-hash] Please configure "hash.rounds" or "process.env.HASH_ROUNDS"',
+          );
 
-      // Decorate the context with helper methods
-      ctx.hash = {
-        encode,
-        compare,
-        genSalt,
-      };
+        // Generate a random SALT if not provided by the configuration
+        if (salt === '---') {
+          salt = await genSalt(rounds);
+          logInfo(`[service-hash] A new salt was generated: ${salt}`);
+        }
+
+        // Decorate the context with helper methods
+        ctx.hash = {
+          encode,
+          compare,
+          genSalt,
+        };
+      },
     },
-  });
 
-  // Fastify Integration (optional hook)
-  registerAction({
-    target: '$FASTIFY_PLUGIN?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: ({ decorate, decorateRequest }, { getContext }) => {
-      const hash = getContext('hash');
-      decorate('hash', hash);
-      decorateRequest('hash', hash);
+    /**
+     * Fastify Integration (optional hook)
+     */
+    {
+      target: '$FASTIFY_PLUGIN?',
+      trace: __filename,
+      name: SERVICE_NAME,
+      handler: ({ decorate, decorateRequest }, { getContext }) => {
+        const hash = getContext('hash');
+        decorate('hash', hash);
+        decorateRequest('hash', hash);
+      },
     },
-  });
 
-  /**
-   * Integrate with the Fastify TDD API
-   */
+    /**
+     * Integrate with the Fastify TDD API
+     */
+    {
+      target: '$FASTIFY_TDD_ROUTE?',
+      trace: __filename,
+      name: SERVICE_NAME,
+      handler: ({ registerTddRoute }) => {
+        registerTddRoute({
+          method: 'POST',
+          url: '/hash/encode',
+          handler: (request) => {
+            const { hash } = request;
+            return hash.encode(request.body.payload);
+          },
+        });
 
-  registerAction({
-    target: '$FASTIFY_TDD_ROUTE?',
-    name: SERVICE_NAME,
-    trace: __filename,
-    handler: ({ registerTddRoute }) => {
-      registerTddRoute({
-        method: 'POST',
-        url: '/hash/encode',
-        handler: (request) => {
-          const { hash } = request;
-          return hash.encode(request.body.payload);
-        },
-      });
+        registerTddRoute({
+          method: 'POST',
+          url: '/hash/compare',
+          handler: (request) => {
+            const { hash } = request;
+            return hash.compare(request.body.payload, request.body.hash);
+          },
+        });
 
-      registerTddRoute({
-        method: 'POST',
-        url: '/hash/compare',
-        handler: (request) => {
-          const { hash } = request;
-          return hash.compare(request.body.payload, request.body.hash);
-        },
-      });
-
-      registerTddRoute({
-        method: 'POST',
-        url: '/hash/genSalt/:rounds',
-        handler: (request) => {
-          const { hash } = request;
-          return hash.genSalt(request.params.rounds);
-        },
-      });
+        registerTddRoute({
+          method: 'POST',
+          url: '/hash/genSalt/:rounds',
+          handler: (request) => {
+            const { hash } = request;
+            return hash.genSalt(request.params.rounds);
+          },
+        });
+      },
     },
-  });
+  ];
 };
 
 serviceBcrypt.compare = compare;

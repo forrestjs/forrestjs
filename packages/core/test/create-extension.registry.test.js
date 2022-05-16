@@ -6,23 +6,25 @@ describe('core/create-extension/registry', () => {
 
   it('Should create an extension by referencing an existing Action Target', async () => {
     const fn = jest.fn();
-    await forrestjs([
-      // Should declare targets and reference them while creating an Extension
-      ({ registerTargets }) => {
-        registerTargets({
-          foo: 'foo',
-        });
-        return {
-          target: '$INIT_SERVICE',
-          handler: ({ createExtension }) => createExtension('$foo'),
-        };
-      },
-      // Should register an Action refereincing the Target hooks
-      {
-        target: '$foo',
-        handler: fn,
-      },
-    ]);
+    await forrestjs({
+      services: [
+        // Should declare targets and reference them while creating an Extension
+        ({ registerTargets }) => {
+          registerTargets({
+            foo: 'foo',
+          });
+          return {
+            target: '$INIT_SERVICE',
+            handler: ({ createExtension }) => createExtension('$foo'),
+          };
+        },
+        // Should register an Action refereincing the Target hooks
+        {
+          target: '$foo',
+          handler: fn,
+        },
+      ],
+    });
 
     expect(fn.mock.calls.length).toBe(1);
   });
@@ -30,12 +32,14 @@ describe('core/create-extension/registry', () => {
   it('Should fail creating an action for undeclared Targets', async () => {
     const fn = jest.fn();
     try {
-      await forrestjs([
-        {
-          target: '$INIT_SERVICE',
-          handler: ({ createExtension }) => createExtension('$foobar'),
-        },
-      ]);
+      await forrestjs({
+        services: [
+          {
+            target: '$INIT_SERVICE',
+            handler: ({ createExtension }) => createExtension('$foobar'),
+          },
+        ],
+      });
     } catch (err) {
       // console.log(err);
       fn(err);

@@ -16,8 +16,8 @@ describe('core/create-extension/', () => {
 
   test('waterfall should let extensions play with scalar arguments', () => {
     const ext = (num) => num + 1;
-    registerAction('foo', ext);
-    registerAction('foo', ext);
+    registerAction({ target: 'foo', handler: ext });
+    registerAction({ target: 'foo', handler: ext });
 
     const res = createExtension.waterfall('foo', 1);
     expect(res.value).toBe(3);
@@ -25,8 +25,8 @@ describe('core/create-extension/', () => {
 
   test('waterfall should let extensions play with object arguments', () => {
     const ext = ({ num }) => ({ num: num + 1 });
-    registerAction('foo', ext);
-    registerAction('foo', ext);
+    registerAction({ target: 'foo', handler: ext });
+    registerAction({ target: 'foo', handler: ext });
 
     const res = createExtension.waterfall('foo', { num: 1 });
     expect(res.value.num).toBe(3);

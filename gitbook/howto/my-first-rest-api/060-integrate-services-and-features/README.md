@@ -18,7 +18,7 @@ setContext('pg.query', query);
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:794-935
+https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:808-949
 
 ---
 
@@ -26,7 +26,7 @@ With this part done, a potential feature's code would change to:
 
 ```js
 registerAction({
-  hook: '$START_FEATURE',
+  target: '$START_FEATURE',
   handler: async ({ getContext }) => {
     const query = getContext('pg.query');
     await query('SELECT ...');
@@ -35,7 +35,7 @@ registerAction({
 ```
 
 It's a small improvement, right?  
-**🧘‍♀️ But Life is made good by the little things! 🧘‍♀️**
+**🧘‍♀️ But Life is made good by the Little Things! 🧘‍♀️**
 
 ## Offer a New Hook "$PG_READY"
 
@@ -45,7 +45,7 @@ What if a feature could run a piece of code like that:
 
 ```js
 registerAction({
-  hook: '$PG_READY',
+  target: '$PG_READY',
   handler: async ({ query }) => {
     await query(`CREATE TABLE IF NOT EXISTS ...`);
     await query(`INSERT INTO "xxx" VALUES... `);
@@ -55,11 +55,11 @@ registerAction({
 
 As you may have guessed already, that's exactly what we're going to do.
 
-## Register Service's Hooks
+## Register Service's Extension Targets
 
-The first step is to build a _hooks manifest_ for our service. This component will simply export all the new hooks, or **extension points**, that are offered by the service.
+The first step is to build a _Targets Manifest_ for our service. This component will simply export all the new extension that are offered by the service.
 
-Create a `/pg/hooks.js` module:
+Create a `/pg/targets.js` module:
 
 ```js
 module.exports = {
@@ -67,7 +67,7 @@ module.exports = {
 };
 ```
 
-That's right. Hooks are just strings, but we always export them as a **library of symbols** so that ForrestJS can handle a formal check on hooks existance, **avoiding us the pain of runtime misspell-driven mistakes**.
+That's right. Extensions are just strings, but we always export them as a **library of symbols** so that ForrestJS can handle a formal check on hooks existance, **avoiding us the pain of runtime misspell-driven mistakes**.
 
 ---
 
@@ -76,16 +76,16 @@ https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/
 
 ---
 
-In your Service's manifest you can now use the `registerHook()` API to inform ForrestJS of these new hooks.
+In your Service's manifest you can now use the `registerTargets()` API to inform ForrestJS of these new hooks.
 
 Open `/pg/index.js` and add:
 
 ```js
-const hooks = require("./hooks");
+const targets = require("./targets");
 
-const pg = ({ registerAction, registerHook }) => {
-  // Register pg's extension points into ForrestJS hooks dictionary:
-  registerHook(hooks);
+const pg = ({ registerAction, registerTargets }) => {
+  // Register pg's extension points into ForrestJS targets dictionary:
+  registerTargets(targets);
 
   ...
 });
@@ -96,13 +96,13 @@ With these steps performed, it is now possibile for any Feature (or other Servic
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:242-331
+https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:249-343
 
 ---
 
 ## Create a new Action
 
-Implementing a hook looks much like **calling a function** using the [`createHook()` API](../../../api/create-hook/README.md). We invoke a hook by its name, we can pass arguments to it, and we can collect its returning value(s).
+Implementing a ForrestJS Extension looks much like **calling a function** using the [`createExtension()` API](../../../api/create-extension/README.md). We invoke an Extension by its name, we can pass arguments to it, and we can collect its returning value(s).
 
 > But we can't control what happens inside it, as different Features and Services are allowed to inject logic into it.
 
@@ -110,12 +110,12 @@ With this theory covered, it's time to implent our shiny new hook right after a 
 
 ```js
 registerAction({
-  hook: '$START_SERVICE',
-  handler: async ({ createHook }) => {
+  target: '$START_SERVICE',
+  handler: async ({ createExtension }) => {
     // ... connect to PostgreSQL ...
 
-    // Call the hook:
-    await createHook.serie(hooks.PG_READY, { query, pool });
+    // Call the target:
+    await createExtension.serie('$PG_READY', { query, pool });
   },
 });
 ```
@@ -123,7 +123,7 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:1557-1772
+https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/pg/index.js:1578-1797
 
 ---
 
@@ -133,7 +133,7 @@ Finally, we can consume that hook in our Users Feature:
 
 ```js
 registerAction({
-  hook: '$PG_READY',
+  target: '$PG_READY',
   handler: async ({ query }) => {
     const res = await query('SELECT NOW()');
     console.log('on pg/ready', res.rows);
@@ -144,6 +144,6 @@ registerAction({
 ---
 
 **💻 Live on CodeSandbox:**  
-https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/users/index.js:748-926
+https://codesandbox.io/s/060-integrate-services-and-features-z267f?file=/src/users/index.js:729-892
 
 ---

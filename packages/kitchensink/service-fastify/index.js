@@ -1,4 +1,4 @@
-const forrestjs = require('@forrestjs/core');
+const forrest = require('@forrestjs/core');
 const serviceFastify = require('@forrestjs/service-fastify');
 
 const registerRoute = require('./feature-register-route');
@@ -27,23 +27,25 @@ const addStuffIntoReset = () => ({
   },
 });
 
-forrestjs({
-  trace: 'compact',
-  settings: {
-    custom: {
-      string: 'val',
-      number: 123,
-      boolean: {
-        true: true,
-        false: false,
+forrest
+  .run({
+    trace: 'compact',
+    settings: {
+      custom: {
+        string: 'val',
+        number: 123,
+        boolean: {
+          true: true,
+          false: false,
+        },
       },
     },
-  },
-  services: [serviceFastify],
-  features: [
-    registerRoute,
-    registerRouteGET,
-    registerTddRoute,
-    addStuffIntoReset,
-  ],
-}).catch((err) => console.error(err));
+    services: [serviceFastify],
+    features: [
+      registerRoute,
+      registerRouteGET,
+      registerTddRoute,
+      addStuffIntoReset,
+    ],
+  })
+  .catch((err) => console.error(err));
