@@ -1,7 +1,10 @@
 const axios = require('axios');
 const promiseRetry = require('promise-retry');
 
-const __clone = (d) => JSON.parse(JSON.stringify(d));
+const __cloneAxiosConfig = (d = {}) => {
+  const { headers = {} } = d;
+  return { ...d, headers: { ...headers } };
+};
 
 const BASE_URL = process.env.TEST_URL || 'http://localhost:8080';
 const TEST_SCOPE = process.env.TEST_SCOPE || 'test';
@@ -122,12 +125,12 @@ const makeAxiosRequest = (method, buildUrl, raw = false) => {
     if (method === 'get') {
       const [uri, options = {}] = args;
       const requestUrl = buildUrl(uri);
-      const res = await handler(requestUrl, __clone(options));
+      const res = await handler(requestUrl, __cloneAxiosConfig(options));
       return raw ? res : res.data;
     } else {
       const [uri, body = {}, options = {}] = args;
       const requestUrl = buildUrl(uri);
-      const res = await handler(requestUrl, body, __clone(options));
+      const res = await handler(requestUrl, body, __cloneAxiosConfig(options));
       return raw ? res : res.data;
     }
   };
@@ -139,7 +142,7 @@ const makeAxiosRequest = (method, buildUrl, raw = false) => {
       const [uri, options = {}] = args;
       const requestUrl = buildUrl(uri);
       try {
-        const res = await handler(requestUrl, __clone(options));
+        const res = await handler(requestUrl, __cloneAxiosConfig(options));
         return raw ? res : res.data;
       } catch (err) {
         throw new AxiosRequestFailed(method, requestUrl, options, err);
@@ -148,7 +151,11 @@ const makeAxiosRequest = (method, buildUrl, raw = false) => {
       const [uri, body = {}, options = {}] = args;
       const requestUrl = buildUrl(uri);
       try {
-        const res = await handler(requestUrl, body, __clone(options));
+        const res = await handler(
+          requestUrl,
+          body,
+          __cloneAxiosConfig(options),
+        );
         return raw ? res : res.data;
       } catch (err) {
         throw new AxiosRequestFailed(method, requestUrl, options, err);
@@ -240,7 +247,6 @@ const mockAxios = (...args) => {
 mockAxios.reset = () => http.testDelete('/axios/stubs');
 
 module.exports = (global = {}) => ({
-  clone: __clone,
   url,
   testUrl,
   awaitAppUri,
