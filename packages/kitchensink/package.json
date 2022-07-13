@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/kitchensink",
   "description": "ForrestJS demonstrational tool",
-  "version": "4.5.2",
+  "version": "4.5.3",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
@@ -64,22 +64,22 @@
     "tdd:mock-axios-e2e": "jest -t mock-axios-e2e --runInBand  --watchAll"
   },
   "dependencies": {
-    "@forrestjs/core": "^4.5.2",
-    "@forrestjs/service-apollo": "^4.5.2",
-    "@forrestjs/service-env": "^4.5.2",
-    "@forrestjs/service-fastify": "^4.5.2",
-    "@forrestjs/service-fastify-cookie": "^4.5.2",
-    "@forrestjs/service-fastify-cors": "^4.5.2",
-    "@forrestjs/service-fastify-gql": "^4.5.2",
-    "@forrestjs/service-fastify-healthz": "^4.5.2",
-    "@forrestjs/service-fastify-static": "^4.5.2",
-    "@forrestjs/service-fetchq": "^4.5.2",
-    "@forrestjs/service-hash": "^4.5.2",
-    "@forrestjs/service-jwt": "^4.5.2",
-    "@forrestjs/service-logger": "^4.5.2",
-    "@forrestjs/service-pg": "^4.5.2",
-    "@forrestjs/service-postgres": "^4.5.2",
-    "@forrestjs/service-postgres-pubsub": "^4.5.2"
+    "@forrestjs/core": "^4.5.3",
+    "@forrestjs/service-apollo": "^4.5.3",
+    "@forrestjs/service-env": "^4.5.3",
+    "@forrestjs/service-fastify": "^4.5.3",
+    "@forrestjs/service-fastify-cookie": "^4.5.3",
+    "@forrestjs/service-fastify-cors": "^4.5.3",
+    "@forrestjs/service-fastify-gql": "^4.5.3",
+    "@forrestjs/service-fastify-healthz": "^4.5.3",
+    "@forrestjs/service-fastify-static": "^4.5.3",
+    "@forrestjs/service-fetchq": "^4.5.3",
+    "@forrestjs/service-hash": "^4.5.3",
+    "@forrestjs/service-jwt": "^4.5.3",
+    "@forrestjs/service-logger": "^4.5.3",
+    "@forrestjs/service-pg": "^4.5.3",
+    "@forrestjs/service-postgres": "^4.5.3",
+    "@forrestjs/service-postgres-pubsub": "^4.5.3"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify#readme",
   "keywords": [
