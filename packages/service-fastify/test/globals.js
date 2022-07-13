@@ -142,7 +142,7 @@ const makeAxiosRequest = (method, buildUrl, raw = false) => {
         const res = await handler(requestUrl, __clone(options));
         return raw ? res : res.data;
       } catch (err) {
-        throw new AxiosRequestFailed(method, requestUrl, rest, err);
+        throw new AxiosRequestFailed(method, requestUrl, options, err);
       }
     } else {
       const [uri, body = {}, options = {}] = args;
@@ -151,7 +151,7 @@ const makeAxiosRequest = (method, buildUrl, raw = false) => {
         const res = await handler(requestUrl, body, __clone(options));
         return raw ? res : res.data;
       } catch (err) {
-        throw new AxiosRequestFailed(method, requestUrl, rest, err);
+        throw new AxiosRequestFailed(method, requestUrl, options, err);
       }
     }
   };
