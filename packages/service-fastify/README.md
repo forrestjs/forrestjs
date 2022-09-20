@@ -101,6 +101,12 @@ The idea is to let the testing enviornment interact with the Fastify instance us
 - development
 - test
 
+🔥 You must also pass the environmental variable 🔥
+
+```bash
+DANGEROUSLY_ENABLE_FASTIFY_TDD_ENDPOINT=yes
+```
+
 Those test-specific APIs are exposed under a `/test/...` root that you can change by setting `fastify.tdd.root`.
 
 ### Test Healthcheck

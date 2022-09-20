@@ -26,7 +26,8 @@ module.exports = ({ registerTargets }) => {
     // The TDD support is strictly scoped to the development
     // and test environment, even the module is conditionally
     // loaded to minimize the memory footprint in production
-    ...(['development', 'test'].includes(process.env.NODE_ENV)
+    ...(['development', 'test'].includes(process.env.NODE_ENV) &&
+    process.env.DANGEROUSLY_ENABLE_FASTIFY_TDD_ENDPOINT === 'yes'
       ? [
           {
             ...service,

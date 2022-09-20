@@ -1,8 +1,13 @@
 # Change Log
 
+
 ## v5.0.0 (Roadmap)
 
 - [ ] Remove `reply` object decorations
+
+## v4.6.0
+
+- Require `DANGEROUSLY_ENABLE_FASTIFY_TDD_ENDPOINT=yes` env variable to explicitly enable the TDD route support
 
 ## v4.5.0
 
