@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-pg",
   "description": "ForrestJS service which keeps a pooled connection to a PostgreSQL database",
-  "version": "4.5.3",
+  "version": "4.6.0-alpha.0",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^4.5.3",
+    "@forrestjs/core": "^4.6.0-alpha.0",
     "pg": "^8.7.3"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-pg#readme",
