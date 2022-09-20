@@ -14,6 +14,10 @@
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [ ] write `service-pg-pubsub` accepting `PGSTRING`
 
+## 4.7.0
+
+- Add `service-fetchq-task`
+
 ## 4.6.0
 
 - Require `DANGEROUSLY_ENABLE_FASTIFY_TDD_ENDPOINT=yes` env variable to explicitly enable the TDD route support

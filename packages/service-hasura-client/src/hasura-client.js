@@ -1,16 +1,16 @@
-const axios = require("axios");
+const axios = require('axios');
 
 const {
   HasuraQueryError,
   HasuraQueryRequestError,
-  HasuraQueryResponseError
-} = require("./errors-query");
+  HasuraQueryResponseError,
+} = require('./errors-query');
 
 const {
   HasuraSQLError,
   HasuraSQLPostgresError,
-  HasuraSQLRequestError
-} = require("./errors-sql");
+  HasuraSQLRequestError,
+} = require('./errors-sql');
 
 class HasuraClient {
   constructor(endpoint, config) {
@@ -19,8 +19,8 @@ class HasuraClient {
     this.secret = config.secret;
 
     this.url = {
-      query: [this.endpoint, "v1", "graphql"].join("/"),
-      sql: [this.endpoint, "v2", "query"].join("/")
+      query: [this.endpoint, 'v1', 'graphql'].join('/'),
+      sql: [this.endpoint, 'v2', 'query'].join('/'),
     };
   }
 
@@ -28,14 +28,14 @@ class HasuraClient {
     try {
       const res = await axios.request({
         url: this.url.query,
-        method: "post",
+        method: 'post',
         data: {
           query,
-          variables
+          variables,
         },
         headers: {
-          ...(this.token ? { Authorization: `Bearer ${this.token}` } : {})
-        }
+          ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
+        },
       });
 
       if (res.data.data) {
@@ -49,17 +49,17 @@ class HasuraClient {
           variables,
           this.endpoint,
           this.token,
-          res
+          res,
         );
       }
 
       throw new HasuraQueryResponseError(
-        "Unknown GraphQL response",
+        'Unknown GraphQL response',
         query,
         variables,
         this.endpoint,
         this.token,
-        res
+        res,
       );
     } catch (err) {
       if (err instanceof HasuraQueryError) {
@@ -72,34 +72,39 @@ class HasuraClient {
         variables,
         this.endpoint,
         this.token,
-        err
+        err,
       );
     }
   }
 
-  async sql(sql, source = "default") {
+  async sql(sql, source = 'default') {
+    // Prevent running it outside of development
+    if (!['development', 'test'].includes(process.env.NODE_ENV)) {
+      throw new Error('Hasura SQL API blocked');
+    }
+
     try {
       const res = await axios.request({
         url: this.url.sql,
-        method: "post",
+        method: 'post',
         data: {
-          type: "run_sql",
+          type: 'run_sql',
           args: {
             source,
-            sql
-          }
+            sql,
+          },
         },
         headers: {
-          ...(this.secret ? { "x-hasura-admin-secret": this.secret } : {})
-        }
+          ...(this.secret ? { 'x-hasura-admin-secret': this.secret } : {}),
+        },
       });
 
-      if (res.data.result_type && res.data.result_type === "CommandOk") {
+      if (res.data.result_type && res.data.result_type === 'CommandOk') {
         return res.data.result;
       }
 
       // Map tuples into an array of lines object:
-      if (res.data.result_type && res.data.result_type === "TuplesOk") {
+      if (res.data.result_type && res.data.result_type === 'TuplesOk') {
         const columns = res.data.result.shift();
         return res.data.result.reduce(
           (acc, data) => [
@@ -107,12 +112,12 @@ class HasuraClient {
             columns.reduce(
               (acc, curr, idx) => ({
                 ...acc,
-                [curr]: data[idx]
+                [curr]: data[idx],
               }),
-              {}
-            )
+              {},
+            ),
           ],
-          []
+          [],
         );
       }
 
@@ -121,7 +126,7 @@ class HasuraClient {
         source,
         sql,
         this.endpoint,
-        this.secret
+        this.secret,
       );
     } catch (err) {
       // Catch an explicitly set error
@@ -141,7 +146,7 @@ class HasuraClient {
           source,
           sql,
           this.endpoint,
-          this.secret
+          this.secret,
         );
       }
 
@@ -150,7 +155,7 @@ class HasuraClient {
         source,
         sql,
         this.endpoint,
-        this.secret
+        this.secret,
       );
     }
   }
