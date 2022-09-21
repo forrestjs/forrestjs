@@ -10,9 +10,17 @@ module.exports = ({ createExtension, getConfig, setContext }) => {
   const queueSettings = getConfig('fetchq.task.queue.settings', {});
   const workerSettings = getConfig('fetchq.task.worker.settings', {});
 
+  // Ensure a list of tasks is provided
+  let configuredTasks = getConfig('fetchq.task.register', []);
+  if (!Array.isArray(configuredTasks)) {
+    configuredTasks = [configuredTasks];
+  }
+
+  // TODO: check task correctness
+
   const registerTasks = [
     // Collect from App configuration
-    ...getConfig('fetchq.task.register', []),
+    ...configuredTasks,
     // Collect from other extensions
     ...createExtension.sync('$FETCHQ_REGISTER_TASK').map(($) => $[0]),
   ];

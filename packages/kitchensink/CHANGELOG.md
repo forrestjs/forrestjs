@@ -1,5 +1,9 @@
 # Change Log
 
+## v4.7.1
+
+- Added examples for `@forrestjs/service-fetchq-task`
+
 ## v4.0.0
 
 - Added examples for `@forrestjs/core`
