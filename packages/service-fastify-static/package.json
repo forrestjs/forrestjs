@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/service-fastify-static",
   "description": "ForrestJS service which adds static content serving to a Fastify server.",
-  "version": "4.7.0",
+  "version": "4.7.1-alpha.1",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@fastify/static": "^5.0.2",
-    "@forrestjs/core": "^4.7.0"
+    "@forrestjs/core": "^4.7.1-alpha.1"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-static#readme",
   "keywords": [

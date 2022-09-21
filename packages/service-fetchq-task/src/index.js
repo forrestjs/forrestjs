@@ -1,34 +1,30 @@
-const onInitService = require("./on-init-service");
-const onFetchqReady = require("./on-fetchq-ready");
-const taskWorker = require("./task-worker");
+const onInitService = require('./on-init-service');
+const onFetchqReady = require('./on-fetchq-ready');
+const onFetchqRegisterQueue = require('./on-fetchq-register-queue');
+const onFetchqRegisterWorker = require('./on-fetchq-register-worker');
 
 const fetchqTask = ({ registerTargets }) => {
   registerTargets({
-    FETCHQ_REGISTER_TASK: "fetchq/task/register"
+    FETCHQ_REGISTER_TASK: 'fetchq/task/register',
   });
 
   return [
     {
-      target: "$INIT_SERVICE",
-      handler: onInitService
+      target: '$INIT_SERVICE',
+      handler: onInitService,
     },
     {
-      target: "$FETCHQ_REGISTER_QUEUE",
-      handler: {
-        name: "task"
-      }
+      target: '$FETCHQ_REGISTER_QUEUE',
+      handler: onFetchqRegisterQueue,
     },
     {
-      target: "$FETCHQ_READY",
-      handler: onFetchqReady
+      target: '$FETCHQ_READY',
+      handler: onFetchqReady,
     },
     {
-      target: "$FETCHQ_REGISTER_WORKER",
-      handler: {
-        queue: "task",
-        handler: taskWorker
-      }
-    }
+      target: '$FETCHQ_REGISTER_WORKER',
+      handler: onFetchqRegisterWorker,
+    },
   ];
 };
 
