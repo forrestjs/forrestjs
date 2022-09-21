@@ -14,6 +14,12 @@
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [ ] write `service-pg-pubsub` accepting `PGSTRING`
 
+## 4.7.1
+
+- [service-fetchq-task] Customize queue name via configuration
+- [service-fetchq-task] Add queue configuration
+- [service-fetchq-task] Add worker configuration
+
 ## 4.7.0
 
 - Add `service-fetchq-task`
