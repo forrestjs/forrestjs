@@ -19,6 +19,8 @@
 - [service-fetchq-task] Customize queue name via configuration
 - [service-fetchq-task] Add queue configuration
 - [service-fetchq-task] Add worker configuration
+- [service-fetchq-task] Reset on boot
+- [kitchensink] Add example for `service-fetchq-task`
 
 ## 4.7.0
 

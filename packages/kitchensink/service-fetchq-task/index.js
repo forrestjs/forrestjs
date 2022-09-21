@@ -43,6 +43,8 @@ forrestjs({
         register: [
           {
             subject: 't1',
+            // Will re-write the original payload at boot time
+            resetOnBoot: true,
             ...taskWithCursor,
           },
         ],

@@ -90,3 +90,9 @@ const myFeature = () => [
   }
 ]
 ```
+
+## Task Configuration
+
+### resetOnBoot
+
+Set it to `true` and the task will be completely reset at boot time.

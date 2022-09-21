@@ -5,7 +5,7 @@
 - Customize queue name via configuration
 - Add queue configuration
 - Add worker configuration
-- [ ] Reset on boot
+- Reset on boot
 
 ## v4.7.0
 
