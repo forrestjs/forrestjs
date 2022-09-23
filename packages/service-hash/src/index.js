@@ -50,7 +50,7 @@ const genSalt = (rounds) =>
     });
   });
 
-module.exports = () => [
+const serviceBcrypt = () => [
   {
     ...service,
     target: '$INIT_SERVICES',
@@ -135,3 +135,5 @@ module.exports = () => [
 serviceBcrypt.compare = compare;
 serviceBcrypt.encode = encode;
 serviceBcrypt.genSalt = genSalt;
+
+module.exports = serviceBcrypt;
