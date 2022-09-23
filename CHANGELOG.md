@@ -11,6 +11,8 @@
 - [ ] Move boot trace before the App execution
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [ ] write `service-pg-pubsub` accepting `PGSTRING`
+- [service-postgres] removed
+- [service-postgres-pubsub] removed
 
 ## 4.7.2
 

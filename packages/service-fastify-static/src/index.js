@@ -1,18 +1,16 @@
 const staticPlugin = require('@fastify/static');
-const { SERVICE_NAME, ...targets } = require('./targets');
+const SERVICE_NAME = `fastify-static`;
 
-const onFastifyHacksBefore = ({ registerPlugin }, { getConfig }) => {
+const onFastifyPlugin = ({ registerPlugin }, { getConfig }) => {
   const options = getConfig('fastify.static', {});
   registerPlugin(staticPlugin, options);
 };
 
-module.exports = ({ registerTargets }) => {
-  registerTargets(targets);
-
-  return {
+module.exports = () => [
+  {
     target: '$FASTIFY_PLUGIN',
     trace: __filename,
     name: SERVICE_NAME,
-    handler: onFastifyHacksBefore,
-  };
-};
+    handler: onFastifyPlugin,
+  },
+];

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { SERVICE_NAME, ...targets } = require('./targets');
+const SERVICE_NAME = `jwt`;
 
 let secret = null;
 let duration = null;
@@ -34,9 +34,7 @@ const verify = (token, customSecret = secret) =>
 
 const decode = (token, options) => jwt.decode(token, options);
 
-const serviceJwt = ({ registerTargets }) => {
-  registerTargets(targets);
-
+const serviceJwt = () => {
   return [
     {
       target: '$INIT_SERVICES',

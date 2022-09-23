@@ -3,11 +3,11 @@
  */
 
 const { Pool } = require('pg');
-const targets = require('./targets');
 
 const pg = ({ registerTargets }) => {
-  // Register pg's extension points into ForrestJS hooks dictionary:
-  registerTargets(targets);
+  registerTargets({
+    PG_READY,
+  });
 
   /**
    * HEALTHCHECK

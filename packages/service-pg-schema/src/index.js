@@ -1,7 +1,9 @@
-const targets = require('./targets');
-
 const pgSchema = ({ registerTargets }) => {
-  registerTargets(targets);
+  registerTargets({
+    PG_SCHEMA_BUILD: 'pgSchema/build',
+    PG_SCHEMA_RESET: 'pgSchema/reset',
+    PG_SCHEMA_SEED: 'pgSchema/seed',
+  });
 
   return [
     {
