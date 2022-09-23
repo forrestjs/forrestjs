@@ -19,6 +19,20 @@ class ForrestJSUnknownTargetError extends Error {
   }
 }
 
+class ForrestJSInvalidTargetError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'ForrestJSInvalidTargetError';
+  }
+}
+
+class ForrestJSInvalidHandlerError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'ForrestJSInvalidHandlerError';
+  }
+}
+
 class ForrestJSCreateExtensionError extends Error {
   constructor(message) {
     super(message);
@@ -70,6 +84,8 @@ module.exports = {
   ForrestJSGetConfigError,
   ForrestJSGetContextError,
   ForrestJSUnknownTargetError,
+  ForrestJSInvalidTargetError,
+  ForrestJSInvalidHandlerError,
   ForrestJSCreateExtensionError,
   ForrestJSRegisterActionError,
   onItemError,

@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.7.2
+
+- Improve errors for invalid actions
+
 ## 4.5.0
 
 - Deprecate `registerAction([name, handler, option])`

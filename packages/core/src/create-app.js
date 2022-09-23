@@ -7,15 +7,35 @@ const constants = require('./constants');
 const {
   ForrestJSGetConfigError,
   ForrestJSGetContextError,
+  ForrestJSInvalidTargetError,
+  ForrestJSInvalidHandlerError,
 } = require('./errors');
 
 // DEPRECATED: property "hook" is deprecated and will be removed in v5.0.0
-const isDeclarativeAction = ({ hook, target, handler }) =>
-  (typeof hook === 'string' || typeof target === 'string') &&
-  (typeof handler === 'object' || typeof handler === 'function');
+const isDeclarativeAction = (
+  { hook, target, handler },
+  integrationName,
+  integrationType,
+) => {
+  const _target = target || hook;
+  if (!(typeof _target === 'string' && _target)) {
+    throw new ForrestJSInvalidTargetError(
+      `${integrationType} "${integrationName}" defines an invalid target "${_target}"`,
+    );
+  }
 
-const isListOfDeclarativeActions = (list) =>
-  Array.isArray(list) && list.every(isDeclarativeAction);
+  if (!(typeof handler === 'object' || typeof handler === 'function')) {
+    throw new ForrestJSInvalidHandlerError(
+      `${integrationType} "${integrationName}" defines an invalid handler`,
+    );
+  }
+
+  return true;
+};
+
+const isListOfDeclarativeActions = (list, integrationName, integrationType) =>
+  Array.isArray(list) &&
+  list.every(($) => isDeclarativeAction($, integrationName, integrationType));
 
 /**
  * All the utilization of "registerAction" by an integration's
@@ -32,7 +52,12 @@ const isListOfDeclarativeActions = (list) =>
  * @param {*} context
  * @param {*} prefix
  */
-const runIntegrations = async (integrations, context, prefix = '') => {
+const runIntegrations = async (
+  integrations,
+  context,
+  prefix = '',
+  integrationType = 'Integration',
+) => {
   const registeredExtensions = [];
 
   // Execute the integration functions
@@ -84,7 +109,9 @@ const runIntegrations = async (integrations, context, prefix = '') => {
 
     // Register a list of hooks in a declarative way:
     // [ { hook, handler, ... }, { ... }]
-    if (isListOfDeclarativeActions(computed)) {
+    if (
+      isListOfDeclarativeActions(computed, integrationName, integrationType)
+    ) {
       computed.forEach((item) =>
         registeredExtensions.push({
           ...item,
@@ -288,10 +315,20 @@ const createApp =
     };
 
     // run lifecycle
-    await runIntegrations(services, internalContext, `${constants.SERVICE} `);
+    await runIntegrations(
+      services,
+      internalContext,
+      `${constants.SERVICE} `,
+      'Service',
+    );
     await _cs.serie(constants.START, internalContext);
     await _cs.serie(constants.SETTINGS, internalContext);
-    await runIntegrations(features, internalContext, `${constants.FEATURE} `);
+    await runIntegrations(
+      features,
+      internalContext,
+      `${constants.FEATURE} `,
+      'Feature',
+    );
     await _cs.parallel(constants.INIT_SERVICES, internalContext);
     await _cs.serie(constants.INIT_SERVICE, internalContext);
     await _cs.parallel(constants.INIT_FEATURES, internalContext);
