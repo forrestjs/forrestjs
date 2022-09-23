@@ -63,12 +63,7 @@ const ft6 = [
   },
 ];
 
-const ft7 = ({ registerAction }) => {
-  registerAction('$INIT_FEATURE', () => console.log('ft7a'), 'ft7a');
-  registerAction('$INIT_FEATURE', () => console.log('ft7b'), { name: 'ft7b' });
-};
-
 forrestjs({
   trace: 'compact',
-  features: [ft1, ft2, ft3, ft4, ft5, ft6, ft7],
+  features: [ft1, ft2, ft3, ft4, ft5, ft6],
 }).catch((err) => console.error(err));

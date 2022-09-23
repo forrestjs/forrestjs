@@ -59,35 +59,35 @@ module.exports = ({ getContext, getConfig, createExtension }) => {
   // };
 
   // DEPRECATE: must remove all the GET/POST/DELETE in v5.0.0
-  // const collectedRoutes = [
-  //   ...createExtension
-  //     .sync('$FASTIFY_GET', {
-  //       registerRoute: registerRoute.get,
-  //       fastify: server,
-  //     })
-  //     .map(makeRoute('GET')),
-  //   ...createExtension
-  //     .sync('$FASTIFY_POST', {
-  //       registerRoute: registerRoute.post,
-  //       fastify: server,
-  //     })
-  //     .map(makeRoute('POST')),
-  //   ...createExtension
-  //     .sync('$FASTIFY_PUT', {
-  //       registerRoute: registerRoute.put,
-  //       fastify: server,
-  //     })
-  //     .map(makeRoute('PUT')),
-  //   ...createExtension
-  //     .sync('$FASTIFY_DELETE', {
-  //       registerRoute: registerRoute.delete,
-  //       fastify: server,
-  //     })
-  //     .map(makeRoute('DELETE')),
-  //   ...createExtension
-  //     .sync('$FASTIFY_ROUTE', { registerRoute, fastify: server })
-  //     .map(makeRoute(null)),
-  // ];
+  const collectedRoutes = [
+    // ...createExtension
+    //   .sync('$FASTIFY_GET', {
+    //     registerRoute: registerRoute.get,
+    //     fastify: server,
+    //   })
+    //   .map(makeRoute('GET')),
+    // ...createExtension
+    //   .sync('$FASTIFY_POST', {
+    //     registerRoute: registerRoute.post,
+    //     fastify: server,
+    //   })
+    //   .map(makeRoute('POST')),
+    // ...createExtension
+    //   .sync('$FASTIFY_PUT', {
+    //     registerRoute: registerRoute.put,
+    //     fastify: server,
+    //   })
+    //   .map(makeRoute('PUT')),
+    // ...createExtension
+    //   .sync('$FASTIFY_DELETE', {
+    //     registerRoute: registerRoute.delete,
+    //     fastify: server,
+    //   })
+    //   .map(makeRoute('DELETE')),
+    ...createExtension
+      .sync('$FASTIFY_ROUTE', { registerRoute, fastify: server })
+      .map(makeRoute(null)),
+  ];
 
   // Register the routes in the "after" hook as suggested by new docs:
   server.after(() => {
