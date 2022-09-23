@@ -1,7 +1,7 @@
 const { HasuraClient } = require('./hasura-client');
 
 const service = {
-  ...service,
+  trace: __filename,
   name: 'hasura-client',
 };
 

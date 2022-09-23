@@ -1,7 +1,7 @@
 const winston = require('winston');
 
 const service = {
-  ...service,
+  trace: __filename,
   name: 'logger',
 };
 

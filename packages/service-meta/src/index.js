@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const service = {
-  ...service,
+  trace: __filename,
   name: 'meta',
 };
 

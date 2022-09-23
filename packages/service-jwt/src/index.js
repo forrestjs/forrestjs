@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const service = {
-  ...service,
+  trace: __filename,
   name: 'jwt',
 };
 

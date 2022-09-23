@@ -10,7 +10,7 @@ const fs = require('fs');
 const DB_PATH_DEFAULT = '/var/lib/jwks/keys.json';
 
 const service = {
-  ...service,
+  trace: __filename,
   name: 'jwks',
 };
 
