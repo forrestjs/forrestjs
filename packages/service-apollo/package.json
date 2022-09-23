@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-apollo",
   "description": "ForrestJS service which adds an Apollo GraphQL client to the App's context.",
-  "version": "5.0.0-alpha.5",
+  "version": "5.0.0-alpha.6",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^5.0.0-alpha.5",
+    "@forrestjs/core": "^5.0.0-alpha.6",
     "apollo-boost": "^0.4.9",
     "cross-fetch": "^3.1.5",
     "graphql": "^15.0.0",
