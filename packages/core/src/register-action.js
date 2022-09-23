@@ -17,34 +17,34 @@ const { ForrestJSRegisterActionError } = require('./errors');
 
 const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   // (name, handler, options)
-  if (typeof __arg1 === 'string') {
-    console.warn(
-      `[DEPRECATED] "registerAction(name, handler, option)" is deprecated and will be remove in version 5.x.`,
-    );
+  // if (typeof __arg1 === 'string') {
+  //   console.warn(
+  //     `[DEPRECATED] "registerAction(name, handler, option)" is deprecated and will be remove in version 5.x.`,
+  //   );
 
-    return registerAction({
-      ...__arg3,
-      target: __arg1,
-      handler: __arg2,
-    });
-  }
+  //   return registerAction({
+  //     ...__arg3,
+  //     target: __arg1,
+  //     handler: __arg2,
+  //   });
+  // }
 
   // ([ name, handler, options ])
-  if (Array.isArray(__arg1)) {
-    console.warn(
-      `[DEPRECATED] "registerAction([name, handler, option])" is deprecated and will be remove in version 5.x.`,
-    );
-    return registerAction({
-      ...(__arg1[2] || {}),
-      target: __arg1[0],
-      handler: __arg1[1],
-    });
-  }
+  // if (Array.isArray(__arg1)) {
+  //   console.warn(
+  //     `[DEPRECATED] "registerAction([name, handler, option])" is deprecated and will be remove in version 5.x.`,
+  //   );
+  //   return registerAction({
+  //     ...(__arg1[2] || {}),
+  //     target: __arg1[0],
+  //     handler: __arg1[1],
+  //   });
+  // }
 
   // ({ to: 'xxx', handler: () => {}, ...options })
   // "handler" can also be a scalar value and is going to be replaces into a function.
   const {
-    hook: deprecatedReceivedHook, // DEPRECATER: will be removed in v5.0.0
+    // hook: deprecatedReceivedHook, // DEPRECATER: will be removed in v5.0.0
     target: receivedTarget,
     // action,
     name,
@@ -55,7 +55,7 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
   } = __arg1;
 
   // Backward compatibility until v5.0.0
-  const targetAction = receivedTarget || deprecatedReceivedHook;
+  const targetAction = receivedTarget; // || deprecatedReceivedHook;
 
   if (!targetAction) {
     throw new Error('Extensions must declare a "target" property!');
@@ -65,11 +65,11 @@ const registerAction = (__arg1 = {}, __arg2 = null, __arg3 = {}) => {
     throw new Error('Extensions must declare a "handler" property!');
   }
 
-  if (deprecatedReceivedHook) {
-    console.warn(
-      '[DEPRECATED] The "hook" property is deprecated and will be removed in v5.0.0\nUse "target" instead.',
-    );
-  }
+  // if (deprecatedReceivedHook) {
+  //   console.warn(
+  //     '[DEPRECATED] The "hook" property is deprecated and will be removed in v5.0.0\nUse "target" instead.',
+  //   );
+  // }
 
   const handler =
     typeof receivedHandler === 'function'

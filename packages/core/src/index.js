@@ -11,33 +11,33 @@ const {
   createHookApp,
   runHookApp,
 } = require('./create-app');
-const { createHookContext } = require('./create-hook-context');
+// const { createHookContext } = require('./create-hook-context');
 const { getHook, getAction, getTarget } = require('./create-targets-registry');
 const constants = require('./constants');
 
 // DEPRECATED: to remove in v5.0.0
 // Temporary hack to rename "createHook" -> "runHook"
-const runHookDeprecate = `[DEPRECATED] runHook is deprecated and will be removed in next major version (v5.0.0)`;
-const runHook = (...args) => {
-  console.warn(runHookDeprecate);
-  return createHook(...args);
-};
-runHook.sync = (...args) => {
-  console.warn(runHookDeprecate);
-  return createHook.sync(...args);
-};
-runHook.serie = (...args) => {
-  console.warn(runHookDeprecate);
-  return createHook.serie(...args);
-};
-runHook.parallel = (...args) => {
-  console.warn(runHookDeprecate);
-  return createHook.parallel(...args);
-};
-runHook.waterfall = (...args) => {
-  console.warn(runHookDeprecate);
-  return createHook.waterfall(...args);
-};
+// const runHookDeprecate = `[DEPRECATED] runHook is deprecated and will be removed in next major version (v5.0.0)`;
+// const runHook = (...args) => {
+//   console.warn(runHookDeprecate);
+//   return createHook(...args);
+// };
+// runHook.sync = (...args) => {
+//   console.warn(runHookDeprecate);
+//   return createHook.sync(...args);
+// };
+// runHook.serie = (...args) => {
+//   console.warn(runHookDeprecate);
+//   return createHook.serie(...args);
+// };
+// runHook.parallel = (...args) => {
+//   console.warn(runHookDeprecate);
+//   return createHook.parallel(...args);
+// };
+// runHook.waterfall = (...args) => {
+//   console.warn(runHookDeprecate);
+//   return createHook.waterfall(...args);
+// };
 
 // Export the global symbol as App runner:
 const run = startApp;
@@ -54,13 +54,13 @@ run.getTarget = getTarget;
 run.createExtension = createExtension;
 
 // DEPRECATED APIs: remove in v5.0.0
-run.createHook = createHook; // DEPRECATED: to remove in v5.0.0
-run.runHook = runHook; // DEPRECATED: to remove in v5.0.0
-run.createHookContext = createHookContext; // DEPRECATED: to remove in v5.0.0
-run.createHookApp = createHookApp; // DEPRECATED: remove in v5.0.0
-run.getHook = getHook; // DEPRECATED: remove in v5.0.0
-run.getAction = getAction; // DEPRECATED: remove in v5.0.0
-run.runHookApp = runHookApp; // DEPRECATED: remove in v5.0.0
+// run.createHook = createHook; // DEPRECATED: to remove in v5.0.0
+// run.runHook = runHook; // DEPRECATED: to remove in v5.0.0
+// // run.createHookContext = createHookContext; // DEPRECATED: to remove in v5.0.0
+// run.createHookApp = createHookApp; // DEPRECATED: remove in v5.0.0
+// run.getHook = getHook; // DEPRECATED: remove in v5.0.0
+// run.getAction = getAction; // DEPRECATED: remove in v5.0.0
+// run.runHookApp = runHookApp; // DEPRECATED: remove in v5.0.0
 
 // Export the internal constants:
 run.CORE = constants.CORE;

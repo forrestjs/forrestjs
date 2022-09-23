@@ -63,7 +63,7 @@ class ForrestJSRunExtensionError extends Error {
     this.name = error.name;
 
     // Deprecated, will be removed in v5.0.0
-    this.hook = `[DEPRECATED] "err.hook" will be remove in v5.0.0\nUse "err.target" instead.\n${action.hook}`;
+    // this.hook = `[DEPRECATED] "err.hook" will be remove in v5.0.0\nUse "err.target" instead.\n${action.hook}`;
 
     // TODO: "action.hook" must change to "action.target"
     this.target = action.hook;

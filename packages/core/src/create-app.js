@@ -11,16 +11,14 @@ const {
   ForrestJSInvalidHandlerError,
 } = require('./errors');
 
-// DEPRECATED: property "hook" is deprecated and will be removed in v5.0.0
 const isDeclarativeAction = (
-  { hook, target, handler },
+  { target, handler },
   integrationName,
   integrationType,
 ) => {
-  const _target = target || hook;
-  if (!(typeof _target === 'string' && _target)) {
+  if (!(typeof target === 'string' && target)) {
     throw new ForrestJSInvalidTargetError(
-      `${integrationType} "${integrationName}" defines an invalid target "${_target}"`,
+      `${integrationType} "${integrationName}" defines an invalid target "${target}"`,
     );
   }
 
@@ -80,23 +78,23 @@ const runIntegrations = async (
               // registerAction('hook', () => {})
               // registerAction('hook', () => {}, 'name')
               // registerAction('hook', () => {}, { name: 'name' })
-              if (typeof ag1 === 'string') {
-                console.warn(
-                  `[DEPRECATED] "registerAction(name, handler, option)" is deprecated and will be remove in version 5.0.0.`,
-                );
+              // if (typeof ag1 === 'string') {
+              //   console.warn(
+              //     `[DEPRECATED] "registerAction(name, handler, option)" is deprecated and will be remove in version 5.0.0.`,
+              //   );
 
-                return registeredExtensions.push([
-                  ag1,
-                  ag2,
-                  {
-                    ...(typeof ag3 === 'string' ? { name: ag3 } : ag3),
-                    name: `${prefix}${
-                      (typeof ag3 === 'string' ? ag3 : ag3.name) ||
-                      integrationName
-                    }`,
-                  },
-                ]);
-              }
+              //   return registeredExtensions.push([
+              //     ag1,
+              //     ag2,
+              //     {
+              //       ...(typeof ag3 === 'string' ? { name: ag3 } : ag3),
+              //       name: `${prefix}${
+              //         (typeof ag3 === 'string' ? ag3 : ag3.name) ||
+              //         integrationName
+              //       }`,
+              //     },
+              //   ]);
+              // }
 
               // Handle definition as an object
               return registeredExtensions.push({
@@ -124,42 +122,41 @@ const runIntegrations = async (
     // register a single action given as configuration array
     // [ hook, handler, name ]
     // [ hook, handler, { otherOptions }]
-    else if (
-      Array.isArray(computed) &&
-      computed.length >= 2 &&
-      typeof computed[0] === 'string' &&
-      (typeof computed[1] === 'function' || typeof computed[1] === 'object')
-    ) {
-      console.warn(
-        '[DEPRECATED] please use the object base declarative pattern { hook, handler, ... } - this API will be removed in v5.0.0',
-      );
-      const [hook, handler, options = {}] = computed;
-      registeredExtensions.push({
-        ...(typeof options === 'string'
-          ? { name: `${prefix}${options}` }
-          : {
-              ...options,
-              name: `${prefix}${options.name || integrationName}`,
-            }),
-        hook,
-        // An handler could be a simple object to skip any running function
-        handler: typeof handler === 'function' ? handler : () => handler,
-      });
-    }
+    // else if (
+    //   Array.isArray(computed) &&
+    //   computed.length >= 2 &&
+    //   typeof computed[0] === 'string' &&
+    //   (typeof computed[1] === 'function' || typeof computed[1] === 'object')
+    // ) {
+    //   console.warn(
+    //     '[DEPRECATED] please use the object base declarative pattern { hook, handler, ... } - this API will be removed in v5.0.0',
+    //   );
+    //   const [hook, handler, options = {}] = computed;
+    //   registeredExtensions.push({
+    //     ...(typeof options === 'string'
+    //       ? { name: `${prefix}${options}` }
+    //       : {
+    //           ...options,
+    //           name: `${prefix}${options.name || integrationName}`,
+    //         }),
+    //     hook,
+    //     // An handler could be a simple object to skip any running function
+    //     handler: typeof handler === 'function' ? handler : () => handler,
+    //   });
+    // }
 
     // register a single action give an a configuration object
-    // { hook, handler, ... }
-    // DEPRECATED: "hook" in favor for "target" - remove in v5.0.0
-    else if (
-      computed &&
-      (computed.hook || computed.target) &&
-      computed.handler
-    ) {
-      if (computed.hook) {
-        console.warn(
-          `[DEPRECATED] the key "hook" is deprecated and will be removed from v5.0.0.\nPlease use "target" instead.`,
-        );
-      }
+    // { target, handler, ... }
+    else if (computed && computed.target && computed.handler) {
+      // else if (computed) {
+      // if (computed.hook) {
+      //   console.warn(
+      //     `[DEPRECATED] the key "hook" is deprecated and will be removed from v5.0.0.\nPlease use "target" instead.`,
+      //   );
+      // }
+
+      // Strict check on the action format:
+      isDeclarativeAction(computed, integrationName, integrationType);
 
       registeredExtensions.push({
         ...computed,
@@ -216,11 +213,11 @@ const registerSettingsExtension = (buildAppSettings) => {
 const createApp =
   (appManifest = {}) =>
   async () => {
-    if (Array.isArray(appManifest)) {
-      console.warn(
-        `[DEPRECATED] The array version is deprecated and will be removed in v5.0.0.\nUse the full App Manifest definition instead.`,
-      );
-    }
+    // if (Array.isArray(appManifest)) {
+    //   console.warn(
+    //     `[DEPRECATED] The array version is deprecated and will be removed in v5.0.0.\nUse the full App Manifest definition instead.`,
+    //   );
+    // }
 
     // accepts a single param as [] of features
     const {
@@ -285,34 +282,34 @@ const createApp =
     internalContext.createExtension = _cs;
 
     // DEPRECATED: remove in v5.0.0
-    internalContext.createHook = (...args) => {
-      console.warn(
-        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
-      );
-      return _cs(...args);
-    };
-    internalContext.createHook.sync = (...args) => {
-      console.warn(
-        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
-      );
-      return _cs.sync(...args);
-    };
-    internalContext.createHook.serie = (...args) => {
-      console.warn(
-        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
-      );
-      return _cs.serie(...args);
-    };
-    internalContext.createHook.parallel = (...args) => {
-      console.warn(
-        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
-      );
-      return _cs.parallel(...args);
-    };
-    internalContext.createHook.waterfall = (...args) => {
-      console.warn('[DEPRECATED] createHook');
-      return _cs.waterfall(...args);
-    };
+    // internalContext.createHook = (...args) => {
+    //   console.warn(
+    //     `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+    //   );
+    //   return _cs(...args);
+    // };
+    // internalContext.createHook.sync = (...args) => {
+    //   console.warn(
+    //     `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+    //   );
+    //   return _cs.sync(...args);
+    // };
+    // internalContext.createHook.serie = (...args) => {
+    //   console.warn(
+    //     `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+    //   );
+    //   return _cs.serie(...args);
+    // };
+    // internalContext.createHook.parallel = (...args) => {
+    //   console.warn(
+    //     `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
+    //   );
+    //   return _cs.parallel(...args);
+    // };
+    // internalContext.createHook.waterfall = (...args) => {
+    //   console.warn('[DEPRECATED] createHook');
+    //   return _cs.waterfall(...args);
+    // };
 
     // run lifecycle
     await runIntegrations(
@@ -340,6 +337,7 @@ const createApp =
     await _cs.serie(constants.FINISH, internalContext);
 
     // Implement trace without a Hook
+    // TODO: move before the execution
     if (trace) {
       const lines = [];
       lines.push('');
@@ -373,24 +371,24 @@ const startApp = ($) => {
 };
 
 // DEPRECATED: remove in v5.0.0
-const createHookApp = ($) => {
-  console.warn(
-    '[DEPRECATED] use "createApp()" instead of "createHookApp()". It will be removed in v5.0.0',
-  );
-  return createApp($);
-};
-const runHookApp = ($) => {
-  console.warn(
-    '[DEPRECATED] use "createApp()" instead of "runHookApp()". It will be removed in v5.0.0',
-  );
-  return startApp($);
-};
+// const createHookApp = ($) => {
+//   console.warn(
+//     '[DEPRECATED] use "createApp()" instead of "createHookApp()". It will be removed in v5.0.0',
+//   );
+//   return createApp($);
+// };
+// const runHookApp = ($) => {
+//   console.warn(
+//     '[DEPRECATED] use "createApp()" instead of "runHookApp()". It will be removed in v5.0.0',
+//   );
+//   return startApp($);
+// };
 
 module.exports = {
   createApp,
   startApp,
   isDeclarativeAction,
   isListOfDeclarativeActions,
-  createHookApp, // DEPRECATED: remove in v5.0.0
-  runHookApp, // DEPRECATED: remove in v5.0.0
+  // createHookApp, // DEPRECATED: remove in v5.0.0
+  // runHookApp, // DEPRECATED: remove in v5.0.0
 };

@@ -1,16 +1,14 @@
 ## 5.0.0 (roadmap)
 
-- [ ] remove support for declarative array definition `const f1 = [hook, handler]`
-- [ ] remove `runHookApp` and `createHookApp`
-- [ ] remove `createHook` support
-- [ ] remove `registerAction` support
-- [ ] remove `registerHook` support
+- [x] remove support for declarative array definition `const f1 = [hook, handler]`
+- [x] remove `runHookApp` and `createHookApp`
+- [x] remove `createHook` support
+- [x] remove `registerAction` support
+- [x] remove `registerHook` support
 - [ ] remove `FASTIFY_GET` and other methods support
 - [ ] action's parameter will be reversed (ctx, action's data)
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
-
-## 4.X.X (roadmap)
-
+- [ ] Move boot trace before the App execution
 - [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [ ] write `service-pg-pubsub` accepting `PGSTRING`
 
