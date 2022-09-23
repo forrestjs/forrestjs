@@ -23,7 +23,7 @@ Please launch a postgres instance as:
 docker run --rm -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres
 ```
 
-The connection string is:
+The default connection string is:
 
 ```bash
 PGSTRING=postgres://postgres:postgres@postgres:5432/postgres
