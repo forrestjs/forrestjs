@@ -72,20 +72,6 @@ describe('core/create-app', () => {
     expect(handler.mock.calls.length).toBe(2);
   });
 
-  // DEPRECATED: remove in v5.0.0
-  // it.skip('should register a service as single hook setup', async () => {
-  //   const handler = jest.fn();
-  //   const s1 = ['foo', handler];
-  //   const f1 = ({ createAction }) => createAction('foo');
-
-  //   await forrestjs.run({
-  //     services: [s1],
-  //     features: [f1],
-  //   });
-
-  //   expect(handler.mock.calls.length).toBe(1);
-  // });
-
   it('should run an app that provides settings as a function', async () => {
     const f1 = jest.fn();
     await forrestjs.run({

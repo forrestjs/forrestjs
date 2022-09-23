@@ -148,20 +148,4 @@ createExtension.parallel = (name, args, context) =>
 createExtension.waterfall = (name, args, context) =>
   createExtension(name, { args, context, mode: 'waterfall' });
 
-/**
- * DEPRECATED API
- */
-const createHookDeprecate =
-  '[DEPRECATED] use `createExtension()` instead of `createHook()`.It will be removed in v5.0.0';
-
-const createHook = (...args) => {
-  console.warn(createHookDeprecate);
-  return createExtension(...args);
-};
-
-createHook.sync = createExtension.sync;
-createHook.serie = createExtension.serie;
-createHook.parallel = createExtension.parallel;
-createHook.waterfall = createExtension.waterfall;
-
-module.exports = { createHook, createExtension };
+module.exports = { createExtension };
