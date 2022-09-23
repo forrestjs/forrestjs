@@ -6,7 +6,7 @@ const { Pool } = require('pg');
 
 const pg = ({ registerTargets }) => {
   registerTargets({
-    PG_READY,
+    PG_READY: 'pg/ready',
   });
 
   /**
