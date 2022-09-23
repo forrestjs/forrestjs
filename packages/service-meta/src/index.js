@@ -1,6 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
+const service = {
+  ...service,
+  name: 'meta',
+};
+
 /**
  * Tries to source a configuration file using:
  * - fileName.development.json
@@ -76,14 +81,14 @@ const loadConfigAsJSON = (configName, basePath, localSuffix) =>
     });
   });
 
-const serviceMeta = ({ registerTargets }) => {
+module.exports = ({ registerTargets }) => {
   registerTargets({
-    META_SOURCE: 'meta/source',
+    META_SOURCE: `${service.name}/source`,
   });
 
   return [
     {
-      trace: __filename,
+      ...service,
       target: '$INIT_SERVICE',
       handler: async ({ createExtension, getConfig, setContext }) => {
         const configPath = getConfig('meta.path', '/var/lib/meta');
@@ -118,5 +123,3 @@ const serviceMeta = ({ registerTargets }) => {
     },
   ];
 };
-
-module.exports = serviceMeta;

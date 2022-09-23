@@ -2,11 +2,16 @@
  * Keeps a pooled connection to PostgreSQL
  */
 
+const service = {
+  ...service,
+  name: 'pg',
+};
+
 const { Pool } = require('pg');
 
-const pg = ({ registerTargets }) => {
+module.exports = ({ registerTargets }) => {
   registerTargets({
-    PG_READY: 'pg/ready',
+    PG_READY: `${service.name}/ready`,
   });
 
   /**
@@ -28,7 +33,7 @@ const pg = ({ registerTargets }) => {
   return [
     {
       // run before Fastify init - needed to provide `request.query`
-      trace: __filename,
+      ...service,
       priority: 10,
       target: '$INIT_SERVICE',
       handler: ({ getConfig, setContext }) => {
@@ -74,7 +79,7 @@ const pg = ({ registerTargets }) => {
       },
     },
     {
-      trace: __filename,
+      ...service,
       target: '$START_SERVICE',
       handler: async ({ getContext, createExtension }) => {
         // Get a reqference to the PG pool instance:
@@ -99,7 +104,7 @@ const pg = ({ registerTargets }) => {
       },
     },
     {
-      trace: __filename,
+      ...service,
       target: '$FASTIFY_PLUGIN?',
       handler: ({ decorateRequest }, { getContext }) => {
         const query = getContext('pg.query');
@@ -111,12 +116,12 @@ const pg = ({ registerTargets }) => {
      * HEALTHZ
      */
     {
-      trace: __filename,
+      ...service,
       target: '$FASTIFY_TDD_CHECK?',
       handler: () => healthcheckHandler,
     },
     {
-      trace: __filename,
+      ...service,
       target: '$FASTIFY_HEALTHZ_CHECK?',
       handler: () => healthcheckHandler,
     },
@@ -126,7 +131,7 @@ const pg = ({ registerTargets }) => {
      * Integrate with the Fastify TDD API
      */
     {
-      trace: __filename,
+      ...service,
       target: '$FASTIFY_TDD_ROUTE?',
       handler: ({ registerTddRoute }) => {
         const schemaFields = {
@@ -160,5 +165,3 @@ const pg = ({ registerTargets }) => {
     },
   ];
 };
-
-module.exports = pg;

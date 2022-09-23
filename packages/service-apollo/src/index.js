@@ -1,12 +1,14 @@
 const ApolloClient = require('apollo-boost').default;
 require('cross-fetch/polyfill');
 
-const SERVICE_NAME = `apollo`;
+const service = {
+  name: 'apollo',
+  trace: __filename,
+};
 
 module.exports = ({ setContext, getConfig }) => [
   {
-    name: SERVICE_NAME,
-    trace: __filename,
+    ...service,
     priority: 100,
     target: '$INIT_SERVICE',
     handler: () => {
@@ -15,8 +17,7 @@ module.exports = ({ setContext, getConfig }) => [
     },
   },
   {
-    name: SERVICE_NAME,
-    trace: __filename,
+    ...service,
     target: '$FASTIFY_PLUGIN?',
     handler: ({ decorate, decorateRequest }, { getContext }) => {
       const apollo = getContext('apollo');

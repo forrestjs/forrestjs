@@ -1,5 +1,9 @@
 const fastifyGql = require('./fastify-gql');
-const { SERVICE_NAME, ...targets } = require('./targets');
+
+const service = {
+  name: 'fastify-gql',
+  trace: __filename,
+};
 
 const onFastifyPlugin = ({ registerPlugin }, ctx) => {
   const options = ctx.getConfig('fastify.gql', {});
@@ -7,13 +11,15 @@ const onFastifyPlugin = ({ registerPlugin }, ctx) => {
 };
 
 module.exports = ({ registerTargets }) => {
-  registerTargets(targets);
+  registerTargets({
+    FASTIFY_GQL_EXTEND_SCHEMA: `${service.name}/extend-schema`,
+    FASTIFY_GQL_EXTEND_CONTEXT: `${service.name}/extend-context`,
+  });
 
   return [
     {
+      ...service,
       target: '$FASTIFY_PLUGIN',
-      trace: __filename,
-      name: SERVICE_NAME,
       handler: onFastifyPlugin,
     },
   ];

@@ -1,13 +1,18 @@
 const winston = require('winston');
-const { SERVICE_NAME, ...targets } = require('./targets');
 
-const serviceLogger = ({ registerTargets }) => {
-  registerTargets(targets);
+const service = {
+  ...service,
+  name: 'logger',
+};
+
+module.exports = ({ registerTargets }) => {
+  registerTargets({
+    LOGGER_TRANSPORTS: `${service.name}/transports`,
+  });
 
   return [
     {
-      name: SERVICE_NAME,
-      trace: __filename,
+      ...service,
       target: '$START',
       handler: ({ getConfig, setContext, createExtension }) => {
         // Let other extensions configure the transports
@@ -45,8 +50,7 @@ const serviceLogger = ({ registerTargets }) => {
     // Fastify Integration (optional hook)
     // nullify any custom setting for the default logger
     {
-      name: SERVICE_NAME,
-      trace: __filename,
+      ...service,
       target: '$FASTIFY_OPTIONS?',
       handler: (options) => ({
         ...options,
@@ -64,8 +68,7 @@ const serviceLogger = ({ registerTargets }) => {
     // Here we are truly messing around with it and overriding
     // the standard logger with Winston.
     {
-      name: SERVICE_NAME,
-      trace: __filename,
+      ...service,
       target: '$FASTIFY_HACKS_BEFORE?',
       handler: ({ fastify }, { getContext }) => {
         const logger = getContext('log');
@@ -82,8 +85,7 @@ const serviceLogger = ({ registerTargets }) => {
     // Fetchq Integration (optional hook)
     // Injects the `log` API into the registered workers.
     {
-      name: SERVICE_NAME,
-      trace: __filename,
+      ...service,
       target: '$FETCHQ_DECORATE_CONTEXT?',
       handler: (context, { getContext }) => ({
         ...context,
@@ -92,5 +94,3 @@ const serviceLogger = ({ registerTargets }) => {
     },
   ];
 };
-
-module.exports = serviceLogger;

@@ -1,5 +1,9 @@
 const cookiePlugin = require('@fastify/cookie');
-const SERVICE_NAME = `fastify-cookie`;
+
+const service = {
+  name: 'fastify-cookie',
+  trace: __filename,
+};
 
 const onFastifyPlugin = ({ registerPlugin }, { getConfig }) => {
   const options = getConfig('fastify.cookie', {});
@@ -8,8 +12,7 @@ const onFastifyPlugin = ({ registerPlugin }, { getConfig }) => {
 
 module.exports = () => [
   {
-    name: SERVICE_NAME,
-    trace: __filename,
+    ...service,
     target: '$FASTIFY_PLUGIN',
     handler: onFastifyPlugin,
   },

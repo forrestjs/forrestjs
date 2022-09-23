@@ -1,9 +1,14 @@
 const { HasuraClient } = require('./hasura-client');
 
-const hasuraClient = () => [
+const service = {
+  ...service,
+  name: 'hasura-client',
+};
+
+module.exports = () => [
   {
+    ...service,
     target: '$INIT_SERVICE',
-    trace: __filename,
     priority: 200, // Must run before Fastify & Fetchq
     handler: ({ getConfig, setContext }) => {
       const endpoint = getConfig('hasura.endpoint');
@@ -19,24 +24,24 @@ const hasuraClient = () => [
     },
   },
   {
+    ...service,
     target: '$FASTIFY_PLUGIN?',
-    trace: __filename,
     handler: ({ decorateRequest }, { getContext }) => {
       const client = getContext('hasura.client');
       decorateRequest('hasura', client);
     },
   },
   {
+    ...service,
     target: '$FETCHQ_DECORATE_CONTEXT?',
-    trace: __filename,
     handler: (_, { getContext }) => {
       const hasura = getContext('hasura.client');
       return { hasura };
     },
   },
   {
+    ...service,
     target: '$FASTIFY_TDD_ROUTE?',
-    trace: __filename,
     handler: ({ registerTddRoute }, { getContext }) => {
       const hasura = getContext('hasura');
 
@@ -67,5 +72,3 @@ const hasuraClient = () => [
     },
   },
 ];
-
-module.exports = hasuraClient;

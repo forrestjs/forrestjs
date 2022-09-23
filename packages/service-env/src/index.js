@@ -9,19 +9,21 @@
  */
 
 const { initEnv } = require('./init-env');
-const SERVICE_NAME = `env`;
+
+const service = {
+  name: 'env',
+  trace: __filename,
+};
 
 module.exports = () => [
   {
+    ...service,
     target: '$START',
-    name: SERVICE_NAME,
-    trace: __filename,
     handler: initEnv,
   },
   {
+    ...service,
     target: '$FASTIFY_PLUGIN?',
-    name: SERVICE_NAME,
-    trace: __filename,
     handler: ({ decorate, decorateRequest }, { getContext }) => {
       const getEnv = getContext('getEnv');
       decorate('getEnv', getEnv);

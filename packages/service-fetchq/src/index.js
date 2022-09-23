@@ -1,5 +1,9 @@
 const fetchq = require('fetchq');
-const { SERVICE_NAME, ...targets } = require('./targets');
+
+const service = {
+  name: 'fetchq',
+  trace: __filename,
+};
 
 const QUERY_DROP =
   'DROP SCHEMA "fetchq_data" CASCADE; DROP SCHEMA "fetchq" CASCADE;';
@@ -74,7 +78,14 @@ const onStartService = async ({ getConfig, getContext, createExtension }) => {
 };
 
 module.exports = ({ registerTargets }) => {
-  registerTargets(targets);
+  registerTargets({
+    FETCHQ_DECORATE_CONTEXT: `${service.name}/decorate-context`,
+    FETCHQ_REGISTER_QUEUE: `${service.name}/register/queue`,
+    FETCHQ_REGISTER_WORKER: `${service.name}/register/worker`,
+    FETCHQ_READY: `${service.name}/ready`,
+    FETCHQ_BEFORE_START: `${service.name}/before-start`,
+    FETCHQ_TDD_STATE_RESET: `${service.name}/tdd/state/reset`,
+  });
 
   /**
    * HEALTHCHECK
@@ -93,16 +104,14 @@ module.exports = ({ registerTargets }) => {
 
   return [
     {
+      ...service,
       target: '$INIT_SERVICE',
-      name: SERVICE_NAME,
-      trace: __filename,
       priority: 100,
       handler: onInitService,
     },
     {
+      ...service,
       target: '$START_SERVICE',
-      name: SERVICE_NAME,
-      trace: __filename,
       priority: 100,
       handler: onStartService,
     },
@@ -111,9 +120,8 @@ module.exports = ({ registerTargets }) => {
      * Provide the Fetchq client reference into Fastify's context
      */
     {
+      ...service,
       target: '$FASTIFY_PLUGIN?',
-      name: SERVICE_NAME,
-      trace: __filename,
       handler: ({ decorate, decorateRequest }, { getContext }) => {
         const fetchq = getContext('fetchq');
         decorate('fetchq', fetchq);
@@ -125,15 +133,13 @@ module.exports = ({ registerTargets }) => {
      * HEALTHZ
      */
     {
+      ...service,
       target: '$FASTIFY_TDD_CHECK?',
-      name: SERVICE_NAME,
-      trace: __filename,
       handler: () => healthcheckHandler,
     },
     {
+      ...service,
       target: '$FASTIFY_HEALTHZ_CHECK?',
-      name: SERVICE_NAME,
-      trace: __filename,
       handler: () => healthcheckHandler,
     },
 
@@ -142,9 +148,8 @@ module.exports = ({ registerTargets }) => {
      * Integrate with the Fastify TDD API
      */
     {
+      ...service,
       target: '$FASTIFY_TDD_ROUTE?',
-      name: SERVICE_NAME,
-      trace: __filename,
       handler: ({ registerTddRoute }, { createExtension }) => {
         const schemaFields = {
           type: 'object',

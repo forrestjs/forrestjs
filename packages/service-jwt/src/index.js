@@ -1,5 +1,9 @@
 const jwt = require('jsonwebtoken');
-const SERVICE_NAME = `jwt`;
+
+const service = {
+  ...service,
+  name: 'jwt',
+};
 
 let secret = null;
 let duration = null;
@@ -37,8 +41,8 @@ const decode = (token, options) => jwt.decode(token, options);
 const serviceJwt = () => {
   return [
     {
+      ...service,
       target: '$INIT_SERVICES',
-      trace: __filename,
       name: SERVICE_NAME,
       priority: 100,
       handler: (_, { getConfig, setContext }) => {
@@ -89,8 +93,8 @@ const serviceJwt = () => {
      * Fastify Integration (optional hook)
      */
     {
+      ...service,
       target: '$FASTIFY_PLUGIN?',
-      trace: __filename,
       name: SERVICE_NAME,
       handler: ({ decorate, decorateRequest }, { getContext }) => {
         const jwt = getContext('jwt');
@@ -104,8 +108,8 @@ const serviceJwt = () => {
      * Injects the `log` API into the registered workers.
      */
     {
+      ...service,
       target: '$FETCHQ_DECORATE_CONTEXT?',
-      trace: __filename,
       name: SERVICE_NAME,
       handler: (context, { getContext }) => ({
         ...context,
@@ -117,8 +121,8 @@ const serviceJwt = () => {
      * Integrate with the Fastify TDD API
      */
     {
+      ...service,
       target: '$FASTIFY_TDD_ROUTE?',
-      trace: __filename,
       name: SERVICE_NAME,
       handler: ({ registerTddRoute }) => {
         registerTddRoute({

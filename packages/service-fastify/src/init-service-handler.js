@@ -50,11 +50,6 @@ module.exports = ({
   decorateRequest('setContext', setContext);
   decorateRequest('axios', axios);
 
-  // Deprecated, should be removed
-  // decorateReply('getConfig', getConfig);
-  // decorateReply('getContext', getContext);
-  // decorateReply('axios', axios);
-
   createExtension.sync('$FASTIFY_HACKS_BEFORE', { fastify: server });
   createExtension.sync('$FASTIFY_PLUGIN', {
     registerPlugin,

@@ -7,7 +7,11 @@
  */
 
 const bcrypt = require('bcrypt-nodejs');
-const SERVICE_NAME = `hash`;
+
+const service = {
+  name: 'hash',
+  trace: __filename,
+};
 
 let rounds = null;
 let salt = null;
@@ -46,11 +50,10 @@ const genSalt = (rounds) =>
     });
   });
 
-const serviceBcrypt = () => [
+module.exports = () => [
   {
+    ...service,
     target: '$INIT_SERVICES',
-    trace: __filename,
-    name: SERVICE_NAME,
     priority: 100,
     handler: async ({ getConfig }, ctx) => {
       const logInfo = ctx.logInfo || console.log;
@@ -83,9 +86,8 @@ const serviceBcrypt = () => [
    * Fastify Integration (optional hook)
    */
   {
+    ...service,
     target: '$FASTIFY_PLUGIN?',
-    trace: __filename,
-    name: SERVICE_NAME,
     handler: ({ decorate, decorateRequest }, { getContext }) => {
       const hash = getContext('hash');
       decorate('hash', hash);
@@ -97,9 +99,8 @@ const serviceBcrypt = () => [
    * Integrate with the Fastify TDD API
    */
   {
+    ...service,
     target: '$FASTIFY_TDD_ROUTE?',
-    trace: __filename,
-    name: SERVICE_NAME,
     handler: ({ registerTddRoute }) => {
       registerTddRoute({
         method: 'POST',
@@ -134,5 +135,3 @@ const serviceBcrypt = () => [
 serviceBcrypt.compare = compare;
 serviceBcrypt.encode = encode;
 serviceBcrypt.genSalt = genSalt;
-
-module.exports = serviceBcrypt;
