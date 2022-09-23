@@ -47,7 +47,7 @@ const f1 = () => [
   {
     target: '$FASTIFY_ROUTE',
     handler: {
-      metho: 'GET',
+      method: 'GET',
       url: '/names',
       handler: async (request) => {
         const res = await request.pg.query(

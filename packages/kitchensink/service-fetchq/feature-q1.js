@@ -97,17 +97,20 @@ const featureQ1 = ({ registerAction }) => {
   // Here we integrate Fastify and Fetchq so that a REST request can
   // end up pushing documents into a queue for further processing.
   registerAction({
-    target: '$FASTIFY_GET',
+    target: '$FASTIFY_ROUTE',
     handler: [
       {
+        method: 'GET',
         url: '/fetchq/append/:queue/:name',
         handler: appendDocHandler,
       },
       {
+        method: 'GET',
         url: '/fetchq/push/:queue/:subject',
         handler: pushDocHandler,
       },
       {
+        method: 'GET',
         url: '/fetchq/status/:queue/:subject',
         handler: readDocHandler,
       },
