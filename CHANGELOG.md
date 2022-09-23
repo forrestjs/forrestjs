@@ -5,7 +5,7 @@
 - [x] remove `createHook` support
 - [x] remove `registerAction` support
 - [x] remove `registerHook` support
-- [ ] remove `FASTIFY_GET` and other methods support
+- [x] remove `FASTIFY_GET` and other methods support
 - [ ] action's parameter will be reversed (ctx, action's data)
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
 - [ ] Move boot trace before the App execution

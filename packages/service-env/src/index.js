@@ -8,28 +8,24 @@
  *
  */
 
-const { SERVICE_NAME, ...targets } = require('./targets');
 const { initEnv } = require('./init-env');
+const SERVICE_NAME = `env`;
 
-module.exports = ({ registerTargets }) => {
-  registerTargets(targets);
-
-  return [
-    {
-      target: '$START',
-      name: SERVICE_NAME,
-      trace: __filename,
-      handler: initEnv,
+module.exports = () => [
+  {
+    target: '$START',
+    name: SERVICE_NAME,
+    trace: __filename,
+    handler: initEnv,
+  },
+  {
+    target: '$FASTIFY_PLUGIN?',
+    name: SERVICE_NAME,
+    trace: __filename,
+    handler: ({ decorate, decorateRequest }, { getContext }) => {
+      const getEnv = getContext('getEnv');
+      decorate('getEnv', getEnv);
+      decorateRequest('getEnv', getEnv);
     },
-    {
-      target: '$FASTIFY_PLUGIN?',
-      name: SERVICE_NAME,
-      trace: __filename,
-      handler: ({ decorate, decorateRequest }, { getContext }) => {
-        const getEnv = getContext('getEnv');
-        decorate('getEnv', getEnv);
-        decorateRequest('getEnv', getEnv);
-      },
-    },
-  ];
-};
+  },
+];

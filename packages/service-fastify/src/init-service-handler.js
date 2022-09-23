@@ -28,6 +28,7 @@ module.exports = ({
       done();
     });
   };
+
   const decorateReply = (name, value) => {
     server.decorateReply(name, null);
     server.addHook('onResponse', (request, reply, done) => {
@@ -50,9 +51,9 @@ module.exports = ({
   decorateRequest('axios', axios);
 
   // Deprecated, should be removed
-  decorateReply('getConfig', getConfig);
-  decorateReply('getContext', getContext);
-  decorateReply('axios', axios);
+  // decorateReply('getConfig', getConfig);
+  // decorateReply('getContext', getContext);
+  // decorateReply('axios', axios);
 
   createExtension.sync('$FASTIFY_HACKS_BEFORE', { fastify: server });
   createExtension.sync('$FASTIFY_PLUGIN', {
