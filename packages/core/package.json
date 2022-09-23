@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/core",
   "description": "ForrestJS is the Javascript plugin syste.",
-  "version": "5.0.0-alpha.0",
+  "version": "5.0.0-alpha.1",
   "main": "src/index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
