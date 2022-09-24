@@ -75,9 +75,7 @@
     "@forrestjs/service-hash": "^5.0.0-alpha.8",
     "@forrestjs/service-jwt": "^5.0.0-alpha.8",
     "@forrestjs/service-logger": "^5.0.0-alpha.8",
-    "@forrestjs/service-pg": "^5.0.0-alpha.8",
-    "@forrestjs/service-postgres": "^4.7.2",
-    "@forrestjs/service-postgres-pubsub": "^4.7.2"
+    "@forrestjs/service-pg": "^5.0.0-alpha.8"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify#readme",
   "keywords": [
