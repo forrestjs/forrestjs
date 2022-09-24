@@ -43,7 +43,6 @@ const serviceJwt = () => {
     {
       ...service,
       target: '$INIT_SERVICES',
-      name: SERVICE_NAME,
       priority: 100,
       handler: (_, { getConfig, setContext }) => {
         secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---');
@@ -95,7 +94,6 @@ const serviceJwt = () => {
     {
       ...service,
       target: '$FASTIFY_PLUGIN?',
-      name: SERVICE_NAME,
       handler: ({ decorate, decorateRequest }, { getContext }) => {
         const jwt = getContext('jwt');
         decorate('jwt', jwt);
@@ -110,7 +108,6 @@ const serviceJwt = () => {
     {
       ...service,
       target: '$FETCHQ_DECORATE_CONTEXT?',
-      name: SERVICE_NAME,
       handler: (context, { getContext }) => ({
         ...context,
         jwt: getContext('jwt'),
@@ -123,7 +120,6 @@ const serviceJwt = () => {
     {
       ...service,
       target: '$FASTIFY_TDD_ROUTE?',
-      name: SERVICE_NAME,
       handler: ({ registerTddRoute }) => {
         registerTddRoute({
           method: 'POST',
