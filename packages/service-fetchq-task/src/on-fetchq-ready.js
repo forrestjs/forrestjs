@@ -1,34 +1,29 @@
 /**
  * Push into the tasks queue all the registered tasks
  */
-module.exports = async ({ fetchq }, { getContext }) => {
-  const queueName = getContext('fetchq.task.queueName');
-  for (const { subject, payload, resetOnBoot } of getContext(
-    'fetchq.task.register',
-  )) {
+module.exports = async ({ fetchq }, { getContext, log }) => {
+  const queueName = getContext("fetchq.task.queueName");
+  const resetTask = getContext("fetchq.task.reset");
+
+  for (const {
+    subject,
+    payload = {},
+    firstIteration = "now",
+    resetOnBoot
+  } of getContext("fetchq.task.register")) {
+    // Schedule the task:
+    log.info(`[fetchq-task] Schedule "${subject}" at "${firstIteration}"`);
     await fetchq.doc.push(queueName, {
       subject,
       payload,
+      ...(firstIteration === "now" ? {} : { nextIteration: firstIteration })
     });
 
-    if (resetOnBoot) {
-      const encodedPayload = JSON.stringify(payload || {}).replace(
-        /'/g,
-        "''''",
+    // ResetOnBoot the task:
+    if (resetOnBoot)
+      await resetTask(
+        subject,
+        `Reset on Boot "${subject}" at "${firstIteration}"`
       );
-      const sql = `
-        UPDATE fetchq_data.${queueName}__docs SET
-          "status" = 1,
-          "attempts" = 0,
-          "iterations" = 0,
-          "created_at" = now(),
-          "last_iteration" = NULL,
-          "next_iteration" = now(),
-          "payload" = $1
-        WHERE "subject" = $2;
-      `;
-
-      await fetchq.pool.query(sql, [encodedPayload, subject]);
-    }
   }
 };
