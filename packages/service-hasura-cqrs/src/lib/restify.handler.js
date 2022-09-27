@@ -28,7 +28,7 @@ module.exports = async (
   } = restify;
 
   try {
-    const requestBody = buildRequestBody(payload);
+    const requestBody = buildRequestBody(payload, queue);
     log.verbose(`[hasura-cqrs] Restify send request`, {
       queue,
       endpoint,
@@ -100,7 +100,10 @@ module.exports = async (
       }
     }
 
-    return kill(err.message);
+    // TODO: Improve and handle connection errors or original errors details
+    return kill(err.message, {
+      details: err.response ? err.response.data : err.message
+    });
   }
 
   // Apply termination policy:
