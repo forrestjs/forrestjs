@@ -1,7 +1,7 @@
 class FetchqCQRSSourceError extends Error {
   constructor(message) {
     super(message);
-    this.name = "FetchqCQRSSourceError";
+    this.name = 'FetchqCQRSSourceError';
   }
 }
 
@@ -40,7 +40,7 @@ module.exports = ({
    *
    * If provided, it should be thoroughly tested!
    */
-  router = (sourcedItem, availableTargets) => [targets[0]],
+  router = (sourcedItem, availableTargets) => [...availableTargets],
 
   /**
    * type: GraphQL
@@ -74,7 +74,7 @@ module.exports = ({
    * Provide the initial value of the fetch query cursor.
    * By default, we assume a cursor based on "created_at".
    */
-  initialCursor = "1970-01-01",
+  initialCursor = '1970-01-01',
 
   /**
    * type: (sourceItem: Object, sourceName: String): String
@@ -103,37 +103,37 @@ module.exports = ({
   /**
    * Manage task rescheduling policies
    */
-  sleepOnSuccess = "-1ms",
-  sleepOnEmpty = "+1s",
-  sleepOnError = "+1s",
+  sleepOnSuccess = '-1ms',
+  sleepOnEmpty = '+1s',
+  sleepOnError = '+1s',
 
   /**
    * Manage the log level for this ForrestJS target
    */
-  shouldLog = true
+  shouldLog = true,
 } = {}) => {
-  if (!name || name === "") {
-    throw new FetchqCQRSSourceError("Missing property: name");
+  if (!name || name === '') {
+    throw new FetchqCQRSSourceError('Missing property: name');
   }
   if (!targets) {
-    throw new FetchqCQRSSourceError("Missing property: target");
+    throw new FetchqCQRSSourceError('Missing property: target');
   }
   if (!Array.isArray(targets)) {
     throw new FetchqCQRSSourceError(
-      "Malformed property: targets, should be an array"
+      'Malformed property: targets, should be an array',
     );
   }
   if (!targets.length) {
-    throw new FetchqCQRSSourceError("Source need at least one target");
+    throw new FetchqCQRSSourceError('Source need at least one target');
   }
-  if (!graphqlQuery || graphqlQuery === "") {
-    throw new FetchqCQRSSourceError("Missing property: graphqlQuery");
+  if (!graphqlQuery || graphqlQuery === '') {
+    throw new FetchqCQRSSourceError('Missing property: graphqlQuery');
   }
   if (!buildQueryVariables) {
-    throw new FetchqCQRSSourceError("Missing property: buildQueryVariables");
+    throw new FetchqCQRSSourceError('Missing property: buildQueryVariables');
   }
-  if (typeof buildQueryVariables !== "function") {
-    throw new FetchqCQRSSourceError("Malformed property: buildQueryVariables");
+  if (typeof buildQueryVariables !== 'function') {
+    throw new FetchqCQRSSourceError('Malformed property: buildQueryVariables');
   }
 
   return {
@@ -150,6 +150,6 @@ module.exports = ({
     buildSubject,
     buildNextCursor,
     buildDocument,
-    shouldLog
+    shouldLog,
   };
 };

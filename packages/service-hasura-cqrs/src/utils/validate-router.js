@@ -1,7 +1,7 @@
 class FetchqCQRSRouterError extends Error {
   constructor(message) {
     super(message);
-    this.name = "FetchqCQRSRouterError";
+    this.name = 'FetchqCQRSRouterError';
   }
 }
 
@@ -15,24 +15,24 @@ module.exports = ({
    * @param {String} sourceName
    * @return {String[]} A list of target queues where to forward the item for further processing
    */
-  router,
+  router = (sourcedItem, availableTargets) => [...availableTargets],
 
   checkOnBoot = true,
   dropOnComplete = true,
   workerSettings = {},
-  shouldLog = true
+  shouldLog = true,
 } = {}) => {
-  if (!source || source === "") {
-    throw new FetchqCQRSRouterError("Missing property: source");
+  if (!source || source === '') {
+    throw new FetchqCQRSRouterError('Missing property: source');
   }
   if (!Array.isArray(targets)) {
-    throw new FetchqCQRSRouterError("Missing property: targets");
+    throw new FetchqCQRSRouterError('Missing property: targets');
   }
   if (!targets.length) {
-    throw new FetchqCQRSRouterError("A router needs at least one target");
+    throw new FetchqCQRSRouterError('A router needs at least one target');
   }
-  if (!router || typeof router !== "function") {
-    throw new FetchqCQRSRouterError("Missing property: router");
+  if (!router || typeof router !== 'function') {
+    throw new FetchqCQRSRouterError('Missing property: router');
   }
 
   return {
@@ -42,6 +42,6 @@ module.exports = ({
     checkOnBoot: Boolean(checkOnBoot),
     dropOnComplete: Boolean(dropOnComplete),
     workerSettings,
-    shouldLog
+    shouldLog,
   };
 };
