@@ -4,6 +4,7 @@ const { registerAction } = require('./register-action');
 const { traceHook } = require('./tracer');
 const { createRegistry } = require('./create-targets-registry');
 const constants = require('./constants');
+const { makeLogger, LOG_LEVELS } = require('./logger');
 const {
   ForrestJSGetConfigError,
   ForrestJSGetContextError,
@@ -73,13 +74,11 @@ const runIntegrations = async (
       typeof registerFn === 'function'
         ? await registerFn({
             ...context,
-            registerAction: (ag1, ag2, ag3 = {}) => {
-              // Handle definition as an object
-              return registeredExtensions.push({
-                ...ag1,
-                name: `${prefix}${ag1.name || integrationName}`,
-              });
-            },
+            registerAction: ({ name, ...config }) =>
+              registeredExtensions.push({
+                ...config,
+                name: `${prefix}${name || integrationName}`,
+              }),
           })
         : service;
 
@@ -149,10 +148,12 @@ const registerSettingsExtension = (buildAppSettings) => {
 };
 
 /**
- * TODO: In v5.0.0 we can destructure the appManifest as so to provide
- *       code hints through VSCode
- * @param {} appManifest
- * @returns
+ * Create a ForrestJS App Context
+ * @param {IntegrationObject[]} services List of services that compose theapp
+ * @param {IntegrationObject[]} features List of features that compose theapp
+ * @param {Object | Function} settings Settings object or async function that produces a settings object
+ * @param {Object} context Application initial context
+ * @returns {Promise} App instance
  */
 const createApp =
   ({
@@ -165,10 +166,23 @@ const createApp =
   async () => {
     // creates initial internal settings from an object
     // or automatically register the provided settings callback
-    const internalSettings =
+    const computedSettings =
       typeof settings === 'function'
         ? registerSettingsExtension(settings)
         : settings;
+
+    // Decorates the application settings with the logger
+    // configuration
+    const internalSettings = {
+      ...computedSettings,
+      // Provide default logging settings:
+      logger: {
+        level: process.env.LOG_LEVEL || 'info',
+        levelsMap: LOG_LEVELS,
+        transport: console.log,
+        ...(computedSettings.logger || {}),
+      },
+    };
 
     // Context bound list of known Extensions
     const targetsRegistry = createRegistry(constants);
@@ -185,6 +199,12 @@ const createApp =
 
     // create the context with getters / setters /
     const internalContext = {
+      // Add basic logging mechanism
+      // (could be replaced by extensions)
+      log: makeLogger(internalSettings.logger.level, {
+        levelsMap: internalSettings.logger.levelsMap,
+        transport: internalSettings.logger.transport,
+      }),
       ...context,
       ...targetsRegistry,
       registerAction,
