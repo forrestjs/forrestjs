@@ -1,4 +1,4 @@
-describe('service-fetchq', () => {
+describe('service-fetchq-client', () => {
   beforeEach(fetchq.resetState);
 
   it('should queue a document into Q1', async () => {

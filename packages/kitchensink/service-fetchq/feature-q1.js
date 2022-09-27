@@ -7,15 +7,20 @@
  * @param {*} param0
  */
 
-const pushDocHandler = (request) =>
-  request.fetchq.doc.push(request.params.queue, {
+const pushDocHandler = (request) => {
+  request.log.info('[q1] push doc');
+  return request.fetchq.doc.push(request.params.queue, {
     subject: request.params.subject,
   });
+};
 
-const appendDocHandler = (request) =>
-  request.fetchq.doc.append(request.params.queue, request.params);
+const appendDocHandler = (request) => {
+  request.log.info('[q1] append doc');
+  return request.fetchq.doc.append(request.params.queue, request.params);
+};
 
 const readDocHandler = async (request) => {
+  request.log.info('[q1] read doc');
   const { queue, subject } = request.params;
   const res = await request.fetchq.pool.query(
     `SELECT * FROM "fetchq_data"."${queue}__docs" WHERE "subject" = '${subject}'`,
@@ -24,7 +29,11 @@ const readDocHandler = async (request) => {
   return res.rows[0];
 };
 
-const workerQ1 = (doc) => doc.drop();
+const workerQ1 = (doc, { log, fetchq }) => {
+  log.info(`[workerQ1] ${doc.subject}`);
+  fetchq.logger.info(`[workerQ1] ${doc.subject}`);
+  return doc.drop();
+};
 
 const workerQ2 = async (doc, ctx) => {
   ctx.log.info('Running WorkerQ1');

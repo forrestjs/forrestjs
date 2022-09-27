@@ -14,6 +14,9 @@ const onInitService = ({
   setContext,
   createExtension,
 }) => {
+  const log = getContext('log');
+  log.info('[fetchq] Init service');
+
   // Decorate the Fetchq context with a reference to the getters in the targets app:
   const receivedConfig = getConfig('fetchq', {});
 
@@ -24,20 +27,32 @@ const onInitService = ({
   );
 
   const applyConfig = {
+    // Log level defaults to the ForrestJS configuration but
+    // it can be overridden by the Fetchq specific config
+    logLevel: getConfig('logger.level'),
     ...receivedConfig,
+    logger: log,
     decorateContext: {
       ...(receivedConfig.decorateContext ? receivedConfig.decorateContext : {}),
       ...extendedContext,
+      log,
       getConfig,
       getContext,
     },
   };
+
+  log.debug('[fetchq] Apply config', {
+    config: applyConfig,
+  });
 
   const client = fetchq(applyConfig);
   setContext('fetchq', client);
 };
 
 const onStartService = async ({ getConfig, getContext, createExtension }) => {
+  const log = getContext('log');
+  log.info('[fetchq] Start service');
+
   const client = getContext('fetchq');
 
   // register feature's queues

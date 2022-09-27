@@ -44,7 +44,7 @@ const serviceJwt = () => {
       ...service,
       target: '$INIT_SERVICES',
       priority: 100,
-      handler: (_, { getConfig, setContext }) => {
+      handler: (_, { log, getConfig, setContext }) => {
         secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---');
         duration = getConfig('jwt.duration', process.env.JWT_DURATION || '---');
         settings = getConfig('jwt.settings', {});
@@ -55,10 +55,10 @@ const serviceJwt = () => {
           ['development', 'test'].includes(process.env.NODE_ENV)
         ) {
           secret = 'forrestjs';
-          console.warn(
+          log.warn(
             `[service-jwt] secret automagically configured because you are in "${process.env.NODE_ENV}" environment.`,
           );
-          console.warn(`[service-jwt] value: "${secret}"`);
+          log.warn(`[service-jwt] value: "${secret}"`);
         }
 
         // Automagically setup the duration in "development" or "test"
@@ -67,10 +67,10 @@ const serviceJwt = () => {
           ['development', 'test'].includes(process.env.NODE_ENV)
         ) {
           duration = '30d';
-          console.warn(
+          log.warn(
             `[service-jwt] duration automagically configured because you are in "${process.env.NODE_ENV}" environment.`,
           );
-          console.warn(`[service-jwt] value: "${duration}"`);
+          log.warn(`[service-jwt] value: "${duration}"`);
         }
 
         // Validate configuration

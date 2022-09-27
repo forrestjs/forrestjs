@@ -152,6 +152,7 @@ const registerSettingsExtension = (buildAppSettings) => {
  * @param {IntegrationObject[]} features List of features that compose theapp
  * @param {Object | Function} settings Settings object or async function that produces a settings object
  * @param {Object} context Application initial context
+ * @param {string} logLevel Log level for the default logger
  * @returns {Promise} App instance
  */
 const createApp =
@@ -161,6 +162,7 @@ const createApp =
     settings = {},
     context = {},
     trace = null,
+    logLevel = process.env.LOG_LEVEL || 'info',
   } = {}) =>
   async () => {
     // creates initial internal settings from an object
@@ -176,7 +178,7 @@ const createApp =
       ...computedSettings,
       // Provide default logging settings:
       logger: {
-        level: process.env.LOG_LEVEL || 'info',
+        level: logLevel,
         levelsMap: LOG_LEVELS,
         transport: console.log,
         ...(computedSettings.logger || {}),
@@ -295,8 +297,16 @@ const startApp = ({
   settings = {},
   context = {},
   trace = null,
+  logLevel,
 } = {}) => {
-  const app = createApp({ services, features, settings, context, trace });
+  const app = createApp({
+    services,
+    features,
+    settings,
+    context,
+    trace,
+    logLevel,
+  });
   return app();
 };
 

@@ -40,7 +40,7 @@
     "tdd:service-hash": "jest -t service-hash --runInBand  --watchAll",
     "start:service-fetchq": "cross-env NODE_ENV=development PGSTRING=postgres://postgres:postgres@localhost:5432/postgres DANGEROUSLY_ENABLE_FASTIFY_TDD_ENDPOINT=yes npx nodemon service-fetchq",
     "test:service-fetchq": "jest -t service-fetchq --runInBand ",
-    "tdd:service-fetchq": "jest -t service-fetchq --runInBand  --watchAll",
+    "tdd:service-fetchq": "jest -t service-fetchq-client --runInBand  --watchAll",
     "start:service-fetchq-task": "cross-env NODE_ENV=development DANGEROUSLY_ENABLE_FASTIFY_TDD_ENDPOINT=yes npx nodemon service-fetchq-task",
     "test:service-fetchq-task": "jest -t service-fetchq-task --runInBand ",
     "tdd:service-fetchq-task": "jest -t service-fetchq-task --runInBand  --watchAll",
@@ -75,7 +75,8 @@
     "@forrestjs/service-hash": "^5.0.0-alpha.8",
     "@forrestjs/service-jwt": "^5.0.0-alpha.8",
     "@forrestjs/service-logger": "^5.0.0-alpha.8",
-    "@forrestjs/service-pg": "^5.0.0-alpha.8"
+    "@forrestjs/service-pg": "^5.0.0-alpha.8",
+    "fetchq": "^4.1.1"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify#readme",
   "keywords": [

@@ -1,4 +1,7 @@
-const homeRouteHandler = async () => 'fetchq';
+const homeRouteHandler = (request, reply) => {
+  request.log('[home] route');
+  reply.send('fetchq');
+};
 
 module.exports = {
   name: 'home',
