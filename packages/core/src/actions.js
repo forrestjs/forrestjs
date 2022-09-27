@@ -3,8 +3,26 @@ const { logAction, getLevelNumber } = require('./logger');
 
 const scalars = ['number', 'string', 'boolean'];
 
-const spreadArgs = (args) =>
-  scalars.includes(typeof args) ? args : { ...args };
+/**
+ * TEMPORARY:
+ * So far App context is passed as second parameter
+ *
+ * Lifecycle methods send in the ctx as first parameter as well,
+ * so we have to detect this situation and replace with the
+ * decorated context.
+ *
+ * TODO: Remove this check in v6x when the CTX will always
+ *       go as first parameter.
+ *
+ * @param {*} args
+ * @param {*} ctx
+ * @returns
+ */
+const spreadArgs = (args, ctx) => {
+  if (typeof args === 'object' && args.log && args.getContext)
+    return [ctx, ctx];
+  return [scalars.includes(typeof args) ? args : { ...args }, ctx];
+};
 
 const conditionalLogger = ({ logLevel }, { context }) => {
   // Handle usage of isolated actions:
@@ -43,11 +61,14 @@ const runAction = async (action, options) => {
   logAction('run', action);
   try {
     traceAction(action, options);
-    const args = spreadArgs(options.args);
-    const result = await action.handler(args, {
+    // console.log('@callASync');
+
+    const args = spreadArgs(options.args, {
       ...options.context,
       log: conditionalLogger(action, options),
     });
+
+    const result = await action.handler(...args);
     return [result, action, options];
   } catch (err) {
     return options.onItemError(err, action, options);
@@ -58,12 +79,14 @@ const runActionSync = (action, options) => {
   logAction('run (sync)', action);
   try {
     traceAction(action, options);
-    const args = spreadArgs(options.args);
     // console.log('@callSync');
-    const result = action.handler(args, {
+
+    const args = spreadArgs(options.args, {
       ...options.context,
       log: conditionalLogger(action, options),
     });
+
+    const result = action.handler(...args);
     return [result, action, options];
   } catch (err) {
     return options.onItemError(err, action, options);

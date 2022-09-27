@@ -50,6 +50,13 @@ module.exports = ({
   decorateRequest('setContext', setContext);
   decorateRequest('axios', axios);
 
+  // Replace default logger with the ForrestJS logger
+  server.log = getContext('log');
+  server.addHook('onRequest', (request, reply, done) => {
+    request.log = server.log;
+    done();
+  });
+
   createExtension.sync('$FASTIFY_HACKS_BEFORE', { fastify: server });
   createExtension.sync('$FASTIFY_PLUGIN', {
     registerPlugin,
