@@ -79,11 +79,9 @@ const createExtension = (receivedName, receivedOptions = {}) => {
 
   if (options.mode === 'serie') {
     return new Promise(async (resolve, reject) => {
-      // console.log('@@@@ SERIE', name);
       try {
         const results = [];
         for (const action of actions) {
-          // console.log('>>>', action);
           results.push(await runAction(action, options));
         }
         writeLog();

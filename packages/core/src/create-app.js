@@ -107,7 +107,6 @@ const runIntegrations = async (
       });
     }
   }
-
   // Register all the actions declared by the integrations that have been executed
   registeredExtensions.forEach(context.registerAction);
 };

@@ -20,6 +20,7 @@ const registerAction = ({
   handler = noop,
   priority = 0,
   optional = false,
+  logLevel = null,
   ...meta
 } = {}) => {
   if (!target || target === '') {
@@ -59,6 +60,7 @@ const registerAction = ({
       handler: handlerFn,
       priority,
       optional,
+      logLevel,
     };
 
     logAction('register', actionPayload);

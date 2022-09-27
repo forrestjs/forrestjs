@@ -107,6 +107,10 @@ const makeLogger = (
     logger[key] = (...args) => logger(key, ...args);
   });
 
+  // Create a custom logger clone
+  logger.cloneWithLogLevel = (logLevel) =>
+    makeLogger(logLevel, { transport, levelsMap });
+
   return logger;
 };
 
