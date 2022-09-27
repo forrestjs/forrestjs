@@ -30,8 +30,8 @@ const onInitService = ({
     // Log level defaults to the ForrestJS configuration but
     // it can be overridden by the Fetchq specific config
     logLevel: getConfig('logger.level'),
-    ...receivedConfig,
     logger: log,
+    ...receivedConfig,
     decorateContext: {
       ...(receivedConfig.decorateContext ? receivedConfig.decorateContext : {}),
       ...extendedContext,
