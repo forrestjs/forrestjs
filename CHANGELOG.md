@@ -1,18 +1,25 @@
-## 5.0.0 (roadmap)
+## 6.0.0 (roadmap)
 
-- [x] remove support for declarative array definition `const f1 = [hook, handler]`
-- [x] remove `runHookApp` and `createHookApp`
-- [x] remove `createHook` support
-- [x] remove `registerAction` support
-- [x] remove `registerHook` support
-- [x] remove `FASTIFY_GET` and other methods support
 - [ ] action's parameter will be reversed (ctx, action's data)
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
 - [ ] Move boot trace before the App execution
-- [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [ ] write `service-pg-pubsub` accepting `PGSTRING`
 - [service-postgres] removed
 - [service-postgres-pubsub] removed
+
+## 5.0.0
+
+- [core] remove support for declarative array definition `const f1 = [hook, handler]`
+- [core] remove `runHookApp` and `createHookApp`
+- [core] remove `createHook` support
+- [core] remove `registerAction` support
+- [core] remove `registerHook` support
+- [core] add a better default logger
+- [core] support `logLevel` in App config
+- [core] support `logLevel` override at Extension level
+- [service-fastify] remove `FASTIFY_GET` and other methods support
+- [service-fetchq] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
+- [service-hasura-cqrs] Introduced the service
 
 ## 4.7.2
 
