@@ -62,7 +62,8 @@ const { createApp } = require('./create-app');
  * @param {ForrestJSAppManifest} manifest
  * @returns {Promise}
  */
-exports.run = ({
+
+const run = ({
   services = [],
   features = [],
   settings = {},
@@ -80,7 +81,8 @@ exports.run = ({
   });
   return app();
 };
-exports.default = exports.run;
+
+module.exports = run;
 
 // Export global API:
 // exports.createApp = createApp;
