@@ -82,7 +82,8 @@ const run = ({
   return app();
 };
 
-module.exports = run;
+exports.run = run;
+exports.default = run;
 
 // Export global API:
 // exports.createApp = createApp;
