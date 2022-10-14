@@ -14,8 +14,8 @@ export type ForrestJSHandler = (target: ForrestJSContext) => Array.ForrestJSExte
 export type ForrestJSService = (target: ForrestJSContext) => Array.ForrestJSExtension;
 export type ForrestJSFeature = (target: any) => Array.ForrestJSExtension;
 export type ForrestJSAppManifest = {
-    services: Array.ForrestJSService;
-    features: Array.ForrestJSFeature;
+    services: Array.Object;
+    features: Array.Object;
     settings: any | null;
     context: any | null;
     trace: (string | null) | null;
@@ -56,8 +56,8 @@ export type ForrestJSAppManifest = {
  */
 /**
  * @typedef {Object} ForrestJSAppManifest
- * @property {?Array.ForrestJSService} services
- * @property {?Array.ForrestJSFeature} features
+ * @property {?Array.Object} services
+ * @property {?Array.Object} features
  * @property {?Object} settings
  * @property {?Object} context
  * @property {?string|null} trace
@@ -70,3 +70,12 @@ export type ForrestJSAppManifest = {
  * @returns {Promise}
  */
 export function run({ services, features, settings, context, trace, logLevel, }?: ForrestJSAppManifest): Promise<any>;
+import { createApp } from "./create-app";
+import { startApp } from "./create-app";
+import { traceHook } from "./tracer";
+import { logTrace } from "./tracer";
+import { logBoot } from "./tracer";
+import { registerAction } from "./register-action";
+import { getTarget } from "./create-targets-registry";
+import { createExtension } from "./create-extension";
+export { createApp, startApp, traceHook, logTrace, logBoot, createAction, registerAction, getTarget, createExtension, CORE, BOOT, SERVICE, FEATURE, SYMBOLS, SEPARATOR, START, SETTINGS, INIT_SERVICE, INIT_SERVICES, INIT_FEATURE, INIT_FEATURES, START_SERVICE, START_SERVICES, START_FEATURE, START_FEATURES, FINISH };
