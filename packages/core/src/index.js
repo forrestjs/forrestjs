@@ -38,4 +38,4 @@ exports.START_FEATURE = constants.START_FEATURE;
 exports.START_FEATURES = constants.START_FEATURES;
 exports.FINISH = constants.FINISH;
 
-exports.default = startApp;
+module.exports = startApp;
