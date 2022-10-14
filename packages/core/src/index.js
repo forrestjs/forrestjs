@@ -47,12 +47,12 @@ const constants = require('./constants');
 
 /**
  * @typedef {Object} ForrestJSAppManifest
- * @property {?Array.Object} services
- * @property {?Array.Object} features
- * @property {?Object} settings
- * @property {?Object} context
- * @property {?string|null} trace
- * @property {?string} logLevel
+ * @property {Array.ForrestJSService} services
+ * @property {Array.ForrestJSFeature} features
+ * @property {Object} settings
+ * @property {Object} context
+ * @property {string|null} trace
+ * @property {string} logLevel
  */
 
 /**

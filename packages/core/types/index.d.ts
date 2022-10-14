@@ -14,12 +14,12 @@ export type ForrestJSHandler = (target: ForrestJSContext) => Array.ForrestJSExte
 export type ForrestJSService = (target: ForrestJSContext) => Array.ForrestJSExtension;
 export type ForrestJSFeature = (target: any) => Array.ForrestJSExtension;
 export type ForrestJSAppManifest = {
-    services: Array.Object;
-    features: Array.Object;
-    settings: any | null;
-    context: any | null;
-    trace: (string | null) | null;
-    logLevel: string | null;
+    services: Array.ForrestJSService;
+    features: Array.ForrestJSFeature;
+    settings: any;
+    context: any;
+    trace: string | null;
+    logLevel: string;
 };
 /**
  * @callback ForrestJSGetter
@@ -56,12 +56,12 @@ export type ForrestJSAppManifest = {
  */
 /**
  * @typedef {Object} ForrestJSAppManifest
- * @property {?Array.Object} services
- * @property {?Array.Object} features
- * @property {?Object} settings
- * @property {?Object} context
- * @property {?string|null} trace
- * @property {?string} logLevel
+ * @property {Array.ForrestJSService} services
+ * @property {Array.ForrestJSFeature} features
+ * @property {Object} settings
+ * @property {Object} context
+ * @property {string|null} trace
+ * @property {string} logLevel
  */
 /**
  * Executes a ForrestJS App
