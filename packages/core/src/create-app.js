@@ -12,55 +12,6 @@ const {
   ForrestJSInvalidHandlerError,
 } = require('./errors');
 
-/**
- * @callback ForrestJSGetter
- * @param {string} key
- * @param {?any} defaultValue
- * @returns {any}
- */
-
-/**
- * @typedef {Object} ForrestJSContext
- * @property {ForrestJSGetter} getConfig
- * @property {() => void} setConfig
- * @property {ForrestJSGetter} getContext
- * @property {() => void} setContext
- */
-
-/**
- * @typedef {Object} ForrestJSExtension
- * @property {string} target
- * @property {() => vlid} handler
- */
-
-/**
- * @callback ForrestJSHandler
- * @param {ForrestJSContext} target
- * @returns {Array.ForrestJSExtension}
- */
-
-/**
- * @callback ForrestJSService
- * @param {ForrestJSContext} target
- * @returns {Array.ForrestJSExtension}
- */
-
-/**
- * @callback ForrestJSFeature
- * @param {Object} target
- * @returns {Array.ForrestJSExtension}
- */
-
-/**
- * @typedef {Object} ForrestJSApp
- * @property {Array.ForrestJSService} services
- * @property {Array.ForrestJSFeature} features
- * @property {Object} settings
- * @property {Object} context
- * @property {string|null} trace
- * @property {string} logLevel
- */
-
 const isDeclarativeAction = (
   { target, handler },
   integrationName,
@@ -343,12 +294,6 @@ const createApp =
     };
   };
 
-/**
- * Executes a ForrestJS App
- *
- * @param {ForrestJSApp} appManifest
- * @returns {Promise}
- */
 const startApp = ({
   services = [],
   features = [],

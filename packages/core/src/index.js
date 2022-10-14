@@ -2,13 +2,85 @@
 // const { createAction, createExtension } = require('./create-extension');
 // const { registerAction } = require('./register-action');
 // const { createApp, startApp } = require('./create-app');
-const { startApp } = require('./create-app');
+const { createApp } = require('./create-app');
 
 // const { getTarget } = require('./create-targets-registry');
 // const constants = require('./constants');
 
-// Export the global symbol as App runner:
-exports.run = startApp;
+/**
+ * @callback ForrestJSGetter
+ * @param {string} key
+ * @param {?any} defaultValue
+ * @returns {any}
+ */
+
+/**
+ * @typedef {Object} ForrestJSContext
+ * @property {ForrestJSGetter} getConfig
+ * @property {() => void} setConfig
+ * @property {ForrestJSGetter} getContext
+ * @property {() => void} setContext
+ */
+
+/**
+ * @typedef {Object} ForrestJSExtension
+ * @property {string} target
+ * @property {() => vlid} handler
+ */
+
+/**
+ * @callback ForrestJSHandler
+ * @param {ForrestJSContext} target
+ * @returns {Array.ForrestJSExtension}
+ */
+
+/**
+ * @callback ForrestJSService
+ * @param {ForrestJSContext} target
+ * @returns {Array.ForrestJSExtension}
+ */
+
+/**
+ * @callback ForrestJSFeature
+ * @param {Object} target
+ * @returns {Array.ForrestJSExtension}
+ */
+
+/**
+ * @typedef {Object} ForrestJSAppManifest
+ * @property {?Array.ForrestJSService} services
+ * @property {?Array.ForrestJSFeature} features
+ * @property {?Object} settings
+ * @property {?Object} context
+ * @property {?string|null} trace
+ * @property {?string} logLevel
+ */
+
+/**
+ * Executes a ForrestJS App
+ *
+ * @param {ForrestJSAppManifest} manifest
+ * @returns {Promise}
+ */
+exports.run = ({
+  services = [],
+  features = [],
+  settings = {},
+  context = {},
+  trace = null,
+  logLevel,
+} = {}) => {
+  const app = createApp({
+    services,
+    features,
+    settings,
+    context,
+    trace,
+    logLevel,
+  });
+  return app();
+};
+exports.default = exports.run;
 
 // Export global API:
 // exports.createApp = createApp;
