@@ -29,10 +29,12 @@
   "scripts": {
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json",
     "test": "jest",
-    "tdd": "jest --watchAll"
+    "tdd": "jest --watchAll",
+    "types": "npx -p typescript tsc src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types"
   },
   "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578",
   "devDependencies": {
-    "jest": "^28.1.0"
+    "jest": "^28.1.0",
+    "typescript": "^4.8.4"
   }
 }

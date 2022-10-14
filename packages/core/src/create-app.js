@@ -12,6 +12,55 @@ const {
   ForrestJSInvalidHandlerError,
 } = require('./errors');
 
+/**
+ * @callback ForrestJSGetter
+ * @param {string} key
+ * @param {?any} defaultValue
+ * @returns {any}
+ */
+
+/**
+ * @typedef {Object} ForrestJSContext
+ * @property {ForrestJSGetter} getConfig
+ * @property {() => void} setConfig
+ * @property {ForrestJSGetter} getContext
+ * @property {() => void} setContext
+ */
+
+/**
+ * @typedef {Object} ForrestJSExtension
+ * @property {string} target
+ * @property {() => vlid} handler
+ */
+
+/**
+ * @callback ForrestJSHandler
+ * @param {ForrestJSContext} target
+ * @returns {Array.ForrestJSExtension}
+ */
+
+/**
+ * @callback ForrestJSService
+ * @param {ForrestJSContext} target
+ * @returns {Array.ForrestJSExtension}
+ */
+
+/**
+ * @callback ForrestJSFeature
+ * @param {Object} target
+ * @returns {Array.ForrestJSExtension}
+ */
+
+/**
+ * @typedef {Object} ForrestJSApp
+ * @property {Array.ForrestJSService} services
+ * @property {Array.ForrestJSFeature} features
+ * @property {Object} settings
+ * @property {Object} context
+ * @property {string|null} trace
+ * @property {string} logLevel
+ */
+
 const isDeclarativeAction = (
   { target, handler },
   integrationName,
@@ -147,13 +196,10 @@ const registerSettingsExtension = (buildAppSettings) => {
 };
 
 /**
- * Create a ForrestJS App Context
- * @param {IntegrationObject[]} services List of services that compose theapp
- * @param {IntegrationObject[]} features List of features that compose theapp
- * @param {Object | Function} settings Settings object or async function that produces a settings object
- * @param {Object} context Application initial context
- * @param {string} logLevel Log level for the default logger
- * @returns {Promise} App instance
+ * Creates a ForrestJS App
+ *
+ * @param {ForrestJSApp} appManifest
+ * @returns {Promise}
  */
 const createApp =
   ({
@@ -188,7 +234,12 @@ const createApp =
     // Context bound list of known Extensions
     const targetsRegistry = createRegistry(constants);
 
-    // create getter and setter for the configuration
+    /**
+     * Retrieve a configuration value
+     * @param  {string} key path to the config value
+     * @param  {?any} defaultValue
+     * @returns {any}
+     */
     const getConfig = (...args) => {
       try {
         return objectGetter(internalSettings)(...args);
@@ -196,6 +247,7 @@ const createApp =
         throw new ForrestJSGetConfigError(err.message);
       }
     };
+
     const setConfig = objectSetter(internalSettings);
 
     // create the context with getters / setters /
@@ -291,6 +343,12 @@ const createApp =
     };
   };
 
+/**
+ * Executes a ForrestJS App
+ *
+ * @param {ForrestJSApp} appManifest
+ * @returns {Promise}
+ */
 const startApp = ({
   services = [],
   features = [],
