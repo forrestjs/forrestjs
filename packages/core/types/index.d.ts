@@ -68,13 +68,13 @@ export = run;
  */
 /**
  * @typedef {Object} ForrestJSContext
+ * @property {ForrestJSLogger} log
  * @property {ForrestJSGetter} getConfig
  * @property {ForrestJSSetter} setConfig
  * @property {ForrestJSGetter} getContext
  * @property {ForrestJSSetter} setContext
  * @property {ForrestJSRegisterTargets} registerTargets
  * @property {ForrestJSCreateExtension} createExtension
- * @property {ForrestJSLogger} log
  */
 /**
  * @interface ForrestJSParams
@@ -88,7 +88,7 @@ export = run;
 /**
  * @typedef {Object} ForrestJSExtension
  * @property {string} target
- * @property {ForrestJSHandler} handler
+ * @property {ForrestJSHandler|Object} handler
  * @property {boolean} [enabled]
  * @property {boolean} [optional]
  * @property {string} [name]
@@ -179,18 +179,18 @@ type ForrestJSLogger = {
     silly: Function;
 };
 type ForrestJSContext = {
+    log: ForrestJSLogger;
     getConfig: ForrestJSGetter;
     setConfig: ForrestJSSetter;
     getContext: ForrestJSGetter;
     setContext: ForrestJSSetter;
     registerTargets: ForrestJSRegisterTargets;
     createExtension: ForrestJSCreateExtension;
-    log: ForrestJSLogger;
 };
 type ForrestJSHandler = (params: ForrestJSParams, context: ForrestJSContext) => any;
 type ForrestJSExtension = {
     target: string;
-    handler: ForrestJSHandler;
+    handler: ForrestJSHandler | any;
     enabled?: boolean;
     optional?: boolean;
     name?: string;
