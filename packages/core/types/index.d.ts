@@ -88,7 +88,7 @@ export = run;
 /**
  * @typedef {Object} ForrestJSExtension
  * @property {string} target
- * @property {ForrestJSHandler|Object} handler
+ * @property {ForrestJSHandler} handler
  * @property {boolean} [enabled]
  * @property {boolean} [optional]
  * @property {string} [name]
@@ -190,7 +190,7 @@ type ForrestJSContext = {
 type ForrestJSHandler = (params: ForrestJSParams, context: ForrestJSContext) => any;
 type ForrestJSExtension = {
     target: string;
-    handler: ForrestJSHandler | any;
+    handler: ForrestJSHandler;
     enabled?: boolean;
     optional?: boolean;
     name?: string;

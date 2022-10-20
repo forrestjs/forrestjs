@@ -107,7 +107,7 @@ const constants = require('./constants');
 /**
  * @typedef {Object} ForrestJSExtension
  * @property {string} target
- * @property {ForrestJSHandler|Object} handler
+ * @property {ForrestJSHandler} handler
  * @property {boolean} [enabled]
  * @property {boolean} [optional]
  * @property {string} [name]
