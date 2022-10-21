@@ -68,7 +68,7 @@ const createExtension = (receivedName, receivedOptions = {}) => {
         writeLog();
         pullStack();
 
-        results.getValues = getValues;
+        results.getValues = () => results.map(($) => $[0]);
         resolve(results);
       } catch (err) {
         try {
@@ -92,7 +92,7 @@ const createExtension = (receivedName, receivedOptions = {}) => {
         writeLog();
         pullStack();
 
-        results.getValues = getValues;
+        results.getValues = () => results.map(($) => $[0]);
         resolve(results);
       } catch (err) {
         // console.log('*****', err.name, err.message);
@@ -119,7 +119,7 @@ const createExtension = (receivedName, receivedOptions = {}) => {
       args = res[0];
     });
 
-    results.getValues = getValues;
+    results.getValues = () => results.map(($) => $[0]);
     return {
       value: args,
       results,
@@ -129,11 +129,11 @@ const createExtension = (receivedName, receivedOptions = {}) => {
   // synchronous execution with arguments
   try {
     const results = actions.map((action) => runActionSync(action, options));
-    
+
     writeLog();
     pullStack();
 
-    results.getValues = getValues;
+    results.getValues = () => results.map(($) => $[0]);
     return results;
   } catch (err) {
     return pullStack(options.onError(err, name, options));
