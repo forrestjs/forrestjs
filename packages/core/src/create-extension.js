@@ -56,6 +56,9 @@ const createExtension = (receivedName, receivedOptions = {}) => {
     }
   };
 
+  // Utility that extracts the values from the extension results
+  const getValues = ($) => $[0];
+
   if (options.mode === 'parallel') {
     return new Promise(async (resolve, reject) => {
       // console.log('@@@@ PARALLEL', name);
@@ -64,6 +67,8 @@ const createExtension = (receivedName, receivedOptions = {}) => {
         const results = await Promise.all(promises);
         writeLog();
         pullStack();
+
+        results.getValues = getValues;
         resolve(results);
       } catch (err) {
         try {
@@ -86,6 +91,8 @@ const createExtension = (receivedName, receivedOptions = {}) => {
         }
         writeLog();
         pullStack();
+
+        results.getValues = getValues;
         resolve(results);
       } catch (err) {
         // console.log('*****', err.name, err.message);
@@ -112,6 +119,7 @@ const createExtension = (receivedName, receivedOptions = {}) => {
       args = res[0];
     });
 
+    results.getValues = getValues;
     return {
       value: args,
       results,
@@ -120,10 +128,12 @@ const createExtension = (receivedName, receivedOptions = {}) => {
 
   // synchronous execution with arguments
   try {
-    // console.log('@@@@ SYNC', name);
     const results = actions.map((action) => runActionSync(action, options));
+    
     writeLog();
     pullStack();
+
+    results.getValues = getValues;
     return results;
   } catch (err) {
     return pullStack(options.onError(err, name, options));
