@@ -40,7 +40,7 @@ export = run;
 /**
  * @callback ForrestJSCreateSyncExtension
  * @param {String} target
- * @param {Object} params
+ * @param {Object} [params]
  * @returns {Array.<any, ForrestJSExtensionLog, ForrestJSActionLog>}
  */
 /**
@@ -161,7 +161,7 @@ type ForrestJSActionLog = {
     onItemError: Function;
     trace: any;
 };
-type ForrestJSCreateSyncExtension = (target: string, params: any) => Array<any, ForrestJSExtensionLog, ForrestJSActionLog>;
+type ForrestJSCreateSyncExtension = (target: string, params?: any) => Array<any, ForrestJSExtensionLog, ForrestJSActionLog>;
 type ForrestJSCreateAsycExtension = (target: string, params?: any) => Promise<any>;
 type ForrestJSCreateExtension = {
     sync: ForrestJSCreateSyncExtension;

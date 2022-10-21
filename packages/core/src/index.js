@@ -52,7 +52,7 @@ const constants = require('./constants');
 /**
  * @callback ForrestJSCreateSyncExtension
  * @param {String} target
- * @param {Object} params
+ * @param {Object} [params]
  * @returns {Array.<any, ForrestJSExtensionLog, ForrestJSActionLog>}
  */
 
