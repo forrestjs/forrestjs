@@ -46,7 +46,7 @@ export = run;
 /**
  * @callback ForrestJSCreateAsycExtension
  * @param {String} target
- * @param {Object} params
+ * @param {Object} [params]
  * @returns {Promise}
  */
 /**
@@ -162,7 +162,7 @@ type ForrestJSActionLog = {
     trace: any;
 };
 type ForrestJSCreateSyncExtension = (target: string, params: any) => Array<any, ForrestJSExtensionLog, ForrestJSActionLog>;
-type ForrestJSCreateAsycExtension = (target: string, params: any) => Promise<any>;
+type ForrestJSCreateAsycExtension = (target: string, params?: any) => Promise<any>;
 type ForrestJSCreateExtension = {
     sync: ForrestJSCreateSyncExtension;
     waterfall: ForrestJSCreateSyncExtension;

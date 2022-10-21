@@ -59,7 +59,7 @@ const constants = require('./constants');
 /**
  * @callback ForrestJSCreateAsycExtension
  * @param {String} target
- * @param {Object} params
+ * @param {Object} [params]
  * @returns {Promise}
  */
 
