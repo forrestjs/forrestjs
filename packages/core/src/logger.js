@@ -42,6 +42,9 @@ const LOG_LEVELS = {
 const getLevelNumber = (level, levels = LOG_LEVELS, defaultValue = 0) =>
   levels[String(level).toLowerCase()] || defaultValue;
 
+const defaultTransport = ({ message, level, ...data }, ...args) =>
+  console.log(`${level}: ${message}`, data, ...args);
+
 /**
  * Creates a logger instance that logs to the console
  * @param {String} LOG_LEVEL max level to log
@@ -50,7 +53,7 @@ const getLevelNumber = (level, levels = LOG_LEVELS, defaultValue = 0) =>
  */
 const makeLogger = (
   logLevel = 'info',
-  { transport = console.log, levelsMap = LOG_LEVELS } = {},
+  { transport = defaultTransport, levelsMap = LOG_LEVELS } = {},
 ) => {
   const logNumber = getLevelNumber(logLevel, levelsMap);
 
@@ -66,33 +69,32 @@ const makeLogger = (
         if (ag2) {
           if (typeof ag2 === 'object') {
             transport(
-              `${level}: ${ag1}`,
               {
                 ...ag2,
                 level,
+                message: ag1,
               },
               ...argsRest,
             );
           } else {
             transport(
-              `${level}: ${ag1}`,
               {
                 level,
+                message: ag1,
               },
               ag2,
               ...argsRest,
             );
           }
         } else {
-          transport(`${level}: ${ag1}`, { level }, ...args);
+          transport({ level, message: ag1 }, ...args);
         }
       } else {
-        const { message, ...ag1Rest } = ag1;
+        // const { message, ...ag1Rest } = ag1;
         transport(
-          `${level}: ${message}`,
           ...[
             {
-              ...ag1Rest,
+              ...ag1,
               level,
             },
             ...args,
@@ -110,6 +112,9 @@ const makeLogger = (
   // Create a custom logger clone
   logger.cloneWithLogLevel = (logLevel) =>
     makeLogger(logLevel, { transport, levelsMap });
+
+  logger.cloneWithTransport = (transport) =>
+    makeLogger(logLevel, { transport: transport, levelsMap });
 
   return logger;
 };

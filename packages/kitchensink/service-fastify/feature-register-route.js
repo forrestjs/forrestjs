@@ -19,7 +19,10 @@ module.exports = ({ registerAction }) => {
       registerRoute({
         method: 'GET',
         url: '/',
-        handler: async () => 'Home Page',
+        handler: (request, reply) => {
+          request.log.info('HomePage');
+          reply.send('Home Page');
+        },
       });
       registerRoute({
         method: 'GET',

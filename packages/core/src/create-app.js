@@ -177,7 +177,7 @@ const createApp =
       logger: {
         level: logLevel,
         levelsMap: LOG_LEVELS,
-        transport: console.log,
+        transport: undefined,
         ...(computedSettings.logger || {}),
       },
     };
