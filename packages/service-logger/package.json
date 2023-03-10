@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@forrestjs/core": "^5.0.0-alpha.32",
-    "winston": "^3.7.2"
+    "winston": "^3.8.2"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-logger#readme",
   "keywords": [

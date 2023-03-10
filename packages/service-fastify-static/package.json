@@ -8,7 +8,7 @@
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@fastify/static": "^5.0.2",
+    "@fastify/static": "^6.9.0",
     "@forrestjs/core": "^5.0.0-alpha.32"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify-static#readme",

@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@forrestjs/core": "^5.0.0-alpha.32",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^9.0.1"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-jwt#readme",
   "keywords": [
