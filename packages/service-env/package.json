@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-env",
   "description": "ForrestJS feature which helps importing environment variables from .env.* files.",
-  "version": "5.0.0-alpha.32",
+  "version": "5.0.0-alpha.33",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index.js",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^5.0.0-alpha.32",
+    "@forrestjs/core": "^5.0.0-alpha.33",
     "node-env-file": "^0.1.8"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-env#readme",
