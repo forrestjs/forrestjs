@@ -53,7 +53,7 @@ const genSalt = (rounds) =>
 const serviceBcrypt = () => [
   {
     ...service,
-    target: '$INIT_SERVICES',
+    target: '$INIT_SERVICE',
     priority: 100,
     handler: async ({ getConfig }, ctx) => {
       const logInfo = ctx.logInfo || console.log;
