@@ -19,8 +19,9 @@ const scalars = ['number', 'string', 'boolean'];
  * @returns
  */
 const spreadArgs = (args, ctx) => {
-  if (typeof args === 'object' && args.log && args.getContext)
+  if (args !== null && typeof args === 'object' && args.log && args.getContext)
     return [ctx, ctx];
+
   return [scalars.includes(typeof args) ? args : { ...args }, ctx];
 };
 
