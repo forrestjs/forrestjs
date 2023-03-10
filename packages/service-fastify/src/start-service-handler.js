@@ -72,5 +72,5 @@ module.exports = ({ getContext, getConfig, createExtension }) => {
     process.env.FASTIFY_PORT || process.env.PORT || 8080,
   );
   const serverMeta = getConfig('fastify.meta', '::');
-  server.listen(serverPort, serverMeta);
+  server.listen({ port: serverPort }, serverMeta);
 };
