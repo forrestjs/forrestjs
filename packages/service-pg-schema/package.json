@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-pg-schema",
   "description": "ForrestJS service helps building a small PostgreSQL Schema",
-  "version": "5.0.0-alpha.37",
+  "version": "5.0.0-alpha.38",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^5.0.0-alpha.37"
+    "@forrestjs/core": "^5.0.0-alpha.38"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-pg-schema#readme",
   "keywords": [
