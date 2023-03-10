@@ -54,12 +54,10 @@ const serviceBcrypt = () => [
   {
     ...service,
     target: '$INIT_SERVICE',
-    priority: 100,
-    handler: async ({ getConfig }, ctx) => {
-      const logInfo = ctx.logInfo || console.log;
-
-      salt = getConfig('hash.salt', process.env.HASH_SALT || '---');
-      rounds = getConfig('hash.rounds', process.env.HASH_ROUNDS || '---');
+    priority: 1,
+    handler: async ({ getConfig, setContext, log }) => {
+      let salt = getConfig('hash.salt', process.env.HASH_SALT || '---');
+      const rounds = getConfig('hash.rounds', process.env.HASH_ROUNDS || '---');
 
       // Validate configuration
       if (rounds === '---')
@@ -70,15 +68,15 @@ const serviceBcrypt = () => [
       // Generate a random SALT if not provided by the configuration
       if (salt === '---') {
         salt = await genSalt(rounds);
-        logInfo(`[service-hash] A new salt was generated: ${salt}`);
+        log.info(`[service-hash] A new salt was generated: ${salt}`);
       }
 
       // Decorate the context with helper methods
-      ctx.hash = {
+      setContext('hash', {
         encode,
         compare,
         genSalt,
-      };
+      });
     },
   },
 
@@ -89,6 +87,7 @@ const serviceBcrypt = () => [
     ...service,
     target: '$FASTIFY_PLUGIN?',
     handler: ({ decorate, decorateRequest }, { getContext }) => {
+      console.log('HASH FASTIFY');
       const hash = getContext('hash');
       decorate('hash', hash);
       decorateRequest('hash', hash);
