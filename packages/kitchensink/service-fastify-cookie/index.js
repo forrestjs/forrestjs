@@ -35,13 +35,15 @@ forrestjs({
   features: [
     {
       name: 'test-cookie',
-      target: '$FASTIFY_GET',
+      target: '$FASTIFY_ROUTE',
       handler: [
         {
+          method: 'GET',
           url: '/',
           handler: setCookie,
         },
         {
+          method: 'GET',
           url: '/get',
           handler: getCookie,
         },

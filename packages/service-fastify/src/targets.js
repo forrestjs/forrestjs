@@ -3,10 +3,10 @@ const FASTIFY_OPTIONS = `${SERVICE_NAME}/options`;
 const FASTIFY_HACKS_BEFORE = `${SERVICE_NAME}/hacks/before`;
 const FASTIFY_PLUGIN = `${SERVICE_NAME}/plugin`;
 const FASTIFY_ROUTE = `${SERVICE_NAME}/route`;
-const FASTIFY_GET = `${SERVICE_NAME}/get`;
-const FASTIFY_POST = `${SERVICE_NAME}/post`;
-const FASTIFY_PUT = `${SERVICE_NAME}/put`;
-const FASTIFY_DELETE = `${SERVICE_NAME}/delete`;
+// const FASTIFY_GET = `${SERVICE_NAME}/get`;
+// const FASTIFY_POST = `${SERVICE_NAME}/post`;
+// const FASTIFY_PUT = `${SERVICE_NAME}/put`;
+// const FASTIFY_DELETE = `${SERVICE_NAME}/delete`;
 const FASTIFY_HACKS_AFTER = `${SERVICE_NAME}/hacks/after`;
 const FASTIFY_TDD_CHECK = `${SERVICE_NAME}/tdd/check`;
 const FASTIFY_TDD_ROUTE = `${SERVICE_NAME}/tdd/route`;
@@ -18,10 +18,10 @@ module.exports = {
   FASTIFY_HACKS_BEFORE,
   FASTIFY_PLUGIN,
   FASTIFY_ROUTE,
-  FASTIFY_GET,
-  FASTIFY_POST,
-  FASTIFY_PUT,
-  FASTIFY_DELETE,
+  // FASTIFY_GET,
+  // FASTIFY_POST,
+  // FASTIFY_PUT,
+  // FASTIFY_DELETE,
   FASTIFY_HACKS_AFTER,
   FASTIFY_TDD_CHECK,
   FASTIFY_TDD_ROUTE,

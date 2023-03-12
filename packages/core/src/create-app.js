@@ -4,6 +4,7 @@ const { registerAction } = require('./register-action');
 const { traceHook } = require('./tracer');
 const { createRegistry } = require('./create-targets-registry');
 const constants = require('./constants');
+const { makeLogger, LOG_LEVELS } = require('./logger');
 const {
   ForrestJSGetConfigError,
   ForrestJSGetContextError,
@@ -11,16 +12,14 @@ const {
   ForrestJSInvalidHandlerError,
 } = require('./errors');
 
-// DEPRECATED: property "hook" is deprecated and will be removed in v5.0.0
 const isDeclarativeAction = (
-  { hook, target, handler },
+  { target, handler },
   integrationName,
   integrationType,
 ) => {
-  const _target = target || hook;
-  if (!(typeof _target === 'string' && _target)) {
+  if (!(typeof target === 'string' && target)) {
     throw new ForrestJSInvalidTargetError(
-      `${integrationType} "${integrationName}" defines an invalid target "${_target}"`,
+      `${integrationType} "${integrationName}" defines an invalid target "${target}"`,
     );
   }
 
@@ -75,35 +74,11 @@ const runIntegrations = async (
       typeof registerFn === 'function'
         ? await registerFn({
             ...context,
-            registerAction: (ag1, ag2, ag3 = {}) => {
-              // Handle positional arguments:
-              // registerAction('hook', () => {})
-              // registerAction('hook', () => {}, 'name')
-              // registerAction('hook', () => {}, { name: 'name' })
-              if (typeof ag1 === 'string') {
-                console.warn(
-                  `[DEPRECATED] "registerAction(name, handler, option)" is deprecated and will be remove in version 5.0.0.`,
-                );
-
-                return registeredExtensions.push([
-                  ag1,
-                  ag2,
-                  {
-                    ...(typeof ag3 === 'string' ? { name: ag3 } : ag3),
-                    name: `${prefix}${
-                      (typeof ag3 === 'string' ? ag3 : ag3.name) ||
-                      integrationName
-                    }`,
-                  },
-                ]);
-              }
-
-              // Handle definition as an object
-              return registeredExtensions.push({
-                ...ag1,
-                name: `${prefix}${ag1.name || integrationName}`,
-              });
-            },
+            registerAction: ({ name, ...config }) =>
+              registeredExtensions.push({
+                ...config,
+                name: `${prefix}${name || integrationName}`,
+              }),
           })
         : service;
 
@@ -120,46 +95,11 @@ const runIntegrations = async (
       );
     }
 
-    // DEPRECATED
-    // register a single action given as configuration array
-    // [ hook, handler, name ]
-    // [ hook, handler, { otherOptions }]
-    else if (
-      Array.isArray(computed) &&
-      computed.length >= 2 &&
-      typeof computed[0] === 'string' &&
-      (typeof computed[1] === 'function' || typeof computed[1] === 'object')
-    ) {
-      console.warn(
-        '[DEPRECATED] please use the object base declarative pattern { hook, handler, ... } - this API will be removed in v5.0.0',
-      );
-      const [hook, handler, options = {}] = computed;
-      registeredExtensions.push({
-        ...(typeof options === 'string'
-          ? { name: `${prefix}${options}` }
-          : {
-              ...options,
-              name: `${prefix}${options.name || integrationName}`,
-            }),
-        hook,
-        // An handler could be a simple object to skip any running function
-        handler: typeof handler === 'function' ? handler : () => handler,
-      });
-    }
-
     // register a single action give an a configuration object
-    // { hook, handler, ... }
-    // DEPRECATED: "hook" in favor for "target" - remove in v5.0.0
-    else if (
-      computed &&
-      (computed.hook || computed.target) &&
-      computed.handler
-    ) {
-      if (computed.hook) {
-        console.warn(
-          `[DEPRECATED] the key "hook" is deprecated and will be removed from v5.0.0.\nPlease use "target" instead.`,
-        );
-      }
+    // { target, handler, ... }
+    else if (computed && computed.target && computed.handler) {
+      // Strict check on the action format:
+      isDeclarativeAction(computed, integrationName, integrationType);
 
       registeredExtensions.push({
         ...computed,
@@ -167,7 +107,6 @@ const runIntegrations = async (
       });
     }
   }
-
   // Register all the actions declared by the integrations that have been executed
   registeredExtensions.forEach(context.registerAction);
 };
@@ -208,40 +147,50 @@ const registerSettingsExtension = (buildAppSettings) => {
 };
 
 /**
- * TODO: In v5.0.0 we can destructure the appManifest as so to provide
- *       code hints through VSCode
- * @param {} appManifest
- * @returns
+ * Creates a ForrestJS App
+ *
+ * @param {ForrestJSApp} appManifest
+ * @returns {Promise}
  */
 const createApp =
-  (appManifest = {}) =>
+  ({
+    services = [],
+    features = [],
+    settings = {},
+    context = {},
+    trace = null,
+    logLevel = process.env.LOG_LEVEL || 'info',
+  } = {}) =>
   async () => {
-    if (Array.isArray(appManifest)) {
-      console.warn(
-        `[DEPRECATED] The array version is deprecated and will be removed in v5.0.0.\nUse the full App Manifest definition instead.`,
-      );
-    }
-
-    // accepts a single param as [] of features
-    const {
-      services = [],
-      features = [],
-      settings = {},
-      context = {},
-      trace = null,
-    } = Array.isArray(appManifest) ? { services: appManifest } : appManifest;
-
     // creates initial internal settings from an object
     // or automatically register the provided settings callback
-    const internalSettings =
+    const computedSettings =
       typeof settings === 'function'
         ? registerSettingsExtension(settings)
         : settings;
 
+    // Decorates the application settings with the logger
+    // configuration
+    const internalSettings = {
+      ...computedSettings,
+      // Provide default logging settings:
+      logger: {
+        level: logLevel,
+        levelsMap: LOG_LEVELS,
+        transport: undefined,
+        ...(computedSettings.logger || {}),
+      },
+    };
+
     // Context bound list of known Extensions
     const targetsRegistry = createRegistry(constants);
 
-    // create getter and setter for the configuration
+    /**
+     * Retrieve a configuration value
+     * @param  {string} key path to the config value
+     * @param  {?any} defaultValue
+     * @returns {any}
+     */
     const getConfig = (...args) => {
       try {
         return objectGetter(internalSettings)(...args);
@@ -249,10 +198,17 @@ const createApp =
         throw new ForrestJSGetConfigError(err.message);
       }
     };
+
     const setConfig = objectSetter(internalSettings);
 
     // create the context with getters / setters /
     const internalContext = {
+      // Add basic logging mechanism
+      // (could be replaced by extensions)
+      log: makeLogger(internalSettings.logger.level, {
+        levelsMap: internalSettings.logger.levelsMap,
+        transport: internalSettings.logger.transport,
+      }),
       ...context,
       ...targetsRegistry,
       registerAction,
@@ -261,7 +217,6 @@ const createApp =
       setContext: null,
       getContext: null,
       createExtension: null,
-      createHook: null, // DEPRECATED: remove in v5.0.0
     };
 
     // provide an api to deal with the internal context
@@ -281,38 +236,9 @@ const createApp =
     _cs.serie = (name, args) => _cs(name, { args, mode: 'serie' });
     _cs.parallel = (name, args) => _cs(name, { args, mode: 'parallel' });
     _cs.waterfall = (name, args) => _cs(name, { args, mode: 'waterfall' });
+
     // Inject into the App context
     internalContext.createExtension = _cs;
-
-    // DEPRECATED: remove in v5.0.0
-    internalContext.createHook = (...args) => {
-      console.warn(
-        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
-      );
-      return _cs(...args);
-    };
-    internalContext.createHook.sync = (...args) => {
-      console.warn(
-        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
-      );
-      return _cs.sync(...args);
-    };
-    internalContext.createHook.serie = (...args) => {
-      console.warn(
-        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
-      );
-      return _cs.serie(...args);
-    };
-    internalContext.createHook.parallel = (...args) => {
-      console.warn(
-        `[DEPRECATED] "createHook()" will be removed from v5.0.0.\nUse "createExtension()" instead`,
-      );
-      return _cs.parallel(...args);
-    };
-    internalContext.createHook.waterfall = (...args) => {
-      console.warn('[DEPRECATED] createHook');
-      return _cs.waterfall(...args);
-    };
 
     // run lifecycle
     await runIntegrations(
@@ -340,6 +266,7 @@ const createApp =
     await _cs.serie(constants.FINISH, internalContext);
 
     // Implement trace without a Hook
+    // TODO: move before the execution
     if (trace) {
       const lines = [];
       lines.push('');
@@ -367,23 +294,23 @@ const createApp =
     };
   };
 
-const startApp = ($) => {
-  const app = createApp($);
+const startApp = ({
+  services = [],
+  features = [],
+  settings = {},
+  context = {},
+  trace = null,
+  logLevel,
+} = {}) => {
+  const app = createApp({
+    services,
+    features,
+    settings,
+    context,
+    trace,
+    logLevel,
+  });
   return app();
-};
-
-// DEPRECATED: remove in v5.0.0
-const createHookApp = ($) => {
-  console.warn(
-    '[DEPRECATED] use "createApp()" instead of "createHookApp()". It will be removed in v5.0.0',
-  );
-  return createApp($);
-};
-const runHookApp = ($) => {
-  console.warn(
-    '[DEPRECATED] use "createApp()" instead of "runHookApp()". It will be removed in v5.0.0',
-  );
-  return startApp($);
 };
 
 module.exports = {
@@ -391,6 +318,4 @@ module.exports = {
   startApp,
   isDeclarativeAction,
   isListOfDeclarativeActions,
-  createHookApp, // DEPRECATED: remove in v5.0.0
-  runHookApp, // DEPRECATED: remove in v5.0.0
 };

@@ -1,5 +1,9 @@
 const fetchq = require('fetchq');
-const { SERVICE_NAME, ...targets } = require('./targets');
+
+const service = {
+  name: 'fetchq',
+  trace: __filename,
+};
 
 const QUERY_DROP =
   'DROP SCHEMA "fetchq_data" CASCADE; DROP SCHEMA "fetchq" CASCADE;';
@@ -10,6 +14,9 @@ const onInitService = ({
   setContext,
   createExtension,
 }) => {
+  const log = getContext('log');
+  log.info('[fetchq] Init service');
+
   // Decorate the Fetchq context with a reference to the getters in the targets app:
   const receivedConfig = getConfig('fetchq', {});
 
@@ -20,20 +27,32 @@ const onInitService = ({
   );
 
   const applyConfig = {
+    // Log level defaults to the ForrestJS configuration but
+    // it can be overridden by the Fetchq specific config
+    logLevel: getConfig('logger.level'),
+    logger: log,
     ...receivedConfig,
     decorateContext: {
       ...(receivedConfig.decorateContext ? receivedConfig.decorateContext : {}),
       ...extendedContext,
+      log,
       getConfig,
       getContext,
     },
   };
+
+  log.debug('[fetchq] Apply config', {
+    config: applyConfig,
+  });
 
   const client = fetchq(applyConfig);
   setContext('fetchq', client);
 };
 
 const onStartService = async ({ getConfig, getContext, createExtension }) => {
+  const log = getContext('log');
+  log.info('[fetchq] Start service');
+
   const client = getContext('fetchq');
 
   // register feature's queues
@@ -74,7 +93,14 @@ const onStartService = async ({ getConfig, getContext, createExtension }) => {
 };
 
 module.exports = ({ registerTargets }) => {
-  registerTargets(targets);
+  registerTargets({
+    FETCHQ_DECORATE_CONTEXT: `${service.name}/decorate-context`,
+    FETCHQ_REGISTER_QUEUE: `${service.name}/register/queue`,
+    FETCHQ_REGISTER_WORKER: `${service.name}/register/worker`,
+    FETCHQ_READY: `${service.name}/ready`,
+    FETCHQ_BEFORE_START: `${service.name}/before-start`,
+    FETCHQ_TDD_STATE_RESET: `${service.name}/tdd/state/reset`,
+  });
 
   /**
    * HEALTHCHECK
@@ -93,16 +119,14 @@ module.exports = ({ registerTargets }) => {
 
   return [
     {
+      ...service,
       target: '$INIT_SERVICE',
-      name: SERVICE_NAME,
-      trace: __filename,
       priority: 100,
       handler: onInitService,
     },
     {
+      ...service,
       target: '$START_SERVICE',
-      name: SERVICE_NAME,
-      trace: __filename,
       priority: 100,
       handler: onStartService,
     },
@@ -111,9 +135,8 @@ module.exports = ({ registerTargets }) => {
      * Provide the Fetchq client reference into Fastify's context
      */
     {
+      ...service,
       target: '$FASTIFY_PLUGIN?',
-      name: SERVICE_NAME,
-      trace: __filename,
       handler: ({ decorate, decorateRequest }, { getContext }) => {
         const fetchq = getContext('fetchq');
         decorate('fetchq', fetchq);
@@ -125,15 +148,13 @@ module.exports = ({ registerTargets }) => {
      * HEALTHZ
      */
     {
+      ...service,
       target: '$FASTIFY_TDD_CHECK?',
-      name: SERVICE_NAME,
-      trace: __filename,
       handler: () => healthcheckHandler,
     },
     {
+      ...service,
       target: '$FASTIFY_HEALTHZ_CHECK?',
-      name: SERVICE_NAME,
-      trace: __filename,
       handler: () => healthcheckHandler,
     },
 
@@ -142,9 +163,8 @@ module.exports = ({ registerTargets }) => {
      * Integrate with the Fastify TDD API
      */
     {
+      ...service,
       target: '$FASTIFY_TDD_ROUTE?',
-      name: SERVICE_NAME,
-      trace: __filename,
       handler: ({ registerTddRoute }, { createExtension }) => {
         const schemaFields = {
           type: 'object',

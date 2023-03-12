@@ -1,18 +1,38 @@
-## 5.0.0 (roadmap)
+## 6.0.0 (roadmap)
 
-- [ ] remove support for declarative array definition `const f1 = [hook, handler]`
-- [ ] remove `runHookApp` and `createHookApp`
-- [ ] remove `createHook` support
-- [ ] remove `registerAction` support
-- [ ] remove `registerHook` support
-- [ ] remove `FASTIFY_GET` and other methods support
-- [ ] action's parameter will be reversed (ctx, action's data)
+- [ ] action's parameter will be reversed (ctx <--> action's data)
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
-
-## 4.X.X (roadmap)
-
-- [ ] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
+- [ ] Move boot trace before the App execution
 - [ ] write `service-pg-pubsub` accepting `PGSTRING`
+- [service-logger] removed
+- [service-postgres] removed
+- [service-postgres-pubsub] removed
+- [service-env] removed
+- [service-hash] removed
+- [service-fastify-gql] removed
+- [package-fastify] removed
+
+## 5.0.0 (wip)
+
+- [core] remove support for declarative array definition `const f1 = [hook, handler]`
+- [core] remove `runHookApp` and `createHookApp`
+- [core] remove `createHook` support
+- [core] remove `registerAction` support
+- [core] remove `registerHook` support
+- [core] add a better default logger
+- [core] support `logLevel` in App config
+- [core] support `logLevel` override at Extension level
+- [service-fastify] remove `FASTIFY_GET` and other methods support
+- [service-fetchq] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
+- [service-hasura-cqrs] Introduced the service
+- [core] add `results.getValues()` to all the extensions returning data
+- [service-logger] deprecated
+- [service-postgres] deprecated
+- [service-postgres-pubsub] deprecated
+- [service-env] deprecated
+- [service-hash] deprecated
+- [service-fastify-gql] deprecated
+- [package-fastify] deprecated
 
 ## 4.7.2
 

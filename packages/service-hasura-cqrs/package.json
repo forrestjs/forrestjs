@@ -1,0 +1,36 @@
+{
+  "name": "@forrestjs/service-hasura-cqrs",
+  "description": "NodeJS client to issue GraphQL queries towards an Hasura endpoint, and Hasura admin APIs",
+  "version": "5.0.3",
+  "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
+  "main": "src/index",
+  "bugs": {
+    "url": "https://github.com/forrestjs/forrestjs/issues"
+  },
+  "dependencies": {
+    "@forrestjs/core": "^5.0.3"
+  },
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-hasura-cqrs#readme",
+  "keywords": [
+    "forrestjs",
+    "service",
+    "hasura",
+    "cqrs",
+    "graphql",
+    "fetchq"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-hasura-cqrs",
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json",
+    "test": "jest",
+    "tdd": "jest --watchAll"
+  },
+  "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578",
+  "devDependencies": {
+    "jest": "^28.1.0"
+  }
+}

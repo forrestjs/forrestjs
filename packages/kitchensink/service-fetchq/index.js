@@ -15,7 +15,8 @@ const featureHome = require('./feature-home');
 const featureQ1 = require('./feature-q1');
 
 forrestjs({
-  trace: 'compact',
+  // trace: 'compact',
+  logLevel: 'info',
   settings: {
     fetchq: {
       logLevel: 'error',

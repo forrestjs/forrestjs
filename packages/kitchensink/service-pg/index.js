@@ -45,8 +45,9 @@ const f1 = () => [
 
   // Exposes the seeded data via Fastify endpoint
   {
-    target: '$FASTIFY_GET',
+    target: '$FASTIFY_ROUTE',
     handler: {
+      method: 'GET',
       url: '/names',
       handler: async (request) => {
         const res = await request.pg.query(

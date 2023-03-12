@@ -1,3 +1,6 @@
+const taskReset = require("./task-reset");
+const taskRun = require("./task-run");
+
 /**
  * Collect tasks definition from:
  * - app's configuration
@@ -5,13 +8,14 @@
  *
  * @param {*} param0
  */
-module.exports = ({ createExtension, getConfig, setContext }) => {
-  const queueName = getConfig('fetchq.task.queue.name', 'task');
-  const queueSettings = getConfig('fetchq.task.queue.settings', {});
-  const workerSettings = getConfig('fetchq.task.worker.settings', {});
+module.exports = (ctx) => {
+  const { log, createExtension, getConfig, setContext, getContext } = ctx;
+  const queueName = getConfig("fetchq.task.queue.name", "task");
+  const queueSettings = getConfig("fetchq.task.queue.settings", {});
+  const workerSettings = getConfig("fetchq.task.worker.settings", {});
 
   // Ensure a list of tasks is provided
-  let configuredTasks = getConfig('fetchq.task.register', []);
+  let configuredTasks = getConfig("fetchq.task.register", []);
   if (!Array.isArray(configuredTasks)) {
     configuredTasks = [configuredTasks];
   }
@@ -22,7 +26,13 @@ module.exports = ({ createExtension, getConfig, setContext }) => {
     // Collect from App configuration
     ...configuredTasks,
     // Collect from other extensions
-    ...createExtension.sync('$FETCHQ_REGISTER_TASK').map(($) => $[0]),
+    ...createExtension
+      .sync("$FETCHQ_REGISTER_TASK")
+      .map(($) => $[0])
+      // Support array form
+      .reduce((acc, curr) => {
+        return [...acc, ...(Array.isArray(curr) ? curr : [curr])];
+      }, [])
   ];
 
   // TODO: validate tasks DTO
@@ -32,10 +42,12 @@ module.exports = ({ createExtension, getConfig, setContext }) => {
     throw new Error(`FetchqTask invalid format`);
   }
 
-  setContext('fetchq.task', {
+  setContext("fetchq.task", {
     queueName,
     queueSettings,
     workerSettings,
     register: registerTasks,
+    reset: (subject, msg) => taskReset(subject, msg, ctx),
+    run: (subject, msg) => taskRun(subject, msg, ctx)
   });
 };

@@ -1,8 +1,9 @@
 {
   "name": "@forrestjs/core",
   "description": "ForrestJS is the Javascript plugin syste.",
-  "version": "4.7.2",
+  "version": "5.0.3",
   "main": "src/index.js",
+  "types": "types/index.d.ts",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
@@ -29,10 +30,12 @@
   "scripts": {
     "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json",
     "test": "jest",
-    "tdd": "jest --watchAll"
+    "tdd": "jest --watchAll",
+    "types": "npx -p typescript tsc src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types"
   },
   "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578",
   "devDependencies": {
-    "jest": "^28.1.0"
+    "jest": "^28.1.0",
+    "typescript": "^4.8.4"
   }
 }

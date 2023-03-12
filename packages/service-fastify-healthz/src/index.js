@@ -1,4 +1,7 @@
-const { SERVICE_NAME, ...targets } = require('./targets.js');
+const service = {
+  name: 'fastify-healthz',
+  trace: __filename,
+};
 
 const healthzCheckTypeErrorMessage =
   '[fastify-healthz] The healthz check must be a Fastify compatible preHandler function';
@@ -10,12 +13,14 @@ const healthzRouteHandler = async () => ({
 });
 
 module.exports = ({ registerTargets }) => {
-  registerTargets(targets);
+  registerTargets({
+    FASTIFY_HEALTHZ_HANDLER: `${service.name}/hanlder`,
+    FASTIFY_HEALTHZ_CHECK: `${service.name}/check`,
+  });
 
   return [
     {
-      name: SERVICE_NAME,
-      trace: __filename,
+      ...service,
       target: '$FASTIFY_ROUTE',
       handler: ({ registerRoute }, { createExtension, getConfig }) => {
         // Let a custom handler logic being injected

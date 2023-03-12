@@ -1,20 +1,19 @@
 const corsPlugin = require('@fastify/cors');
-const { SERVICE_NAME, ...targets } = require('./targets');
 
-const onFastifyHacksBefore = ({ registerPlugin }, { getConfig }) => {
+const service = {
+  name: 'fastify-cors',
+  trace: __filename,
+};
+
+const onFastifyPlugin = ({ registerPlugin }, { getConfig }) => {
   const options = getConfig('fastify.cors', {});
   registerPlugin(corsPlugin, options);
 };
 
-module.exports = ({ registerTargets }) => {
-  registerTargets(targets);
-
-  return [
-    {
-      target: '$FASTIFY_PLUGIN',
-      trace: __filename,
-      name: SERVICE_NAME,
-      handler: onFastifyHacksBefore,
-    },
-  ];
-};
+module.exports = () => [
+  {
+    ...service,
+    target: '$FASTIFY_PLUGIN',
+    handler: onFastifyPlugin,
+  },
+];

@@ -1,11 +1,18 @@
-const targets = require('./targets');
+const service = {
+  trace: __filename,
+  name: 'pg-schema',
+};
 
 const pgSchema = ({ registerTargets }) => {
-  registerTargets(targets);
+  registerTargets({
+    PG_SCHEMA_BUILD: `${service.name}/build`,
+    PG_SCHEMA_RESET: `${service.name}/reset`,
+    PG_SCHEMA_SEED: `${service.name}/seed`,
+  });
 
   return [
     {
-      trace: __filename,
+      ...service,
       target: '$PG_READY',
       handler: async ({ query }, { createExtension, getConfig }) => {
         const buildConfig = getConfig('pgSchema.build', {});
@@ -22,7 +29,7 @@ const pgSchema = ({ registerTargets }) => {
       },
     },
     {
-      trace: __filename,
+      ...service,
       target: '$FASTIFY_TDD_RESET?',
       handler:
         (_, { createExtension, getConfig, getContext }) =>

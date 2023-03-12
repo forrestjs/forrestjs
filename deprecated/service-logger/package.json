@@ -1,0 +1,30 @@
+{
+  "name": "@forrestjs/service-logger",
+  "description": "[deprecated] ForrestJS service which helps logging stuff in the server.",
+  "version": "5.0.3",
+  "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
+  "main": "src/index",
+  "bugs": {
+    "url": "https://github.com/forrestjs/forrestjs/issues"
+  },
+  "dependencies": {
+    "@forrestjs/core": "^5.0.3",
+    "winston": "^3.8.2"
+  },
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-logger#readme",
+  "keywords": [
+    "forrestjs",
+    "service",
+    "log",
+    "logger"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-logger",
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
+  },
+  "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578"
+}

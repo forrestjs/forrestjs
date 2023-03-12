@@ -1,0 +1,31 @@
+{
+  "name": "@forrestjs/eslint-config-universal",
+  "version": "5.0.0-alpha.2",
+  "description": "ForrestJS ESLint config that we like, you are free to ditch this and use your own :-)",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -f yarn.lock && rm -f package-lock.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/forrestjs/forrestjs/tree/master/packages/eslint-config-universal"
+  },
+  "bugs": {
+    "url": "https://github.com/forrestjs/forrestjs/issues"
+  },
+  "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/eslint-config-universal#readme",
+  "keywords": [
+    "forrestjs",
+    "eslint",
+    "config"
+  ],
+  "author": "Marco Pegoraro <marco.pegoraro@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "eslint-config-react": "^1.1.7"
+  },
+  "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578"
+}

@@ -5,7 +5,6 @@
  */
 
 const forrestjs = require('@forrestjs/core');
-const serviceLogger = require('@forrestjs/service-logger');
 const serviceFetchq = require('@forrestjs/service-fetchq');
 const serviceFetchqTask = require('@forrestjs/service-fetchq-task');
 const serviceFastify = require('@forrestjs/service-fastify');
@@ -24,6 +23,7 @@ const taskWithCursor = {
 
 forrestjs({
   trace: 'compact',
+  logLevel: 'info',
   settings: {
     fetchq: {
       logLevel: 'error',
@@ -52,7 +52,6 @@ forrestjs({
     },
   },
   services: [
-    serviceLogger,
     serviceFetchq, // The order is not important
     serviceFastify,
     serviceFetchqTask,

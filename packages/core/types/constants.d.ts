@@ -1,0 +1,17 @@
+export const CORE: "◇";
+export const BOOT: "♦";
+export const SERVICE: "→";
+export const FEATURE: "▶";
+export const SYMBOLS: string[];
+export const SEPARATOR: " » ";
+export const START: string;
+export const SETTINGS: string;
+export const INIT_SERVICE: string;
+export const INIT_SERVICES: string;
+export const INIT_FEATURE: string;
+export const INIT_FEATURES: string;
+export const START_SERVICE: string;
+export const START_SERVICES: string;
+export const START_FEATURE: string;
+export const START_FEATURES: string;
+export const FINISH: string;

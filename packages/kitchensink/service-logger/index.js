@@ -15,8 +15,9 @@ const logSomething = () => ({
 });
 
 const homePage = () => ({
-  target: '$FASTIFY_GET',
+  target: '$FASTIFY_ROUTE',
   handler: {
+    method: 'GET',
     url: '/',
     handler: (request, reply) => {
       request.log.error('This is an ERROR log');
@@ -31,8 +32,12 @@ const homePage = () => ({
 });
 
 forrestjs({
-  trace: 'compact',
-  settings: {},
+  // trace: 'compact',
+  settings: {
+    logger: {
+      level: 'info',
+    },
+  },
   services: [serviceLogger, serviceFastify],
   features: [homePage, logSomething],
 }).catch((err) => console.error(err));

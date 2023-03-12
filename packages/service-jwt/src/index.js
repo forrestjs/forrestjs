@@ -1,5 +1,9 @@
 const jwt = require('jsonwebtoken');
-const { SERVICE_NAME, ...targets } = require('./targets');
+
+const service = {
+  trace: __filename,
+  name: 'jwt',
+};
 
 let secret = null;
 let duration = null;
@@ -34,16 +38,13 @@ const verify = (token, customSecret = secret) =>
 
 const decode = (token, options) => jwt.decode(token, options);
 
-const serviceJwt = ({ registerTargets }) => {
-  registerTargets(targets);
-
+const serviceJwt = () => {
   return [
     {
+      ...service,
       target: '$INIT_SERVICES',
-      trace: __filename,
-      name: SERVICE_NAME,
       priority: 100,
-      handler: (_, { getConfig, setContext }) => {
+      handler: (_, { log, getConfig, setContext }) => {
         secret = getConfig('jwt.secret', process.env.JWT_SECRET || '---');
         duration = getConfig('jwt.duration', process.env.JWT_DURATION || '---');
         settings = getConfig('jwt.settings', {});
@@ -54,10 +55,10 @@ const serviceJwt = ({ registerTargets }) => {
           ['development', 'test'].includes(process.env.NODE_ENV)
         ) {
           secret = 'forrestjs';
-          console.warn(
+          log.warn(
             `[service-jwt] secret automagically configured because you are in "${process.env.NODE_ENV}" environment.`,
           );
-          console.warn(`[service-jwt] value: "${secret}"`);
+          log.warn(`[service-jwt] value: "${secret}"`);
         }
 
         // Automagically setup the duration in "development" or "test"
@@ -66,10 +67,10 @@ const serviceJwt = ({ registerTargets }) => {
           ['development', 'test'].includes(process.env.NODE_ENV)
         ) {
           duration = '30d';
-          console.warn(
+          log.warn(
             `[service-jwt] duration automagically configured because you are in "${process.env.NODE_ENV}" environment.`,
           );
-          console.warn(`[service-jwt] value: "${duration}"`);
+          log.warn(`[service-jwt] value: "${duration}"`);
         }
 
         // Validate configuration
@@ -91,9 +92,8 @@ const serviceJwt = ({ registerTargets }) => {
      * Fastify Integration (optional hook)
      */
     {
+      ...service,
       target: '$FASTIFY_PLUGIN?',
-      trace: __filename,
-      name: SERVICE_NAME,
       handler: ({ decorate, decorateRequest }, { getContext }) => {
         const jwt = getContext('jwt');
         decorate('jwt', jwt);
@@ -106,9 +106,8 @@ const serviceJwt = ({ registerTargets }) => {
      * Injects the `log` API into the registered workers.
      */
     {
+      ...service,
       target: '$FETCHQ_DECORATE_CONTEXT?',
-      trace: __filename,
-      name: SERVICE_NAME,
       handler: (context, { getContext }) => ({
         ...context,
         jwt: getContext('jwt'),
@@ -119,9 +118,8 @@ const serviceJwt = ({ registerTargets }) => {
      * Integrate with the Fastify TDD API
      */
     {
+      ...service,
       target: '$FASTIFY_TDD_ROUTE?',
-      trace: __filename,
-      name: SERVICE_NAME,
       handler: ({ registerTddRoute }) => {
         registerTddRoute({
           method: 'POST',

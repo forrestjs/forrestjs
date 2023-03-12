@@ -9,6 +9,11 @@ const fs = require('fs');
 
 const DB_PATH_DEFAULT = '/var/lib/jwks/keys.json';
 
+const service = {
+  trace: __filename,
+  name: 'jwks',
+};
+
 const loadPersistedKeys = (dbPath) =>
   new Promise((resolve, reject) => {
     fs.readFile(dbPath, 'utf-8', (err, data) => {
@@ -56,11 +61,11 @@ const createNewKeyStore = async (dbPath, padding) => {
   return keyStore;
 };
 
-const serviceJWKS = () => {
+module.exports = () => {
   return [
     {
+      ...service,
       priority: 10,
-      trace: __filename,
       target: '$INIT_SERVICE',
       handler: async ({ getConfig, setContext }) => {
         const dbPath = getConfig('jwks.serializer.db.path', DB_PATH_DEFAULT);
@@ -140,7 +145,7 @@ const serviceJWKS = () => {
       },
     },
     {
-      trace: __filename,
+      ...service,
       target: '$START_SERVICE',
       handler: async ({ getContext, getConfig }) => {
         const dbPath = getConfig('jwks.serializer.db.path', DB_PATH_DEFAULT);
@@ -175,7 +180,7 @@ const serviceJWKS = () => {
       },
     },
     {
-      trace: __filename,
+      ...service,
       target: '$FASTIFY_PLUGIN?',
       handler: ({ decorateRequest }, { getContext }) => {
         decorateRequest('jwks', getContext('jwks'));
@@ -183,5 +188,3 @@ const serviceJWKS = () => {
     },
   ];
 };
-
-module.exports = serviceJWKS;

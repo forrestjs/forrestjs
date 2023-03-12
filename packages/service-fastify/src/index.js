@@ -1,4 +1,3 @@
-const { INIT_SERVICE, START_SERVICE } = require('@forrestjs/core');
 const targets = require('./targets');
 const initServiceHandler = require('./init-service-handler');
 const startServiceHandler = require('./start-service-handler');
@@ -14,12 +13,12 @@ module.exports = ({ registerTargets }) => {
   return [
     {
       ...service,
-      target: INIT_SERVICE,
+      target: '$INIT_SERVICE',
       handler: initServiceHandler,
     },
     {
       ...service,
-      target: START_SERVICE,
+      target: '$START_SERVICE',
       handler: startServiceHandler,
     },
 

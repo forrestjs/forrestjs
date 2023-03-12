@@ -1,21 +1,26 @@
 const onInitService = require('./init-service');
 const hasuraAuthPlugin = require('./hasura-auth.plugin');
 
-const fastifyHasuraAuth = ({ registerTargets }) => {
+const service = {
+  name: 'hasura-auth',
+  trace: __filename,
+};
+
+module.exports = ({ registerTargets }) => {
   registerTargets({
-    HASURA_AUTH_GET: 'hasuraAuth/get',
-    HASURA_AUTH_POST: 'hasuraAuth/post',
-    HASURA_AUTH_FASTIFY: 'hasuraAuth/fastify',
+    HASURA_AUTH_GET: `${service.name}/get`,
+    HASURA_AUTH_POST: `${service.name}/post`,
+    HASURA_AUTH_FASTIFY: `${service.name}/fastify`,
   });
 
   return [
     {
-      trace: __filename,
+      ...service,
       target: '$INIT_SERVICES',
       handler: onInitService,
     },
     {
-      trace: __filename,
+      ...service,
       target: '$FASTIFY_PLUGIN?',
       handler: ({ registerPlugin }, { getContext, createExtension }) => {
         const options = getContext('hasuraAuth');
@@ -27,5 +32,3 @@ const fastifyHasuraAuth = ({ registerTargets }) => {
     },
   ];
 };
-
-module.exports = fastifyHasuraAuth;

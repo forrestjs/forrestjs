@@ -56,6 +56,9 @@ const createExtension = (receivedName, receivedOptions = {}) => {
     }
   };
 
+  // Utility that extracts the values from the extension results
+  const getValues = ($) => $[0];
+
   if (options.mode === 'parallel') {
     return new Promise(async (resolve, reject) => {
       // console.log('@@@@ PARALLEL', name);
@@ -64,6 +67,8 @@ const createExtension = (receivedName, receivedOptions = {}) => {
         const results = await Promise.all(promises);
         writeLog();
         pullStack();
+
+        results.getValues = () => results.map(($) => $[0]);
         resolve(results);
       } catch (err) {
         try {
@@ -79,15 +84,15 @@ const createExtension = (receivedName, receivedOptions = {}) => {
 
   if (options.mode === 'serie') {
     return new Promise(async (resolve, reject) => {
-      // console.log('@@@@ SERIE', name);
       try {
         const results = [];
         for (const action of actions) {
-          // console.log('>>>', action);
           results.push(await runAction(action, options));
         }
         writeLog();
         pullStack();
+
+        results.getValues = () => results.map(($) => $[0]);
         resolve(results);
       } catch (err) {
         // console.log('*****', err.name, err.message);
@@ -114,6 +119,7 @@ const createExtension = (receivedName, receivedOptions = {}) => {
       args = res[0];
     });
 
+    results.getValues = () => results.map(($) => $[0]);
     return {
       value: args,
       results,
@@ -122,10 +128,12 @@ const createExtension = (receivedName, receivedOptions = {}) => {
 
   // synchronous execution with arguments
   try {
-    // console.log('@@@@ SYNC', name);
     const results = actions.map((action) => runActionSync(action, options));
+
     writeLog();
     pullStack();
+
+    results.getValues = () => results.map(($) => $[0]);
     return results;
   } catch (err) {
     return pullStack(options.onError(err, name, options));
@@ -148,20 +156,4 @@ createExtension.parallel = (name, args, context) =>
 createExtension.waterfall = (name, args, context) =>
   createExtension(name, { args, context, mode: 'waterfall' });
 
-/**
- * DEPRECATED API
- */
-const createHookDeprecate =
-  '[DEPRECATED] use `createExtension()` instead of `createHook()`.It will be removed in v5.0.0';
-
-const createHook = (...args) => {
-  console.warn(createHookDeprecate);
-  return createExtension(...args);
-};
-
-createHook.sync = createExtension.sync;
-createHook.serie = createExtension.serie;
-createHook.parallel = createExtension.parallel;
-createHook.waterfall = createExtension.waterfall;
-
-module.exports = { createHook, createExtension };
+module.exports = { createExtension };
