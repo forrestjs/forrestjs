@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/service-fastify-healthz",
   "description": "ForrestJS service which adds a healthcheck route to a Fastify server.",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
