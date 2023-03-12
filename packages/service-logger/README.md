@@ -1,4 +1,4 @@
-# @forrestjs/service-logger
+# @forrestjs/service-logger (deprecated)
 
 ForrestJS service which helps logging stuff in the server.
 It uses [winston](https://www.npmjs.com/package/winston) under the hood.

@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/service-logger",
-  "description": "ForrestJS service which helps logging stuff in the server.",
+  "description": "[deprecated] ForrestJS service which helps logging stuff in the server.",
   "version": "5.0.0-alpha.40",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",

@@ -4,6 +4,7 @@
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
 - [ ] Move boot trace before the App execution
 - [ ] write `service-pg-pubsub` accepting `PGSTRING`
+- [service-logger] removed
 - [service-postgres] removed
 - [service-postgres-pubsub] removed
 - [service-env] removed
@@ -25,6 +26,7 @@
 - [service-fetchq] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [service-hasura-cqrs] Introduced the service
 - [core] add `results.getValues()` to all the extensions returning data
+- [service-logger] deprecated
 - [service-postgres] deprecated
 - [service-postgres-pubsub] deprecated
 - [service-env] deprecated
