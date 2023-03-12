@@ -85,7 +85,7 @@
   ],
   "license": "MIT",
   "publishConfig": {
-    "access": "private"
+    "access": "public"
   },
   "repository": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-fastify",
   "gitHead": "47b14bfbe30bd59e3526a55b7c71cd8fcc56a578",
