@@ -19,6 +19,14 @@ module.exports = ({ registerTargets }) => {
   return [
     {
       ...service,
+      target: '$INIT_SERVICE',
+      handler: ({ log }) =>
+        log.warn(
+          'Package `service-fastify-gql` has been deprecated and will be removed from v6.x',
+        ),
+    },
+    {
+      ...service,
       target: '$FASTIFY_PLUGIN',
       handler: onFastifyPlugin,
     },

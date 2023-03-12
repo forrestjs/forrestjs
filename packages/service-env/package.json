@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/service-env",
-  "description": "ForrestJS feature which helps importing environment variables from .env.* files.",
+  "description": "[deprecated] ForrestJS feature which helps importing environment variables from .env.* files.",
   "version": "5.0.0-alpha.39",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index.js",

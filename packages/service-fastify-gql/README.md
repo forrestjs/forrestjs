@@ -1,4 +1,4 @@
-# @forrestjs/service-fastify-gql
+# @forrestjs/service-fastify-gql (deprecated)
 
 It exposes a GraphQL API that you can easily extend.
 

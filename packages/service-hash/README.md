@@ -1,4 +1,4 @@
-# @forrestjs/service-hash
+# @forrestjs/service-hash (deprecated)
 
 **🚧 DEPRECATED 🚧**
 

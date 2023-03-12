@@ -23,6 +23,14 @@ module.exports = () => [
   },
   {
     ...service,
+    target: '$INIT_SERVICE',
+    handler: ({ log }) =>
+      log.warn(
+        'Package `service-env` has been deprecated and will be removed from v6.x',
+      ),
+  },
+  {
+    ...service,
     target: '$FASTIFY_PLUGIN?',
     handler: ({ decorate, decorateRequest }, { getContext }) => {
       const getEnv = getContext('getEnv');

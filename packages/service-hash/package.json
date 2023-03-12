@@ -1,6 +1,6 @@
 {
   "name": "@forrestjs/service-hash",
-  "description": "ForrestJS service which helps hashing stuff with bcrypt.",
+  "description": "[deprecated] ForrestJS service which helps hashing stuff with bcrypt.",
   "version": "5.0.0-alpha.39",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",

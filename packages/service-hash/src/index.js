@@ -56,6 +56,10 @@ const serviceBcrypt = () => [
     target: '$INIT_SERVICE',
     priority: 1,
     handler: async ({ getConfig, setContext, log }) => {
+      log.warn(
+        'Package `service-hash` has been deprecated and will be removed from v6.x',
+      );
+
       let salt = getConfig('hash.salt', process.env.HASH_SALT || '---');
       const rounds = getConfig('hash.rounds', process.env.HASH_ROUNDS || '---');
 

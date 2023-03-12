@@ -1,4 +1,4 @@
-# @forrestjs/service-env
+# @forrestjs/service-env (deprecated)
 
 **🚧 DEPRECATED 🚧**  
 The environment should be managed explicitly from the App manifest.

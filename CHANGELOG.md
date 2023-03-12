@@ -21,6 +21,9 @@
 - [service-fetchq] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [service-hasura-cqrs] Introduced the service
 - [core] add `results.getValues()` to all the extensions returning data
+- [service-env] deprecated
+- [service-hash] deprecated
+- [service-fastify-gql] deprecated
 
 ## 4.7.2
 
