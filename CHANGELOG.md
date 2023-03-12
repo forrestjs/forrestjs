@@ -1,13 +1,17 @@
 ## 6.0.0 (roadmap)
 
-- [ ] action's parameter will be reversed (ctx, action's data)
+- [ ] action's parameter will be reversed (ctx <--> action's data)
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
 - [ ] Move boot trace before the App execution
 - [ ] write `service-pg-pubsub` accepting `PGSTRING`
 - [service-postgres] removed
 - [service-postgres-pubsub] removed
+- [service-env] removed
+- [service-hash] removed
+- [service-fastify-gql] removed
+- [package-fastify] removed
 
-## 5.0.0
+## 5.0.0 (wip)
 
 - [core] remove support for declarative array definition `const f1 = [hook, handler]`
 - [core] remove `runHookApp` and `createHookApp`
@@ -21,9 +25,12 @@
 - [service-fetchq] Add a fullstack test in `service-fetchq` with a task entered by a route and then a polling to monitor completion of such task
 - [service-hasura-cqrs] Introduced the service
 - [core] add `results.getValues()` to all the extensions returning data
+- [service-postgres] deprecated
+- [service-postgres-pubsub] deprecated
 - [service-env] deprecated
 - [service-hash] deprecated
 - [service-fastify-gql] deprecated
+- [package-fastify] deprecated
 
 ## 4.7.2
 

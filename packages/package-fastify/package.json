@@ -1,7 +1,7 @@
 {
   "name": "@forrestjs/package-fastify",
   "version": "5.0.0-alpha.39",
-  "description": "ForrestJS Dependencies package for a Fastify app.",
+  "description": "[deprecated] ForrestJS Dependencies package for a Fastify app.",
   "main": "index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/package-fastify#readme",
