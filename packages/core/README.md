@@ -14,6 +14,8 @@ npm add @forrestjs/core
 
 ## Quick Code Example
 
+https://codesandbox.io/p/sandbox/service-fastify-th8dq?file=%2Fsrc%2Findex.js
+
 ```js
 const forrest = require('@forrestjs/core');
 const fastify = require('@forrestjs/service-fastify');
