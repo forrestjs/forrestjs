@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-fastify",
   "description": "ForrestJS service which helps setting up a Fastify server.",
-  "version": "5.0.0-alpha.40",
+  "version": "5.0.1",
   "main": "src/index.js",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^5.0.0-alpha.40",
+    "@forrestjs/core": "^5.0.1",
     "axios": "^1.3.4",
     "fastify": "^4.14.1",
     "moxios": "^0.4.0",

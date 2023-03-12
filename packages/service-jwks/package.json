@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-jwks",
   "description": "ForrestJS service which helps handling JWKS activities.",
-  "version": "5.0.0-alpha.40",
+  "version": "5.0.1",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^5.0.0-alpha.40",
+    "@forrestjs/core": "^5.0.1",
     "jsonwebtoken": "^9.0.0",
     "jwk-to-pem": "^2.0.5",
     "ms": "^2.1.3",
