@@ -12,7 +12,11 @@
 - [service-fastify-gql] removed
 - [package-fastify] removed
 
-## 5.0.0 (wip)
+## 5.0.4
+
+- [service-fastify] remove Ajv schema in fastify tdd
+
+## 5.0.0
 
 - [core] remove support for declarative array definition `const f1 = [hook, handler]`
 - [core] remove `runHookApp` and `createHookApp`

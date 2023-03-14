@@ -117,37 +117,37 @@ module.exports = ({ registerRoute }, ctx) => {
   registerRoute({
     method: 'GET',
     url: `${tddScope}/config`,
-    schema: {
-      query: {
-        type: 'object',
-        properties: {
-          key: { type: 'string' },
-          default: { type: 'string' },
-        },
-        required: ['key'],
-      },
-      response: {
-        '2xx': {
-          type: 'object',
-          properties: {
-            key: { type: 'string' },
-            value: {
-              oneOf: [
-                { type: 'string' },
-                { type: 'number' },
-                { type: 'boolean' },
-                { type: 'object', additionalProperties: true },
-                { type: 'array' },
-              ],
-              // type: 'object',
-            },
-            default: { type: 'string' },
-            isSet: { type: 'boolean' },
-          },
-          required: ['key', 'isSet'],
-        },
-      },
-    },
+    // schema: {
+    //   query: {
+    //     type: 'object',
+    //     properties: {
+    //       key: { type: 'string' },
+    //       default: { type: 'string' },
+    //     },
+    //     required: ['key'],
+    //   },
+    //   response: {
+    //     '2xx': {
+    //       type: 'object',
+    //       properties: {
+    //         key: { type: 'string' },
+    //         value: {
+    //           oneOf: [
+    //             { type: 'string' },
+    //             { type: 'number' },
+    //             { type: 'boolean' },
+    //             { type: 'object', additionalProperties: true },
+    //             { type: 'array' },
+    //           ],
+    //           // type: 'object',
+    //         },
+    //         default: { type: 'string' },
+    //         isSet: { type: 'boolean' },
+    //       },
+    //       required: ['key', 'isSet'],
+    //     },
+    //   },
+    // },
     handler: async (request) => {
       try {
         return {
@@ -172,35 +172,35 @@ module.exports = ({ registerRoute }, ctx) => {
   registerRoute({
     method: 'POST',
     url: `${tddScope}/config`,
-    schema: {
-      body: {
-        type: 'object',
-        properties: {
-          key: { type: 'string' },
-          value: {
-            type: ['string', 'number', 'boolean', 'null'],
-          },
-        },
-        required: ['key', 'value'],
-      },
-      response: {
-        '2xx': {
-          type: 'object',
-          properties: {
-            key: { type: 'string' },
-            value: {
-              oneOf: [
-                { type: 'string' },
-                { type: 'number' },
-                { type: 'boolean' },
-                { type: 'null' },
-              ],
-            },
-          },
-          required: ['key', 'value'],
-        },
-      },
-    },
+    // schema: {
+    //   body: {
+    //     type: 'object',
+    //     properties: {
+    //       key: { type: 'string' },
+    //       value: {
+    //         type: ['string', 'number', 'boolean', 'null'],
+    //       },
+    //     },
+    //     required: ['key', 'value'],
+    //   },
+    //   response: {
+    //     '2xx': {
+    //       type: 'object',
+    //       properties: {
+    //         key: { type: 'string' },
+    //         value: {
+    //           oneOf: [
+    //             { type: 'string' },
+    //             { type: 'number' },
+    //             { type: 'boolean' },
+    //             { type: 'null' },
+    //           ],
+    //         },
+    //       },
+    //       required: ['key', 'value'],
+    //     },
+    //   },
+    // },
     handler: async (request) => {
       setConfig(request.body.key, request.body.value);
 
@@ -239,90 +239,90 @@ module.exports = ({ registerRoute }, ctx) => {
   registerRoute({
     method: 'POST',
     url: `${tddScope}/axios/stubs`,
-    schema: {
-      body: {
-        type: 'object',
-        properties: {
-          url: { type: 'string' },
-          method: {
-            type: 'string',
-            enum: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-          },
-          response: {
-            type: 'object',
-            additionalProperties: true,
-          },
-        },
-        required: ['url', 'response'],
-      },
-      response: {
-        '2xx': {
-          type: 'object',
-          properties: {
-            success: { type: 'boolean' },
-            data: {
-              type: 'object',
-              properties: {
-                items: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      url: { type: 'string' },
-                      response: {
-                        type: 'object',
-                        additionalProperties: true,
-                      },
-                    },
-                    required: ['url', 'response'],
-                  },
-                },
-              },
-              required: ['items'],
-            },
-          },
-          required: ['success', 'data'],
-        },
-        '4xx': {
-          type: 'object',
-          properties: {
-            success: { type: 'boolean' },
-            data: {
-              type: 'object',
-              properties: {
-                items: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      url: { type: 'string' },
-                      response: {
-                        type: 'object',
-                        additionalProperties: true,
-                      },
-                    },
-                    required: ['url', 'response'],
-                  },
-                },
-              },
-              required: ['items'],
-            },
-            errors: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  message: { type: 'string' },
-                },
-                required: ['message'],
-                additionalProperties: true,
-              },
-            },
-          },
-          required: ['success', 'errors', 'data'],
-        },
-      },
-    },
+    // schema: {
+    //   body: {
+    //     type: 'object',
+    //     properties: {
+    //       url: { type: 'string' },
+    //       method: {
+    //         type: 'string',
+    //         enum: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    //       },
+    //       response: {
+    //         type: 'object',
+    //         additionalProperties: true,
+    //       },
+    //     },
+    //     required: ['url', 'response'],
+    //   },
+    //   response: {
+    //     '2xx': {
+    //       type: 'object',
+    //       properties: {
+    //         success: { type: 'boolean' },
+    //         data: {
+    //           type: 'object',
+    //           properties: {
+    //             items: {
+    //               type: 'array',
+    //               items: {
+    //                 type: 'object',
+    //                 properties: {
+    //                   url: { type: 'string' },
+    //                   response: {
+    //                     type: 'object',
+    //                     additionalProperties: true,
+    //                   },
+    //                 },
+    //                 required: ['url', 'response'],
+    //               },
+    //             },
+    //           },
+    //           required: ['items'],
+    //         },
+    //       },
+    //       required: ['success', 'data'],
+    //     },
+    //     '4xx': {
+    //       type: 'object',
+    //       properties: {
+    //         success: { type: 'boolean' },
+    //         data: {
+    //           type: 'object',
+    //           properties: {
+    //             items: {
+    //               type: 'array',
+    //               items: {
+    //                 type: 'object',
+    //                 properties: {
+    //                   url: { type: 'string' },
+    //                   response: {
+    //                     type: 'object',
+    //                     additionalProperties: true,
+    //                   },
+    //                 },
+    //                 required: ['url', 'response'],
+    //               },
+    //             },
+    //           },
+    //           required: ['items'],
+    //         },
+    //         errors: {
+    //           type: 'array',
+    //           items: {
+    //             type: 'object',
+    //             properties: {
+    //               message: { type: 'string' },
+    //             },
+    //             required: ['message'],
+    //             additionalProperties: true,
+    //           },
+    //         },
+    //       },
+    //       required: ['success', 'errors', 'data'],
+    //     },
+    //   },
+    // },
     handler: (request, reply) => {
       if (moxios.stubs.__items.length === 0) {
         moxios.install();
@@ -362,46 +362,46 @@ module.exports = ({ registerRoute }, ctx) => {
   registerRoute({
     method: 'DELETE',
     url: `${tddScope}/axios/stubs`,
-    schema: {
-      response: {
-        '2xx': {
-          type: 'object',
-          properties: {
-            success: { type: 'boolean' },
-            data: {
-              type: 'object',
-              properties: {
-                didReset: { type: 'boolean' },
-              },
-              required: ['didReset'],
-            },
-          },
-          required: ['success', 'data'],
-        },
-        '4xx': {
-          type: 'object',
-          properties: {
-            success: { type: 'boolean' },
-            data: {
-              type: 'object',
-              additionalProperties: true,
-            },
-            errors: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  message: { type: 'string' },
-                },
-                required: ['message'],
-                additionalProperties: true,
-              },
-            },
-          },
-          required: ['success', 'data'],
-        },
-      },
-    },
+    // schema: {
+    //   response: {
+    //     '2xx': {
+    //       type: 'object',
+    //       properties: {
+    //         success: { type: 'boolean' },
+    //         data: {
+    //           type: 'object',
+    //           properties: {
+    //             didReset: { type: 'boolean' },
+    //           },
+    //           required: ['didReset'],
+    //         },
+    //       },
+    //       required: ['success', 'data'],
+    //     },
+    //     '4xx': {
+    //       type: 'object',
+    //       properties: {
+    //         success: { type: 'boolean' },
+    //         data: {
+    //           type: 'object',
+    //           additionalProperties: true,
+    //         },
+    //         errors: {
+    //           type: 'array',
+    //           items: {
+    //             type: 'object',
+    //             properties: {
+    //               message: { type: 'string' },
+    //             },
+    //             required: ['message'],
+    //             additionalProperties: true,
+    //           },
+    //         },
+    //       },
+    //       required: ['success', 'data'],
+    //     },
+    //   },
+    // },
     handler: (request, reply) => {
       if (moxios.stubs.__items.length !== 0) {
         moxios.uninstall();
