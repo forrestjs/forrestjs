@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-hasura-auth",
   "description": "ForrestJS service which helps running an Hasura Webhook authentication service",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^5.0.3"
+    "@forrestjs/core": "^5.0.4"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-hasura-auth#readme",
   "keywords": [

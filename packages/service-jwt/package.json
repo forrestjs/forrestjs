@@ -1,14 +1,14 @@
 {
   "name": "@forrestjs/service-jwt",
   "description": "ForrestJS service which helps handling jwt activities.",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "author": "Marco Pegoraro <marco.pegoraro@gmail.com",
   "main": "src/index",
   "bugs": {
     "url": "https://github.com/forrestjs/forrestjs/issues"
   },
   "dependencies": {
-    "@forrestjs/core": "^5.0.3",
+    "@forrestjs/core": "^5.0.4",
     "jsonwebtoken": "^9.0.0"
   },
   "homepage": "https://github.com/forrestjs/forrestjs/tree/master/packages/service-jwt#readme",
