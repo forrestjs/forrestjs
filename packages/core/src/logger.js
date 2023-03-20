@@ -116,6 +116,12 @@ const makeLogger = (
   logger.cloneWithTransport = (transport) =>
     makeLogger(logLevel, { transport: transport, levelsMap });
 
+  logger.trace = () => {
+    console.warn(
+      '[ForrestJS] `log.trace()` is deprecated and will be removed in v6.x',
+    );
+  };
+
   return logger;
 };
 

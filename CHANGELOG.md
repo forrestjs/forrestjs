@@ -4,6 +4,14 @@
 - [ ] The targets registry should be scoped by an App. It should be possible to run independent ForrestJS apps side by side.
 - [ ] Move boot trace before the App execution
 - [ ] write `service-pg-pubsub` accepting `PGSTRING`
+- [ ] [core] Remove `log.trace()`
+
+## 5.0.6
+
+- [core] deprecate `log.trace()`
+
+## 5.0.5
+
 - [service-logger] removed
 - [service-postgres] removed
 - [service-postgres-pubsub] removed
