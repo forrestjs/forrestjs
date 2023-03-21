@@ -72,27 +72,30 @@ module.exports = ({ getContext, getConfig, createExtension, log }) => {
     process.env.FASTIFY_PORT || process.env.PORT || 8080,
   );
 
-  const serverHost = getConfig(
-    'fastify.host',
-    process.env.FASTIFY_HOST || process.env.HOST || '::',
-  );
+  // const serverHost = getConfig(
+  //   'fastify.host',
+  //   process.env.FASTIFY_HOST || process.env.HOST || '::',
+  // );
 
-  const serverConfig = getConfig('fastify.listen.config', {
-    port: serverPort,
-    host: serverHost,
-  });
+  // const serverConfig = getConfig('fastify.listen.config', {
+  //   port: serverPort,
+  //   host: serverHost,
+  // });
 
-  const serverCallback = getConfig('fastify.listen.callback', (err) => {
-    if (err) {
-      log.error(`Fastify failed to start: ${err.message}`);
-      throw err;
-    }
-  });
+  // const serverCallback = getConfig('fastify.listen.callback', (err) => {
+  //   if (err) {
+  //     log.error(`Fastify failed to start: ${err.message}`);
+  //     throw err;
+  //   }
+  // });
 
-  if (process.env.NODE_ENV === 'production' && serverConfig.host === '::') {
-    log.warn(`Fastify runs in production with host = ::`);
-  }
+  // if (process.env.NODE_ENV === 'production' && serverConfig.host === '::') {
+  //   log.warn(`Fastify runs in production with host = ::`);
+  // }
 
-  // const serverMeta = getConfig('fastify.meta', '::');
-  server.listen(serverConfig, serverCallback);
+  // // const serverMeta = getConfig('fastify.meta', '::');
+  // server.listen(serverConfig, serverCallback);
+
+  const serverMeta = getConfig('fastify.meta', '::');
+  server.listen({ port: serverPort }, serverMeta);
 };
