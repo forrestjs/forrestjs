@@ -27,7 +27,7 @@ const makeRoute = (method) => (route) => {
   return null;
 };
 
-module.exports = ({ getContext, getConfig, createExtension }) => {
+module.exports = ({ getContext, getConfig, createExtension, log }) => {
   const server = getContext('fastify');
 
   // Register route utilities
@@ -76,6 +76,23 @@ module.exports = ({ getContext, getConfig, createExtension }) => {
     'fastify.host',
     process.env.FASTIFY_HOST || process.env.HOST || '::',
   );
+
+  const serverConfig = getConfig('fastify.listen.config', {
+    port: serverPort,
+    host: serverHost,
+  });
+
+  const serverCallback = getConfig('fastify.listen.callback', (err) => {
+    if (err) {
+      log.error(`Fastify failed to start: ${err.message}`);
+      throw err;
+    }
+  });
+
+  if (process.env.NODE_ENV === 'production' && serverConfig.host === '::') {
+    log.warn(`Fastify runs in production with host = ::`);
+  }
+
   // const serverMeta = getConfig('fastify.meta', '::');
-  server.listen({ port: serverPort, host: serverHost });
+  server.listen(serverConfig, serverCallback);
 };
